@@ -1,0 +1,6 @@
+{
+  "extends": ["@open-zero/eslint-config-node"],
+  "parserOptions": {
+    "project": true
+  }
+}

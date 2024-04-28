@@ -1,0 +1,31 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalEnv": ["PORT"],
+  "pipeline": {
+    "build": {
+      "dependsOn": ["^db-generate", "^build"]
+    },
+    "lint": {
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "dependsOn": ["^db-generate", "^build"],
+      "cache": false,
+      "persistent": true
+    },
+    "clean": {
+      "cache": false
+    },
+    "@open-zero/database#db-migrate": {
+      "cache": false
+    },
+    "db-generate": {
+      "cache": false
+    },
+    "db-deploy": {
+      "cache": false
+    },
+    "db-seed": {}
+  }
+}

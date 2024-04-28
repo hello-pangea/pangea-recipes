@@ -1,0 +1,34 @@
+{
+  "name": "@open-zero/recipes",
+  "version": "0.0.0",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db-migrate": "pnpm run -F=database db-migrate",
+    "db-deploy": "turbo run db-deploy",
+    "db-seed": "turbo run db-seed",
+    "db-studio": "turbo run db-studio"
+  },
+  "devDependencies": {
+    "prettier": "^3.2.5",
+    "tsx": "^4.7.3",
+    "turbo": "^1.13.3"
+  },
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "prisma": {
+    "schema": "packages/database/prisma/schema.prisma",
+    "seed": "tsx packages/database/src/seed.ts"
+  },
+  "packageManager": "pnpm@8.15.7"
+}

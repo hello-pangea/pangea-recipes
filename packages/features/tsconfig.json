@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "./src",
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "declarationDir": "./dist",
+    "sourceRoot": "../src",
+    "paths": {
+      // This helps VSCode figure out "Go to definition"
+      "@open-zero/*": ["../*/src/index.ts"]
+    }
+  },
+  "extends": "@open-zero/typescript-config/node.json",
+  "include": ["src", "index.d.ts"],
+  "exclude": ["**/node_modules", "**/.*/"]
+}

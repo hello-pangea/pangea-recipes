@@ -1,0 +1,186 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("PG_DATABASE_URL")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["relationJoins"]
+}
+
+model User {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  email          String  @unique
+  name           String?
+  hashedPassword String  @map("hashed_password")
+
+  sessions Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  expiresAt DateTime @map("expires_at")
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Recipe {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name        String
+  description String?
+
+  cookTime Int? @map("cook_time")
+  prepTime Int? @map("prep_time")
+
+  ingredients RecipeIngredient[]
+
+  instructions Instruction[]
+
+  images RecipeImage[]
+
+  usesRecipes   LinkedRecipes[] @relation("UsesRecipes")
+  usedByRecipes LinkedRecipes[] @relation("Recipes")
+
+  @@map("recipes")
+}
+
+model RecipeImage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId String @map("recipe_id") @db.Uuid
+
+  image   Image  @relation(fields: [imageId], references: [id])
+  imageId String @map("image_id") @db.Uuid
+
+  @@map("recipe_images")
+}
+
+// Pivot table
+model RecipeIngredient {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  amount Decimal
+  notes  String?
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String     @map("ingredient_id") @db.Uuid
+  unit         Unit       @relation(fields: [unitId], references: [id])
+  unitId       String     @map("unit_id") @db.Uuid
+  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId     String     @map("recipe_id") @db.Uuid
+
+  @@map("recipe_ingredients")
+}
+
+// Pivot table
+model LinkedRecipes {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipe       Recipe @relation("Recipes", fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId     String @map("recipe_id") @db.Uuid
+  usesRecipe   Recipe @relation("UsesRecipes", fields: [usesRecipeId], references: [id])
+  usesRecipeId String @map("linked_recipe") @db.Uuid
+
+  @@map("linked_recipes")
+}
+
+model Ingredient {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name       String
+  pluralName String?  @map("plural_name")
+  /// The density of the ingredient in kilograms / cubic meter
+  density    Decimal?
+
+  substitutions           Substitution[]
+  recipeIngredients       RecipeIngredient[]
+  substitutionIngredients SubstitutionIngredient[]
+
+  @@map("ingredients")
+}
+
+model Substitution {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String     @map("ingredient_id") @db.Uuid
+
+  substitutionIngredients SubstitutionIngredient[]
+
+  @@map("substitutions")
+}
+
+model SubstitutionIngredient {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  amount Decimal
+  notes  String?
+
+  unit   Unit   @relation(fields: [unitId], references: [id])
+  unitId String @map("unit_id") @db.Uuid
+
+  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
+  ingredientId String     @map("ingredient_id") @db.Uuid
+
+  substitution   Substitution @relation(fields: [substitutionId], references: [id])
+  substitutionId String       @map("substitution_id") @db.Uuid
+
+  @@map("substitution_ingredients")
+}
+
+model Unit {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name         String
+  pluralName   String? @map("plural_name")
+  abbreviation String?
+
+  recipeIngredients       RecipeIngredient[]
+  substitutionIngredients SubstitutionIngredient[]
+
+  @@map("units")
+}
+
+model Instruction {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  text String
+  step Int
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId String @map("recipe_id") @db.Uuid
+
+  @@map("instructions")
+}
+
+model Image {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  url         String
+  originalUrl String @map("original_url")
+
+  width  Int
+  height Int
+
+  recipeImages RecipeImage[]
+
+  @@map("images")
+}

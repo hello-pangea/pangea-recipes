@@ -1,0 +1,14 @@
+{
+  "extends": "@open-zero/typescript-config/node.json",
+  "compilerOptions": {
+    "outDir": "./dist",
+    "baseUrl": ".",
+    "paths": {
+      "#src/*": ["src/*"],
+      // This helps VSCode figure out "Go to definition"
+      "@open-zero/*": ["../../packages/*/src/index.ts"]
+    }
+  },
+  "include": ["src", "index.d.ts"],
+  "exclude": ["**/node_modules", "**/.*/"]
+}

@@ -1,0 +1,7 @@
+{
+  "extends": ["@open-zero/eslint-config-vite"],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": true
+  }
+}

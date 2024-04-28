@@ -1,0 +1,16 @@
+{
+  "extends": "@open-zero/typescript-config/vite.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "#src/*": ["src/*"],
+
+      // This helps VSCode figure out "Go to definition"
+      "@open-zero/*": ["../../packages/*/src"]
+    }
+  },
+  "exclude": ["node_modules"],
+  "include": ["src", "vite.config.ts"]
+}

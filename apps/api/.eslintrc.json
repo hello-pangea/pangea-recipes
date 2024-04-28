@@ -1,0 +1,9 @@
+{
+  "extends": ["@open-zero/eslint-config-node"],
+  "parserOptions": {
+    "project": true
+  },
+  "rules": {
+    "@typescript-eslint/require-await": "off"
+  }
+}
