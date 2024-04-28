@@ -18,7 +18,7 @@ export function Layout() {
     if (loggedInUserQuery.data?.user?.id) {
       setUserId(loggedInUserQuery.data.user.id);
     }
-  }, [loggedInUserQuery.data?.user?.id]);
+  }, [loggedInUserQuery.data?.user?.id, setUserId]);
 
   if (loggedInUserQuery.isPending) {
     return <LoadingPage message="Loading user" />;

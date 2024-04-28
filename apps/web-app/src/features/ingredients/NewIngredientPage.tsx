@@ -35,7 +35,6 @@ export function NewIngredientPage() {
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
     ingredientCreator.mutate({
       name: data.name,
       pluralName: data.pluralName || undefined,

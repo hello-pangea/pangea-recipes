@@ -78,11 +78,13 @@ export default function Sidebar() {
             label="Ingredients"
           />
           <Tooltip title="Coming soon" arrow placement="right">
-            <ListItem
-              path="/recipe-books"
-              icon={<MenuBookRoundedIcon />}
-              label="Recipe books"
-            />
+            <span>
+              <ListItem
+                path="/recipe-books"
+                icon={<MenuBookRoundedIcon />}
+                label="Recipe books"
+              />
+            </span>
           </Tooltip>
         </List>
       </Box>

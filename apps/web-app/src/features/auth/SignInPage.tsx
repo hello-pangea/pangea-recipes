@@ -1,9 +1,10 @@
 import { LoadingButton } from '@mui/lab';
 import { Container, Stack, Typography } from '@mui/material';
-import { useSignInUser } from '@open-zero/features';
+import { useLoggedInUser, useSignInUser } from '@open-zero/features';
+import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useUserStore } from '../account/userStore';
 
 interface SignInFormInputs {
@@ -15,6 +16,18 @@ export function SignInPage() {
   const navigate = useNavigate();
   const { handleSubmit, control } = useForm<SignInFormInputs>();
   const setUserId = useUserStore((state) => state.setUserId);
+  const userId = useUserStore((state) => state.userId);
+  const loggedInUserQuery = useLoggedInUser({
+    config: {
+      retry: false,
+    },
+  });
+
+  useEffect(() => {
+    if (loggedInUserQuery.data?.user?.id) {
+      setUserId(loggedInUserQuery.data.user.id);
+    }
+  }, [loggedInUserQuery.data?.user?.id, setUserId]);
 
   const userSignIn = useSignInUser({
     config: {
@@ -35,6 +48,10 @@ export function SignInPage() {
       password: data.password,
     });
   };
+
+  if (userId) {
+    return <Navigate to="/" />;
+  }
 
   return (
     <Container component="main" maxWidth="xs">

@@ -11,8 +11,6 @@ export function RecipesPage() {
     return <LoadingPage message="Loading recipes" />;
   }
 
-  console.log(recipesQuery.data?.recipes);
-
   return (
     <Box sx={{ px: 3, py: 2 }}>
       <Typography variant="h1" sx={{ mb: 2 }}>

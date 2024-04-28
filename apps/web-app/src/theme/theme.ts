@@ -74,7 +74,7 @@ export const theme = createTheme({
     },
   },
   shape: {
-    borderRadius: 10,
+    borderRadius: 8,
   },
   components: {
     MuiCssBaseline: {
@@ -97,6 +97,11 @@ export const theme = createTheme({
     MuiButton: {
       defaultProps: {
         disableElevation: true,
+      },
+      styleOverrides: {
+        root: {
+          borderRadius: '100vmax',
+        },
       },
     },
     MuiButtonBase: {
