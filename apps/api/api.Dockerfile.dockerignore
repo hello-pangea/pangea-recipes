@@ -1,0 +1,16 @@
+# Ignore everything
+*
+
+# Allow files and folders with a pattern starting with !
+!apps/api
+!packages/database
+!packages/features
+!packages/config-typescript
+!packages/config-eslint-node
+!turbo.json
+!.gitignore
+!package.json
+!pnpm-lock.yaml
+!pnpm-workspace.yaml
+
+**/node_modules
