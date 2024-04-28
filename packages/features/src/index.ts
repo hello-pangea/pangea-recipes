@@ -1,5 +1,6 @@
 export * from './common/fractions.js';
 
+export * from './lib/api.js';
 export * from './lib/tanstackQuery.js';
 
 export * from './ingredients/index.js';

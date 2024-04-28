@@ -35,6 +35,7 @@ module.exports = {
     '.eslintrc.json',
     '**/*.css',
     'vite.config.ts',
+    'vite-env.d.ts',
   ],
   plugins: ['@typescript-eslint', 'react-refresh'],
   rules: {

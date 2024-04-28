@@ -1,9 +1,9 @@
-import { type EnvType } from './src/config/config.js';
+import { type Env } from './src/config/config.js';
 
 declare global {
   namespace NodeJS {
     // eslint-disable-next-line @typescript-eslint/no-empty-interface
-    interface ProcessEnv extends EnvType {}
+    interface ProcessEnv extends Env {}
   }
 }
 

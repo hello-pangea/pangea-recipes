@@ -23,10 +23,9 @@
     "@open-zero/features": "workspace:*",
     "@scalar/fastify-api-reference": "^1.22.3",
     "@sinclair/typebox": "^0.32.26",
+    "chalk": "^5.3.0",
     "fastify": "^4.26.2",
-    "lucia": "^3.2.0",
-    "tslib": "^2.6.2",
-    "zod": "^3.23.4"
+    "lucia": "^3.2.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
