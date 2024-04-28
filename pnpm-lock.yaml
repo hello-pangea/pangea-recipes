@@ -235,6 +235,9 @@ importers:
       prisma:
         specifier: ^5.13.0
         version: 5.13.0
+      tsup:
+        specifier: ^8.0.2
+        version: 8.0.2(typescript@5.4.5)
       tsx:
         specifier: ^4.7.3
         version: 4.7.3

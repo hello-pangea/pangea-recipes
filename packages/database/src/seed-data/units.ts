@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import { Prisma } from '../index.js';
 
 export const units: Prisma.UnitCreateInput[] = [
   // Imperial volume

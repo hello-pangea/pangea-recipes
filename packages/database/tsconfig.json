@@ -1,7 +1,8 @@
 {
   "compilerOptions": {
     "outDir": "./dist",
-    "declaration": true
+    "declaration": true,
+    "noEmit": false
   },
   "extends": "@open-zero/typescript-config/node.json",
   "include": ["src"],

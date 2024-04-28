@@ -9,8 +9,8 @@
   },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "tsc --watch",
-    "build": "tsc",
+    "dev": "tsup --watch --onSuccess \"tsc\"",
+    "build": "tsup --onSuccess \"tsc\"",
     "db-generate": "prisma generate && prisma format",
     "db-migrate": "prisma migrate dev",
     "db-deploy": "prisma migrate deploy",
@@ -28,6 +28,7 @@
     "@types/node": "^20.12.7",
     "prisma": "^5.13.0",
     "tsx": "^4.7.3",
+    "tsup": "^8.0.2",
     "typescript": "^5.4.5"
   }
 }

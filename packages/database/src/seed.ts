@@ -1,7 +1,5 @@
-import { PrismaClient } from '@prisma/client';
+import { prisma } from './index.js';
 import { units } from './seed-data/units.js';
-
-const prisma = new PrismaClient();
 
 async function seedDatabase() {
   await prisma.unit.createMany({

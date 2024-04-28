@@ -3,11 +3,16 @@
 
 FROM node:20-bookworm-slim AS base
 
+RUN apt-get update -y && apt-get install -y openssl
+
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
+RUN corepack enable
+RUN pnpm install turbo --global
+
 FROM base AS builder
 
 WORKDIR /app
-
-RUN npm install turbo -g
 
 COPY . .
 RUN turbo prune api --docker
@@ -16,22 +21,19 @@ FROM base AS installer
 
 WORKDIR /app
 
-RUN corepack enable
-
 # First install dependencies (as they change less often)
 COPY .gitignore .gitignore
+COPY .npmrc .npmrc
 COPY --from=builder /app/out/json/ .
-COPY --from=builder /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
-COPY --from=builder /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 
-RUN pnpm install --frozen-lockfile
-
-# Set node to production after installing dependencies and before building
-ENV NODE_ENV production
+RUN pnpm install
 
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
-RUN pnpm turbo build --filter=api...
+
+RUN pnpm rebuild -F=database
+
+RUN turbo build --filter=api...
 
 FROM base AS runner
 

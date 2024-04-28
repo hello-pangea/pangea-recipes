@@ -1,4 +1,4 @@
-import { type Prisma } from '@prisma/client';
+import type { Prisma } from '@prisma/client';
 
 function gcd(a: number, b: number): number {
   if (!b) {

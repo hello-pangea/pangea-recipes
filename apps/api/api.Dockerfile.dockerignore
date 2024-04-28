@@ -10,6 +10,7 @@
 !turbo.json
 !.gitignore
 !package.json
+!.npmrc
 !pnpm-lock.yaml
 !pnpm-workspace.yaml
 
