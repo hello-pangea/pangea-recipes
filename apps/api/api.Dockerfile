@@ -21,19 +21,30 @@ FROM base AS installer
 
 WORKDIR /app
 
-# First install dependencies (as they change less often)
-COPY .gitignore .gitignore
-COPY .npmrc .npmrc
+# pnpm fetch is expensive
+# We only copy over package.jsons and other dep stuff before running it
+# That way changing code won't invalidate the dependency step
 COPY --from=builder /app/out/json/ .
+RUN pnpm fetch
 
-RUN pnpm install
+# Now copy over the rest of the source code
 
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
 
+# Should be quick due to the earlier fetch
+RUN pnpm install --frozen-lockfile --offline
+
+# Force prisma's postinstall script to work properly
 RUN pnpm rebuild -F=database
 
+# Build :)
 RUN turbo build --filter=api...
+
+# Prune dev deps away
+# https://pnpm.io/cli/prune
+RUN rm -rf node_modules
+RUN pnpm install --frozen-lockfile --offline --production
 
 FROM base AS runner
 
