@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "emitDeclarationOnly": true,
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+    "noEmit": false,
+    "declarationDir": "./dist",
+    "sourceRoot": "../src"
+  },
+  "extends": "@open-zero/typescript-config/node.json",
+  "include": ["src", "index.d.ts"],
+  "exclude": ["**/node_modules", "**/.*/"]
+}
