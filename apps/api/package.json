@@ -6,7 +6,7 @@
   "type": "module",
   "exports": "./dist/index.js",
   "scripts": {
-    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-scraper/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
+    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
     "build": "tsup",
     "start": "node dist/index.js",
     "lint": "tsc --noEmit && eslint src/",
@@ -21,7 +21,7 @@
     "@lucia-auth/adapter-prisma": "^4.0.1",
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@open-zero/recipe-scraper": "workspace:*",
+    "@open-zero/recipe-importer": "workspace:*",
     "@scalar/fastify-api-reference": "^1.22.3",
     "@sinclair/typebox": "^0.32.27",
     "chalk": "^5.3.0",

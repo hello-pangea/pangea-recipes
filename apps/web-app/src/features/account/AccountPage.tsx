@@ -1,5 +1,6 @@
 import { Page } from '#src/components/Page';
-import { Button, Typography } from '@mui/material';
+import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
+import { Box, Button, Typography } from '@mui/material';
 import { useUser } from '@open-zero/features';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from './userStore';
@@ -24,9 +25,12 @@ export function AccountPage() {
       <Typography variant="h1" sx={{ mb: 2 }}>
         Account
       </Typography>
-      <Typography sx={{ mb: 2 }}>Hello, {userQuery.data?.user.name}</Typography>
-      <Typography sx={{ mb: 2 }}>{userQuery.data?.user.email}</Typography>
-      <Button color="error" onClick={signOut}>
+      <Typography>Hello, {userQuery.data?.user.name}</Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+        <MailOutlineRoundedIcon fontSize="inherit" sx={{ mr: 1 }} />
+        <Typography variant="body2">{userQuery.data?.user.email}</Typography>
+      </Box>
+      <Button color="error" onClick={signOut} sx={{ mt: 8 }}>
         Sign out
       </Button>
     </Page>

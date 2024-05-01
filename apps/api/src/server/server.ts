@@ -6,6 +6,7 @@ import { ingredientSchema, unitSchema, userSchema } from '@open-zero/features';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
 import { enablePrettyLogs } from '../config/config.js';
+import { lucia } from '../lib/lucia.js';
 import { routes } from './routes.js';
 
 export async function createServer() {
@@ -24,6 +25,8 @@ export async function createServer() {
         }
       : false,
   });
+
+  fastify.decorateRequest('user', null);
 
   void fastify.register(cors, {
     credentials: true,
@@ -66,6 +69,49 @@ export async function createServer() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await fastify.register(scalar, {
     routePrefix: '/api-docs',
+  });
+
+  fastify.addHook('onRequest', async (request, reply) => {
+    const originHeader = request.headers.origin;
+    const hostHeader = request.headers.host;
+
+    console.log('Auth: originHeader', originHeader);
+    console.log('Auth: hostHeader', hostHeader);
+
+    // if (
+    //   !originHeader ||
+    //   !hostHeader ||
+    //   !verifyRequestOrigin(originHeader, [hostHeader])
+    // ) {
+    //   return new Response(null, {
+    //     status: 403,
+    //   });
+    // }
+
+    const sessionId = request.cookies[lucia.sessionCookieName];
+
+    console.log('Auth: sessionId', sessionId);
+
+    if (sessionId) {
+      const { session, user } = await lucia.validateSession(sessionId);
+
+      console.log('Auth: session', session);
+      console.log('Auth: user', user);
+
+      request.user = user;
+
+      if (!session) {
+        const sessionCookie = lucia.createBlankSessionCookie();
+
+        void reply.header('set-cookie', sessionCookie.serialize());
+      }
+
+      if (session?.fresh) {
+        const sessionCookie = lucia.createSessionCookie(session.id);
+
+        void reply.header('set-cookie', sessionCookie.serialize());
+      }
+    }
   });
 
   void fastify.register(routes);

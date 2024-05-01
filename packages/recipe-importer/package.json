@@ -1,5 +1,5 @@
 {
-  "name": "@open-zero/recipe-scraper",
+  "name": "@open-zero/recipe-importer",
   "version": "0.0.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
@@ -17,7 +17,8 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "playwright": "^1.43.1"
+    "playwright": "^1.43.1",
+    "@open-zero/features": "workspace:*"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",

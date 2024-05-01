@@ -1,4 +1,7 @@
+import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
@@ -20,9 +23,11 @@ import {
   useUpdateRecipe,
 } from '@open-zero/features';
 import { useSnackbar } from 'notistack';
+import { useState } from 'react';
 import { useFieldArray, useForm, type SubmitHandler } from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
 import { useNavigate } from 'react-router-dom';
+import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
 
 interface NewRecipeFormInputs {
@@ -45,9 +50,10 @@ interface Props {
 }
 
 export function RecipeCreatePage({ defaultRecipe }: Props) {
+  const [importDialogOpen, setImportDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const { handleSubmit, control } = useForm<NewRecipeFormInputs>({
+  const { handleSubmit, control, setValue } = useForm<NewRecipeFormInputs>({
     defaultValues: defaultRecipe ?? {
       name: '',
       description: '',
@@ -133,10 +139,27 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
   };
 
   return (
-    <Box sx={{ p: 3 }}>
-      <Typography variant="h1" sx={{ mb: 2 }}>
-        {defaultRecipe ? 'Edit recipe' : 'New recipe'}
-      </Typography>
+    <Page>
+      <Button
+        size="small"
+        startIcon={<ChevronLeftRoundedIcon />}
+        href="/recipes"
+        color="inherit"
+      >
+        Cancel
+      </Button>
+      <Box sx={{ mb: 2 }}>
+        <Typography variant="h1">
+          {defaultRecipe ? 'Edit recipe' : 'New recipe'}
+        </Typography>
+        <Button
+          size="small"
+          startIcon={<LinkRoundedIcon />}
+          onClick={() => setImportDialogOpen(true)}
+        >
+          Import from url
+        </Button>
+      </Box>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack
           direction={'column'}
@@ -387,6 +410,38 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
           Save
         </LoadingButton>
       </form>
-    </Box>
+      <ImportRecipeDialog
+        open={importDialogOpen}
+        onClose={() => setImportDialogOpen(false)}
+        onImport={(importedRecipe) => {
+          setImportDialogOpen(false);
+
+          importedRecipe.name && setValue('name', importedRecipe.name);
+          importedRecipe.description &&
+            setValue('description', importedRecipe.description);
+          importedRecipe.instructions &&
+            setValue(
+              'instructions',
+              importedRecipe.instructions.map((i) => ({ text: i })),
+            );
+          importedRecipe.ingredients &&
+            setValue(
+              'ingredients',
+              importedRecipe.ingredients.map((i) => {
+                if (typeof i === 'string') {
+                  return { amount: 0, ingredientId: '', unitId: '', notes: i };
+                } else {
+                  return {
+                    ingredientId: '',
+                    unitId: i.unit ?? '',
+                    amount: i.amount ?? 0,
+                    notes: i.name ?? '',
+                  };
+                }
+              }),
+            );
+        }}
+      />
+    </Page>
   );
 }

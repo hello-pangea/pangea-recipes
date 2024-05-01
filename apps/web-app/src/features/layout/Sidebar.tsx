@@ -41,14 +41,12 @@ export default function Sidebar() {
       {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', m: 2 }}>
         <img src="/assets/lil-guy.svg" width={24} height={24} />
-        <Box sx={{ ml: 1 }}>
-          <Typography variant="h1" sx={{ fontSize: 22, lineHeight: 1 }}>
-            Hello Recipes
-          </Typography>
-          <Typography variant="caption" sx={{ fontSize: 10 }}>
-            By Open Zero
-          </Typography>
-        </Box>
+        <Typography
+          variant="h1"
+          sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
+        >
+          Hello Recipes
+        </Typography>
       </Box>
       <Box sx={{ p: 1 }}>
         <Button

@@ -33,7 +33,7 @@ export const router = createBrowserRouter([
         element: <RecipesPage />,
       },
       {
-        path: '/new-recipe',
+        path: '/recipes/new',
         element: <RecipeCreatePage />,
       },
       {

@@ -20,7 +20,7 @@ export function RecipesPage() {
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        href="/new-recipe"
+        href="/recipes/new"
         size="small"
       >
         New recipe

@@ -102,6 +102,9 @@ export const theme = createTheme({
         root: {
           borderRadius: '100vmax',
         },
+        sizeSmall: {
+          fontSize: '0.8rem',
+        },
       },
     },
     MuiButtonBase: {
@@ -112,6 +115,11 @@ export const theme = createTheme({
     MuiListItemButton: {
       defaultProps: {
         LinkComponent: LinkBehavior,
+      },
+    },
+    MuiLink: {
+      defaultProps: {
+        component: LinkBehavior,
       },
     },
     MuiIconButton: {

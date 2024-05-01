@@ -44,9 +44,9 @@ importers:
       '@open-zero/features':
         specifier: workspace:*
         version: link:../../packages/features
-      '@open-zero/recipe-scraper':
+      '@open-zero/recipe-importer':
         specifier: workspace:*
-        version: link:../../packages/recipe-scraper
+        version: link:../../packages/recipe-importer
       '@scalar/fastify-api-reference':
         specifier: ^1.22.3
         version: 1.22.3
@@ -279,8 +279,11 @@ importers:
         specifier: ^5.4.5
         version: 5.4.5
 
-  packages/recipe-scraper:
+  packages/recipe-importer:
     dependencies:
+      '@open-zero/features':
+        specifier: workspace:*
+        version: link:../features
       playwright:
         specifier: ^1.43.1
         version: 1.43.1

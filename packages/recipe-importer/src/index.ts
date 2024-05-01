@@ -1,6 +1,6 @@
 import { scrapers } from './scrapers.js';
 
-export async function getScrapedRecipeFromUrl(url: string) {
+export async function getImportedRecipeFromUrl(url: string) {
   const scraper = scrapers.find((scraper) => {
     return scraper.hosts.some((host) => url.includes(host));
   });

@@ -1,9 +1,10 @@
 {
   "extends": "@open-zero/typescript-config/vite.json",
   "compilerOptions": {
-    "rootDir": ".",
     "baseUrl": ".",
     "outDir": "dist",
+    "declaration": false,
+    "declarationMap": false,
     "paths": {
       "#src/*": ["src/*"],
 
@@ -12,5 +13,6 @@
     }
   },
   "exclude": ["node_modules"],
-  "include": ["src", "vite.config.ts", "vite-env.d.ts"]
+  "include": ["src", "vite-env.d.ts"],
+  "references": [{ "path": "./tsconfig.vite.json" }]
 }

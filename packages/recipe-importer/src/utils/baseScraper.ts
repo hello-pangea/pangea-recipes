@@ -1,6 +1,6 @@
+import type { ImportedIngredient, ImportedRecipe } from '@open-zero/features';
 import type { Page } from 'playwright';
 import playwright from 'playwright';
-import type { Ingredient, ScrapedRecipe } from '../types/scrapedRecipe.js';
 
 export abstract class BaseScraper {
   abstract hosts: string[];
@@ -15,7 +15,7 @@ export abstract class BaseScraper {
     return page;
   }
 
-  async scrape(url: string): Promise<ScrapedRecipe> {
+  async scrape(url: string): Promise<ImportedRecipe> {
     console.log('Scraping URL: ', url);
 
     const page = await this.getPage(url);
@@ -25,7 +25,7 @@ export abstract class BaseScraper {
     const ingredients = await this.getIngredients(page);
     const instructions = await this.getInstructions(page);
 
-    const scrapedRecipe: ScrapedRecipe = {
+    const scrapedRecipe: ImportedRecipe = {
       name,
       description,
       ingredients,
@@ -49,7 +49,7 @@ export abstract class BaseScraper {
 
   async getIngredients(
     _page: Page,
-  ): Promise<(string | Ingredient)[] | undefined> {
+  ): Promise<(string | ImportedIngredient)[] | undefined> {
     return Promise.resolve(undefined);
   }
 }
