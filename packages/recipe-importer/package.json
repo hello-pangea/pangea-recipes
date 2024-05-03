@@ -17,13 +17,13 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "playwright": "^1.43.1",
-    "@open-zero/features": "workspace:*"
+    "@open-zero/features": "workspace:*",
+    "playwright": "^1.43.1"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.12.7",
+    "@types/node": "^20.12.8",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
   }

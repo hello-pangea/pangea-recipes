@@ -16,7 +16,7 @@
   },
   "devDependencies": {
     "prettier": "^3.2.5",
-    "tsx": "^4.7.3",
+    "tsx": "^4.8.2",
     "turbo": "^1.13.3"
   },
   "engines": {
