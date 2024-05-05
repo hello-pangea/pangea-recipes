@@ -34,22 +34,22 @@ export const theme = createTheme({
     fontFamily: 'Inter Variable',
     fontSize: 16,
     h1: {
-      fontFamily: 'Vollkorn Variable',
+      fontFamily: '"Bitter Variable", serif',
       fontWeight: 'bold',
       fontSize: 32,
     },
     h2: {
-      fontFamily: 'Vollkorn Variable',
+      fontFamily: '"Bitter Variable", serif',
       fontWeight: 'bold',
       fontSize: 22,
     },
     h3: {
-      fontFamily: 'Vollkorn Variable',
+      fontFamily: '"Bitter Variable", serif',
       fontWeight: 'bold',
       fontSize: 16,
     },
     h6: {
-      fontFamily: 'Vollkorn Variable',
+      fontFamily: '"Bitter Variable", serif',
       fontWeight: 'bold',
       fontSize: 16,
       lineHeight: 1.5,

@@ -90,12 +90,12 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.5
         version: 11.11.5(@emotion/react@11.11.4)(@types/react@18.3.1)(react@18.3.1)
+      '@fontsource-variable/bitter':
+        specifier: ^5.0.19
+        version: 5.0.19
       '@fontsource-variable/inter':
         specifier: ^5.0.18
         version: 5.0.18
-      '@fontsource-variable/vollkorn':
-        specifier: ^5.0.21
-        version: 5.0.21
       '@mui/icons-material':
         specifier: ^5.15.16
         version: 5.15.16(@mui/material@5.15.16)(@types/react@18.3.1)(react@18.3.1)
@@ -115,11 +115,11 @@ importers:
         specifier: ^0.32.29
         version: 0.32.29
       '@tanstack/react-query':
-        specifier: ^5.34.1
-        version: 5.34.1(react@18.3.1)
+        specifier: ^5.34.2
+        version: 5.34.2(react@18.3.1)
       '@tanstack/react-query-devtools':
-        specifier: ^5.34.1
-        version: 5.34.1(@tanstack/react-query@5.34.1)(react@18.3.1)
+        specifier: ^5.34.2
+        version: 5.34.2(@tanstack/react-query@5.34.2)(react@18.3.1)
       '@uppy/react':
         specifier: ^3.3.1
         version: 3.3.1(@uppy/core@3.11.1)(react@18.3.1)
@@ -254,8 +254,8 @@ importers:
         specifier: ^0.32.29
         version: 0.32.29
       '@tanstack/react-query':
-        specifier: ^5.34.1
-        version: 5.34.1(react@18.3.1)
+        specifier: ^5.34.2
+        version: 5.34.2(react@18.3.1)
       ky:
         specifier: ^1.2.4
         version: 1.2.4
@@ -1033,12 +1033,12 @@ packages:
     resolution: {integrity: sha512-J4yDIIthosAsRZ5CPYP/jQvUAQtlZTTD/4suA08/FEnlxqW3sKS9iAhgsa9VYLZ6vDHn/ixJgIqRQPotoBjxIw==}
     dev: false
 
-  /@fontsource-variable/inter@5.0.18:
-    resolution: {integrity: sha512-rJzSrtJ3b7djiGFvRuTe6stDfbYJGhdQSfn2SI2WfXviee7Er0yKAHE5u7FU7OWVQQQ1x3+cxdmx9NdiAkcrcA==}
+  /@fontsource-variable/bitter@5.0.19:
+    resolution: {integrity: sha512-DRxRmeJVO45nCYhroyg8MKIR082W4iUkvL6QLqY5NIp499mNJwBpe20fQ06DyDPodHfjKDZ56jaUk9pdmp/IXA==}
     dev: false
 
-  /@fontsource-variable/vollkorn@5.0.21:
-    resolution: {integrity: sha512-i3TdT2Gtq4rirZIzyRGPiKCgQmX/Q0b2ya1yfIuQllTJMbce90PK3HG+DFzW95MQ6VfUsBVvWhwtxbGMWKRumA==}
+  /@fontsource-variable/inter@5.0.18:
+    resolution: {integrity: sha512-rJzSrtJ3b7djiGFvRuTe6stDfbYJGhdQSfn2SI2WfXviee7Er0yKAHE5u7FU7OWVQQQ1x3+cxdmx9NdiAkcrcA==}
     dev: false
 
   /@humanwhocodes/config-array@0.11.14:
@@ -2014,31 +2014,31 @@ packages:
       '@swc/counter': 0.1.3
     dev: true
 
-  /@tanstack/query-core@5.34.1:
-    resolution: {integrity: sha512-/a4yTnX525QUl8rFULrDLIogjqqcY/CiVvS/vWMgl477mO4WIIDxwQsLvEgb7vzlW8FqX/9CiCmaiAUnYVgB1w==}
+  /@tanstack/query-core@5.34.2:
+    resolution: {integrity: sha512-FM1UXldYcoMiWmVbpewV14EVpnr/ETBbdF84tmCktx29e2bXBFhGtAfyDHUD4X1FehaV5tC9GkXZUMZRQV3lcA==}
     dev: false
 
   /@tanstack/query-devtools@5.32.1:
     resolution: {integrity: sha512-7Xq57Ctopiy/4atpb0uNY5VRuCqRS/1fi/WBCKKX6jHMa6cCgDuV/AQuiwRXcKARbq2OkVAOrW2v4xK9nTbcCA==}
     dev: false
 
-  /@tanstack/react-query-devtools@5.34.1(@tanstack/react-query@5.34.1)(react@18.3.1):
-    resolution: {integrity: sha512-TJLml+Vd0PSD99hPxzzNmwX3ndMTw7Pd0cIlrn8P3dhaMq3wjTV+k+mw2uuuJ2p40uf5V7GQhiboCtFhxZGOdA==}
+  /@tanstack/react-query-devtools@5.34.2(@tanstack/react-query@5.34.2)(react@18.3.1):
+    resolution: {integrity: sha512-rf/LxJszATG9yDzKi1GYKGO2ODJi4rqrzM5Fs6tN06Hy5jtD8pQwXgCZz052d4J/avn/fyfvS2TRPbR5dOAk/g==}
     peerDependencies:
-      '@tanstack/react-query': ^5.34.1
+      '@tanstack/react-query': ^5.34.2
       react: ^18.0.0
     dependencies:
       '@tanstack/query-devtools': 5.32.1
-      '@tanstack/react-query': 5.34.1(react@18.3.1)
+      '@tanstack/react-query': 5.34.2(react@18.3.1)
       react: 18.3.1
     dev: false
 
-  /@tanstack/react-query@5.34.1(react@18.3.1):
-    resolution: {integrity: sha512-5DWzrK+ou5maZqVoIY0S26TYNpnA7re6JlviXVOe/4OBPtlvd4WEHJmyeLZhE43piJvrsKMxemp/f6Q2RPfebA==}
+  /@tanstack/react-query@5.34.2(react@18.3.1):
+    resolution: {integrity: sha512-5L9W9XQ/lRcyhlVN0xrOkPZE9PJxZWw7BdJR244j3G7sxMfSreZWvxx13DJt08M5DWn9B5VstpKgqpIIQOIJKA==}
     peerDependencies:
       react: ^18.0.0
     dependencies:
-      '@tanstack/query-core': 5.34.1
+      '@tanstack/query-core': 5.34.2
       react: 18.3.1
     dev: false
 
