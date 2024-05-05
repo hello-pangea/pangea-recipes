@@ -1,6 +1,9 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
+    // We want tsc to only typecheck each individual package in isolation
+    // Thus, we need to prevent it from mapping @open-zero/* packages to source files
+    // Otherwise it will double-run on those source files
     "paths": {}
   }
 }

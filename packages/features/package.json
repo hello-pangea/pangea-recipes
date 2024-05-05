@@ -11,9 +11,9 @@
     "src/"
   ],
   "scripts": {
-    "dev": "tsup --watch --onSuccess \"tsc -p tsconfig.build.json\"",
-    "build": "tsup --onSuccess \"tsc -p tsconfig.build.json\"",
-    "lint": "tsc -p tsconfig.build.json --emitDeclarationOnly false --noEmit && eslint src/",
+    "dev": "tsup --watch --onSuccess \"tsc --project tsconfig.build.json\"",
+    "build": "tsup --onSuccess \"tsc --project tsconfig.build.json\"",
+    "lint": "tsc --project tsconfig.build.json --emitDeclarationOnly false --noEmit && eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {

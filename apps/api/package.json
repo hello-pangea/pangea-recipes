@@ -9,7 +9,7 @@
     "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
     "build": "tsup",
     "start": "node dist/index.js",
-    "lint": "tsc --noEmit && eslint src/",
+    "lint": "tsc --project tsconfig.build.json --noEmit && eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
