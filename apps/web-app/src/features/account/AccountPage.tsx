@@ -24,7 +24,7 @@ export function AccountPage() {
         sessionStorage.clear();
         setUserId(null);
 
-        navigate('/sign-in');
+        navigate('/log-in');
       },
     });
   }

@@ -25,7 +25,7 @@ export function Layout() {
   }
 
   if (!loggedInUserQuery.data?.user) {
-    return <Navigate to={'/sign-in'} />;
+    return <Navigate to={'/log-in'} />;
   }
 
   return (

@@ -1,6 +1,6 @@
 import { AccountPage } from '#src/features/account/AccountPage';
-import { RegisterPage } from '#src/features/auth/RegisterPage';
-import { SignInPage } from '#src/features/auth/SignInPage';
+import { LogInPage } from '#src/features/auth/LogInPage';
+import { SignUpPage } from '#src/features/auth/SignUpPage';
 import { FoodsPage } from '#src/features/foods/FoodsPage';
 import { NewFoodPage } from '#src/features/foods/NewFoodPage';
 import { Layout } from '#src/features/layout/Layout';
@@ -14,11 +14,11 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 export const router = createBrowserRouter([
   {
     path: '/sign-up',
-    element: <RegisterPage />,
+    element: <SignUpPage />,
   },
   {
-    path: '/sign-in',
-    element: <SignInPage />,
+    path: '/log-in',
+    element: <LogInPage />,
   },
   {
     path: '/',

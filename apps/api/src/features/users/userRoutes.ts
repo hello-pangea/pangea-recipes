@@ -13,7 +13,7 @@ const routeTag = 'Users';
 
 export async function userRoutes(fastify: FastifyTypebox) {
   fastify.post(
-    '/register',
+    '/sign-up',
     {
       schema: {
         tags: [routeTag],
@@ -64,11 +64,11 @@ export async function userRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.post(
-    '/sign-in',
+    '/log-in',
     {
       schema: {
         tags: [routeTag],
-        summary: 'Sign in a user',
+        summary: 'Log in a user',
         body: signInUserDtoSchema,
         response: {
           200: Type.Object({
