@@ -9,15 +9,15 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
-import { useDeleteIngredient, type Ingredient } from '@open-zero/features';
+import { useDeleteFood, type Food } from '@open-zero/features';
 import { useState } from 'react';
 
 interface Props {
-  ingredient: Ingredient;
+  food: Food;
 }
 
-export function IngredientCell({ ingredient }: Props) {
-  const deleteIngredient = useDeleteIngredient();
+export function FoodCell({ food }: Props) {
+  const deleteFood = useDeleteFood();
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
@@ -37,9 +37,7 @@ export function IngredientCell({ ingredient }: Props) {
           width: '100%',
         }}
       >
-        <Typography variant="body1">
-          {ingredient.pluralName || ingredient.name}
-        </Typography>
+        <Typography variant="body1">{food.pluralName || food.name}</Typography>
         <IconButton
           id="more-button"
           aria-controls={moreMenuOpen ? 'more-menu' : undefined}
@@ -75,7 +73,7 @@ export function IngredientCell({ ingredient }: Props) {
       >
         <MenuItem
           onClick={() => {
-            deleteIngredient.mutate({ ingredientId: ingredient.id });
+            deleteFood.mutate({ foodId: food.id });
 
             handleMoreMenuClose();
           }}

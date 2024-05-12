@@ -2,7 +2,12 @@ import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import openApi from '@fastify/swagger';
-import { ingredientSchema, unitSchema, userSchema } from '@open-zero/features';
+import {
+  foodSchema,
+  recipeSchema,
+  unitSchema,
+  userSchema,
+} from '@open-zero/features';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
 import { enablePrettyLogs } from '../config/config.js';
@@ -46,8 +51,9 @@ export async function createServer() {
 
   void fastify.register(helmet);
 
-  void fastify.addSchema(ingredientSchema);
+  void fastify.addSchema(foodSchema);
   void fastify.addSchema(unitSchema);
+  void fastify.addSchema(recipeSchema);
   void fastify.addSchema(userSchema);
 
   void fastify.register(openApi, {

@@ -1,9 +1,9 @@
 import { LoadingPage } from '#src/components/LoadingPage';
 import { useRecipe } from '@open-zero/features';
 import { useParams } from 'react-router-dom';
-import { RecipeCreatePage } from './RecipeCreatePage';
+import { CreateRecipePage } from './CreateRecipePage';
 
-export function RecipeEditPage() {
+export function EditRecipePage() {
   const { recipeId } = useParams();
 
   const recipeQuery = useRecipe({
@@ -15,7 +15,7 @@ export function RecipeEditPage() {
   }
 
   return (
-    <RecipeCreatePage
+    <CreateRecipePage
       defaultRecipe={{
         id: recipeQuery.data.recipe.id,
         name: recipeQuery.data.recipe.name,
@@ -25,7 +25,7 @@ export function RecipeEditPage() {
             recipeId: recipeId,
           })) ?? [],
         ingredients: recipeQuery.data.recipe.ingredients.map((ingredient) => ({
-          ingredientId: ingredient.ingredient.id,
+          foodId: ingredient.food.id,
           id: ingredient.id,
           amount: ingredient.amount as unknown as number,
           unitId: ingredient.unitId,

@@ -5,25 +5,25 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": "./dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist/",
     "src/"
   ],
   "scripts": {
-    "dev": "tsup --watch --onSuccess \"tsc --project tsconfig.build.json\"",
+    "dev": "tsup --watch",
     "build": "tsup --onSuccess \"tsc --project tsconfig.build.json\"",
     "lint": "tsc --project tsconfig.build.json --emitDeclarationOnly false --noEmit && eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "@open-zero/features": "workspace:*",
-    "playwright": "^1.43.1"
+    "playwright": "^1.44.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.11",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
   }

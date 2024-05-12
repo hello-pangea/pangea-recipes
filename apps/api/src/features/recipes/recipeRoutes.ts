@@ -48,7 +48,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             createMany: {
               data: ingredients.map((ingredient) => ({
                 amount: ingredient.amount,
-                ingredientId: ingredient.ingredientId,
+                foodId: ingredient.foodId,
                 unitId: ingredient.unitId,
                 notes: ingredient.notes ?? null,
               })),
@@ -71,7 +71,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              ingredient: true,
+              food: true,
             },
           },
           instructions: true,
@@ -161,7 +161,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              ingredient: true,
+              food: true,
             },
           },
           instructions: true,
@@ -234,7 +234,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               data:
                 ingredients?.map((ingredient) => ({
                   amount: ingredient.amount,
-                  ingredientId: ingredient.ingredientId,
+                  foodId: ingredient.foodId,
                   unitId: ingredient.unitId,
                   notes: ingredient.notes ?? null,
                 })) ?? [],
@@ -259,7 +259,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              ingredient: true,
+              food: true,
             },
           },
           instructions: true,

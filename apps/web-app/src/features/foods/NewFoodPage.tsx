@@ -2,7 +2,7 @@ import { Page } from '#src/components/Page';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import { Stack, TextField, Typography } from '@mui/material';
-import { useCreateIngredeint } from '@open-zero/features';
+import { useCreateFood } from '@open-zero/features';
 import { useSnackbar } from 'notistack';
 import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
 
@@ -11,7 +11,7 @@ interface Inputs {
   pluralName: string;
 }
 
-export function NewIngredientPage() {
+export function NewFoodPage() {
   const { enqueueSnackbar } = useSnackbar();
   const {
     handleSubmit,
@@ -25,17 +25,17 @@ export function NewIngredientPage() {
     },
   });
 
-  const ingredientCreator = useCreateIngredeint({
+  const foodCreator = useCreateFood({
     config: {
       onSuccess: () => {
-        enqueueSnackbar('Ingredient created', { variant: 'success' });
+        enqueueSnackbar('Food created', { variant: 'success' });
         reset();
       },
     },
   });
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
-    ingredientCreator.mutate({
+    foodCreator.mutate({
       name: data.name,
       pluralName: data.pluralName || undefined,
     });
@@ -93,7 +93,7 @@ export function NewIngredientPage() {
           startIcon={<SaveRoundedIcon />}
           fullWidth
           type="submit"
-          loading={ingredientCreator.isPending}
+          loading={foodCreator.isPending}
         >
           Save
         </LoadingButton>

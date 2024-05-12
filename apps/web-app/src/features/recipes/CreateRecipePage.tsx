@@ -1,8 +1,8 @@
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
-import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import {
   useCreateRecipe,
-  useIngredients,
+  useFoods,
   useRecipes,
   useUnits,
   useUpdateRecipe,
@@ -36,9 +36,9 @@ interface NewRecipeFormInputs {
   prepTime?: string;
   cookTime?: string;
   ingredients: {
-    ingredientId: string;
-    unitId: string;
-    amount: number;
+    foodId: string;
+    unitId: string | null;
+    amount: number | null;
     notes?: string;
   }[];
   usesRecipes: { recipeId: string }[];
@@ -49,7 +49,7 @@ interface Props {
   defaultRecipe?: NewRecipeFormInputs & { id: string };
 }
 
-export function RecipeCreatePage({ defaultRecipe }: Props) {
+export function CreateRecipePage({ defaultRecipe }: Props) {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -89,7 +89,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
     name: 'instructions',
   });
 
-  const ingredientsQuery = useIngredients();
+  const foodsQuery = useFoods();
 
   const unitsQuery = useUnits();
 
@@ -164,7 +164,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
         <Stack
           direction={'column'}
           spacing={2}
-          sx={{ mb: 6, maxWidth: '550px', display: 'block' }}
+          sx={{ mb: 6, maxWidth: '750px', display: 'block' }}
         >
           <TextFieldElement
             label="Recipe name"
@@ -277,10 +277,10 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                   }}
                 />
                 <AutocompleteElement
-                  name={`ingredients.${index}.ingredientId`}
+                  name={`ingredients.${index}.foodId`}
                   label="Ingredient"
                   options={
-                    ingredientsQuery.data?.ingredients.map((i) => {
+                    foodsQuery.data?.foods.map((i) => {
                       return { label: i.name, id: i.id };
                     }) ?? []
                   }
@@ -294,7 +294,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     onKeyDown: (e) => {
                       if (e.key === 'Tab') {
                         appendIngredient({
-                          ingredientId: '',
+                          foodId: '',
                           unitId: '',
                           amount: 0,
                         });
@@ -324,7 +324,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     removeIngredient(index);
                   }}
                 >
-                  <RemoveRoundedIcon />
+                  <DeleteRoundedIcon />
                 </IconButton>
               </Stack>
             );
@@ -335,7 +335,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
           size="small"
           startIcon={<AddRoundedIcon />}
           onClick={() =>
-            appendIngredient({ ingredientId: '', unitId: '', amount: 0 })
+            appendIngredient({ foodId: '', unitId: '', amount: 0 })
           }
           sx={{ mb: 6 }}
         >
@@ -347,7 +347,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
         <Stack
           direction={'column'}
           spacing={2}
-          sx={{ mb: 2, maxWidth: '550px', display: 'block' }}
+          sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
         >
           {instructions.map((field, index) => {
             return (
@@ -383,7 +383,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     removeInstruction(index);
                   }}
                 >
-                  <RemoveRoundedIcon />
+                  <DeleteRoundedIcon />
                 </IconButton>
               </Stack>
             );
@@ -429,10 +429,10 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
               'ingredients',
               importedRecipe.ingredients.map((i) => {
                 if (typeof i === 'string') {
-                  return { amount: 0, ingredientId: '', unitId: '', notes: i };
+                  return { amount: 0, foodId: '', unitId: '', notes: i };
                 } else {
                   return {
-                    ingredientId: '',
+                    foodId: '',
                     unitId: i.unit ?? '',
                     amount: i.amount ?? 0,
                     notes: i.name ?? '',

@@ -125,12 +125,14 @@ export function RecipePage() {
               size="small"
               sx={{ p: 0.75, mr: 0.5, '& .MuiSvgIcon-root': { fontSize: 18 } }}
             />
-            <b>{numberToFraction(ingredient.amount)}</b>{' '}
+            {ingredient.amount !== null && (
+              <b>{numberToFraction(ingredient.amount)}</b>
+            )}{' '}
             {
               unitsQuery.data?.units.find((u) => u.id === ingredient.unitId)
                 ?.name
             }{' '}
-            {ingredient.ingredient.name}
+            {ingredient.food.name}
             {ingredient.notes && (
               <Typography
                 component={'span'}

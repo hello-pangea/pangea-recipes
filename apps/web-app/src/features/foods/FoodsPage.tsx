@@ -1,25 +1,25 @@
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Button, Divider, Stack, Typography } from '@mui/material';
-import { useIngredients } from '@open-zero/features';
-import { IngredientCell } from './IngredientCell';
+import { useFoods } from '@open-zero/features';
+import { FoodCell } from './FoodCell';
 
-export function IngredientsPage() {
-  const ingredientsQuery = useIngredients();
+export function FoodsPage() {
+  const foodsQuery = useFoods();
 
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
-        Ingredients
+        Food
       </Typography>
       <Button
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        href="/ingredients/new"
+        href="/foods/new"
         size="small"
       >
-        New ingredient
+        New food
       </Button>
       <Stack
         divider={<Divider />}
@@ -27,8 +27,8 @@ export function IngredientsPage() {
         justifyContent={'stretch'}
         sx={{ width: '100%' }}
       >
-        {ingredientsQuery.data?.ingredients.map((ingredient) => (
-          <IngredientCell key={ingredient.id} ingredient={ingredient} />
+        {foodsQuery.data?.foods.map((food) => (
+          <FoodCell key={food.id} food={food} />
         ))}
       </Stack>
     </Page>

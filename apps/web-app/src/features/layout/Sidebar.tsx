@@ -70,11 +70,7 @@ export default function Sidebar() {
             icon={<RestaurantMenuRoundedIcon />}
             label="Recipes"
           />
-          <ListItem
-            path="/ingredients"
-            icon={<CarrotIcon />}
-            label="Ingredients"
-          />
+          <ListItem path="/foods" icon={<CarrotIcon />} label="Food" />
           <Tooltip title="Coming soon" arrow placement="right">
             <span>
               <ListItem

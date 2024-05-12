@@ -23,10 +23,10 @@
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.12.8",
+    "@types/node": "^20.12.11",
     "prisma": "^5.13.0",
     "tsup": "^8.0.2",
-    "tsx": "^4.9.1",
+    "tsx": "^4.10.0",
     "typescript": "^5.4.5"
   }
 }

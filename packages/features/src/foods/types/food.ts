@@ -1,8 +1,8 @@
 import type { Prisma } from '@prisma/client';
 import { Type, type Static } from '@sinclair/typebox';
 
-export type Ingredient = Static<typeof ingredientSchema>;
-export const ingredientSchema = Type.Object(
+export type Food = Static<typeof foodSchema>;
+export const foodSchema = Type.Object(
   {
     id: Type.String({
       format: 'uuid',
@@ -19,7 +19,7 @@ export const ingredientSchema = Type.Object(
       Type.Unsafe<Prisma.Decimal>(Type.Number()),
     ]),
   },
-  { $id: 'Ingredient' },
+  { $id: 'Food' },
 );
 
-export const ingredientSchemaRef = Type.Ref(ingredientSchema);
+export const foodSchemaRef = Type.Ref(foodSchema);

@@ -1,25 +1,25 @@
 import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { ingredientSchemaRef } from '@open-zero/features';
+import { foodSchemaRef } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
 import { noContentSchema } from '../../types/noContent.js';
 
-const routeTag = 'Ingredients';
+const routeTag = 'Foods';
 
-export async function ingredientRoutes(fastify: FastifyTypebox) {
+export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '',
     {
       schema: {
         tags: [routeTag],
-        summary: 'Create an ingredient',
+        summary: 'Create a food',
         body: Type.Object({
           name: Type.String(),
           pluralName: Type.Optional(Type.String()),
         }),
         response: {
           200: Type.Object({
-            ingredient: ingredientSchemaRef,
+            food: foodSchemaRef,
           }),
         },
       },
@@ -27,7 +27,7 @@ export async function ingredientRoutes(fastify: FastifyTypebox) {
     async (request) => {
       const { name, pluralName } = request.body;
 
-      const ingredient = await prisma.ingredient.create({
+      const food = await prisma.food.create({
         data: {
           name: name,
           pluralName: pluralName ?? null,
@@ -35,7 +35,7 @@ export async function ingredientRoutes(fastify: FastifyTypebox) {
       });
 
       return {
-        ingredient: ingredient,
+        food: food,
       };
     },
   );
@@ -45,31 +45,31 @@ export async function ingredientRoutes(fastify: FastifyTypebox) {
     {
       schema: {
         tags: [routeTag],
-        summary: 'List ingredients',
+        summary: 'List foods',
         response: {
           200: Type.Object({
-            ingredients: Type.Array(ingredientSchemaRef),
+            foods: Type.Array(foodSchemaRef),
           }),
         },
       },
     },
     async () => {
-      const ingredients = await prisma.ingredient.findMany({});
+      const foods = await prisma.food.findMany({});
 
       return {
-        ingredients: ingredients,
+        foods: foods,
       };
     },
   );
 
   fastify.delete(
-    '/:ingredientId',
+    '/:foodId',
     {
       schema: {
         tags: [routeTag],
-        summary: 'Delete ingredient',
+        summary: 'Delete food',
         params: Type.Object({
-          ingredientId: Type.String(),
+          foodId: Type.String(),
         }),
         response: {
           204: noContentSchema,
@@ -77,11 +77,11 @@ export async function ingredientRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request, reply) => {
-      const { ingredientId } = request.params;
+      const { foodId } = request.params;
 
-      await prisma.ingredient.delete({
+      await prisma.food.delete({
         where: {
-          id: ingredientId,
+          id: foodId,
         },
       });
 

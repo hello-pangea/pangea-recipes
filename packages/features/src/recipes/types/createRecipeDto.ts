@@ -1,4 +1,5 @@
 import { Type, type Static } from '@sinclair/typebox';
+import { Nullable } from '../../lib/nullable.js';
 
 export type CreateRecipeDto = Static<typeof createRecipeDtoScema>;
 export const createRecipeDtoScema = Type.Object({
@@ -8,9 +9,9 @@ export const createRecipeDtoScema = Type.Object({
   cookTime: Type.Optional(Type.Number()),
   ingredients: Type.Array(
     Type.Object({
-      ingredientId: Type.String({ format: 'uuid' }),
-      unitId: Type.String({ format: 'uuid' }),
-      amount: Type.Number(),
+      foodId: Type.String({ format: 'uuid' }),
+      unitId: Type.Optional(Nullable(Type.String({ format: 'uuid' }))),
+      amount: Type.Optional(Nullable(Type.Number())),
       notes: Type.Optional(Type.String({ minLength: 1 })),
     }),
   ),
