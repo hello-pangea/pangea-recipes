@@ -6,3 +6,4 @@ export * from './api/getLoggedInUser.js';
 export * from './api/getUser.js';
 export * from './api/registerUser.js';
 export * from './api/signInUser.js';
+export * from './api/signOutUser.js';

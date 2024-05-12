@@ -1,23 +1,32 @@
 import { Page } from '#src/components/Page';
 import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
-import { Box, Button, Typography } from '@mui/material';
-import { useUser } from '@open-zero/features';
+import { LoadingButton } from '@mui/lab';
+import { Box, Typography } from '@mui/material';
+import { useSignOutUser, useUser } from '@open-zero/features';
 import { useNavigate } from 'react-router-dom';
 import { useUserStore } from './userStore';
 
 export function AccountPage() {
   const navigate = useNavigate();
   const userId = useUserStore((state) => state.userId);
+  const setUserId = useUserStore((state) => state.setUserId);
 
   const userQuery = useUser({
     userId: userId ?? 'not_found',
   });
 
-  function signOut() {
-    localStorage.clear();
-    sessionStorage.clear();
+  const signOutMutation = useSignOutUser();
 
-    navigate('/sign-in');
+  function signOut() {
+    signOutMutation.mutate(undefined, {
+      onSuccess: () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        setUserId(null);
+
+        navigate('/sign-in');
+      },
+    });
   }
 
   return (
@@ -30,9 +39,14 @@ export function AccountPage() {
         <MailOutlineRoundedIcon fontSize="inherit" sx={{ mr: 1 }} />
         <Typography variant="body2">{userQuery.data?.user.email}</Typography>
       </Box>
-      <Button color="error" onClick={signOut} sx={{ mt: 8 }}>
+      <LoadingButton
+        loading={signOutMutation.isPending}
+        color="error"
+        onClick={signOut}
+        sx={{ mt: 8 }}
+      >
         Sign out
-      </Button>
+      </LoadingButton>
     </Page>
   );
 }

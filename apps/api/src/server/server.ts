@@ -31,7 +31,7 @@ export async function createServer() {
       : false,
   });
 
-  fastify.decorateRequest('user', null);
+  fastify.decorateRequest('session', null);
 
   void fastify.register(cors, {
     credentials: true,
@@ -104,7 +104,13 @@ export async function createServer() {
       console.log('Auth: session', session);
       console.log('Auth: user', user);
 
-      request.user = user;
+      request.session =
+        session && user.id
+          ? {
+              id: session.id,
+              userId: user.id,
+            }
+          : null;
 
       if (!session) {
         const sessionCookie = lucia.createBlankSessionCookie();

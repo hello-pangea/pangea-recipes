@@ -125,6 +125,33 @@ export async function userRoutes(fastify: FastifyTypebox) {
     },
   );
 
+  fastify.post(
+    '/sign-out',
+    {
+      schema: {
+        tags: [routeTag],
+        summary: 'Register a new user',
+        response: {
+          200: Type.Null(),
+        },
+      },
+    },
+    async (request, reply) => {
+      const { session } = request;
+
+      if (!session) {
+        return null;
+      }
+
+      await lucia.invalidateSession(session.id);
+
+      const blankSessionCookie = lucia.createBlankSessionCookie();
+      void reply.header('set-cookie', blankSessionCookie.serialize());
+
+      return null;
+    },
+  );
+
   fastify.get(
     '/:userId',
     {
@@ -170,9 +197,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { id: userId } = request.user ?? {};
-
-      console.log('cookies', request.cookies);
+      const userId = request.session?.userId;
 
       if (!userId) {
         return {

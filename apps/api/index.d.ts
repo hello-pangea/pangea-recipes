@@ -9,7 +9,7 @@ declare global {
 
 declare module 'fastify' {
   interface FastifyRequest {
-    user?: { id: string } | null;
+    session?: { userId: string; id: string } | null;
   }
 }
 
