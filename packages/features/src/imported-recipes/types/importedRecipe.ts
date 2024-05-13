@@ -10,9 +10,7 @@ export const importedRecipeSchema = Type.Object(
 
     instructions: Type.Optional(Type.Array(Type.String())),
 
-    ingredients: Type.Optional(
-      Type.Array(Type.Union([Type.String(), importedIngredientSchema])),
-    ),
+    ingredients: Type.Optional(Type.Array(importedIngredientSchema)),
   },
   { $id: 'ImportedRecipe' },
 );

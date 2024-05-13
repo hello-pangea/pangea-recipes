@@ -43,8 +43,9 @@ RUN turbo build --filter=api...
 
 # Prune dev deps away
 # https://pnpm.io/cli/prune
-RUN rm -rf node_modules
-RUN pnpm install --frozen-lockfile --offline --production
+# This is breaking the build, so we'll skip it for now
+# RUN rm -rf node_modules
+# RUN pnpm install --frozen-lockfile --offline --production
 
 FROM base AS runner
 

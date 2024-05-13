@@ -4,10 +4,12 @@
   "globalEnv": ["NODE_ENV"],
   "pipeline": {
     "build": {
-      "dependsOn": ["^db-generate", "^build"]
+      "dependsOn": ["^db-generate", "^build"],
+      "outputMode": "none"
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^build"],
+      "outputMode": "none"
     },
     "dev": {
       "dependsOn": ["^db-generate", "^build"],

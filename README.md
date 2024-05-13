@@ -10,7 +10,7 @@ Save and savor your recipes. A modern, intuitive recipe manager website.
 ## Requires
 
 - [Node.js 20.x](https://nodejs.org/en/)
-- [PNPM 8.x](https://pnpm.io/)
+- [PNPM 9.x](https://pnpm.io/)
 
 ## Apps
 

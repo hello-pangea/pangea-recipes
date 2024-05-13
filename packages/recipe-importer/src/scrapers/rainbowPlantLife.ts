@@ -76,11 +76,9 @@ export class RainbowPlantLife extends BaseScraper {
           })
           .catch(() => undefined);
 
-        if (!unit || !amount) return name;
-
         return {
           unit: unit,
-          amount: Number(amount),
+          amount: amount === undefined ? undefined : Number(amount),
           name,
         };
       }),

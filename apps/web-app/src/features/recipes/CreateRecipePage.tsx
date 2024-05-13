@@ -146,7 +146,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         href="/recipes"
         color="inherit"
       >
-        Cancel
+        Back
       </Button>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
