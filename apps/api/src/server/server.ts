@@ -63,6 +63,24 @@ export async function createServer() {
         description: 'A recipe management app by Open Zero',
         version: '1.0.0',
       },
+      tags: [
+        {
+          name: 'Foods',
+          description: 'Food related endpoints',
+        },
+        {
+          name: 'Recipes',
+          description: 'Recipe related endpoints',
+        },
+        {
+          name: 'Units',
+          description: 'Unit related endpoints',
+        },
+        {
+          name: 'Users',
+          description: 'User related endpoints',
+        },
+      ],
       servers: [
         {
           url: 'http://localhost:3001',
