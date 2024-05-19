@@ -1,28 +1,34 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
+import type { CreateUnitDto } from '../types/createUnitDto.js';
 import type { Unit } from '../types/unit.js';
+import { getListUnitsQueryOptions } from './listUnits.js';
 
-export interface CreateUnitDTO {
-  data: {
-    name: string;
-    pluralName?: string;
-  };
-}
-
-function createUnit({ data }: CreateUnitDTO) {
+function createUnit(data: CreateUnitDto) {
   return api
     .post(`units`, { json: data })
     .then((res) => res.json<{ unit: Unit }>());
 }
 
 interface Options {
-  config?: MutationConfig<typeof createUnit>;
+  mutationConfig?: MutationConfig<typeof createUnit>;
 }
 
-export function useCreateUnit({ config }: Options = {}) {
+export function useCreateUnit({ mutationConfig }: Options = {}) {
+  const queryClient = useQueryClient();
+
+  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+
   return useMutation({
-    ...config,
+    onSuccess: (...args) => {
+      void queryClient.invalidateQueries({
+        queryKey: getListUnitsQueryOptions().queryKey,
+      });
+
+      onSuccess?.(...args);
+    },
+    ...restConfig,
     mutationFn: createUnit,
   });
 }

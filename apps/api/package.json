@@ -24,7 +24,7 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@open-zero/recipe-importer": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.22.41",
+    "@scalar/fastify-api-reference": "^1.22.43",
     "@sinclair/typebox": "^0.32.30",
     "chalk": "^5.3.0",
     "fastify": "^4.27.0",

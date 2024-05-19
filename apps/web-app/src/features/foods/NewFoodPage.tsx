@@ -26,7 +26,7 @@ export function NewFoodPage() {
   });
 
   const foodCreator = useCreateFood({
-    config: {
+    mutationConfig: {
       onSuccess: () => {
         enqueueSnackbar('Food created', { variant: 'success' });
         reset();

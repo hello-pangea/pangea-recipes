@@ -27,7 +27,7 @@ export function LogInPage() {
   const setUserId = useUserStore((state) => state.setUserId);
   const userId = useUserStore((state) => state.userId);
   const loggedInUserQuery = useLoggedInUser({
-    config: {
+    queryConfig: {
       retry: false,
     },
   });
@@ -39,7 +39,7 @@ export function LogInPage() {
   }, [loggedInUserQuery.data?.user?.id, setUserId]);
 
   const logInUser = useLogInUser({
-    config: {
+    mutationConfig: {
       onSuccess: ({ user }) => {
         localStorage.setItem('userId', user.id);
         setUserId(user.id);

@@ -1,27 +1,20 @@
-import {
-  QueryClient,
-  type UseMutationOptions,
-  type UseQueryOptions,
-} from '@tanstack/react-query';
-import type { HTTPError } from 'ky';
-
-export const queryClient = new QueryClient();
+import { type UseMutationOptions } from '@tanstack/react-query';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type ExtractFnReturnType<FnType extends (...args: any) => any> = Awaited<
-  ReturnType<FnType>
->;
+export type ApiFnReturnType<FnType extends (...args: any) => Promise<any>> =
+  Awaited<ReturnType<FnType>>;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type QueryConfig<QueryFnType extends (...args: any) => any> = Omit<
-  UseQueryOptions<ExtractFnReturnType<QueryFnType>>,
+export type QueryConfig<T extends (...args: any[]) => any> = Omit<
+  ReturnType<T>,
   'queryKey' | 'queryFn'
 >;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type MutationConfig<MutationFnType extends (...args: any) => any> =
-  UseMutationOptions<
-    ExtractFnReturnType<MutationFnType>,
-    HTTPError,
-    Parameters<MutationFnType>[0]
-  >;
+export type MutationConfig<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  MutationFnType extends (...args: any) => Promise<any>,
+> = UseMutationOptions<
+  ApiFnReturnType<MutationFnType>,
+  Error,
+  Parameters<MutationFnType>[0]
+>;

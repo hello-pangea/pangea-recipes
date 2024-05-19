@@ -8,7 +8,7 @@ import { useUserStore } from '../account/userStore';
 
 export function Layout() {
   const loggedInUserQuery = useLoggedInUser({
-    config: {
+    queryConfig: {
       retry: false,
     },
   });

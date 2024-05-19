@@ -1,6 +1,7 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
-import { queryClient, type MutationConfig } from '../../lib/tanstackQuery.js';
+import { type MutationConfig } from '../../lib/tanstackQuery.js';
+import { getListFoodsQueryOptions } from './listFoods.js';
 
 export interface DeleteFoodDTO {
   foodId: string;
@@ -11,17 +12,23 @@ function deleteFood({ foodId }: DeleteFoodDTO) {
 }
 
 interface Options {
-  config?: MutationConfig<typeof deleteFood>;
+  mutationConfig?: MutationConfig<typeof deleteFood>;
 }
 
-export function useDeleteFood({ config }: Options = {}) {
-  return useMutation({
-    ...config,
-    onSuccess: (...d) => {
-      void queryClient.invalidateQueries({ queryKey: ['foods'] });
+export function useDeleteFood({ mutationConfig }: Options = {}) {
+  const queryClient = useQueryClient();
 
-      config?.onSuccess?.(...d);
+  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+
+  return useMutation({
+    onSuccess: (...args) => {
+      void queryClient.invalidateQueries({
+        queryKey: getListFoodsQueryOptions().queryKey,
+      });
+
+      onSuccess?.(...args);
     },
+    ...restConfig,
     mutationFn: deleteFood,
   });
 }

@@ -1,6 +1,6 @@
 import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { unitSchemaRef } from '@open-zero/features';
+import { createUnitDtoSchema, unitSchemaRef } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
 
 const routeTag = 'Units';
@@ -12,10 +12,7 @@ export async function unitRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Create a unit',
-        body: Type.Object({
-          name: Type.String(),
-          pluralName: Type.Optional(Type.String()),
-        }),
+        body: createUnitDtoSchema,
         response: {
           200: Type.Object({
             unit: unitSchemaRef,

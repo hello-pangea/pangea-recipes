@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { queryOptions, useQuery } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { ImportedRecipe } from '../types/importedRecipe.js';
@@ -9,15 +9,21 @@ function getImportedRecipe(url: string) {
     .then((res) => res.json<{ importedRecipe: ImportedRecipe }>());
 }
 
-interface Options {
-  url: string;
-  config?: QueryConfig<typeof getImportedRecipe>;
-}
-
-export function useImportedRecipe({ url, config }: Options) {
-  return useQuery({
-    ...config,
+function getImportedRecipeQueryOptions(url: string) {
+  return queryOptions({
     queryKey: ['importedRecipes', url],
     queryFn: () => getImportedRecipe(url),
+  });
+}
+
+interface Options {
+  url: string;
+  queryConfig?: QueryConfig<typeof getImportedRecipeQueryOptions>;
+}
+
+export function useImportedRecipe({ url, queryConfig }: Options) {
+  return useQuery({
+    ...getImportedRecipeQueryOptions(url),
+    ...queryConfig,
   });
 }

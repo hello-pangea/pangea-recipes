@@ -1,3 +1,4 @@
+export * from './types/createFoodDto.js';
 export * from './types/food.js';
 
 export * from './api/createFood.js';

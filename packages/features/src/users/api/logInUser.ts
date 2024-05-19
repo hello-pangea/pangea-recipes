@@ -11,12 +11,12 @@ export function logInUser(data: SignInUserDto) {
 }
 
 interface Options {
-  config?: MutationConfig<typeof logInUser>;
+  mutationConfig?: MutationConfig<typeof logInUser>;
 }
 
-export function useLogInUser({ config }: Options = {}) {
+export function useLogInUser({ mutationConfig }: Options = {}) {
   return useMutation({
-    ...config,
+    ...mutationConfig,
     mutationFn: logInUser,
   });
 }

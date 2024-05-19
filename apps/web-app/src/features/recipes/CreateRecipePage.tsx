@@ -96,7 +96,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   const recipesQuery = useRecipes();
 
   const recipeCreator = useCreateRecipe({
-    config: {
+    mutationConfig: {
       onSuccess: (data) => {
         navigate(`/recipes/${data.recipe.id}`);
       },
@@ -104,7 +104,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   });
 
   const recipeUpdater = useUpdateRecipe({
-    config: {
+    mutationConfig: {
       onSuccess: (data) => {
         enqueueSnackbar('Recipe updated', { variant: 'success' });
 

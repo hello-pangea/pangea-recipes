@@ -9,12 +9,12 @@ export function signOutUser() {
 }
 
 interface Options {
-  config?: MutationConfig<typeof signOutUser>;
+  mutationConfig?: MutationConfig<typeof signOutUser>;
 }
 
-export function useSignOutUser({ config }: Options = {}) {
+export function useSignOutUser({ mutationConfig }: Options = {}) {
   return useMutation({
-    ...config,
+    ...mutationConfig,
     mutationFn: signOutUser,
   });
 }

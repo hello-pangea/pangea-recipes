@@ -1,6 +1,6 @@
 import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { foodSchemaRef } from '@open-zero/features';
+import { createFoodDtoScema, foodSchemaRef } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
 import { noContentSchema } from '../../types/noContent.js';
 
@@ -13,10 +13,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Create a food',
-        body: Type.Object({
-          name: Type.String(),
-          pluralName: Type.Optional(Type.String()),
-        }),
+        body: createFoodDtoScema,
         response: {
           200: Type.Object({
             food: foodSchemaRef,

@@ -19,7 +19,7 @@ export function SignUpPage() {
   const setUserId = useUserStore((state) => state.setUserId);
 
   const signUpUser = useSignUpUser({
-    config: {
+    mutationConfig: {
       onSuccess: ({ user }) => {
         localStorage.setItem('userId', user.id);
         setUserId(user.id);

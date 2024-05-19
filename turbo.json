@@ -8,8 +8,7 @@
       "outputMode": "none"
     },
     "lint": {
-      "dependsOn": ["^build"],
-      "outputMode": "none"
+      "dependsOn": ["^build"]
     },
     "dev": {
       "dependsOn": ["^db-generate", "^build"],
