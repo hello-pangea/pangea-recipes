@@ -74,7 +74,7 @@ export const theme = createTheme({
     },
   },
   shape: {
-    borderRadius: 8,
+    borderRadius: 12,
   },
   components: {
     MuiButton: {
@@ -111,6 +111,13 @@ export const theme = createTheme({
           '& .MuiSvgIcon-root': {
             fontSize: 22,
           },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
         },
       },
     },

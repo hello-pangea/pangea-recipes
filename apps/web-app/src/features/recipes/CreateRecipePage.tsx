@@ -24,22 +24,33 @@ import {
 } from '@open-zero/features';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useFieldArray, useForm, type SubmitHandler } from 'react-hook-form';
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  type SubmitHandler,
+} from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
 import { useNavigate } from 'react-router-dom';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
 
+interface FoodOption {
+  inputValue?: string;
+  name: string;
+  id?: string;
+}
+
 interface NewRecipeFormInputs {
   name: string;
   description: string | null;
-  prepTime?: string;
-  cookTime?: string;
+  prepTime: string;
+  cookTime: string;
   ingredients: {
-    foodId: string;
+    food: FoodOption;
     unitId: string | null;
     amount: number | null;
-    notes?: string;
+    notes: string | null;
   }[];
   usesRecipes: { recipeId: string }[];
   instructions: { text: string }[];
@@ -90,6 +101,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   });
 
   const foodsQuery = useFoods();
+
+  const foodOptions: FoodOption[] =
+    foodsQuery.data?.foods.map((f) => {
+      return {
+        name: f.name,
+        id: f.id,
+      };
+    }) ?? [];
 
   const unitsQuery = useUnits();
 
@@ -249,7 +268,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   name={`ingredients.${index}.amount`}
                   id={`ingredients.${index}.amount`}
                   type="number"
-                  required
                   control={control}
                   size="small"
                   sx={{
@@ -265,7 +283,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                     }) ?? []
                   }
                   control={control}
-                  required
                   matchId
                   autocompleteProps={{
                     size: 'small',
@@ -276,38 +293,90 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                     },
                   }}
                 />
-                <AutocompleteElement
-                  name={`ingredients.${index}.foodId`}
-                  label="Ingredient"
-                  options={
-                    foodsQuery.data?.foods.map((i) => {
-                      return { label: i.name, id: i.id };
-                    }) ?? []
-                  }
+                <Controller
                   control={control}
-                  required
-                  matchId
-                  autocompleteProps={{
-                    autoHighlight: true,
-                    fullWidth: true,
-                    size: 'small',
-                    onKeyDown: (e) => {
-                      if (e.key === 'Tab') {
-                        appendIngredient({
-                          foodId: '',
-                          unitId: '',
-                          amount: 0,
-                        });
-
-                        // run this code in 50ms
-                        setTimeout(() => {
-                          document
-                            .getElementById(`ingredients.${index + 1}.amount`)
-                            ?.focus();
-                        }, 50);
-                      }
-                    },
+                  name={`ingredients.${index}.food`}
+                  rules={{
+                    required: 'Required',
                   }}
+                  render={({ field: { ref, onChange, ...field } }) => (
+                    <Autocomplete
+                      {...field}
+                      freeSolo
+                      fullWidth
+                      selectOnFocus
+                      clearOnBlur
+                      handleHomeEndKeys
+                      autoHighlight
+                      size="small"
+                      options={foodOptions}
+                      getOptionLabel={(option) => {
+                        // Value selected with enter, right from the input
+                        if (typeof option === 'string') {
+                          return option;
+                        }
+                        // Add "xxx" option created dynamically
+                        if (option.inputValue) {
+                          return option.inputValue;
+                        }
+                        // Regular option
+                        return option.name;
+                      }}
+                      onChange={(_event, newValue) => {
+                        if (typeof newValue === 'string') {
+                          onChange({
+                            name: newValue,
+                          });
+                        } else if (newValue && newValue.inputValue) {
+                          // Create a new value from the user input
+                          onChange({
+                            name: newValue.inputValue,
+                          });
+                        } else {
+                          onChange(newValue);
+                        }
+                      }}
+                      // onInputChange={(_event, input) => {
+                      //   console.log('input', input);
+
+                      //   if (input) {
+                      //     onChange({
+                      //       name: input,
+                      //     });
+                      //   }
+                      // }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Tab') {
+                          appendIngredient({
+                            food: {
+                              name: '',
+                            },
+                            unitId: null,
+                            amount: null,
+                            notes: null,
+                          });
+
+                          // run this code in 50ms
+                          setTimeout(() => {
+                            document
+                              .getElementById(`ingredients.${index + 1}.amount`)
+                              ?.focus();
+                          }, 50);
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          inputRef={ref}
+                          required
+                          label="Food"
+                        />
+                      )}
+                      renderOption={(props, option) => (
+                        <li {...props}>{option.name}</li>
+                      )}
+                    />
+                  )}
                 />
                 <TextFieldElement
                   label="Notes"
@@ -335,7 +404,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           size="small"
           startIcon={<AddRoundedIcon />}
           onClick={() =>
-            appendIngredient({ foodId: '', unitId: '', amount: 0 })
+            appendIngredient({
+              food: {
+                name: '',
+              },
+              unitId: null,
+              amount: null,
+              notes: null,
+            })
           }
           sx={{ mb: 6 }}
         >
@@ -427,15 +503,24 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           importedRecipe.ingredients &&
             setValue(
               'ingredients',
-              importedRecipe.ingredients.map((i) => {
-                if (typeof i === 'string') {
-                  return { amount: 0, foodId: '', unitId: '', notes: i };
+              importedRecipe.ingredients.map((ingredient) => {
+                if (typeof ingredient === 'string') {
+                  return {
+                    amount: null,
+                    food: {
+                      name: ingredient,
+                    },
+                    unitId: null,
+                    notes: null,
+                  };
                 } else {
                   return {
-                    foodId: '',
-                    unitId: i.unit ?? '',
-                    amount: i.amount ?? 0,
-                    notes: i.name ?? '',
+                    food: {
+                      name: ingredient.name,
+                    },
+                    unitId: null,
+                    amount: ingredient.amount ?? null,
+                    notes: ingredient.notes ?? null,
                   };
                 }
               }),

@@ -3,9 +3,10 @@ import { Type, type Static } from '@sinclair/typebox';
 export type ImportedIngredient = Static<typeof importedIngredientSchema>;
 export const importedIngredientSchema = Type.Object(
   {
+    name: Type.String(),
     unit: Type.Optional(Type.String()),
     amount: Type.Optional(Type.Number()),
-    name: Type.String(),
+    notes: Type.Optional(Type.String()),
   },
   { $id: 'ImportedIngredient' },
 );

@@ -80,6 +80,10 @@ export async function createServer() {
           name: 'Users',
           description: 'User related endpoints',
         },
+        {
+          name: 'Imported recipes',
+          description: 'Import recipes from other websites',
+        },
       ],
       servers: [
         {

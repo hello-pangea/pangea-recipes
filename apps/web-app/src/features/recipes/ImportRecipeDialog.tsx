@@ -42,6 +42,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
         <TextField
           label="Recipe url"
           fullWidth
+          autoFocus
           type="url"
           value={url}
           onChange={(event) => {

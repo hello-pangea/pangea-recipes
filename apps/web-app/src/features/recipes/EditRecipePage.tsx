@@ -24,11 +24,17 @@ export function EditRecipePage() {
           recipeQuery.data.recipe.usesRecipes?.map((recipeId) => ({
             recipeId: recipeId,
           })) ?? [],
+        cookTime: '',
+        prepTime: '',
         ingredients: recipeQuery.data.recipe.ingredients.map((ingredient) => ({
-          foodId: ingredient.food.id,
+          food: {
+            name: ingredient.food.name,
+            id: ingredient.food.id,
+          },
           id: ingredient.id,
           amount: ingredient.amount as unknown as number,
           unitId: ingredient.unitId,
+          notes: ingredient.notes,
         })),
         instructions: recipeQuery.data.recipe.instructions.map(
           (instruction) => ({
