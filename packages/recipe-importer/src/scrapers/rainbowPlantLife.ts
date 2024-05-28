@@ -34,6 +34,7 @@ export class RainbowPlantLife extends BaseScraper {
           .locator('.wprm-recipe-ingredient-name')
           .first()
           .innerText();
+
         const unit = await node
           .locator('.wprm-recipe-ingredient-unit')
           .first()
@@ -41,6 +42,7 @@ export class RainbowPlantLife extends BaseScraper {
             timeout: 50,
           })
           .catch(() => undefined);
+
         const amount = await node
           .locator('.wprm-recipe-ingredient-amount')
           .first()
@@ -76,12 +78,19 @@ export class RainbowPlantLife extends BaseScraper {
           })
           .catch(() => undefined);
 
-        if (!unit || !amount) return name;
+        const notes = await node
+          .locator('.wprm-recipe-ingredient-notes')
+          .first()
+          .innerText({
+            timeout: 50,
+          })
+          .catch(() => undefined);
 
         return {
           unit: unit,
-          amount: Number(amount),
+          amount: amount === undefined ? undefined : Number(amount),
           name,
+          notes: notes,
         };
       }),
     );

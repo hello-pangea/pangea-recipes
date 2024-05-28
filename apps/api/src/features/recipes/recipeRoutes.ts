@@ -45,14 +45,18 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           prepTime: prepTime,
           cookTime: cookTime,
           ingredients: {
-            createMany: {
-              data: ingredients.map((ingredient) => ({
-                amount: ingredient.amount,
-                ingredientId: ingredient.ingredientId,
-                unitId: ingredient.unitId,
-                notes: ingredient.notes ?? null,
-              })),
-            },
+            create: ingredients.map((ingredient) => {
+              const { food, ...rest } = ingredient;
+
+              return {
+                ...rest,
+                unitId: rest.unitId ?? undefined,
+                food:
+                  'id' in food
+                    ? { connect: { id: food.id } }
+                    : { create: food },
+              };
+            }),
           },
           instructions: {
             createMany: {
@@ -71,7 +75,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              ingredient: true,
+              food: true,
             },
           },
           instructions: true,
@@ -161,7 +165,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              ingredient: true,
+              food: true,
             },
           },
           instructions: true,
@@ -230,15 +234,18 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           cookTime: cookTime,
           ingredients: {
             deleteMany: {},
-            createMany: {
-              data:
-                ingredients?.map((ingredient) => ({
-                  amount: ingredient.amount,
-                  ingredientId: ingredient.ingredientId,
-                  unitId: ingredient.unitId,
-                  notes: ingredient.notes ?? null,
-                })) ?? [],
-            },
+            create: ingredients?.map((ingredient) => {
+              const { food, ...rest } = ingredient;
+
+              return {
+                ...rest,
+                unitId: rest.unitId ?? undefined,
+                food:
+                  'id' in food
+                    ? { connect: { id: food.id } }
+                    : { create: food },
+              };
+            }),
           },
           instructions: {
             deleteMany: {},
@@ -259,7 +266,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              ingredient: true,
+              food: true,
             },
           },
           instructions: true,

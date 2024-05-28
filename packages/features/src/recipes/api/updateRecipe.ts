@@ -1,8 +1,9 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import type { Recipe } from '../types/recipe.js';
 import type { UpdateRecipeDto } from '../types/updateRecipeDto.js';
+import { getListRecipesQueryOptions } from './listRecipes.js';
 
 function updateRecipe(data: UpdateRecipeDto & { id: string }) {
   return api
@@ -11,12 +12,23 @@ function updateRecipe(data: UpdateRecipeDto & { id: string }) {
 }
 
 interface Options {
-  config?: MutationConfig<typeof updateRecipe>;
+  mutationConfig?: MutationConfig<typeof updateRecipe>;
 }
 
-export function useUpdateRecipe({ config }: Options = {}) {
+export function useUpdateRecipe({ mutationConfig }: Options = {}) {
+  const queryClient = useQueryClient();
+
+  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+
   return useMutation({
-    ...config,
+    onSuccess: (...args) => {
+      void queryClient.invalidateQueries({
+        queryKey: getListRecipesQueryOptions().queryKey,
+      });
+
+      onSuccess?.(...args);
+    },
+    ...restConfig,
     mutationFn: updateRecipe,
   });
 }

@@ -1,7 +1,8 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
-import { queryClient, type MutationConfig } from '../../lib/tanstackQuery.js';
+import { type MutationConfig } from '../../lib/tanstackQuery.js';
 import type { Recipe } from '../types/recipe.js';
+import { getListRecipesQueryOptions } from './listRecipes.js';
 
 export interface DeleteRecipeDTO {
   recipeId: string;
@@ -14,15 +15,23 @@ function deleteRecipe({ recipeId }: DeleteRecipeDTO) {
 }
 
 interface Options {
-  config?: MutationConfig<typeof deleteRecipe>;
+  mutationConfig?: MutationConfig<typeof deleteRecipe>;
 }
 
-export function useDeleteRecipe({ config }: Options = {}) {
+export function useDeleteRecipe({ mutationConfig }: Options = {}) {
+  const queryClient = useQueryClient();
+
+  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+
   return useMutation({
-    onSuccess: () => {
-      void queryClient.invalidateQueries({ queryKey: ['recipes'] });
+    onSuccess: (...args) => {
+      void queryClient.invalidateQueries({
+        queryKey: getListRecipesQueryOptions().queryKey,
+      });
+
+      onSuccess?.(...args);
     },
-    ...config,
+    ...restConfig,
     mutationFn: deleteRecipe,
   });
 }

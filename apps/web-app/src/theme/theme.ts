@@ -31,7 +31,7 @@ export const theme = createTheme({
     divider: alpha('#4c4f69', 0.18),
   },
   typography: {
-    fontFamily: 'Inter Variable',
+    fontFamily: '"Inter Variable", sans-serif',
     fontSize: 16,
     h1: {
       fontFamily: '"Bitter Variable", serif',
@@ -74,26 +74,9 @@ export const theme = createTheme({
     },
   },
   shape: {
-    borderRadius: 8,
+    borderRadius: 12,
   },
   components: {
-    MuiCssBaseline: {
-      styleOverrides: `
-            @font-face {
-              font-family: 'Inter Variable', sans-serif;
-              font-style: normal;
-              font-display: swap;
-              font-weight: 400;
-            }
-            
-            @font-face {
-              font-family: 'Vollkorn Variable', serif;
-              font-style: normal;
-              font-display: swap;
-              font-weight: 400;
-            }
-          `,
-    },
     MuiButton: {
       defaultProps: {
         disableElevation: true,
@@ -128,6 +111,13 @@ export const theme = createTheme({
           '& .MuiSvgIcon-root': {
             fontSize: 22,
           },
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
         },
       },
     },

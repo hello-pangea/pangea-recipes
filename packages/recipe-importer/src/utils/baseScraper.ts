@@ -16,7 +16,7 @@ export abstract class BaseScraper {
   }
 
   async scrape(url: string): Promise<ImportedRecipe> {
-    console.log('Scraping URL: ', url);
+    console.log('Scraping url: ', url);
 
     const page = await this.getPage(url);
 
@@ -47,9 +47,7 @@ export abstract class BaseScraper {
     return Promise.resolve(undefined);
   }
 
-  async getIngredients(
-    _page: Page,
-  ): Promise<(string | ImportedIngredient)[] | undefined> {
+  async getIngredients(_page: Page): Promise<ImportedIngredient[] | undefined> {
     return Promise.resolve(undefined);
   }
 }

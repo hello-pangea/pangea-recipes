@@ -1,8 +1,8 @@
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
-import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -17,29 +17,40 @@ import {
 } from '@mui/material';
 import {
   useCreateRecipe,
-  useIngredients,
+  useFoods,
   useRecipes,
   useUnits,
   useUpdateRecipe,
 } from '@open-zero/features';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useFieldArray, useForm, type SubmitHandler } from 'react-hook-form';
+import {
+  Controller,
+  useFieldArray,
+  useForm,
+  type SubmitHandler,
+} from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
 import { useNavigate } from 'react-router-dom';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
 
+interface FoodOption {
+  inputValue?: string;
+  name: string;
+  id?: string;
+}
+
 interface NewRecipeFormInputs {
   name: string;
   description: string | null;
-  prepTime?: string;
-  cookTime?: string;
+  prepTime: string;
+  cookTime: string;
   ingredients: {
-    ingredientId: string;
-    unitId: string;
-    amount: number;
-    notes?: string;
+    food: FoodOption;
+    unitId: string | null;
+    amount: number | null;
+    notes: string | null;
   }[];
   usesRecipes: { recipeId: string }[];
   instructions: { text: string }[];
@@ -49,7 +60,7 @@ interface Props {
   defaultRecipe?: NewRecipeFormInputs & { id: string };
 }
 
-export function RecipeCreatePage({ defaultRecipe }: Props) {
+export function CreateRecipePage({ defaultRecipe }: Props) {
   const [importDialogOpen, setImportDialogOpen] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -89,14 +100,22 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
     name: 'instructions',
   });
 
-  const ingredientsQuery = useIngredients();
+  const foodsQuery = useFoods();
+
+  const foodOptions: FoodOption[] =
+    foodsQuery.data?.foods.map((f) => {
+      return {
+        name: f.name,
+        id: f.id,
+      };
+    }) ?? [];
 
   const unitsQuery = useUnits();
 
   const recipesQuery = useRecipes();
 
   const recipeCreator = useCreateRecipe({
-    config: {
+    mutationConfig: {
       onSuccess: (data) => {
         navigate(`/recipes/${data.recipe.id}`);
       },
@@ -104,7 +123,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
   });
 
   const recipeUpdater = useUpdateRecipe({
-    config: {
+    mutationConfig: {
       onSuccess: (data) => {
         enqueueSnackbar('Recipe updated', { variant: 'success' });
 
@@ -146,7 +165,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
         href="/recipes"
         color="inherit"
       >
-        Cancel
+        Back
       </Button>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
@@ -164,7 +183,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
         <Stack
           direction={'column'}
           spacing={2}
-          sx={{ mb: 6, maxWidth: '550px', display: 'block' }}
+          sx={{ mb: 6, maxWidth: '750px', display: 'block' }}
         >
           <TextFieldElement
             label="Recipe name"
@@ -249,7 +268,6 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                   name={`ingredients.${index}.amount`}
                   id={`ingredients.${index}.amount`}
                   type="number"
-                  required
                   control={control}
                   size="small"
                   sx={{
@@ -265,7 +283,6 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     }) ?? []
                   }
                   control={control}
-                  required
                   matchId
                   autocompleteProps={{
                     size: 'small',
@@ -276,38 +293,90 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     },
                   }}
                 />
-                <AutocompleteElement
-                  name={`ingredients.${index}.ingredientId`}
-                  label="Ingredient"
-                  options={
-                    ingredientsQuery.data?.ingredients.map((i) => {
-                      return { label: i.name, id: i.id };
-                    }) ?? []
-                  }
+                <Controller
                   control={control}
-                  required
-                  matchId
-                  autocompleteProps={{
-                    autoHighlight: true,
-                    fullWidth: true,
-                    size: 'small',
-                    onKeyDown: (e) => {
-                      if (e.key === 'Tab') {
-                        appendIngredient({
-                          ingredientId: '',
-                          unitId: '',
-                          amount: 0,
-                        });
-
-                        // run this code in 50ms
-                        setTimeout(() => {
-                          document
-                            .getElementById(`ingredients.${index + 1}.amount`)
-                            ?.focus();
-                        }, 50);
-                      }
-                    },
+                  name={`ingredients.${index}.food`}
+                  rules={{
+                    required: 'Required',
                   }}
+                  render={({ field: { ref, onChange, ...field } }) => (
+                    <Autocomplete
+                      {...field}
+                      freeSolo
+                      fullWidth
+                      selectOnFocus
+                      clearOnBlur
+                      handleHomeEndKeys
+                      autoHighlight
+                      size="small"
+                      options={foodOptions}
+                      getOptionLabel={(option) => {
+                        // Value selected with enter, right from the input
+                        if (typeof option === 'string') {
+                          return option;
+                        }
+                        // Add "xxx" option created dynamically
+                        if (option.inputValue) {
+                          return option.inputValue;
+                        }
+                        // Regular option
+                        return option.name;
+                      }}
+                      onChange={(_event, newValue) => {
+                        if (typeof newValue === 'string') {
+                          onChange({
+                            name: newValue,
+                          });
+                        } else if (newValue && newValue.inputValue) {
+                          // Create a new value from the user input
+                          onChange({
+                            name: newValue.inputValue,
+                          });
+                        } else {
+                          onChange(newValue);
+                        }
+                      }}
+                      // onInputChange={(_event, input) => {
+                      //   console.log('input', input);
+
+                      //   if (input) {
+                      //     onChange({
+                      //       name: input,
+                      //     });
+                      //   }
+                      // }}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Tab') {
+                          appendIngredient({
+                            food: {
+                              name: '',
+                            },
+                            unitId: null,
+                            amount: null,
+                            notes: null,
+                          });
+
+                          // run this code in 50ms
+                          setTimeout(() => {
+                            document
+                              .getElementById(`ingredients.${index + 1}.amount`)
+                              ?.focus();
+                          }, 50);
+                        }
+                      }}
+                      renderInput={(params) => (
+                        <TextField
+                          {...params}
+                          inputRef={ref}
+                          required
+                          label="Food"
+                        />
+                      )}
+                      renderOption={(props, option) => (
+                        <li {...props}>{option.name}</li>
+                      )}
+                    />
+                  )}
                 />
                 <TextFieldElement
                   label="Notes"
@@ -324,7 +393,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     removeIngredient(index);
                   }}
                 >
-                  <RemoveRoundedIcon />
+                  <DeleteRoundedIcon />
                 </IconButton>
               </Stack>
             );
@@ -335,7 +404,14 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
           size="small"
           startIcon={<AddRoundedIcon />}
           onClick={() =>
-            appendIngredient({ ingredientId: '', unitId: '', amount: 0 })
+            appendIngredient({
+              food: {
+                name: '',
+              },
+              unitId: null,
+              amount: null,
+              notes: null,
+            })
           }
           sx={{ mb: 6 }}
         >
@@ -347,7 +423,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
         <Stack
           direction={'column'}
           spacing={2}
-          sx={{ mb: 2, maxWidth: '550px', display: 'block' }}
+          sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
         >
           {instructions.map((field, index) => {
             return (
@@ -383,7 +459,7 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
                     removeInstruction(index);
                   }}
                 >
-                  <RemoveRoundedIcon />
+                  <DeleteRoundedIcon />
                 </IconButton>
               </Stack>
             );
@@ -427,15 +503,24 @@ export function RecipeCreatePage({ defaultRecipe }: Props) {
           importedRecipe.ingredients &&
             setValue(
               'ingredients',
-              importedRecipe.ingredients.map((i) => {
-                if (typeof i === 'string') {
-                  return { amount: 0, ingredientId: '', unitId: '', notes: i };
+              importedRecipe.ingredients.map((ingredient) => {
+                if (typeof ingredient === 'string') {
+                  return {
+                    amount: null,
+                    food: {
+                      name: ingredient,
+                    },
+                    unitId: null,
+                    notes: null,
+                  };
                 } else {
                   return {
-                    ingredientId: '',
-                    unitId: i.unit ?? '',
-                    amount: i.amount ?? 0,
-                    notes: i.name ?? '',
+                    food: {
+                      name: ingredient.name,
+                    },
+                    unitId: null,
+                    amount: ingredient.amount ?? null,
+                    notes: ingredient.notes ?? null,
                   };
                 }
               }),

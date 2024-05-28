@@ -8,6 +8,10 @@ generator client {
   previewFeatures = ["relationJoins"]
 }
 
+// ---
+// Users
+// ---
+
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
@@ -30,6 +34,10 @@ model Session {
   @@map("sessions")
 }
 
+// ---
+// Recipes
+// ---
+
 model Recipe {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
@@ -37,14 +45,15 @@ model Recipe {
   name        String
   description String?
 
+  /// Amount in seconds
   cookTime Int? @map("cook_time")
+  /// Amount in seconds
   prepTime Int? @map("prep_time")
 
-  ingredients RecipeIngredient[]
-
-  instructions Instruction[]
-
   images RecipeImage[]
+
+  ingredients  Ingredient[]
+  instructions Instruction[]
 
   usesRecipes   LinkedRecipes[] @relation("UsesRecipes")
   usedByRecipes LinkedRecipes[] @relation("Recipes")
@@ -66,81 +75,25 @@ model RecipeImage {
 }
 
 // Pivot table
-model RecipeIngredient {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-
-  amount Decimal
-  notes  String?
-
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String     @map("ingredient_id") @db.Uuid
-  unit         Unit       @relation(fields: [unitId], references: [id])
-  unitId       String     @map("unit_id") @db.Uuid
-  recipe       Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeId     String     @map("recipe_id") @db.Uuid
-
-  @@map("recipe_ingredients")
-}
-
-// Pivot table
-model LinkedRecipes {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-
-  recipe       Recipe @relation("Recipes", fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeId     String @map("recipe_id") @db.Uuid
-  usesRecipe   Recipe @relation("UsesRecipes", fields: [usesRecipeId], references: [id])
-  usesRecipeId String @map("linked_recipe") @db.Uuid
-
-  @@map("linked_recipes")
-}
-
+/// Ingredients are parts of recipes that combine a food, a unit, and an amount.
 model Ingredient {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  name       String
-  pluralName String?  @map("plural_name")
-  /// The density of the ingredient in kilograms / cubic meter
-  density    Decimal?
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId String @map("recipe_id") @db.Uuid
 
-  substitutions           Substitution[]
-  recipeIngredients       RecipeIngredient[]
-  substitutionIngredients SubstitutionIngredient[]
+  amount Decimal?
+
+  unit   Unit?   @relation(fields: [unitId], references: [id])
+  unitId String? @map("unit_id") @db.Uuid
+
+  food   Food   @relation(fields: [foodId], references: [id])
+  foodId String @map("food_id") @db.Uuid
+
+  notes String?
 
   @@map("ingredients")
-}
-
-model Substitution {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String     @map("ingredient_id") @db.Uuid
-
-  substitutionIngredients SubstitutionIngredient[]
-
-  @@map("substitutions")
-}
-
-model SubstitutionIngredient {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-
-  amount Decimal
-  notes  String?
-
-  unit   Unit   @relation(fields: [unitId], references: [id])
-  unitId String @map("unit_id") @db.Uuid
-
-  ingredient   Ingredient @relation(fields: [ingredientId], references: [id])
-  ingredientId String     @map("ingredient_id") @db.Uuid
-
-  substitution   Substitution @relation(fields: [substitutionId], references: [id])
-  substitutionId String       @map("substitution_id") @db.Uuid
-
-  @@map("substitution_ingredients")
 }
 
 model Unit {
@@ -151,8 +104,7 @@ model Unit {
   pluralName   String? @map("plural_name")
   abbreviation String?
 
-  recipeIngredients       RecipeIngredient[]
-  substitutionIngredients SubstitutionIngredient[]
+  ingredients Ingredient[]
 
   @@map("units")
 }
@@ -169,6 +121,59 @@ model Instruction {
 
   @@map("instructions")
 }
+
+// Pivot table
+model LinkedRecipes {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipe       Recipe @relation("Recipes", fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId     String @map("recipe_id") @db.Uuid
+  usesRecipe   Recipe @relation("UsesRecipes", fields: [usesRecipeId], references: [id])
+  usesRecipeId String @map("linked_recipe") @db.Uuid
+
+  @@map("linked_recipes")
+}
+
+// ---
+// Foods
+// ---
+
+/// The most basic building block. Foods can include spices, meats, vegetables, etc.
+model Food {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name       String
+  pluralName String?  @map("plural_name")
+  /// The density of the ingredient in kilograms / cubic meter
+  density    Decimal?
+
+  substitutions  Substitution[] @relation("FromFood")
+  substitutedFor Substitution[] @relation("ToFood")
+  ingredients    Ingredient[]
+
+  @@map("foods")
+}
+
+model Substitution {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  fromFood   Food   @relation("FromFood", fields: [fromFoodId], references: [id])
+  fromFoodId String @map("from_food_id") @db.Uuid
+
+  toFood   Food   @relation("ToFood", fields: [toFoodId], references: [id])
+  toFoodId String @db.Uuid
+
+  notes String?
+
+  @@map("substitutions")
+}
+
+// ---
+// Misc
+// ---
 
 model Image {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid

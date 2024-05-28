@@ -8,7 +8,7 @@ import { useUserStore } from '../account/userStore';
 
 export function Layout() {
   const loggedInUserQuery = useLoggedInUser({
-    config: {
+    queryConfig: {
       retry: false,
     },
   });
@@ -25,7 +25,7 @@ export function Layout() {
   }
 
   if (!loggedInUserQuery.data?.user) {
-    return <Navigate to={'/sign-in'} />;
+    return <Navigate to={'/log-in'} />;
   }
 
   return (

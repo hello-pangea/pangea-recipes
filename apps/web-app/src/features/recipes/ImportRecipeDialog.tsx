@@ -22,7 +22,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
   const [url, setUrl] = useState('');
   const { isLoading: isImporting, refetch: importRecipe } = useImportedRecipe({
     url,
-    config: { enabled: false },
+    queryConfig: { enabled: false },
   });
 
   return (
@@ -42,6 +42,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
         <TextField
           label="Recipe url"
           fullWidth
+          autoFocus
           type="url"
           value={url}
           onChange={(event) => {

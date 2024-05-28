@@ -1,12 +1,12 @@
 import { AccountPage } from '#src/features/account/AccountPage';
-import { RegisterPage } from '#src/features/auth/RegisterPage';
-import { SignInPage } from '#src/features/auth/SignInPage';
-import { IngredientsPage } from '#src/features/ingredients/IngredientsPage';
-import { NewIngredientPage } from '#src/features/ingredients/NewIngredientPage';
+import { LogInPage } from '#src/features/auth/LogInPage';
+import { SignUpPage } from '#src/features/auth/SignUpPage';
+import { FoodsPage } from '#src/features/foods/FoodsPage';
+import { NewFoodPage } from '#src/features/foods/NewFoodPage';
 import { Layout } from '#src/features/layout/Layout';
 import { RecipeBooksPage } from '#src/features/recipe-books/RecipeBooksPage';
-import { RecipeCreatePage } from '#src/features/recipes/RecipeCreatePage';
-import { RecipeEditPage } from '#src/features/recipes/RecipeEditPage';
+import { CreateRecipePage } from '#src/features/recipes/CreateRecipePage';
+import { EditRecipePage } from '#src/features/recipes/EditRecipePage';
 import { RecipePage } from '#src/features/recipes/RecipePage';
 import { RecipesPage } from '#src/features/recipes/RecipesPage';
 import { Navigate, createBrowserRouter } from 'react-router-dom';
@@ -14,11 +14,11 @@ import { Navigate, createBrowserRouter } from 'react-router-dom';
 export const router = createBrowserRouter([
   {
     path: '/sign-up',
-    element: <RegisterPage />,
+    element: <SignUpPage />,
   },
   {
-    path: '/sign-in',
-    element: <SignInPage />,
+    path: '/log-in',
+    element: <LogInPage />,
   },
   {
     path: '/',
@@ -34,7 +34,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/recipes/new',
-        element: <RecipeCreatePage />,
+        element: <CreateRecipePage />,
       },
       {
         path: '/recipes/:recipeId',
@@ -42,15 +42,15 @@ export const router = createBrowserRouter([
       },
       {
         path: '/recipes/:recipeId/edit',
-        element: <RecipeEditPage />,
+        element: <EditRecipePage />,
       },
       {
-        path: '/ingredients',
-        element: <IngredientsPage />,
+        path: '/foods',
+        element: <FoodsPage />,
       },
       {
-        path: '/ingredients/new',
-        element: <NewIngredientPage />,
+        path: '/foods/new',
+        element: <NewFoodPage />,
       },
       {
         path: '/recipe-books',

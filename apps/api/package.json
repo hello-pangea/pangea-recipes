@@ -9,7 +9,9 @@
     "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
     "build": "tsup",
     "start": "node dist/index.js",
-    "lint": "tsc --project tsconfig.build.json --noEmit && eslint src/",
+    "lint": "concurrently pnpm:lint:*",
+    "lint:type-check": "tsc --project tsconfig.build.json --noEmit",
+    "lint:eslint": "eslint src/",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
@@ -22,17 +24,18 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@open-zero/recipe-importer": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.22.20",
-    "@sinclair/typebox": "^0.32.29",
+    "@scalar/fastify-api-reference": "^1.22.52",
+    "@sinclair/typebox": "^0.32.31",
     "chalk": "^5.3.0",
-    "fastify": "^4.26.2",
+    "fastify": "^4.27.0",
     "lucia": "^3.2.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.12.8",
-    "pino-pretty": "^11.0.0",
+    "@types/node": "^20.12.12",
+    "concurrently": "^8.2.2",
+    "pino-pretty": "^11.1.0",
     "tsup": "^8.0.2",
     "typescript": "^5.4.5"
   },

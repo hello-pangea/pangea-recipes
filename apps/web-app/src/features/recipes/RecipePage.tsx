@@ -3,12 +3,12 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Checkbox,
+  Chip,
   Grid,
   IconButton,
   Link,
   Stack,
   Typography,
-  alpha,
 } from '@mui/material';
 import { numberToFraction, useRecipe, useUnits } from '@open-zero/features';
 import { useState } from 'react';
@@ -76,18 +76,7 @@ export function RecipePage() {
           </Box>
           <Stack direction={'row'} spacing={1} sx={{ mb: 1 }}>
             {['Breakfast', 'Vegan'].map((tag) => (
-              <Box
-                key={tag}
-                sx={{
-                  backgroundColor: (theme) =>
-                    alpha(theme.palette.primary.main, 0.2),
-                  borderRadius: 1,
-                  px: 1,
-                  py: 0.5,
-                }}
-              >
-                <Typography variant="body2">{tag}</Typography>
-              </Box>
+              <Chip key={tag} label={tag} />
             ))}
           </Stack>
           <Typography>{recipe.description}</Typography>
@@ -125,12 +114,14 @@ export function RecipePage() {
               size="small"
               sx={{ p: 0.75, mr: 0.5, '& .MuiSvgIcon-root': { fontSize: 18 } }}
             />
-            <b>{numberToFraction(ingredient.amount)}</b>{' '}
+            {ingredient.amount !== null && (
+              <b>{numberToFraction(ingredient.amount)}</b>
+            )}{' '}
             {
               unitsQuery.data?.units.find((u) => u.id === ingredient.unitId)
                 ?.name
             }{' '}
-            {ingredient.ingredient.name}
+            {ingredient.food.name}
             {ingredient.notes && (
               <Typography
                 component={'span'}
