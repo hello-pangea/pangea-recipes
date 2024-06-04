@@ -50,7 +50,7 @@ export default function Sidebar() {
       </Box>
       <Box sx={{ p: 1 }}>
         <Button
-          href="/new-recipe"
+          href="/recipes/new"
           variant="contained"
           startIcon={<AddRoundedIcon />}
           fullWidth
