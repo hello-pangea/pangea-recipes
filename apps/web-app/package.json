@@ -17,10 +17,10 @@
     "@emotion/styled": "^11.11.5",
     "@fontsource-variable/bitter": "^5.0.19",
     "@fontsource-variable/inter": "^5.0.18",
-    "@mui/icons-material": "^5.15.18",
+    "@mui/icons-material": "^5.15.19",
     "@mui/lab": "5.0.0-alpha.170",
-    "@mui/material": "^5.15.18",
-    "@mui/x-date-pickers": "^7.5.1",
+    "@mui/material": "^5.15.19",
+    "@mui/x-date-pickers": "^7.6.1",
     "@open-zero/features": "workspace:*",
     "@sinclair/typebox": "^0.32.31",
     "@tanstack/react-query": "^5.40.0",
@@ -44,6 +44,6 @@
     "@vitejs/plugin-react-swc": "^3.7.0",
     "concurrently": "^8.2.2",
     "typescript": "^5.4.5",
-    "vite": "^5.2.11"
+    "vite": "^5.2.12"
   }
 }
