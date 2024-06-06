@@ -36,8 +36,6 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint'],
   rules: {
-    'turbo/no-undeclared-env-vars': 0,
-
     '@typescript-eslint/no-unused-vars': [
       'warn',
       {

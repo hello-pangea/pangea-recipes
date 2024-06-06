@@ -39,8 +39,6 @@ module.exports = {
   ],
   plugins: ['@typescript-eslint', 'react-refresh'],
   rules: {
-    'turbo/no-undeclared-env-vars': 0,
-
     'react/react-in-jsx-scope': 0,
 
     'react-refresh/only-export-components': [
