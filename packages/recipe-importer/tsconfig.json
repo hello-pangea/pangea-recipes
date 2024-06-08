@@ -1,12 +1,7 @@
 {
   "compilerOptions": {
     "outDir": "dist",
-    "emitDeclarationOnly": true,
-    "sourceMap": true,
-    "declaration": true,
-    "noEmit": false,
     "declarationDir": "./dist",
-    "sourceRoot": "../src",
     "paths": {
       // This helps VSCode figure out "Go to definition"
       "@open-zero/*": ["../*/src/index.ts"]

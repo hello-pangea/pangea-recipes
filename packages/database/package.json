@@ -4,11 +4,13 @@
   "private": true,
   "license": "AGPL-3.0-or-later",
   "type": "module",
-  "exports": "./dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "types": "./dist/index.d.ts",
   "scripts": {
-    "dev": "tsup --watch --onSuccess \"tsc --emitDeclarationOnly\"",
-    "build": "tsup --onSuccess \"tsc --emitDeclarationOnly\"",
+    "dev": "tsc --project tsconfig.build.json --watch",
+    "build": "tsc --project tsconfig.build.json",
     "db-generate": "prisma generate && prisma format",
     "db-migrate": "prisma migrate dev",
     "db-deploy": "prisma migrate deploy",
@@ -25,8 +27,7 @@
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^20.14.2",
     "prisma": "^5.15.0",
-    "tsup": "^8.1.0",
-    "tsx": "^4.11.2",
+    "tsx": "^4.14.0",
     "typescript": "^5.4.5"
   }
 }

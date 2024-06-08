@@ -1,19 +1,16 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-
   "compilerOptions": {
     "composite": false,
+
     "declaration": true,
     "declarationMap": true,
+    "sourceMap": true,
     "inlineSources": false,
 
     "verbatimModuleSyntax": true,
 
-    "exactOptionalPropertyTypes": false,
-
-    "preserveWatchOutput": true,
-
-    "noEmit": true
+    "exactOptionalPropertyTypes": false
   },
   "exclude": ["node_modules", "dist"],
   "extends": ["./bases/node20.json", "./bases/strictest.json"]
