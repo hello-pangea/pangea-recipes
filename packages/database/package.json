@@ -27,7 +27,7 @@
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^20.14.2",
     "prisma": "^5.15.0",
-    "tsx": "^4.14.0",
+    "tsx": "^4.15.1",
     "typescript": "^5.4.5"
   }
 }

@@ -1,0 +1,21 @@
+model User {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    email          String  @unique
+    name           String?
+    hashedPassword String  @map("hashed_password")
+
+    sessions Session[]
+
+    @@map("users")
+}
+
+model Session {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    userId    String   @map("user_id") @db.Uuid
+    expiresAt DateTime @map("expires_at")
+    user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+    @@map("sessions")
+}

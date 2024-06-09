@@ -1,0 +1,96 @@
+model Recipe {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    name        String
+    description String?
+
+    /// Amount in seconds
+    cookTime Int? @map("cook_time")
+    /// Amount in seconds
+    prepTime Int? @map("prep_time")
+
+    images RecipeImage[]
+
+    ingredients  Ingredient[]
+    instructions Instruction[]
+
+    usesRecipes   LinkedRecipes[] @relation("UsesRecipes")
+    usedByRecipes LinkedRecipes[] @relation("Recipes")
+
+    @@map("recipes")
+}
+
+model RecipeImage {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId String @map("recipe_id") @db.Uuid
+
+    image   Image  @relation(fields: [imageId], references: [id])
+    imageId String @map("image_id") @db.Uuid
+
+    @@map("recipe_images")
+}
+
+// Pivot table
+/// Ingredients are parts of recipes that combine a food, a unit, and an amount.
+model Ingredient {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId String @map("recipe_id") @db.Uuid
+
+    amount Decimal?
+
+    unit   Unit?   @relation(fields: [unitId], references: [id])
+    unitId String? @map("unit_id") @db.Uuid
+
+    food   Food   @relation(fields: [foodId], references: [id])
+    foodId String @map("food_id") @db.Uuid
+
+    notes String?
+
+    @@map("ingredients")
+}
+
+model Unit {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    name         String
+    pluralName   String? @map("plural_name")
+    abbreviation String?
+
+    ingredients Ingredient[]
+
+    @@map("units")
+}
+
+model Instruction {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    text String
+    step Int
+
+    recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId String @map("recipe_id") @db.Uuid
+
+    @@map("instructions")
+}
+
+// Pivot table
+model LinkedRecipes {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now()) @map("created_at")
+
+    recipe       Recipe @relation("Recipes", fields: [recipeId], references: [id], onDelete: Cascade)
+    recipeId     String @map("recipe_id") @db.Uuid
+    usesRecipe   Recipe @relation("UsesRecipes", fields: [usesRecipeId], references: [id])
+    usesRecipeId String @map("linked_recipe") @db.Uuid
+
+    @@map("linked_recipes")
+}
