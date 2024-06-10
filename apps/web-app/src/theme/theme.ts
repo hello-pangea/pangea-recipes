@@ -90,6 +90,11 @@ export const theme = createTheme({
         },
       },
     },
+    MuiCard: {
+      defaultProps: {
+        variant: 'outlined',
+      },
+    },
     MuiButtonBase: {
       defaultProps: {
         LinkComponent: LinkBehavior,

@@ -1,14 +1,14 @@
 model Image {
-    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    createdAt DateTime @default(now()) @map("created_at")
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
 
-    url         String
-    originalUrl String @map("original_url")
+  url         String
+  originalUrl String @map("original_url")
 
-    width  Int
-    height Int
+  width  Int
+  height Int
 
-    recipeImages RecipeImage[]
+  recipeImages RecipeImage[]
 
-    @@map("images")
+  @@map("images")
 }

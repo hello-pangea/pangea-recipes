@@ -36,10 +36,10 @@ export function EditRecipePage() {
           unitId: ingredient.unitId,
           notes: ingredient.notes,
         })),
-        instructions: recipeQuery.data.recipe.instructions.map(
-          (instruction) => ({
-            id: instruction.id,
-            text: instruction.text,
+        instructionGroups: recipeQuery.data.recipe.instructionGroups.map(
+          (instructionGroup) => ({
+            title: instructionGroup.title,
+            instructions: instructionGroup.instructions,
           }),
         ),
       }}

@@ -23,13 +23,13 @@ export abstract class BaseScraper {
     const name = await this.getName(page);
     const description = await this.getDescription(page);
     const ingredients = await this.getIngredients(page);
-    const instructions = await this.getInstructions(page);
+    const instructionGroups = await this.getInstructionGroups(page);
 
     const scrapedRecipe: ImportedRecipe = {
       name,
       description,
       ingredients,
-      instructions,
+      instructionGroups,
     };
 
     return scrapedRecipe;
@@ -43,7 +43,13 @@ export abstract class BaseScraper {
     return Promise.resolve(undefined);
   }
 
-  async getInstructions(_page: Page): Promise<string[] | undefined> {
+  async getInstructionGroups(_page: Page): Promise<
+    | {
+        title: string | undefined;
+        instructions: string[];
+      }[]
+    | undefined
+  > {
     return Promise.resolve(undefined);
   }
 

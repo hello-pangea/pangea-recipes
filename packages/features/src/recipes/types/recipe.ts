@@ -29,11 +29,15 @@ export const recipeSchema = Type.Object(
       }),
     ),
 
-    instructions: Type.Array(
+    instructionGroups: Type.Array(
       Type.Object({
-        id: Type.String(),
-        text: Type.String(),
-        step: Type.Number(),
+        title: Nullable(Type.String()),
+        instructions: Type.Array(
+          Type.Object({
+            id: Type.String(),
+            text: Type.String(),
+          }),
+        ),
       }),
     ),
 

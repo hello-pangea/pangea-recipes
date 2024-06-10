@@ -35,7 +35,7 @@
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^20.14.2",
     "concurrently": "^8.2.2",
-    "pino-pretty": "^11.1.0",
+    "pino-pretty": "^11.2.0",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5"
   },

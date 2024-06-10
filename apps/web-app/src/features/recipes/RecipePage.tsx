@@ -140,26 +140,39 @@ export function RecipePage() {
       <Typography variant="h2" sx={{ mb: 2 }}>
         Instructions
       </Typography>
-      <Stack component={'ol'} spacing={2} sx={{ maxWidth: '500px' }}>
-        {recipe.instructions.map((instruction, index) => (
-          <Box component={'li'} key={instruction.id} sx={{ display: 'flex' }}>
-            <Typography
-              variant="h1"
-              component="p"
-              sx={{
-                minWidth: 45,
-                color: (theme) => theme.palette.text.secondary,
-              }}
-            >
-              {index + 1}.
+      <Stack component={'ol'} spacing={4} sx={{ maxWidth: '500px' }}>
+        {recipe.instructionGroups.map((instructionGroup, index) => (
+          <Box component={'li'} key={index}>
+            <Typography variant="h3" sx={{ mb: 2 }}>
+              {instructionGroup.title}
             </Typography>
-            <Typography
-              sx={{
-                whiteSpace: 'pre-wrap',
-              }}
-            >
-              {instruction.text}
-            </Typography>
+            <Stack component={'ol'} spacing={2} sx={{ maxWidth: '500px' }}>
+              {instructionGroup.instructions.map((instruction, index) => (
+                <Box
+                  component={'li'}
+                  key={instruction.id}
+                  sx={{ display: 'flex' }}
+                >
+                  <Typography
+                    variant="h1"
+                    component="p"
+                    sx={{
+                      minWidth: 45,
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
+                  >
+                    {index + 1}.
+                  </Typography>
+                  <Typography
+                    sx={{
+                      whiteSpace: 'pre-wrap',
+                    }}
+                  >
+                    {instruction.text}
+                  </Typography>
+                </Box>
+              ))}
+            </Stack>
           </Box>
         ))}
       </Stack>

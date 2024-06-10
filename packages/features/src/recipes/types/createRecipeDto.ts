@@ -21,6 +21,15 @@ export const createRecipeDtoScema = Type.Object({
       notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
     }),
   ),
-  instructions: Type.Array(Type.String()),
+  instructionGroups: Type.Array(
+    Type.Object({
+      title: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
+      instructions: Type.Array(
+        Type.Object({
+          text: Type.String({ minLength: 1 }),
+        }),
+      ),
+    }),
+  ),
   usesRecipes: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
 });

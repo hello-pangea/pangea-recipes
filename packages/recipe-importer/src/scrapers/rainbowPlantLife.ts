@@ -14,11 +14,13 @@ export class RainbowPlantLife extends BaseScraper {
     return getTextFromPage(page, '.wprm-recipe-summary');
   }
 
-  override getInstructions(page: Page) {
-    return getTextArrayFromPage(
+  override async getInstructionGroups(page: Page) {
+    const instructions = await getTextArrayFromPage(
       page,
       '.wprm-recipe-instructions > .wprm-recipe-instruction',
     );
+
+    return [{ title: undefined, instructions: instructions }];
   }
 
   override async getIngredients(page: Page) {

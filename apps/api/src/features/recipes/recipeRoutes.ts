@@ -34,7 +34,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         cookTime,
         prepTime,
         ingredients,
-        instructions,
+        instructionGroups,
         usesRecipes,
       } = request.body;
 
@@ -58,13 +58,19 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               };
             }),
           },
-          instructions: {
-            createMany: {
-              data: instructions.map((instruction, index) => ({
-                step: index,
-                text: instruction,
-              })),
-            },
+          instructionGroups: {
+            create: instructionGroups.map((instructionGroup, index) => ({
+              title: instructionGroup.title ?? null,
+              sort: index.toString(),
+              instructions: {
+                create: instructionGroup.instructions.map(
+                  (instruction, index) => ({
+                    step: index,
+                    text: instruction.text,
+                  }),
+                ),
+              },
+            })),
           },
           usesRecipes: {
             connect: usesRecipes?.map((id) => ({
@@ -78,7 +84,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               food: true,
             },
           },
-          instructions: true,
+          instructionGroups: {
+            include: {
+              instructions: true,
+            },
+          },
           usesRecipes: {
             select: {
               usesRecipeId: true,
@@ -168,7 +178,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               food: true,
             },
           },
-          instructions: true,
+          instructionGroups: {
+            include: {
+              instructions: true,
+            },
+          },
           usesRecipes: {
             select: {
               usesRecipeId: true,
@@ -218,7 +232,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         cookTime,
         prepTime,
         ingredients,
-        instructions,
+        instructionGroups,
         usesRecipes,
       } = request.body;
       const { recipeId } = request.params;
@@ -247,13 +261,23 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               };
             }),
           },
-          instructions: {
+          instructionGroups: {
             deleteMany: {},
             createMany: {
               data:
-                instructions?.map((instruction, index) => ({
-                  step: index,
-                  text: instruction,
+                instructionGroups?.map((instructionGroup, index) => ({
+                  title: instructionGroup.title,
+                  sort: index.toString(),
+                  instructions: {
+                    createMany: {
+                      data: instructionGroup.instructions.map(
+                        (instruction, index) => ({
+                          step: index,
+                          text: instruction,
+                        }),
+                      ),
+                    },
+                  },
                 })) ?? [],
             },
           },
@@ -269,7 +293,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               food: true,
             },
           },
-          instructions: true,
+          instructionGroups: {
+            include: {
+              instructions: true,
+            },
+          },
           usesRecipes: {
             select: {
               usesRecipeId: true,

@@ -8,7 +8,14 @@ export const importedRecipeSchema = Type.Object(
 
     description: Type.Optional(Type.String()),
 
-    instructions: Type.Optional(Type.Array(Type.String())),
+    instructionGroups: Type.Optional(
+      Type.Array(
+        Type.Object({
+          title: Type.Optional(Type.String()),
+          instructions: Type.Array(Type.String()),
+        }),
+      ),
+    ),
 
     ingredients: Type.Optional(Type.Array(importedIngredientSchema)),
   },
