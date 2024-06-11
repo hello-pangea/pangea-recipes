@@ -1,22 +1,22 @@
 import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
 
 export type Unit = Static<typeof unitSchema>;
-export const unitSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
-
-    createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
-
-    name: Type.String(),
-    pluralName: Nullable(Type.String()),
-
-    abbreviation: Nullable(Type.String()),
-  },
-  { $id: 'Unit' },
-);
-
-export const unitSchemaRef = Type.Ref(unitSchema);
+export const unitSchema = Type.Union([
+  Type.Literal('gram'),
+  Type.Literal('kilogram'),
+  Type.Literal('ounce'),
+  Type.Literal('pound'),
+  Type.Literal('teaspoon'),
+  Type.Literal('tablespoon'),
+  Type.Literal('cup'),
+  Type.Literal('fluidOunce'),
+  Type.Literal('mililiter'),
+  Type.Literal('centiliter'),
+  Type.Literal('deciliter'),
+  Type.Literal('liter'),
+  Type.Literal('bottle'),
+  Type.Literal('can'),
+  Type.Literal('packet'),
+  Type.Literal('pinch'),
+  Type.Literal('bunch'),
+]);

@@ -1,3 +1,5 @@
+import { unitSchema } from '@open-zero/features';
+import { Value } from '@sinclair/typebox/value';
 import type { Page } from 'playwright';
 import { BaseScraper } from '../utils/baseScraper.js';
 import { getTextArrayFromPage } from '../utils/getTextArrayFromPage.js';
@@ -42,6 +44,9 @@ export class RainbowPlantLife extends BaseScraper {
           .first()
           .innerText({
             timeout: 50,
+          })
+          .then((text) => {
+            return Value.Encode(unitSchema, text);
           })
           .catch(() => undefined);
 

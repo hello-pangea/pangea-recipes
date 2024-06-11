@@ -10,7 +10,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { numberToFraction, useRecipe, useUnits } from '@open-zero/features';
+import { numberToFraction, unitRecord, useRecipe } from '@open-zero/features';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
@@ -26,7 +26,6 @@ export function RecipePage() {
   const recipeQuery = useRecipe({
     recipeId: recipeId ?? '',
   });
-  const unitsQuery = useUnits();
 
   if (!recipeQuery.data) {
     return <LoadingPage message="Loading recipe" />;
@@ -117,10 +116,7 @@ export function RecipePage() {
             {ingredient.amount !== null && (
               <b>{numberToFraction(ingredient.amount)}</b>
             )}{' '}
-            {
-              unitsQuery.data?.units.find((u) => u.id === ingredient.unitId)
-                ?.name
-            }{' '}
+            {ingredient.unit && unitRecord[ingredient.unit]?.name}{' '}
             {ingredient.food.name}
             {ingredient.notes && (
               <Typography

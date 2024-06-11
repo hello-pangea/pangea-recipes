@@ -9,6 +9,7 @@
     "build": "turbo run build",
     "clean": "turbo run clean",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "db-generate": "pnpm run -F=database db-generate",
     "db-migrate": "pnpm run -F=database db-migrate",
     "db-deploy": "turbo run db-deploy",
     "db-seed": "turbo run db-seed",

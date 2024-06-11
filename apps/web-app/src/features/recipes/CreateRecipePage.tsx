@@ -16,11 +16,12 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  unitRecord,
   useCreateRecipe,
   useFoods,
   useRecipes,
-  useUnits,
   useUpdateRecipe,
+  type Unit,
 } from '@open-zero/features';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -50,7 +51,7 @@ export interface RecipeFormInputs {
   cookTime: string;
   ingredients: {
     food: FoodOption;
-    unitId: string | null;
+    unit: Unit | null;
     amount: number | null;
     notes: string | null;
   }[];
@@ -115,8 +116,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         id: f.id,
       };
     }) ?? [];
-
-  const unitsQuery = useUnits();
 
   const recipesQuery = useRecipes();
 
@@ -240,7 +239,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           >
             {ingredients.map((field, index) => {
               return (
-                <Stack direction={'row'} spacing={1} key={field.id}>
+                <Stack
+                  direction={'row'}
+                  spacing={1}
+                  key={field.id}
+                  alignItems={'flex-start'}
+                >
                   <TextFieldElement
                     label="Amount"
                     name={`ingredients.${index}.amount`}
@@ -254,11 +258,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   />
                   <AutocompleteElement
                     label="Unit"
-                    name={`ingredients.${index}.unitId`}
+                    name={`ingredients.${index}.unit`}
                     options={
-                      unitsQuery.data?.units.map((u) => {
-                        return { label: u.abbreviation ?? u.name, id: u.id };
-                      }) ?? []
+                      Object.entries(unitRecord).map(([unit, unitDetail]) => ({
+                        id: unit,
+                        label: unitDetail.name,
+                      })) ?? []
                     }
                     control={control}
                     matchId
@@ -314,22 +319,13 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                             onChange(newValue);
                           }
                         }}
-                        // onInputChange={(_event, input) => {
-                        //   console.log('input', input);
-
-                        //   if (input) {
-                        //     onChange({
-                        //       name: input,
-                        //     });
-                        //   }
-                        // }}
                         onKeyDown={(e) => {
                           if (e.key === 'Tab') {
                             appendIngredient({
                               food: {
                                 name: '',
                               },
-                              unitId: null,
+                              unit: null,
                               amount: null,
                               notes: null,
                             });
@@ -363,6 +359,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                     name={`ingredients.${index}.notes`}
                     control={control}
                     size="small"
+                    multiline
                     sx={{
                       minWidth: 200,
                     }}
@@ -387,7 +384,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 food: {
                   name: '',
                 },
-                unitId: null,
+                unit: null,
                 amount: null,
                 notes: null,
               })
@@ -505,7 +502,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   food: {
                     name: ingredient,
                   },
-                  unitId: null,
+                  unit: null,
                   notes: null,
                 };
               } else {
@@ -513,7 +510,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   food: {
                     name: ingredient.name,
                   },
-                  unitId: null,
+                  unit: ingredient.unit ?? null,
                   amount: ingredient.amount ?? null,
                   notes: ingredient.notes ?? null,
                 };

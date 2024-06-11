@@ -33,7 +33,7 @@ export function EditRecipePage() {
           },
           id: ingredient.id,
           amount: ingredient.amount as unknown as number,
-          unitId: ingredient.unitId,
+          unit: ingredient.unit,
           notes: ingredient.notes,
         })),
         instructionGroups: recipeQuery.data.recipe.instructionGroups.map(

@@ -50,7 +50,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
 
               return {
                 ...rest,
-                unitId: rest.unitId ?? undefined,
+                unit: rest.unit ?? undefined,
                 food:
                   'id' in food
                     ? { connect: { id: food.id } }
@@ -253,7 +253,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
 
               return {
                 ...rest,
-                unitId: rest.unitId ?? undefined,
+                unit: rest.unit ?? undefined,
                 food:
                   'id' in food
                     ? { connect: { id: food.id } }

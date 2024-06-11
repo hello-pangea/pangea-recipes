@@ -2,6 +2,7 @@ import type { Prisma } from '@prisma/client';
 import { Type, type Static } from '@sinclair/typebox';
 import { foodSchema } from '../../foods/index.js';
 import { Nullable } from '../../lib/nullable.js';
+import { unitSchema } from '../../units/index.js';
 
 export type Recipe = Static<typeof recipeSchema>;
 export const recipeSchema = Type.Object(
@@ -24,7 +25,7 @@ export const recipeSchema = Type.Object(
         id: Type.String(),
         food: foodSchema,
         amount: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
-        unitId: Nullable(Type.String()),
+        unit: Type.Union([unitSchema, Type.Null()]),
         notes: Nullable(Type.String()),
       }),
     ),

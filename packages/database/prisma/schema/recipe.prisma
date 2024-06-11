@@ -34,6 +34,26 @@ model RecipeImage {
   @@map("recipe_images")
 }
 
+enum Unit {
+  gram
+  kilogram
+  ounce
+  pound
+  teaspoon
+  tablespoon
+  cup
+  fluidOunce @map("fluid_ounce")
+  mililiter
+  centiliter
+  deciliter
+  liter
+  bottle
+  can
+  packet
+  pinch
+  bunch
+}
+
 // Pivot table
 /// Ingredients are parts of recipes that combine a food, a unit, and an amount.
 model Ingredient {
@@ -45,8 +65,7 @@ model Ingredient {
 
   amount Decimal?
 
-  unit   Unit?   @relation(fields: [unitId], references: [id])
-  unitId String? @map("unit_id") @db.Uuid
+  unit Unit?
 
   food   Food   @relation(fields: [foodId], references: [id])
   foodId String @map("food_id") @db.Uuid
@@ -54,19 +73,6 @@ model Ingredient {
   notes String?
 
   @@map("ingredients")
-}
-
-model Unit {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-
-  name         String
-  pluralName   String? @map("plural_name")
-  abbreviation String?
-
-  ingredients Ingredient[]
-
-  @@map("units")
 }
 
 model InstructionGroup {

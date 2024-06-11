@@ -1,6 +1,7 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { createFoodDtoScema } from '../../foods/index.js';
 import { Nullable } from '../../lib/nullable.js';
+import { unitSchema } from '../../units/index.js';
 
 export type CreateRecipeDto = Static<typeof createRecipeDtoScema>;
 export const createRecipeDtoScema = Type.Object({
@@ -16,7 +17,7 @@ export const createRecipeDtoScema = Type.Object({
         }),
         createFoodDtoScema,
       ]),
-      unitId: Type.Optional(Nullable(Type.String({ format: 'uuid' }))),
+      unit: Type.Optional(Type.Union([unitSchema, Type.Null()])),
       amount: Type.Optional(Nullable(Type.Number())),
       notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
     }),
