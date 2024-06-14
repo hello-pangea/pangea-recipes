@@ -25,7 +25,7 @@
     "@open-zero/features": "workspace:*",
     "@open-zero/recipe-importer": "workspace:*",
     "@scalar/fastify-api-reference": "^1.23.5",
-    "@sinclair/typebox": "^0.32.31",
+    "@sinclair/typebox": "^0.32.32",
     "chalk": "^5.3.0",
     "fastify": "^4.27.0",
     "lucia": "^3.2.0"
@@ -35,7 +35,7 @@
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^20.14.2",
     "concurrently": "^8.2.2",
-    "pino-pretty": "^11.2.0",
+    "pino-pretty": "^11.2.1",
     "tsup": "^8.1.0",
     "typescript": "^5.4.5"
   },
