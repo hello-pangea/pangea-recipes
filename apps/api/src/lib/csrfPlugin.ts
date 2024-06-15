@@ -25,7 +25,7 @@ async function plugin(fastify: FastifyTypebox, opts: Options) {
     if (
       !originHeader ||
       !hostHeader ||
-      !verifyRequestOrigin(originHeader, [hostHeader])
+      !verifyRequestOrigin(originHeader, [hostHeader, 'hellorecipes.com'])
     ) {
       console.error('Invalid origin', { originHeader, hostHeader });
       return res.status(403);
