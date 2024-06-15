@@ -5,7 +5,8 @@ import openApi from '@fastify/swagger';
 import { foodSchema, recipeSchema, userSchema } from '@open-zero/features';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
-import { enablePrettyLogs } from '../config/config.js';
+import { enablePrettyLogs, env } from '../config/config.js';
+import { csrfPlugin } from '../lib/csrfPlugin.js';
 import { lucia } from '../lib/lucia.js';
 import { routes } from './routes.js';
 
@@ -26,7 +27,9 @@ export async function createServer() {
       : false,
   });
 
-  fastify.decorateRequest('session', null);
+  // -
+  // Fastify plugins
+  // -
 
   void fastify.register(cors, {
     credentials: true,
@@ -88,28 +91,30 @@ export async function createServer() {
     },
   });
 
+  // -
+  // Custom plugins
+  // -
+
+  void fastify.register(csrfPlugin, {
+    enabled: env.NODE_ENV === 'production',
+  });
+
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await fastify.register(scalar, {
     routePrefix: '/api-docs',
   });
 
+  // -
+  // Decorators
+  // -
+
+  fastify.decorateRequest('session', null);
+
+  // -
+  // Hooks
+  // -
+
   fastify.addHook('onRequest', async (request, reply) => {
-    const originHeader = request.headers.origin;
-    const hostHeader = request.headers.host;
-
-    console.log('Auth: originHeader', originHeader);
-    console.log('Auth: hostHeader', hostHeader);
-
-    // if (
-    //   !originHeader ||
-    //   !hostHeader ||
-    //   !verifyRequestOrigin(originHeader, [hostHeader])
-    // ) {
-    //   return new Response(null, {
-    //     status: 403,
-    //   });
-    // }
-
     const sessionId = request.cookies[lucia.sessionCookieName];
 
     console.log('Auth: sessionId', sessionId);
@@ -141,6 +146,10 @@ export async function createServer() {
       }
     }
   });
+
+  // -
+  // Services
+  // -
 
   void fastify.register(routes);
 

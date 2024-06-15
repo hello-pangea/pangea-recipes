@@ -1,13 +1,13 @@
 import { LoadingPage } from '#src/components/LoadingPage';
 import Sidebar from '#src/features/layout/Sidebar';
 import { Box } from '@mui/material';
-import { useLoggedInUser } from '@open-zero/features';
+import { useSignedInUser } from '@open-zero/features';
 import { useEffect } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useUserStore } from '../account/userStore';
 
 export function Layout() {
-  const loggedInUserQuery = useLoggedInUser({
+  const loggedInUserQuery = useSignedInUser({
     queryConfig: {
       retry: false,
     },

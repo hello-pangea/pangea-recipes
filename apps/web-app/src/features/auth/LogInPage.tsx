@@ -9,7 +9,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useLogInUser, useLoggedInUser } from '@open-zero/features';
+import { useSignInUser, useSignedInUser } from '@open-zero/features';
 import { useEffect } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
@@ -26,7 +26,7 @@ export function LogInPage() {
   const { handleSubmit, control } = useForm<LogInFormInputs>();
   const setUserId = useUserStore((state) => state.setUserId);
   const userId = useUserStore((state) => state.userId);
-  const loggedInUserQuery = useLoggedInUser({
+  const loggedInUserQuery = useSignedInUser({
     queryConfig: {
       retry: false,
     },
@@ -38,7 +38,7 @@ export function LogInPage() {
     }
   }, [loggedInUserQuery.data?.user?.id, setUserId]);
 
-  const logInUser = useLogInUser({
+  const signInUser = useSignInUser({
     mutationConfig: {
       onSuccess: ({ user }) => {
         localStorage.setItem('userId', user.id);
@@ -52,7 +52,7 @@ export function LogInPage() {
   const onSubmit: SubmitHandler<LogInFormInputs> = (data) => {
     console.log('Log in user:', data);
 
-    logInUser.mutate({
+    signInUser.mutate({
       email: data.email,
       password: data.password,
     });
@@ -125,7 +125,7 @@ export function LogInPage() {
             <LoadingButton
               variant="contained"
               type="submit"
-              loading={logInUser.isPending}
+              loading={signInUser.isPending}
               fullWidth
             >
               Log in

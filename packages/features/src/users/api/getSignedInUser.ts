@@ -3,28 +3,28 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { User } from '../types/user.js';
 
-export function getLoggedInUser() {
+export function getSignedInUser() {
   return api
-    .get(`users/user-from-cookie`, {
+    .get(`users/signed-in-user`, {
       credentials: 'include',
     })
     .then((res) => res.json<{ user: User | null }>());
 }
 
-function getLoggedInUserQueryOptions() {
+function getSignedInUserQueryOptions() {
   return queryOptions({
     queryKey: [],
-    queryFn: () => getLoggedInUser(),
+    queryFn: () => getSignedInUser(),
   });
 }
 
 interface Options {
-  queryConfig?: QueryConfig<typeof getLoggedInUserQueryOptions>;
+  queryConfig?: QueryConfig<typeof getSignedInUserQueryOptions>;
 }
 
-export function useLoggedInUser({ queryConfig }: Options = {}) {
+export function useSignedInUser({ queryConfig }: Options = {}) {
   return useQuery({
-    ...getLoggedInUserQueryOptions(),
+    ...getSignedInUserQueryOptions(),
     ...queryConfig,
   });
 }

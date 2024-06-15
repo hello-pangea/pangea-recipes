@@ -28,6 +28,7 @@
     "@sinclair/typebox": "^0.32.32",
     "chalk": "^5.3.0",
     "fastify": "^4.28.0",
+    "fastify-plugin": "^4.5.1",
     "lucia": "^3.2.0"
   },
   "devDependencies": {

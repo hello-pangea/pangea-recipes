@@ -4,19 +4,19 @@ import { type MutationConfig } from '../../lib/tanstackQuery.js';
 import type { SignInUserDto } from '../types/signInUserDto.js';
 import type { User } from '../types/user.js';
 
-export function logInUser(data: SignInUserDto) {
+export function signInUser(data: SignInUserDto) {
   return api
-    .post(`users/log-in`, { json: data, credentials: 'include' })
+    .post(`users/sign-in`, { json: data, credentials: 'include' })
     .then((res) => res.json<{ user: User }>());
 }
 
 interface Options {
-  mutationConfig?: MutationConfig<typeof logInUser>;
+  mutationConfig?: MutationConfig<typeof signInUser>;
 }
 
-export function useLogInUser({ mutationConfig }: Options = {}) {
+export function useSignInUser({ mutationConfig }: Options = {}) {
   return useMutation({
     ...mutationConfig,
-    mutationFn: logInUser,
+    mutationFn: signInUser,
   });
 }

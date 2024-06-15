@@ -8,6 +8,7 @@ import {
 import { Type } from '@sinclair/typebox';
 import { randomBytes, randomUUID, scryptSync } from 'node:crypto';
 import { lucia } from '../../lib/lucia.js';
+import { noContentSchema } from '../../types/noContent.js';
 
 const routeTag = 'Users';
 
@@ -17,7 +18,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
     {
       schema: {
         tags: [routeTag],
-        summary: 'Register a new user',
+        summary: 'Sign up a new user',
         body: signUpUserDtoSchema,
         response: {
           200: Type.Object({
@@ -64,11 +65,11 @@ export async function userRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.post(
-    '/log-in',
+    '/sign-in',
     {
       schema: {
         tags: [routeTag],
-        summary: 'Log in a user',
+        summary: 'Sign in an existing user',
         body: signInUserDtoSchema,
         response: {
           200: Type.Object({
@@ -130,9 +131,11 @@ export async function userRoutes(fastify: FastifyTypebox) {
     {
       schema: {
         tags: [routeTag],
-        summary: 'Register a new user',
+        summary: 'Sign out current user',
+        description:
+          'Invalidates the current session and clears the session cookie.',
         response: {
-          200: Type.Null(),
+          204: noContentSchema,
         },
       },
     },
@@ -140,7 +143,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
       const { session } = request;
 
       if (!session) {
-        return null;
+        return reply.code(204).send();
       }
 
       await lucia.invalidateSession(session.id);
@@ -148,7 +151,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
       const blankSessionCookie = lucia.createBlankSessionCookie();
       void reply.header('set-cookie', blankSessionCookie.serialize());
 
-      return null;
+      return reply.code(204).send();
     },
   );
 
@@ -184,11 +187,11 @@ export async function userRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.get(
-    '/user-from-cookie',
+    '/signed-in-user',
     {
       schema: {
         tags: [routeTag],
-        summary: 'Get the logged in user from cookies',
+        summary: 'Get currently signed in user',
         response: {
           200: Type.Object({
             user: Type.Union([userSchemaRef, Type.Null()]),
