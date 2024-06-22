@@ -30,8 +30,6 @@ export function SignUpPage() {
   });
 
   const onSubmit: SubmitHandler<SignUpFormInputs> = (data) => {
-    console.log('Sign up user:', data);
-
     signUpUser.mutate({
       name: data.name,
       email: data.email,

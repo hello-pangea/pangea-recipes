@@ -89,15 +89,13 @@ export function RecipePage() {
             }}
           >
             <img
-              src={
-                'https://rainbowplantlife.com/wp-content/uploads/2021/06/tofu-scramble-on-table-square-1-of-1.jpg'
-              }
+              src={recipe.images?.at(0)?.url}
               height={300}
               width={'100%'}
               style={{
                 objectFit: 'cover',
                 display: 'block',
-                borderRadius: 8,
+                borderRadius: 12,
               }}
             />
           </Box>

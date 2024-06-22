@@ -6,4 +6,4 @@ const envSchema = Type.Object({
   VITE_API_URL: Type.String(),
 });
 
-export const env = parseEnv(envSchema, import.meta.env);
+export const config = parseEnv(envSchema, import.meta.env);

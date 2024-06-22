@@ -50,8 +50,6 @@ export function LogInPage() {
   });
 
   const onSubmit: SubmitHandler<LogInFormInputs> = (data) => {
-    console.log('Log in user:', data);
-
     signInUser.mutate({
       email: data.email,
       password: data.password,

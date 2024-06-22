@@ -9,6 +9,7 @@ export const createRecipeDtoScema = Type.Object({
   description: Type.Optional(Type.String({ minLength: 1 })),
   prepTime: Type.Optional(Type.Number()),
   cookTime: Type.Optional(Type.Number()),
+  imageIds: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
   ingredients: Type.Array(
     Type.Object({
       food: Type.Union([

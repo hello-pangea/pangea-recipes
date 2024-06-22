@@ -26,6 +26,14 @@ export function EditRecipePage() {
           })) ?? [],
         cookTime: '',
         prepTime: '',
+        image: recipeQuery.data.recipe.images?.at(0)
+          ? {
+              // @ts-expect-error Wait for typescript 5.5
+              url: recipeQuery.data.recipe.images.at(0).url,
+              // @ts-expect-error Wait for typescript 5.5
+              id: recipeQuery.data.recipe.images.at(0).id,
+            }
+          : null,
         ingredients: recipeQuery.data.recipe.ingredients.map((ingredient) => ({
           food: {
             name: ingredient.food.name,

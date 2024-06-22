@@ -9,8 +9,11 @@ const envSchema = Type.Object({
     Type.Literal('production'),
   ]),
   PG_DATABASE_URL: Type.String(),
+  CLOUDFLARE_ACCOUNT_ID: Type.String(),
+  CLOUDFLARE_R2_ACCESS_KEY_ID: Type.String(),
+  CLOUDFLARE_R2_SECRET_ACCESS_KEY: Type.String(),
 });
 
-export const env = parseEnv(envSchema, process.env);
+export const config = parseEnv(envSchema, process.env);
 
 export const enablePrettyLogs = process.env.NODE_ENV !== 'production';

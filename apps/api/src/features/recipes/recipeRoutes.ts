@@ -33,6 +33,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         description,
         cookTime,
         prepTime,
+        imageIds,
         ingredients,
         instructionGroups,
         usesRecipes,
@@ -44,6 +45,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           description: description ?? null,
           prepTime: prepTime,
           cookTime: cookTime,
+          images: imageIds
+            ? {
+                create: imageIds.map((id) => ({
+                  imageId: id,
+                })),
+              }
+            : undefined,
           ingredients: {
             create: ingredients.map((ingredient) => {
               const { food, ...rest } = ingredient;
@@ -105,7 +113,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       const recipeDto: Recipe = {
         ...recipe,
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        coverImage: recipe.images.at(0)?.image.url ?? null,
+        images: recipe.images.map((image) => ({
+          id: image.image.id,
+          url: image.image.url,
+          favorite: image.favorite ?? false,
+        })),
       };
 
       return {
@@ -140,7 +152,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
 
       const recipeDtos = recipes.map((recipe) => ({
         ...recipe,
-        coverImage: recipe.images.at(0)?.image.url ?? null,
+        images: recipe.images.map((image) => ({
+          id: image.image.id,
+          url: image.image.url,
+          favorite: image.favorite ?? false,
+        })),
       }));
 
       return {
@@ -199,7 +215,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       const recipeDto: Recipe = {
         ...recipe,
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        coverImage: recipe.images.at(0)?.image.url ?? null,
+        images: recipe.images.map((image) => ({
+          id: image.image.id,
+          url: image.image.url,
+          favorite: image.favorite ?? false,
+        })),
       };
 
       return {
@@ -314,7 +334,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       const recipeDto: Recipe = {
         ...recipe,
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        coverImage: recipe.images.at(0)?.image.url ?? null,
+        images: recipe.images.map((image) => ({
+          id: image.image.id,
+          url: image.image.url,
+          favorite: image.favorite ?? false,
+        })),
       };
 
       return {

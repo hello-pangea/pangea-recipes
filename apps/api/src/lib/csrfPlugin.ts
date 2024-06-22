@@ -19,9 +19,6 @@ async function plugin(fastify: FastifyTypebox, opts: Options) {
     const originHeader = req.headers.origin ?? null;
     const hostHeader = req.headers.host ?? null;
 
-    console.log('Auth: originHeader', originHeader);
-    console.log('Auth: hostHeader', hostHeader);
-
     if (
       !originHeader ||
       !hostHeader ||

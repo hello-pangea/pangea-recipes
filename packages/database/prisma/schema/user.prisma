@@ -13,9 +13,10 @@ model User {
 
 model Session {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  userId    String   @map("user_id") @db.Uuid
   expiresAt DateTime @map("expires_at")
-  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("sessions")
 }

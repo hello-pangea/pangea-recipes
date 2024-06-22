@@ -1,9 +1,9 @@
 import { createServer } from '#src/server/server.js';
-import { env } from './config/config.js';
+import { config } from './config/config.js';
 
 const server = await createServer();
 
-const port = Number(env.PORT);
+const port = Number(config.PORT);
 
 server.listen({ port: port, host: '::' }, (err, address) => {
   if (err) {

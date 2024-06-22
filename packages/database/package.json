@@ -20,14 +20,14 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@prisma/client": "^5.15.0"
+    "@prisma/client": "^5.15.1"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.14.2",
-    "prisma": "^5.15.0",
-    "tsx": "^4.15.4",
-    "typescript": "^5.4.5"
+    "@types/node": "^20.14.7",
+    "prisma": "^5.15.1",
+    "tsx": "^4.15.7",
+    "typescript": "^5.5.2"
   }
 }

@@ -18,7 +18,15 @@ export const recipeSchema = Type.Object(
 
     description: Nullable(Type.String()),
 
-    coverImage: Nullable(Type.String()),
+    images: Nullable(
+      Type.Array(
+        Type.Object({
+          id: Type.String(),
+          url: Type.String(),
+          favorite: Type.Boolean(),
+        }),
+      ),
+    ),
 
     ingredients: Type.Array(
       Type.Object({

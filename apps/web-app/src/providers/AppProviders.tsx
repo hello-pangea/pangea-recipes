@@ -1,4 +1,4 @@
-import { env } from '#src/config/config';
+import { config } from '#src/config/config';
 import { router } from '#src/routes/routes';
 import { theme } from '#src/theme/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -9,7 +9,7 @@ import { SnackbarProvider } from 'notistack';
 import { useState } from 'react';
 import { RouterProvider } from 'react-router-dom';
 
-setApi({ prefixUrl: env.VITE_API_URL });
+setApi({ prefixUrl: config.VITE_API_URL });
 
 export function AppProviders() {
   const [queryClient] = useState(() => {

@@ -1,11 +1,12 @@
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import multipart from '@fastify/multipart';
 import openApi from '@fastify/swagger';
 import { foodSchema, recipeSchema, userSchema } from '@open-zero/features';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
-import { enablePrettyLogs, env } from '../config/config.js';
+import { config, enablePrettyLogs } from '../config/config.js';
 import { csrfPlugin } from '../lib/csrfPlugin.js';
 import { lucia } from '../lib/lucia.js';
 import { routes } from './routes.js';
@@ -25,6 +26,10 @@ export async function createServer() {
           },
         }
       : false,
+    ajv: {
+      // Adds the file plugin to help @fastify/swagger schema generation
+      plugins: [multipart.ajvFilePlugin],
+    },
   });
 
   // -
@@ -96,7 +101,7 @@ export async function createServer() {
   // -
 
   void fastify.register(csrfPlugin, {
-    enabled: env.NODE_ENV === 'production',
+    enabled: config.NODE_ENV === 'production',
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument

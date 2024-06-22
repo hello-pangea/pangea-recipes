@@ -31,14 +31,16 @@ export function RecipeCard({ recipeId }: Props) {
     <>
       <Card variant="outlined">
         <CardActionArea href={`/recipes/${recipe.id}`}>
-          <img
-            src={
-              'https://rainbowplantlife.com/wp-content/uploads/2021/06/tofu-scramble-on-table-square-1-of-1.jpg'
-            }
-            height={200}
-            width={'100%'}
-            style={{ objectFit: 'cover', display: 'block' }}
-          />
+          {recipe.images ? (
+            <img
+              src={recipe.images.at(0)?.url}
+              height={200}
+              width={'100%'}
+              style={{ objectFit: 'cover', display: 'block' }}
+            />
+          ) : (
+            <Box sx={{ height: 200 }}></Box>
+          )}
           <Box
             sx={{
               display: 'flex',

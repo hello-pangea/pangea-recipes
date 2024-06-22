@@ -35,6 +35,7 @@ import {
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
 import { useNavigate } from 'react-router-dom';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
+import { CreateRecipeImage } from './CreateRecipeImage';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
 
@@ -49,6 +50,10 @@ export interface RecipeFormInputs {
   description: string | null;
   prepTime: string;
   cookTime: string;
+  image: {
+    id: string;
+    url: string;
+  } | null;
   ingredients: {
     food: FoodOption;
     unit: Unit | null;
@@ -76,6 +81,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       description: '',
       prepTime: '',
       cookTime: '',
+      image: null,
       ingredients: [],
       usesRecipes: [],
       instructionGroups: [],
@@ -137,11 +143,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     },
   });
 
-  console.log(defaultRecipe, ingredients);
-
   const onSubmit: SubmitHandler<RecipeFormInputs> = (data) => {
-    console.log('Create recipe:', data);
-
     if (defaultRecipe) {
       recipeUpdater.mutate({
         id: defaultRecipe.id,
@@ -159,6 +161,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         description: data.description || undefined,
         cookTime: data.cookTime ? parseInt(data.cookTime) : undefined,
         prepTime: data.prepTime ? parseInt(data.prepTime) : undefined,
+        imageIds: data.image ? [data.image.id] : undefined,
         ingredients: data.ingredients,
         instructionGroups: data.instructionGroups.map((ig) => ({
           title: ig.title,
@@ -192,6 +195,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       </Box>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <CreateRecipeImage sx={{ mb: 2 }} />
           <Stack
             direction={'column'}
             spacing={2}
