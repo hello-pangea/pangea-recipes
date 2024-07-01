@@ -17,8 +17,8 @@
   },
   "devDependencies": {
     "prettier": "^3.3.2",
-    "tsx": "^4.15.7",
-    "turbo": "^2.0.5"
+    "tsx": "^4.16.0",
+    "turbo": "^2.0.6"
   },
   "engines": {
     "node": ">=20.11.0"
@@ -31,5 +31,5 @@
     "schema": "packages/database/prisma/schema",
     "seed": "tsx packages/database/src/seed.ts"
   },
-  "packageManager": "pnpm@9.3.0"
+  "packageManager": "pnpm@9.4.0"
 }

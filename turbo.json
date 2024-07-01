@@ -1,16 +1,13 @@
 {
   "$schema": "https://turbo.build/schema.json",
-  "globalDependencies": ["**/.env"],
-  "globalEnv": ["NODE_ENV"],
   "tasks": {
     "build": {
-      "dependsOn": ["^db-generate", "^build"]
-    },
-    "transit": {
-      "dependsOn": ["^transit"]
+      "inputs": ["$TURBO_DEFAULT$", ".env*"],
+      "dependsOn": ["^db-generate", "^build"],
+      "outputs": ["dist/**"]
     },
     "lint": {
-      "dependsOn": ["^build", "transit"]
+      "dependsOn": ["^build"]
     },
     "dev": {
       "dependsOn": ["^db-generate", "^build"],
@@ -30,5 +27,6 @@
       "cache": false
     },
     "db-seed": {}
-  }
+  },
+  "ui": "tui"
 }

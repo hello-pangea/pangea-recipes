@@ -1,5 +1,3 @@
-/// <reference types="vite/client" />
-
 import { type Env } from './src/config/config.js';
 
 interface ImportMetaEnv extends Env {}

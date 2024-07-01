@@ -110,6 +110,13 @@ export const theme = createTheme({
         component: LinkBehavior,
       },
     },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 4,
+        },
+      },
+    },
     MuiIconButton: {
       styleOverrides: {
         sizeMedium: {
