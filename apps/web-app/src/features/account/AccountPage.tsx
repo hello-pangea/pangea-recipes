@@ -2,17 +2,15 @@ import { Page } from '#src/components/Page';
 import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
 import { LoadingButton } from '@mui/lab';
 import { Box, Typography } from '@mui/material';
-import { useSignOutUser, useUser } from '@open-zero/features';
-import { useNavigate } from 'react-router-dom';
-import { useUserStore } from './userStore';
+import { useSignedInUser, useSignOutUser } from '@open-zero/features';
+import { useNavigate } from '@tanstack/react-router';
 
 export function AccountPage() {
   const navigate = useNavigate();
-  const userId = useUserStore((state) => state.userId);
-  const setUserId = useUserStore((state) => state.setUserId);
-
-  const userQuery = useUser({
-    userId: userId ?? 'not_found',
+  const userQuery = useSignedInUser({
+    queryConfig: {
+      retry: false,
+    },
   });
 
   const signOutMutation = useSignOutUser();
@@ -22,11 +20,14 @@ export function AccountPage() {
       onSuccess: () => {
         localStorage.clear();
         sessionStorage.clear();
-        setUserId(null);
 
-        navigate('/log-in');
+        navigate({ to: '/sign-in' });
       },
     });
+  }
+
+  if (!userQuery.data?.user) {
+    return null;
   }
 
   return (

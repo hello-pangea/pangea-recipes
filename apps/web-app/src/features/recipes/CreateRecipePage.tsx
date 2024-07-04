@@ -1,3 +1,4 @@
+import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
@@ -23,6 +24,7 @@ import {
   useUpdateRecipe,
   type Unit,
 } from '@open-zero/features';
+import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import {
@@ -33,7 +35,6 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
-import { useNavigate } from 'react-router-dom';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
 import { CreateRecipeImage } from './CreateRecipeImage';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
@@ -128,7 +129,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   const recipeCreator = useCreateRecipe({
     mutationConfig: {
       onSuccess: (data) => {
-        navigate(`/recipes/${data.recipe.id}`);
+        navigate({
+          to: `/recipes/$recipeId`,
+          params: {
+            recipeId: data.recipe.id,
+          },
+        });
       },
     },
   });
@@ -138,7 +144,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       onSuccess: (data) => {
         enqueueSnackbar('Recipe updated', { variant: 'success' });
 
-        navigate(`/recipes/${data.recipe.id}`);
+        navigate({
+          to: `/recipes/$recipeId`,
+          params: {
+            recipeId: data.recipe.id,
+          },
+        });
       },
     },
   });
@@ -173,14 +184,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   return (
     <Page>
-      <Button
+      <ButtonLink
         size="small"
         startIcon={<ChevronLeftRoundedIcon />}
-        href="/recipes"
         color="inherit"
+        to="/recipes"
       >
         Back
-      </Button>
+      </ButtonLink>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
           {defaultRecipe ? 'Edit recipe' : 'New recipe'}

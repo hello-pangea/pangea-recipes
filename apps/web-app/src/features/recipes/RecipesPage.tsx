@@ -1,6 +1,7 @@
+import { ButtonLink } from '#src/components/ButtonLink';
 import { LoadingPage } from '#src/components/LoadingPage';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useRecipes } from '@open-zero/features';
 import { RecipeCard } from './RecipeCard';
 
@@ -16,15 +17,15 @@ export function RecipesPage() {
       <Typography variant="h1" sx={{ mb: 2 }}>
         Recipes
       </Typography>
-      <Button
+      <ButtonLink
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        href="/recipes/new"
+        to="/recipes/new"
         size="small"
       >
         New recipe
-      </Button>
+      </ButtonLink>
       <Grid container spacing={2}>
         {recipesQuery.data?.recipes.map((recipe) => (
           <Grid item key={recipe.id} xs={12} md={6} lg={4}>

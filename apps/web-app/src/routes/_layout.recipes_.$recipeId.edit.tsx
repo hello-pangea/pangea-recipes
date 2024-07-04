@@ -1,0 +1,10 @@
+import { EditRecipePage } from '#src/features/recipes/EditRecipePage';
+import { getRecipeQueryOptions } from '@open-zero/features';
+import { createFileRoute } from '@tanstack/react-router';
+
+export const Route = createFileRoute('/_layout/recipes/$recipeId/edit')({
+  loader: ({ context: { queryClient }, params: { recipeId } }) => {
+    return queryClient.ensureQueryData(getRecipeQueryOptions(recipeId));
+  },
+  component: EditRecipePage,
+});

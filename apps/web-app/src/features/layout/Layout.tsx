@@ -2,30 +2,21 @@ import { LoadingPage } from '#src/components/LoadingPage';
 import Sidebar from '#src/features/layout/Sidebar';
 import { Box } from '@mui/material';
 import { useSignedInUser } from '@open-zero/features';
-import { useEffect } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useUserStore } from '../account/userStore';
+import { Navigate, Outlet } from '@tanstack/react-router';
 
 export function Layout() {
-  const loggedInUserQuery = useSignedInUser({
+  const userQuery = useSignedInUser({
     queryConfig: {
       retry: false,
     },
   });
-  const setUserId = useUserStore((state) => state.setUserId);
 
-  useEffect(() => {
-    if (loggedInUserQuery.data?.user?.id) {
-      setUserId(loggedInUserQuery.data.user.id);
-    }
-  }, [loggedInUserQuery.data?.user?.id, setUserId]);
-
-  if (loggedInUserQuery.isPending) {
+  if (userQuery.isPending) {
     return <LoadingPage message="Loading user" />;
   }
 
-  if (!loggedInUserQuery.data?.user) {
-    return <Navigate to={'/log-in'} />;
+  if (!userQuery.data?.user) {
+    return <Navigate to="/sign-in" />;
   }
 
   return (

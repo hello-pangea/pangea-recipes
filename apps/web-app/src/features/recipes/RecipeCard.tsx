@@ -1,8 +1,8 @@
+import { CardActionAreaLink } from '#src/components/CardActionAreaLink';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Card,
-  CardActionArea,
   CircularProgress,
   IconButton,
   Typography,
@@ -30,7 +30,12 @@ export function RecipeCard({ recipeId }: Props) {
   return (
     <>
       <Card variant="outlined">
-        <CardActionArea href={`/recipes/${recipe.id}`}>
+        <CardActionAreaLink
+          to="/recipes/$recipeId"
+          params={{
+            recipeId: recipeId,
+          }}
+        >
           {recipe.images ? (
             <img
               src={recipe.images.at(0)?.url}
@@ -68,7 +73,7 @@ export function RecipeCard({ recipeId }: Props) {
               <MoreVertRoundedIcon />
             </IconButton>
           </Box>
-        </CardActionArea>
+        </CardActionAreaLink>
       </Card>
       <RecipeMoreMenu
         recipeId={recipeId}

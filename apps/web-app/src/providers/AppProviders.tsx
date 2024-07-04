@@ -1,30 +1,22 @@
-import { config } from '#src/config/config';
-import { router } from '#src/routes/routes';
 import { theme } from '#src/theme/theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
-import { setApi } from '@open-zero/features';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { SnackbarProvider } from 'notistack';
-import { useState } from 'react';
-import { RouterProvider } from 'react-router-dom';
 
-setApi({ prefixUrl: config.VITE_API_URL });
+interface Props {
+  queryClient: QueryClient;
+  children: React.ReactNode;
+}
 
-export function AppProviders() {
-  const [queryClient] = useState(() => {
-    return new QueryClient();
-  });
-
+export function AppProviders({ children, queryClient }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <RouterProvider router={router} />
+          {children}
         </ThemeProvider>
       </SnackbarProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }

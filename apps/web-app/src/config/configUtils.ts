@@ -1,6 +1,5 @@
 import { Type, type StaticDecode, type TObject } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
-import chalk from 'chalk';
 
 // GitHub issue describing .env parsing with TypeBox
 // https://github.com/sinclairzx81/typebox/issues/626#issuecomment-1760933435
@@ -12,7 +11,7 @@ export function parseEnv<T extends TObject>(
   // check value is valid, throw if invalid
   if (!Value.Check(schema, value)) {
     console.error(
-      `\n${chalk.bold(chalk.red('Error'))} parsing environment variables\nCheck your .env file\n`,
+      `\nError parsing environment variables\nCheck your .env file\n`,
     );
 
     const errors = [...Value.Errors(schema, value)].map((e) => ({

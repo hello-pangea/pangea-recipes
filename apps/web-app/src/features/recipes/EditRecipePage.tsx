@@ -1,18 +1,14 @@
-import { LoadingPage } from '#src/components/LoadingPage';
-import { useRecipe } from '@open-zero/features';
-import { useParams } from 'react-router-dom';
+import { getRecipeQueryOptions } from '@open-zero/features';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipePage } from './CreateRecipePage';
 
+const route = getRouteApi('/_layout/recipes/$recipeId/edit');
+
 export function EditRecipePage() {
-  const { recipeId } = useParams();
+  const { recipeId } = route.useParams();
 
-  const recipeQuery = useRecipe({
-    recipeId: recipeId ?? '',
-  });
-
-  if (!recipeQuery.data) {
-    return <LoadingPage message="Loading recipe" />;
-  }
+  const recipeQuery = useSuspenseQuery(getRecipeQueryOptions(recipeId));
 
   return (
     <CreateRecipePage

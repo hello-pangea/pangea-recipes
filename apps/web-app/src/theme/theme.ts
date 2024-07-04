@@ -1,5 +1,3 @@
-import { LinkBehavior } from '#src/components/LinkBehavior';
-import type {} from '@mui/lab/themeAugmentation';
 import { alpha, createTheme } from '@mui/material/styles';
 
 export const theme = createTheme({
@@ -95,21 +93,16 @@ export const theme = createTheme({
         variant: 'outlined',
       },
     },
-    MuiButtonBase: {
-      defaultProps: {
-        LinkComponent: LinkBehavior,
-      },
-    },
-    MuiListItemButton: {
-      defaultProps: {
-        LinkComponent: LinkBehavior,
-      },
-    },
-    MuiLink: {
-      defaultProps: {
-        component: LinkBehavior,
-      },
-    },
+    // MuiLink: {
+    //   defaultProps: {
+    //     component: LinkBehavior,
+    //   } as LinkProps,
+    // },
+    // MuiButtonBase: {
+    //   defaultProps: {
+    //     LinkComponent: LinkBehavior,
+    //   },
+    // },
     MuiMenu: {
       styleOverrides: {
         paper: {

@@ -2,13 +2,13 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import {
   CircularProgress,
-  Link,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
 } from '@mui/material';
 import { useDeleteRecipe, useRecipe } from '@open-zero/features';
+import { Link } from '@tanstack/react-router';
 
 interface Props {
   recipeId: string;
@@ -51,18 +51,11 @@ export function RecipeMoreMenu({
       }}
     >
       <Link
-        href={`/recipes/${recipeId}/edit`}
-        component="a"
-        sx={{
-          textDecoration: 'none',
-          color: (theme) => theme.palette.text.primary,
-        }}
+        to="/recipes/$recipeId/edit"
+        params={{ recipeId: recipe.id }}
+        style={{ textDecoration: 'none', color: 'inherit' }}
       >
-        <MenuItem
-          onClick={() => {
-            onClose();
-          }}
-        >
+        <MenuItem>
           <ListItemIcon>
             <EditRoundedIcon fontSize="small" />
           </ListItemIcon>

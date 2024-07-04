@@ -10,22 +10,27 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { numberToFraction, unitRecord, useRecipe } from '@open-zero/features';
+import {
+  getRecipeQueryOptions,
+  numberToFraction,
+  unitRecord,
+} from '@open-zero/features';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
+const route = getRouteApi('/_layout/recipes/$recipeId');
+
 export function RecipePage() {
+  const { recipeId } = route.useParams();
   const navigate = useNavigate();
-  const { recipeId } = useParams<{ recipeId: string }>();
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
-  const recipeQuery = useRecipe({
-    recipeId: recipeId ?? '',
-  });
+  const recipeQuery = useSuspenseQuery(getRecipeQueryOptions(recipeId));
 
   if (!recipeQuery.data) {
     return <LoadingPage message="Loading recipe" />;
@@ -177,7 +182,7 @@ export function RecipePage() {
           setMoreMenuAnchorEl(null);
         }}
         onDelete={() => {
-          navigate('/recipes');
+          navigate({ to: '/recipes' });
         }}
       />
     </Box>

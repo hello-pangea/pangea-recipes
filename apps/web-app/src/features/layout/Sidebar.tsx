@@ -1,21 +1,18 @@
-import { CarrotIcon } from '#src/components/CarrotIcon';
+import { ButtonLink } from '#src/components/ButtonLink';
+import { ListItemButtonLink } from '#src/components/ListItemButtonLink';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   List,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
-  Tooltip,
   Typography,
 } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useRouterState, type LinkProps } from '@tanstack/react-router';
 
 const drawerWidth = 240;
 
@@ -49,14 +46,14 @@ export default function Sidebar() {
         </Typography>
       </Box>
       <Box sx={{ p: 1 }}>
-        <Button
-          href="/recipes/new"
+        <ButtonLink
+          to="/recipes/new"
           variant="contained"
           startIcon={<AddRoundedIcon />}
           fullWidth
         >
           New
-        </Button>
+        </ButtonLink>
       </Box>
       {/* Navigation */}
       <Box
@@ -66,52 +63,52 @@ export default function Sidebar() {
       >
         <List>
           <ListItem
-            path="/recipes"
+            to="/recipes"
             icon={<RestaurantMenuRoundedIcon />}
             label="Recipes"
           />
-          <ListItem path="/foods" icon={<CarrotIcon />} label="Food" />
-          <Tooltip title="Coming soon" arrow placement="right">
+          {/* <Tooltip title="Coming soon" arrow placement="right">
             <span>
               <ListItem
-                path="/recipe-books"
+                to="/recipe-books"
                 icon={<MenuBookRoundedIcon />}
                 label="Recipe books"
               />
             </span>
-          </Tooltip>
+          </Tooltip> */}
         </List>
       </Box>
       <Divider />
       <Box sx={{ px: 2, py: 1 }}>
-        <Button
-          href="/account"
+        <ButtonLink
+          to="/account"
           variant="text"
           startIcon={<PersonRoundedIcon />}
           fullWidth
         >
           Account
-        </Button>
+        </ButtonLink>
       </Box>
     </Drawer>
   );
 }
 
 interface ListItemProps {
-  path?: string;
+  to?: LinkProps['to'];
   label: string;
   icon: React.ReactNode;
   onClick?: () => void;
 }
 
-function ListItem({ icon, label, path, onClick }: ListItemProps) {
-  const location = useLocation();
+function ListItem({ icon, label, to, onClick }: ListItemProps) {
+  const router = useRouterState();
+  const location = router.location;
 
-  const selected = location.pathname.startsWith(path ?? '');
+  const selected = location.pathname.startsWith(to ?? '');
 
   return (
-    <ListItemButton
-      href={path ?? ''}
+    <ListItemButtonLink
+      to={to ?? ''}
       onClick={onClick}
       selected={selected}
       sx={{
@@ -137,6 +134,6 @@ function ListItem({ icon, label, path, onClick }: ListItemProps) {
           },
         }}
       />
-    </ListItemButton>
+    </ListItemButtonLink>
   );
 }

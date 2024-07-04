@@ -1,11 +1,11 @@
+import { ButtonLink } from '#src/components/ButtonLink';
 import { Copyright } from '#src/components/Copyright';
 import { LoadingButton } from '@mui/lab';
-import { Box, Button, Card, Container, Stack, Typography } from '@mui/material';
+import { Box, Card, Container, Stack, Typography } from '@mui/material';
 import { useSignUpUser } from '@open-zero/features';
+import { useNavigate } from '@tanstack/react-router';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { useNavigate } from 'react-router-dom';
-import { useUserStore } from '../account/userStore';
 
 interface SignUpFormInputs {
   name?: string;
@@ -16,15 +16,11 @@ interface SignUpFormInputs {
 export function SignUpPage() {
   const navigate = useNavigate();
   const { handleSubmit, control } = useForm<SignUpFormInputs>();
-  const setUserId = useUserStore((state) => state.setUserId);
 
   const signUpUser = useSignUpUser({
     mutationConfig: {
-      onSuccess: ({ user }) => {
-        localStorage.setItem('userId', user.id);
-        setUserId(user.id);
-
-        navigate('/');
+      onSuccess: () => {
+        navigate({ to: '/' });
       },
     },
   });
@@ -69,9 +65,9 @@ export function SignUpPage() {
           }}
         >
           <Typography variant="h1">Create your profile</Typography>
-          <Button variant="text" href="/log-in" size="small">
+          <ButtonLink variant="text" to="/sign-in" size="small">
             Log in
-          </Button>
+          </ButtonLink>
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack

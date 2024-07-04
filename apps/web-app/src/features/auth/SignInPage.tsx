@@ -1,64 +1,44 @@
+import { ButtonLink } from '#src/components/ButtonLink';
 import { Copyright } from '#src/components/Copyright';
 import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  Button,
-  Card,
-  Container,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Box, Card, Container, Link, Stack, Typography } from '@mui/material';
 import { useSignInUser, useSignedInUser } from '@open-zero/features';
-import { useEffect } from 'react';
+import { Navigate, useNavigate } from '@tanstack/react-router';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useUserStore } from '../account/userStore';
 
-interface LogInFormInputs {
+interface SignInFormInputs {
   email: string;
   password: string;
 }
 
-export function LogInPage() {
+export function SignInPage() {
   const navigate = useNavigate();
-  const { handleSubmit, control } = useForm<LogInFormInputs>();
-  const setUserId = useUserStore((state) => state.setUserId);
-  const userId = useUserStore((state) => state.userId);
-  const loggedInUserQuery = useSignedInUser({
+  const { handleSubmit, control } = useForm<SignInFormInputs>();
+  const userQuery = useSignedInUser({
     queryConfig: {
       retry: false,
     },
   });
 
-  useEffect(() => {
-    if (loggedInUserQuery.data?.user?.id) {
-      setUserId(loggedInUserQuery.data.user.id);
-    }
-  }, [loggedInUserQuery.data?.user?.id, setUserId]);
-
   const signInUser = useSignInUser({
     mutationConfig: {
-      onSuccess: ({ user }) => {
-        localStorage.setItem('userId', user.id);
-        setUserId(user.id);
-
-        navigate('/');
+      onSuccess: () => {
+        navigate({ to: '/' });
       },
     },
   });
 
-  const onSubmit: SubmitHandler<LogInFormInputs> = (data) => {
+  if (userQuery.data?.user) {
+    return <Navigate to="/" />;
+  }
+
+  const onSubmit: SubmitHandler<SignInFormInputs> = (data) => {
     signInUser.mutate({
       email: data.email,
       password: data.password,
     });
   };
-
-  if (userId) {
-    return <Navigate to="/" />;
-  }
 
   return (
     <Container
@@ -92,9 +72,9 @@ export function LogInPage() {
           }}
         >
           <Typography variant="h1">Log in</Typography>
-          <Button variant="text" href="/sign-up" size="small">
+          <ButtonLink variant="text" to="/sign-up" size="small">
             Sign up
-          </Button>
+          </ButtonLink>
         </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack

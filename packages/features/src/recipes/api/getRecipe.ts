@@ -9,7 +9,7 @@ function getRecipe(recipeId: string) {
     .then((res) => res.json<{ recipe: Recipe }>());
 }
 
-function getRecipeQueryOptions(recipeId: string) {
+export function getRecipeQueryOptions(recipeId: string) {
   return queryOptions({
     queryKey: ['recipes', recipeId],
     queryFn: () => getRecipe(recipeId),

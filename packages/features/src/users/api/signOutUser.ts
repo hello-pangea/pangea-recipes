@@ -5,7 +5,7 @@ import { type MutationConfig } from '../../lib/tanstackQuery.js';
 export function signOutUser() {
   return api
     .post(`users/sign-out`, { credentials: 'include' })
-    .then((res) => res.json<undefined>());
+    .then(() => null);
 }
 
 interface Options {
