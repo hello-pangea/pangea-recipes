@@ -10,9 +10,9 @@ export function parseEnv<T extends TObject>(
 ): StaticDecode<T> {
   // check value is valid, throw if invalid
   if (!Value.Check(schema, value)) {
-    console.error(
-      `\nError parsing environment variables\nCheck your .env file\n`,
-    );
+    console.error(`Error parsing environment variables. Check your .env file`);
+
+    console.error('Recieved the following environment variables:', value);
 
     const errors = [...Value.Errors(schema, value)].map((e) => ({
       path: e.path,
@@ -21,8 +21,6 @@ export function parseEnv<T extends TObject>(
     }));
 
     console.error(...errors);
-
-    console.log('\n\n');
 
     // exit the process
     throw new Error('Invalid environment variables');
