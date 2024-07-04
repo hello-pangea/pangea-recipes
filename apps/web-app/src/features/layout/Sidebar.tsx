@@ -16,25 +16,15 @@ import { useRouterState, type LinkProps } from '@tanstack/react-router';
 
 const drawerWidth = 240;
 
-export default function Sidebar() {
-  return (
-    <Drawer
-      variant="persistent"
-      anchor="left"
-      open
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-        height: '100vh',
-        borderRight: '1px solid',
-        borderColor: 'divider',
-        backgroundColor: (theme) => theme.palette.background.paper,
-      }}
-    >
+interface Props {
+  isSmallScreen?: boolean;
+  open: boolean;
+  onClose: () => void;
+}
+
+export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
+  const sidebarContent = (
+    <>
       {/* Header */}
       <Box sx={{ display: 'flex', alignItems: 'center', m: 2 }}>
         <img src="/assets/lil-guy.svg" width={24} height={24} />
@@ -89,6 +79,38 @@ export default function Sidebar() {
           Account
         </ButtonLink>
       </Box>
+    </>
+  );
+
+  if (isSmallScreen) {
+    return (
+      <Drawer
+        variant="temporary"
+        open={open}
+        onClose={onClose}
+        ModalProps={{
+          keepMounted: true,
+        }}
+        sx={{
+          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        }}
+      >
+        {sidebarContent}
+      </Drawer>
+    );
+  }
+
+  return (
+    <Drawer
+      variant="permanent"
+      open
+      anchor="left"
+      sx={{
+        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        width: drawerWidth,
+      }}
+    >
+      {sidebarContent}
     </Drawer>
   );
 }
