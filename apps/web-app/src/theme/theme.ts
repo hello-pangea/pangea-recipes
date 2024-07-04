@@ -32,22 +32,22 @@ export const theme = createTheme({
     fontFamily: '"Inter Variable", sans-serif',
     fontSize: 16,
     h1: {
-      fontFamily: '"Bitter Variable", serif',
+      fontFamily: '"Merriweather Sans Variable", serif',
       fontWeight: 'bold',
       fontSize: 32,
     },
     h2: {
-      fontFamily: '"Bitter Variable", serif',
+      fontFamily: '"Merriweather Sans Variable", serif',
       fontWeight: 'bold',
       fontSize: 22,
     },
     h3: {
-      fontFamily: '"Bitter Variable", serif',
+      fontFamily: '"Merriweather Sans Variable", serif',
       fontWeight: 'bold',
       fontSize: 16,
     },
     h6: {
-      fontFamily: '"Bitter Variable", serif',
+      fontFamily: '"Merriweather Sans Variable", serif',
       fontWeight: 'bold',
       fontSize: 16,
       lineHeight: 1.5,

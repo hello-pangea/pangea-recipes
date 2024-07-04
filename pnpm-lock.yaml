@@ -108,12 +108,12 @@ importers:
       '@emotion/styled':
         specifier: ^11.11.5
         version: 11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
-      '@fontsource-variable/bitter':
-        specifier: ^5.0.19
-        version: 5.0.19
       '@fontsource-variable/inter':
         specifier: ^5.0.18
         version: 5.0.18
+      '@fontsource-variable/merriweather-sans':
+        specifier: ^5.0.14
+        version: 5.0.14
       '@mui/icons-material':
         specifier: ^5.15.21
         version: 5.15.21(@mui/material@5.15.21(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@emotion/styled@11.11.5(@emotion/react@11.11.4(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@types/react@18.3.3)(react@18.3.1)
@@ -887,11 +887,11 @@ packages:
   '@floating-ui/utils@0.2.4':
     resolution: {integrity: sha512-dWO2pw8hhi+WrXq1YJy2yCuWoL20PddgGaqTgVe4cOS9Q6qklXCiA1tJEqX6BEwRNSCP84/afac9hd4MS+zEUA==}
 
-  '@fontsource-variable/bitter@5.0.19':
-    resolution: {integrity: sha512-DRxRmeJVO45nCYhroyg8MKIR082W4iUkvL6QLqY5NIp499mNJwBpe20fQ06DyDPodHfjKDZ56jaUk9pdmp/IXA==}
-
   '@fontsource-variable/inter@5.0.18':
     resolution: {integrity: sha512-rJzSrtJ3b7djiGFvRuTe6stDfbYJGhdQSfn2SI2WfXviee7Er0yKAHE5u7FU7OWVQQQ1x3+cxdmx9NdiAkcrcA==}
+
+  '@fontsource-variable/merriweather-sans@5.0.14':
+    resolution: {integrity: sha512-jjbza00yxkqLF2ZOu+WU7mOdyNnAIL3icUu6oAUNA/PC23KXMqjV2BlHGrcaouQ1bITvdxuOK7IXJPm7IoZeUw==}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -4787,9 +4787,9 @@ snapshots:
 
   '@floating-ui/utils@0.2.4': {}
 
-  '@fontsource-variable/bitter@5.0.19': {}
-
   '@fontsource-variable/inter@5.0.18': {}
+
+  '@fontsource-variable/merriweather-sans@5.0.14': {}
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
