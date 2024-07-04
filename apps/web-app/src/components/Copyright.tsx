@@ -9,7 +9,7 @@ export function Copyright() {
       </Typography>
       <Typography variant="body2" color="text.secondary" align="center">
         <Link href="https://github.com/open-zero/hello-recipes" target="_blank">
-          Source code
+          ❤️ Open Source
         </Link>
       </Typography>
     </>
