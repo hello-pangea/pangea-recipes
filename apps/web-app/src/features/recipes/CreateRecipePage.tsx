@@ -3,19 +3,18 @@ import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import {
   Autocomplete,
   Box,
   Button,
-  Grid,
   IconButton,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import {
   unitRecord,
   useCreateRecipe,
@@ -36,9 +35,10 @@ import {
 } from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
-import { CreateRecipeImage } from './CreateRecipeImage';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
+import { IngredientNotesButton } from './IngredientNotesButton';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
+import { UploadRecipeImage } from './UploadRecipeImage';
 
 interface FoodOption {
   inputValue?: string;
@@ -196,21 +196,20 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         <Typography variant="h1">
           {defaultRecipe ? 'Edit recipe' : 'New recipe'}
         </Typography>
-        <Button
+        {/* <Button
           size="small"
           startIcon={<LinkRoundedIcon />}
           onClick={() => setImportDialogOpen(true)}
         >
           Import from url
-        </Button>
+        </Button> */}
       </Box>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CreateRecipeImage sx={{ mb: 2 }} />
           <Stack
             direction={'column'}
             spacing={2}
-            sx={{ mb: 6, maxWidth: '750px', display: 'block' }}
+            sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
           >
             <TextFieldElement
               label="Recipe name"
@@ -234,6 +233,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 control={control}
                 type="number"
                 fullWidth
+                size="small"
               />
               <TextFieldElement
                 label="Cook time (m)"
@@ -241,9 +241,11 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 control={control}
                 type="number"
                 fullWidth
+                size="small"
               />
             </Stack>
           </Stack>
+          <UploadRecipeImage sx={{ mb: 6 }} />
           <Typography variant="h2" sx={{ mb: 2 }}>
             Ingredients
           </Typography>
@@ -254,139 +256,137 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           >
             {ingredients.map((field, index) => {
               return (
-                <Stack
-                  direction={'row'}
-                  spacing={1}
-                  key={field.id}
-                  alignItems={'flex-start'}
-                >
-                  <TextFieldElement
-                    label="Amount"
-                    name={`ingredients.${index}.amount`}
-                    id={`ingredients.${index}.amount`}
-                    type="number"
-                    control={control}
-                    size="small"
-                    sx={{
-                      minWidth: 100,
-                    }}
-                  />
-                  <AutocompleteElement
-                    label="Unit"
-                    name={`ingredients.${index}.unit`}
-                    options={
-                      Object.entries(unitRecord).map(([unit, unitDetail]) => ({
-                        id: unit,
-                        label: unitDetail.name,
-                      })) ?? []
-                    }
-                    control={control}
-                    matchId
-                    autocompleteProps={{
-                      size: 'small',
-                      autoHighlight: true,
-                      disableClearable: true,
-                      sx: {
-                        minWidth: 150,
-                      },
-                    }}
-                  />
-                  <Controller
-                    control={control}
-                    name={`ingredients.${index}.food`}
-                    rules={{
-                      required: 'Required',
-                    }}
-                    render={({ field: { ref, onChange, ...field } }) => (
-                      <Autocomplete
-                        {...field}
-                        freeSolo
-                        fullWidth
-                        selectOnFocus
-                        clearOnBlur
-                        handleHomeEndKeys
-                        autoHighlight
-                        size="small"
-                        options={foodOptions}
-                        getOptionLabel={(option) => {
-                          // Value selected with enter, right from the input
-                          if (typeof option === 'string') {
-                            return option;
-                          }
-                          // Add "xxx" option created dynamically
-                          if (option.inputValue) {
-                            return option.inputValue;
-                          }
-                          // Regular option
-                          return option.name;
-                        }}
-                        onChange={(_event, newValue) => {
-                          if (typeof newValue === 'string') {
-                            onChange({
-                              name: newValue,
-                            });
-                          } else if (newValue && newValue.inputValue) {
-                            // Create a new value from the user input
-                            onChange({
-                              name: newValue.inputValue,
-                            });
-                          } else {
-                            onChange(newValue);
-                          }
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Tab') {
-                            appendIngredient({
-                              food: {
-                                name: '',
-                              },
-                              unit: null,
-                              amount: null,
-                              notes: null,
-                            });
+                <Grid container key={field.id} spacing={1}>
+                  <Grid xs={6} sm="auto">
+                    <TextFieldElement
+                      label="Amount"
+                      name={`ingredients.${index}.amount`}
+                      id={`ingredients.${index}.amount`}
+                      type="number"
+                      control={control}
+                      size="small"
+                      fullWidth
+                      sx={{
+                        width: { xs: undefined, sm: 115 },
+                      }}
+                    />
+                  </Grid>
+                  <Grid xs={6} sm="auto">
+                    <AutocompleteElement
+                      label="Unit"
+                      name={`ingredients.${index}.unit`}
+                      options={
+                        Object.entries(unitRecord).map(
+                          ([unit, unitDetail]) => ({
+                            id: unit,
+                            label: unitDetail.abbreviation ?? unitDetail.name,
+                          }),
+                        ) ?? []
+                      }
+                      control={control}
+                      matchId
+                      autocompleteProps={{
+                        fullWidth: true,
+                        size: 'small',
+                        autoHighlight: true,
+                        disableClearable: true,
+                        sx: {
+                          width: { xs: undefined, sm: 115 },
+                        },
+                      }}
+                    />
+                  </Grid>
+                  <Grid xs={true}>
+                    <Controller
+                      control={control}
+                      name={`ingredients.${index}.food`}
+                      rules={{
+                        required: 'Required',
+                      }}
+                      render={({ field: { ref, onChange, ...field } }) => (
+                        <Autocomplete
+                          {...field}
+                          freeSolo
+                          fullWidth
+                          selectOnFocus
+                          clearOnBlur
+                          handleHomeEndKeys
+                          autoHighlight
+                          size="small"
+                          options={foodOptions}
+                          getOptionLabel={(option) => {
+                            // Value selected with enter, right from the input
+                            if (typeof option === 'string') {
+                              return option;
+                            }
+                            // Add "xxx" option created dynamically
+                            if (option.inputValue) {
+                              return option.inputValue;
+                            }
+                            // Regular option
+                            return option.name;
+                          }}
+                          onChange={(_event, newValue) => {
+                            if (typeof newValue === 'string') {
+                              onChange({
+                                name: newValue,
+                              });
+                            } else if (newValue && newValue.inputValue) {
+                              // Create a new value from the user input
+                              onChange({
+                                name: newValue.inputValue,
+                              });
+                            } else {
+                              onChange(newValue);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Tab') {
+                              appendIngredient({
+                                food: {
+                                  name: '',
+                                },
+                                unit: null,
+                                amount: null,
+                                notes: null,
+                              });
 
-                            // run this code in 50ms
-                            setTimeout(() => {
-                              document
-                                .getElementById(
-                                  `ingredients.${index + 1}.amount`,
-                                )
-                                ?.focus();
-                            }, 50);
-                          }
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            inputRef={ref}
-                            required
-                            label="Food"
-                          />
-                        )}
-                        renderOption={(props, option) => (
-                          <li {...props}>{option.name}</li>
-                        )}
-                      />
-                    )}
-                  />
-                  <TextFieldElement
-                    label="Notes"
-                    name={`ingredients.${index}.notes`}
-                    control={control}
-                    size="small"
-                    multiline
-                    sx={{
-                      minWidth: 200,
-                    }}
-                  />
-                  <IconButton
-                    onClick={() => {
-                      removeIngredient(index);
-                    }}
-                  >
-                    <DeleteRoundedIcon />
-                  </IconButton>
-                </Stack>
+                              // run this code in 50ms
+                              setTimeout(() => {
+                                document
+                                  .getElementById(
+                                    `ingredients.${index + 1}.amount`,
+                                  )
+                                  ?.focus();
+                              }, 50);
+                            }
+                          }}
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              inputRef={ref}
+                              required
+                              label="Food"
+                            />
+                          )}
+                          renderOption={(props, option) => (
+                            <li {...props}>{option.name}</li>
+                          )}
+                        />
+                      )}
+                    />
+                  </Grid>
+                  <Grid xs="auto" display="flex" alignItems="center">
+                    <IngredientNotesButton ingredientIndex={index} />
+                    <IconButton
+                      onClick={() => {
+                        removeIngredient(index);
+                      }}
+                    >
+                      <DeleteRoundedIcon />
+                    </IconButton>
+                  </Grid>
+                </Grid>
               );
             })}
           </Stack>
@@ -453,7 +453,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           {usesRecipes.length > 0 && (
             <Grid container spacing={2} sx={{ mb: 3 }}>
               {usesRecipes.map((usesRecipe, index) => (
-                <Grid item key={usesRecipe.recipeId} xs={12} md={4} lg={3}>
+                <Grid key={usesRecipe.recipeId} xs={12} md={4} lg={3}>
                   <RequiredRecipeCard
                     recipeId={usesRecipe.recipeId}
                     onRemove={() => {

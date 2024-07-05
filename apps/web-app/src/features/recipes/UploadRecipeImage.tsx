@@ -1,3 +1,4 @@
+import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import { Box, Button, type SxProps, type Theme } from '@mui/material';
 import { useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form-mui';
@@ -8,7 +9,7 @@ interface Props {
   sx?: SxProps<Theme>;
 }
 
-export function CreateRecipeImage({ sx = [] }: Props) {
+export function UploadRecipeImage({ sx = [] }: Props) {
   const { control, setValue, getValues } = useFormContext<RecipeFormInputs>();
   const image = useWatch({
     control,
@@ -20,13 +21,29 @@ export function CreateRecipeImage({ sx = [] }: Props) {
   if (!image) {
     return (
       <Box sx={sx}>
-        <Button
-          onClick={() => {
-            setUploadImageDialogOpen(true);
+        <Box
+          sx={{
+            width: 200,
+            height: 100,
+            borderRadius: 1,
+            border: 2,
+            borderStyle: 'dashed',
+            borderColor: 'divider',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
           }}
         >
-          Upload image
-        </Button>
+          <Button
+            startIcon={<UploadRoundedIcon />}
+            onClick={() => {
+              setUploadImageDialogOpen(true);
+            }}
+          >
+            Upload image
+          </Button>
+        </Box>
         <UploadImageDialog
           open={uploadImageDialogOpen}
           onClose={(image) => {

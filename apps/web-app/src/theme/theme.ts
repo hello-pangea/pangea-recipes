@@ -3,30 +3,30 @@ import { alpha, createTheme } from '@mui/material/styles';
 export const theme = createTheme({
   palette: {
     primary: {
-      main: '#1e66f5',
+      main: '#2E86C1',
     },
     secondary: {
-      main: '#8839ef',
+      main: '#F7DC6F',
     },
     success: {
-      main: '#40a02b',
+      main: '#58D68D',
     },
     warning: {
       main: '#df8e1d',
     },
     error: {
-      main: '#d20f39',
+      main: '#E74C3C',
     },
     background: {
-      paper: '#e6e9ef',
-      default: '#eff1f5',
+      paper: '#F8F9F9',
+      default: '#FDFEFE',
     },
     text: {
-      primary: '#4c4f69',
-      secondary: '#5c5f77',
+      primary: '#2C3E50',
+      secondary: '#7F8C8D',
       disabled: '#6c6f85',
     },
-    divider: alpha('#4c4f69', 0.18),
+    divider: alpha('#2C3E50', 0.18),
   },
   typography: {
     fontFamily: '"Inter Variable", sans-serif',
@@ -131,5 +131,71 @@ export const theme = createTheme({
         noSsr: true,
       },
     },
+    MuiDialogTitle: {
+      defaultProps: {
+        variant: 'h2',
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          borderRadius: 4,
+        },
+      },
+    },
   },
 });
+
+// Fall colors
+// primary: {
+//   main: '#994636',
+// },
+// secondary: {
+//   main: '#36558F',
+// },
+// success: {
+//   main: '#688E26',
+// },
+// warning: {
+//   main: '#df8e1d',
+// },
+// error: {
+//   main: '#d20f39',
+// },
+// background: {
+//   paper: '#F3ECE2',
+//   default: '#fdf6ec',
+// },
+// text: {
+//   primary: '#242423',
+//   secondary: '#373F47',
+//   disabled: '#6c6f85',
+// },
+// divider: alpha('#4c4f69', 0.18),
+
+// Light blue colors
+// primary: {
+//   main: '#2E86C1',
+// },
+// secondary: {
+//   main: '#F7DC6F',
+// },
+// success: {
+//   main: '#58D68D',
+// },
+// warning: {
+//   main: '#df8e1d',
+// },
+// error: {
+//   main: '#E74C3C',
+// },
+// background: {
+//   paper: '#F8F9F9',
+//   default: '#FDFEFE',
+// },
+// text: {
+//   primary: '#2C3E50',
+//   secondary: '#7F8C8D',
+//   disabled: '#6c6f85',
+// },
+// divider: alpha('#2C3E50', 0.18),
