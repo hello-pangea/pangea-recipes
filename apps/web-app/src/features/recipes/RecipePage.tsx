@@ -4,12 +4,12 @@ import {
   Box,
   Checkbox,
   Chip,
-  Grid,
   IconButton,
   Link,
   Stack,
   Typography,
 } from '@mui/material';
+import Grid from '@mui/material/Unstable_Grid2';
 import {
   getRecipeQueryOptions,
   numberToFraction,
@@ -41,7 +41,7 @@ export function RecipePage() {
   return (
     <Box sx={{ p: 3, mt: 2 }}>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        <Grid item xs={6}>
+        <Grid xs={6}>
           <Box
             sx={{
               display: 'flex',
@@ -85,7 +85,7 @@ export function RecipePage() {
           </Stack>
           <Typography>{recipe.description}</Typography>
         </Grid>
-        <Grid item xs={6}>
+        <Grid xs={6}>
           <Box
             sx={{
               boxShadow:
@@ -106,75 +106,92 @@ export function RecipePage() {
           </Box>
         </Grid>
       </Grid>
-      <Typography variant="h2" sx={{ mb: 1 }}>
-        Ingredients
-      </Typography>
-      <Box component="ul" sx={{ mb: 4 }}>
-        {recipe.ingredients.map((ingredient) => (
-          <Box component={'li'} key={ingredient.id}>
-            <Checkbox
-              size="small"
-              sx={{ p: 0.75, mr: 0.5, '& .MuiSvgIcon-root': { fontSize: 18 } }}
-            />
-            {ingredient.amount !== null && (
-              <b>{numberToFraction(ingredient.amount)}</b>
-            )}{' '}
-            {ingredient.unit && unitRecord[ingredient.unit]?.name}{' '}
-            {ingredient.food.name}
-            {ingredient.notes && (
-              <Typography
-                component={'span'}
-                sx={{
-                  color: (theme) => theme.palette.text.secondary,
-                  ml: 1,
-                  fontWeight: 300,
-                }}
-              >
-                {ingredient.notes}
-              </Typography>
-            )}
-          </Box>
-        ))}
-      </Box>
-      <Typography variant="h2" sx={{ mb: 2 }}>
-        Instructions
-      </Typography>
-      <Stack component={'ol'} spacing={4} sx={{ maxWidth: '500px' }}>
-        {recipe.instructionGroups.map((instructionGroup, index) => (
-          <Box component={'li'} key={index}>
-            <Typography variant="h3" sx={{ mb: 2 }}>
-              {instructionGroup.title}
-            </Typography>
-            <Stack component={'ol'} spacing={2} sx={{ maxWidth: '500px' }}>
-              {instructionGroup.instructions.map((instruction, index) => (
-                <Box
-                  component={'li'}
-                  key={instruction.id}
-                  sx={{ display: 'flex' }}
-                >
-                  <Typography
-                    variant="h1"
-                    component="p"
-                    sx={{
-                      minWidth: 45,
-                      color: (theme) => theme.palette.text.secondary,
-                    }}
-                  >
-                    {index + 1}.
-                  </Typography>
-                  <Typography
-                    sx={{
-                      whiteSpace: 'pre-wrap',
-                    }}
-                  >
-                    {instruction.text}
-                  </Typography>
+      <Grid container spacing={2}>
+        <Grid xs={12} sm={6}>
+          <Typography variant="h2" sx={{ mb: 2 }}>
+            Ingredients
+          </Typography>
+          <Box component="ul" sx={{ mb: 4 }}>
+            {recipe.ingredients.map((ingredient) => (
+              <Box component={'li'} key={ingredient.id}>
+                <Checkbox
+                  sx={{
+                    p: 0.75,
+                    mr: 1,
+                  }}
+                />
+                <Box sx={{ mr: 2, display: 'inline' }}>
+                  <img
+                    width={24}
+                    height={24}
+                    src={ingredient.food.iconUrl ?? '/assets/ingredients.svg'}
+                  />
                 </Box>
-              ))}
-            </Stack>
+                {ingredient.amount !== null && (
+                  <b>{numberToFraction(ingredient.amount)}</b>
+                )}{' '}
+                {ingredient.unit && unitRecord[ingredient.unit]?.name}{' '}
+                {ingredient.food.name}
+                {ingredient.notes && (
+                  <Typography
+                    component={'span'}
+                    sx={{
+                      color: (theme) => theme.palette.text.secondary,
+                      ml: 1,
+                      fontWeight: 300,
+                    }}
+                  >
+                    ({ingredient.notes})
+                  </Typography>
+                )}
+              </Box>
+            ))}
           </Box>
-        ))}
-      </Stack>
+        </Grid>
+        <Grid xs={12} sm={6}>
+          <Typography variant="h2" sx={{ mb: 2 }}>
+            Instructions
+          </Typography>
+          <Stack component={'ol'} spacing={4} sx={{ maxWidth: '500px' }}>
+            {recipe.instructionGroups.map((instructionGroup, index) => (
+              <Box component={'li'} key={index}>
+                {instructionGroup.title && (
+                  <Typography variant="h3" sx={{ mb: 2 }}>
+                    {instructionGroup.title}
+                  </Typography>
+                )}
+                <Stack component={'ol'} spacing={2} sx={{ maxWidth: '500px' }}>
+                  {instructionGroup.instructions.map((instruction, index) => (
+                    <Box
+                      component={'li'}
+                      key={instruction.id}
+                      sx={{ display: 'flex' }}
+                    >
+                      <Typography
+                        variant="h1"
+                        component="p"
+                        sx={{
+                          minWidth: 45,
+                          color: (theme) => theme.palette.text.secondary,
+                        }}
+                      >
+                        {index + 1}.
+                      </Typography>
+                      <Typography
+                        sx={{
+                          whiteSpace: 'pre-wrap',
+                        }}
+                      >
+                        {instruction.text}
+                      </Typography>
+                    </Box>
+                  ))}
+                </Stack>
+              </Box>
+            ))}
+          </Stack>
+        </Grid>
+      </Grid>
       <RecipeMoreMenu
         recipeId={recipe.id}
         anchorEl={moreMenuAnchorEl}

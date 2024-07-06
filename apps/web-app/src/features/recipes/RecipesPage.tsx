@@ -2,11 +2,16 @@ import { ButtonLink } from '#src/components/ButtonLink';
 import { LoadingPage } from '#src/components/LoadingPage';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Box, Grid, Typography } from '@mui/material';
-import { useRecipes } from '@open-zero/features';
+import { useRecipes, useSignedInUser } from '@open-zero/features';
 import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {
-  const recipesQuery = useRecipes();
+  const userQuery = useSignedInUser();
+  const recipesQuery = useRecipes({
+    options: {
+      userId: userQuery.data?.user?.id ?? '',
+    },
+  });
 
   if (recipesQuery.isPending) {
     return <LoadingPage message="Loading recipes" />;

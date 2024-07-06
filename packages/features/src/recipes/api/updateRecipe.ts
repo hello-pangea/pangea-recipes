@@ -23,7 +23,7 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
   return useMutation({
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({
-        queryKey: getListRecipesQueryOptions().queryKey,
+        queryKey: getListRecipesQueryOptions({ userId: '' }).queryKey,
       });
 
       onSuccess?.(...args);

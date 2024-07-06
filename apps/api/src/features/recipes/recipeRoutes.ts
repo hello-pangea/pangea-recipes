@@ -140,6 +140,9 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List recipes',
+        querystring: Type.Object({
+          userId: Type.String({ format: 'uuid' }),
+        }),
         response: {
           200: Type.Object({
             recipes: Type.Array(recipeProjectedSchema),
@@ -147,8 +150,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         },
       },
     },
-    async () => {
+    async (request) => {
+      const { userId } = request.query;
+
       const recipes = await prisma.recipe.findMany({
+        where: {
+          userId: userId,
+        },
         include: {
           images: {
             include: {
@@ -199,7 +207,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         include: {
           ingredients: {
             include: {
-              food: true,
+              food: {
+                include: {
+                  icon: true,
+                },
+              },
             },
           },
           instructionGroups: {
@@ -227,6 +239,15 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: image.image.id,
           url: getFileUrl(image.image.key),
           favorite: image.favorite ?? false,
+        })),
+        ingredients: recipe.ingredients.map((ingredient) => ({
+          ...ingredient,
+          food: {
+            ...ingredient.food,
+            iconUrl: ingredient.food.icon
+              ? getFileUrl(ingredient.food.icon.key)
+              : undefined,
+          },
         })),
       };
 
