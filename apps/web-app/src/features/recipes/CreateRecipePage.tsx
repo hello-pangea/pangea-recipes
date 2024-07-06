@@ -20,6 +20,7 @@ import {
   useCreateRecipe,
   useFoods,
   useRecipes,
+  useSignedInUser,
   useUpdateRecipe,
   type Unit,
 } from '@open-zero/features';
@@ -89,6 +90,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       instructionGroups: [],
     },
   });
+  const userQuery = useSignedInUser();
   const { handleSubmit, control, reset } = form;
   const {
     fields: ingredients,
@@ -126,7 +128,11 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       };
     }) ?? [];
 
-  const recipesQuery = useRecipes();
+  const recipesQuery = useRecipes({
+    options: {
+      userId: userQuery.data?.user?.id ?? '',
+    },
+  });
 
   const recipeCreator = useCreateRecipe({
     mutationConfig: {
