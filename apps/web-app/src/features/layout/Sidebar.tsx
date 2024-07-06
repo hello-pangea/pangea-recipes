@@ -1,4 +1,5 @@
 import { ButtonLink } from '#src/components/ButtonLink';
+import { CarrotIcon } from '#src/components/CarrotIcon';
 import { ListItemButtonLink } from '#src/components/ListItemButtonLink';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
@@ -57,6 +58,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             icon={<RestaurantMenuRoundedIcon />}
             label="Recipes"
           />
+          <ListItem to="/foods" icon={<CarrotIcon />} label="Foods" />
           {/* <Tooltip title="Coming soon" arrow placement="right">
             <span>
               <ListItem

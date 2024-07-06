@@ -44,6 +44,7 @@ interface FoodOption {
   inputValue?: string;
   name: string;
   id?: string;
+  iconUrl?: string;
 }
 
 export interface RecipeFormInputs {
@@ -121,6 +122,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       return {
         name: f.name,
         id: f.id,
+        iconUrl: f.iconUrl,
       };
     }) ?? [];
 
@@ -370,7 +372,19 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                             />
                           )}
                           renderOption={(props, option) => (
-                            <li {...props}>{option.name}</li>
+                            <li {...props}>
+                              {option.iconUrl ? (
+                                <img
+                                  width={16}
+                                  height={16}
+                                  src={option.iconUrl}
+                                  style={{ marginRight: 8 }}
+                                />
+                              ) : (
+                                <Box sx={{ width: 16, mr: 1 }} />
+                              )}
+                              {option.name}
+                            </li>
                           )}
                         />
                       )}

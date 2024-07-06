@@ -1,3 +1,4 @@
+import { type User } from '@open-zero/features';
 import { type Env } from './src/config/config.js';
 
 declare global {
@@ -9,7 +10,11 @@ declare global {
 
 declare module 'fastify' {
   interface FastifyRequest {
-    session?: { userId: string; id: string } | null;
+    session?: {
+      userId: string;
+      id: string;
+      accessRole: User['accessRole'];
+    } | null;
   }
 }
 

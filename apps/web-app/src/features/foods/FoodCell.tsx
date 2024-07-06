@@ -7,6 +7,7 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  Stack,
   Typography,
 } from '@mui/material';
 import { useDeleteFood, type Food } from '@open-zero/features';
@@ -37,7 +38,22 @@ export function FoodCell({ food }: Props) {
           width: '100%',
         }}
       >
-        <Typography variant="body1">{food.pluralName || food.name}</Typography>
+        <Stack direction="row" alignItems="center" spacing={1}>
+          {food.iconUrl && (
+            <img
+              src={food.iconUrl}
+              alt={food.pluralName || food.name}
+              style={{
+                width: 20,
+                height: 20,
+                marginRight: 1,
+              }}
+            />
+          )}
+          <Typography variant="body1">
+            {food.pluralName || food.name}
+          </Typography>
+        </Stack>
         <IconButton
           id="more-button"
           aria-controls={moreMenuOpen ? 'more-menu' : undefined}

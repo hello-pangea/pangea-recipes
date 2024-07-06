@@ -1,4 +1,3 @@
-import type { Prisma } from '@prisma/client';
 import { Type, type Static } from '@sinclair/typebox';
 
 export type Food = Static<typeof foodSchema>;
@@ -14,10 +13,7 @@ export const foodSchema = Type.Object(
     name: Type.String(),
     pluralName: Type.Union([Type.Null(), Type.String()]),
 
-    density: Type.Union([
-      Type.Null(),
-      Type.Unsafe<Prisma.Decimal>(Type.Number()),
-    ]),
+    iconUrl: Type.Optional(Type.String({ format: 'uri' })),
   },
   { $id: 'Food' },
 );

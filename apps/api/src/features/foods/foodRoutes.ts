@@ -1,7 +1,12 @@
 import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { createFoodDtoScema, foodSchemaRef } from '@open-zero/features';
+import {
+  createFoodDtoScema,
+  foodSchemaRef,
+  type Food,
+} from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
+import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';
 
 const routeTag = 'Foods';
@@ -22,12 +27,22 @@ export async function foodRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { name, pluralName } = request.body;
+      const { name, pluralName, iconId } = request.body;
+
+      const isAdmin = request.session?.accessRole === 'admin';
 
       const food = await prisma.food.create({
         data: {
           name: name,
           pluralName: pluralName ?? null,
+          isOfficial: isAdmin,
+          icon: iconId
+            ? {
+                connect: {
+                  id: iconId,
+                },
+              }
+            : undefined,
         },
       });
 
@@ -51,10 +66,21 @@ export async function foodRoutes(fastify: FastifyTypebox) {
       },
     },
     async () => {
-      const foods = await prisma.food.findMany({});
+      const foods = await prisma.food.findMany({
+        include: {
+          icon: true,
+        },
+      });
+
+      const foodsWithIcon: Food[] = foods.map((food) => {
+        return {
+          ...food,
+          iconUrl: food.icon ? getFileUrl(food.icon.key) : undefined,
+        };
+      });
 
       return {
-        foods: foods,
+        foods: foodsWithIcon,
       };
     },
   );

@@ -8,6 +8,7 @@ import {
   type Recipe,
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
+import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';
 
 const routeTag = 'Recipes';
@@ -39,8 +40,15 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         usesRecipes,
       } = request.body;
 
+      const userId = request.session?.userId;
+
+      if (!userId) {
+        throw new Error('User not authenticated');
+      }
+
       const recipe = await prisma.recipe.create({
         data: {
+          userId: userId,
           name: name,
           description: description ?? null,
           prepTime: prepTime,
@@ -115,7 +123,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
         images: recipe.images.map((image) => ({
           id: image.image.id,
-          url: image.image.url,
+          url: getFileUrl(image.image.key),
           favorite: image.favorite ?? false,
         })),
       };
@@ -154,7 +162,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         ...recipe,
         images: recipe.images.map((image) => ({
           id: image.image.id,
-          url: image.image.url,
+          url: getFileUrl(image.image.key),
           favorite: image.favorite ?? false,
         })),
       }));
@@ -217,7 +225,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
         images: recipe.images.map((image) => ({
           id: image.image.id,
-          url: image.image.url,
+          url: getFileUrl(image.image.key),
           favorite: image.favorite ?? false,
         })),
       };
@@ -336,7 +344,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
         images: recipe.images.map((image) => ({
           id: image.image.id,
-          url: image.image.url,
+          url: getFileUrl(image.image.key),
           favorite: image.favorite ?? false,
         })),
       };

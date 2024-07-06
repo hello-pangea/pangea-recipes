@@ -1,7 +1,7 @@
 import '#src/theme/theme.css';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/merriweather-sans';
-import { setApi } from '@open-zero/features';
+import { updateApiOptions } from '@open-zero/features';
 import { QueryClient } from '@tanstack/react-query';
 import { RouterProvider, createRouter } from '@tanstack/react-router';
 import { StrictMode } from 'react';
@@ -10,7 +10,7 @@ import { config } from './config/config';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
 
-setApi({ prefixUrl: config.VITE_API_URL });
+updateApiOptions({ prefixUrl: config.VITE_API_URL, credentials: 'include' });
 const queryClient = new QueryClient();
 
 const router = createRouter({

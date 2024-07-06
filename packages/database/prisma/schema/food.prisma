@@ -4,28 +4,14 @@ model Food {
   createdAt DateTime @default(now()) @map("created_at")
 
   name       String
-  pluralName String?  @map("plural_name")
-  /// The density of the ingredient in kilograms / cubic meter
-  density    Decimal?
+  pluralName String? @map("plural_name")
 
-  substitutions  Substitution[] @relation("FromFood")
-  substitutedFor Substitution[] @relation("ToFood")
-  ingredients    Ingredient[]
+  iconId String? @map("icon_id") @db.Uuid
+  icon   Image?  @relation(fields: [iconId], references: [id])
+
+  isOfficial Boolean @default(false) @map("is_official")
+
+  ingredients Ingredient[]
 
   @@map("foods")
-}
-
-model Substitution {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  createdAt DateTime @default(now()) @map("created_at")
-
-  fromFood   Food   @relation("FromFood", fields: [fromFoodId], references: [id])
-  fromFoodId String @map("from_food_id") @db.Uuid
-
-  toFood   Food   @relation("ToFood", fields: [toFoodId], references: [id])
-  toFoodId String @db.Uuid
-
-  notes String?
-
-  @@map("substitutions")
 }

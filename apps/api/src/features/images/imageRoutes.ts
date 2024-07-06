@@ -41,26 +41,15 @@ export async function imageRoutes(fastify: FastifyTypebox) {
 
       const sharpInstance = sharp(originalBuffer);
 
-      const originalImageFileName = `${crypto.randomUUID()}.jpg`;
+      const originalImageKey = `images/original/${crypto.randomUUID()}.jpg`;
 
       const rotatedImage = await sharpInstance.rotate().toBuffer();
 
       await uploadFile({
         buffer: rotatedImage,
-        fileName: originalImageFileName,
+        key: originalImageKey,
         mimeType: file.mimetype,
       });
-
-      const originalImageUrl = `https://assets.hellorecipes.com/${originalImageFileName}`;
-
-      const modifiedMetadata = await sharpInstance.metadata();
-
-      if (
-        modifiedMetadata.width === undefined ||
-        modifiedMetadata.height === undefined
-      ) {
-        throw new Error('Invalid image metadata');
-      }
 
       const modifiedBuffer = await sharpInstance
         .rotate()
@@ -68,34 +57,70 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         .jpeg()
         .toBuffer();
 
-      const modifiedImageFileName = `${crypto.randomUUID()}.jpg`;
+      const modifiedImageKey = `images/transformed${crypto.randomUUID()}.jpg`;
 
       await uploadFile({
         buffer: modifiedBuffer,
-        fileName: modifiedImageFileName,
+        key: modifiedImageKey,
         mimeType: 'image/jpeg',
       });
 
-      const modifiedImageUrl = `https://assets.hellorecipes.com/${modifiedImageFileName}`;
+      const modifiedImageUrl = `https://assets.hellorecipes.com/${modifiedImageKey}`;
 
       const image = await prisma.image.create({
         data: {
-          url: modifiedImageUrl,
-          originalUrl: originalImageUrl,
-          height:
-            (modifiedMetadata.orientation ?? 0) >= 5
-              ? modifiedMetadata.width
-              : modifiedMetadata.height,
-          width:
-            (modifiedMetadata.orientation ?? 0) >= 5
-              ? modifiedMetadata.height
-              : modifiedMetadata.width,
+          key: modifiedImageKey,
+          originalKey: originalImageKey,
         },
       });
 
       return {
         image_id: image.id,
         image_url: modifiedImageUrl,
+      };
+    },
+  );
+
+  fastify.post(
+    '/food-icon',
+    {
+      schema: {
+        tags: [routeTag],
+        consumes: ['multipart/form-data'],
+        body: Type.Object({
+          file: Type.Unsafe<MultipartFile>({
+            isFile: true,
+          }),
+        }),
+        response: {
+          200: Type.Object({
+            image_id: Type.String({ format: 'uuid' }),
+            image_url: Type.String(),
+          }),
+        },
+      },
+    },
+    async (request) => {
+      const file = request.body.file;
+      const originalBuffer = await file.toBuffer();
+
+      const imageKey = `food-icons/${crypto.randomUUID()}.svg`;
+
+      await uploadFile({
+        buffer: originalBuffer,
+        key: imageKey,
+        mimeType: file.mimetype,
+      });
+
+      const image = await prisma.image.create({
+        data: {
+          key: imageKey,
+        },
+      });
+
+      return {
+        image_id: image.id,
+        image_url: imageKey,
       };
     },
   );

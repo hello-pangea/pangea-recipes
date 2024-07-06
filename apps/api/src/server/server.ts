@@ -135,6 +135,7 @@ export async function createServer() {
           ? {
               id: session.id,
               userId: user.id,
+              accessRole: user.accessRole,
             }
           : null;
 

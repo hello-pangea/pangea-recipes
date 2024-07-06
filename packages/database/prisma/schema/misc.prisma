@@ -2,13 +2,14 @@ model Image {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  url         String
-  originalUrl String @map("original_url")
+  key         String
+  originalKey String? @map("original_key")
 
-  width  Int
-  height Int
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String? @map("user_id") @db.Uuid
 
   recipeImages RecipeImage[]
+  foods        Food[]
 
   @@map("images")
 }

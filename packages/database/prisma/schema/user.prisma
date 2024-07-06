@@ -6,7 +6,11 @@ model User {
   name           String?
   hashedPassword String  @map("hashed_password")
 
+  accessRole AccessRole @map("access_role")
+
   sessions Session[]
+  recipes  Recipe[]
+  images   Image[]
 
   @@map("users")
 }
@@ -19,4 +23,9 @@ model Session {
   user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
 
   @@map("sessions")
+}
+
+enum AccessRole {
+  user
+  admin
 }

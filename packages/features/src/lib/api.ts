@@ -1,7 +1,10 @@
-import ky from 'ky';
+import ky, { type Options } from 'ky';
 
-export let api = ky.create({ prefixUrl: 'http://localhost:3001' });
+export let api = ky.create({
+  prefixUrl: 'http://localhost:3001',
+  credentials: 'include',
+});
 
-export function setApi(data: { prefixUrl: string }) {
-  api = ky.create(data);
+export function updateApiOptions(options: Options) {
+  api = ky.extend(options);
 }

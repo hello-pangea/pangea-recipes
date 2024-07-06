@@ -17,8 +17,10 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as LayoutAccountImport } from './routes/_layout.account'
 import { Route as LayoutRecipesIndexImport } from './routes/_layout.recipes.index'
+import { Route as LayoutFoodsIndexImport } from './routes/_layout.foods.index'
 import { Route as LayoutRecipesNewImport } from './routes/_layout.recipes.new'
 import { Route as LayoutRecipesRecipeIdImport } from './routes/_layout.recipes.$recipeId'
+import { Route as LayoutFoodsNewImport } from './routes/_layout.foods.new'
 import { Route as LayoutRecipesRecipeIdEditImport } from './routes/_layout.recipes_.$recipeId.edit'
 
 // Create Virtual Routes
@@ -58,6 +60,11 @@ const LayoutRecipesIndexRoute = LayoutRecipesIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutFoodsIndexRoute = LayoutFoodsIndexImport.update({
+  path: '/foods/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutRecipesNewRoute = LayoutRecipesNewImport.update({
   path: '/recipes/new',
   getParentRoute: () => LayoutRoute,
@@ -65,6 +72,11 @@ const LayoutRecipesNewRoute = LayoutRecipesNewImport.update({
 
 const LayoutRecipesRecipeIdRoute = LayoutRecipesRecipeIdImport.update({
   path: '/recipes/$recipeId',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutFoodsNewRoute = LayoutFoodsNewImport.update({
+  path: '/foods/new',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -112,6 +124,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAccountImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/foods/new': {
+      id: '/_layout/foods/new'
+      path: '/foods/new'
+      fullPath: '/foods/new'
+      preLoaderRoute: typeof LayoutFoodsNewImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/recipes/$recipeId': {
       id: '/_layout/recipes/$recipeId'
       path: '/recipes/$recipeId'
@@ -124,6 +143,13 @@ declare module '@tanstack/react-router' {
       path: '/recipes/new'
       fullPath: '/recipes/new'
       preLoaderRoute: typeof LayoutRecipesNewImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/foods/': {
+      id: '/_layout/foods/'
+      path: '/foods'
+      fullPath: '/foods'
+      preLoaderRoute: typeof LayoutFoodsIndexImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/recipes/': {
@@ -149,8 +175,10 @@ export const routeTree = rootRoute.addChildren({
   IndexRoute,
   LayoutRoute: LayoutRoute.addChildren({
     LayoutAccountRoute,
+    LayoutFoodsNewRoute,
     LayoutRecipesRecipeIdRoute,
     LayoutRecipesNewRoute,
+    LayoutFoodsIndexRoute,
     LayoutRecipesIndexRoute,
     LayoutRecipesRecipeIdEditRoute,
   }),
@@ -179,8 +207,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/account",
+        "/_layout/foods/new",
         "/_layout/recipes/$recipeId",
         "/_layout/recipes/new",
+        "/_layout/foods/",
         "/_layout/recipes/",
         "/_layout/recipes/$recipeId/edit"
       ]
@@ -195,12 +225,20 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "_layout.account.tsx",
       "parent": "/_layout"
     },
+    "/_layout/foods/new": {
+      "filePath": "_layout.foods.new.tsx",
+      "parent": "/_layout"
+    },
     "/_layout/recipes/$recipeId": {
       "filePath": "_layout.recipes.$recipeId.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes/new": {
       "filePath": "_layout.recipes.new.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/foods/": {
+      "filePath": "_layout.foods.index.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes/": {

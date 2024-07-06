@@ -15,13 +15,13 @@ const s3Client = new S3Client({
 });
 
 export function uploadFile(data: {
-  fileName: string;
+  key: string;
   buffer: Buffer;
   mimeType: string;
 }) {
   const uploadParams: PutObjectCommandInput = {
     Bucket: 'hello-recipes',
-    Key: data.fileName,
+    Key: data.key,
     Body: data.buffer,
     ContentType: data.mimeType,
   };
@@ -29,4 +29,8 @@ export function uploadFile(data: {
   const uploadCommand = new PutObjectCommand(uploadParams);
 
   return s3Client.send(uploadCommand);
+}
+
+export function getFileUrl(key: string) {
+  return `https://assets.hellorecipes.com/${key}`;
 }

@@ -14,6 +14,8 @@ export const userSchema = Type.Object(
     name: Nullable(Type.String()),
 
     email: Type.String(),
+
+    accessRole: Type.Union([Type.Literal('admin'), Type.Literal('user')]),
   },
   { $id: 'User' },
 );

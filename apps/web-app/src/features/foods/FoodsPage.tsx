@@ -1,6 +1,7 @@
+import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Button, Divider, Stack, Typography } from '@mui/material';
+import { Divider, Stack, Typography } from '@mui/material';
 import { useFoods } from '@open-zero/features';
 import { FoodCell } from './FoodCell';
 
@@ -12,15 +13,15 @@ export function FoodsPage() {
       <Typography variant="h1" sx={{ mb: 2 }}>
         Food
       </Typography>
-      <Button
+      <ButtonLink
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        href="/foods/new"
+        to="/foods/new"
         size="small"
       >
         New food
-      </Button>
+      </ButtonLink>
       <Stack
         divider={<Divider />}
         alignItems={'stretch'}

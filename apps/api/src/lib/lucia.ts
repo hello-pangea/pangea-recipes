@@ -1,4 +1,5 @@
 import { PrismaAdapter } from '@lucia-auth/adapter-prisma';
+import { type User } from '@open-zero/features';
 import { Lucia } from 'lucia';
 import { prisma } from './prisma.js';
 
@@ -15,6 +16,7 @@ export const lucia = new Lucia(adapter, {
     return {
       // we don't need to expose the hashed password!
       email: attributes.email,
+      accessRole: attributes.accessRole,
     };
   },
 });
@@ -24,6 +26,7 @@ declare module 'lucia' {
     Lucia: typeof lucia;
     DatabaseUserAttributes: {
       email: string;
+      accessRole: User['accessRole'];
     };
   }
 }

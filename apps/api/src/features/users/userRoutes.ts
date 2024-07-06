@@ -44,6 +44,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
           email: email,
           name: name,
           hashedPassword: hashedPasswordAndSalt,
+          accessRole: 'user',
         },
       });
 
