@@ -1,7 +1,6 @@
-import { theme } from '#src/theme/theme';
-import { CssBaseline, ThemeProvider } from '@mui/material';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { SnackbarProvider } from 'notistack';
+import { ThemeProvider } from './ThemeProvider';
 
 interface Props {
   queryClient: QueryClient;
@@ -12,10 +11,7 @@ export function AppProviders({ children, queryClient }: Props) {
   return (
     <QueryClientProvider client={queryClient}>
       <SnackbarProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          {children}
-        </ThemeProvider>
+        <ThemeProvider>{children}</ThemeProvider>
       </SnackbarProvider>
     </QueryClientProvider>
   );

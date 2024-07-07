@@ -3,6 +3,7 @@ import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import {
   signInUserDtoSchema,
   signUpUserDtoSchema,
+  updateUserDtoSchema,
   userSchemaRef,
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
@@ -217,6 +218,44 @@ export async function userRoutes(fastify: FastifyTypebox) {
 
       return {
         user: user,
+      };
+    },
+  );
+
+  fastify.patch(
+    '/:userId',
+    {
+      schema: {
+        tags: [routeTag],
+        summary: 'Update a user',
+        params: Type.Object({
+          userId: Type.String({ format: 'uuid' }),
+        }),
+        body: updateUserDtoSchema,
+        response: {
+          200: Type.Object({
+            user: userSchemaRef,
+          }),
+        },
+      },
+    },
+    async (request) => {
+      const { themePreference } = request.body;
+      const { userId } = request.params;
+
+      const user = await prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          themePreference: themePreference,
+        },
+      });
+
+      const { hashedPassword: _, ...sanitizedUser } = user;
+
+      return {
+        user: sanitizedUser,
       };
     },
   );

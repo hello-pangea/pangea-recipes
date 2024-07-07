@@ -11,9 +11,9 @@ export function getSignedInUser() {
     .then((res) => res.json<{ user: User | null }>());
 }
 
-function getSignedInUserQueryOptions() {
+export function getSignedInUserQueryOptions() {
   return queryOptions({
-    queryKey: [],
+    queryKey: ['current_user'],
     queryFn: () => getSignedInUser(),
   });
 }

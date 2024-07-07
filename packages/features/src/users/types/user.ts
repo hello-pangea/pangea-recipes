@@ -16,6 +16,14 @@ export const userSchema = Type.Object(
     email: Type.String(),
 
     accessRole: Type.Union([Type.Literal('admin'), Type.Literal('user')]),
+
+    themePreference: Type.Union([
+      Type.Literal('light'),
+      Type.Literal('dark'),
+      Type.Literal('system'),
+      Type.Literal('autumn'),
+      Type.Literal('mint'),
+    ]),
   },
   { $id: 'User' },
 );

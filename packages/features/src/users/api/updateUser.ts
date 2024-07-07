@@ -1,0 +1,34 @@
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '../../lib/api.js';
+import type { MutationConfig } from '../../lib/tanstackQuery.js';
+import type { UpdateUserDto } from '../types/updateUserDto.js';
+import type { User } from '../types/user.js';
+import { getSignedInUserQueryOptions } from './getSignedInUser.js';
+
+function updateUser(data: UpdateUserDto & { id: string }) {
+  return api
+    .patch(`users/${data.id}`, { json: data })
+    .then((res) => res.json<{ user: User }>());
+}
+
+interface Options {
+  mutationConfig?: MutationConfig<typeof updateUser>;
+}
+
+export function useUpdateUser({ mutationConfig }: Options = {}) {
+  const queryClient = useQueryClient();
+
+  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+
+  return useMutation({
+    onSuccess: (...args) => {
+      void queryClient.invalidateQueries({
+        queryKey: getSignedInUserQueryOptions().queryKey,
+      });
+
+      onSuccess?.(...args);
+    },
+    ...restConfig,
+    mutationFn: updateUser,
+  });
+}

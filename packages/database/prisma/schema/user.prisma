@@ -8,6 +8,8 @@ model User {
 
   accessRole AccessRole @map("access_role")
 
+  themePreference ThemePreference @default(light) @map("theme_preference")
+
   sessions Session[]
   recipes  Recipe[]
   images   Image[]
@@ -28,4 +30,12 @@ model Session {
 enum AccessRole {
   user
   admin
+}
+
+enum ThemePreference {
+  light
+  dark
+  system
+  autumn
+  mint
 }
