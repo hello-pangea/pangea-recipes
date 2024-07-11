@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useAuthRequired } from '../auth/AuthProvider';
+import { useAuthRequired } from '../auth/useAuth';
 import { ThemeCard } from './ThemeCard';
 
 export function AccountPage() {

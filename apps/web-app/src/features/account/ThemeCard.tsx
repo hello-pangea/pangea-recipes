@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
 import { useUpdateUser, type User } from '@open-zero/features';
-import { useAuthRequired } from '../auth/AuthProvider';
+import { useAuthRequired } from '../auth/useAuth';
 
 interface Props {
   themeName: string;

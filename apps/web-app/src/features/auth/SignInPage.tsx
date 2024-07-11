@@ -6,7 +6,7 @@ import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router';
 import { useLayoutEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { useAuth } from './AuthProvider';
+import { useAuth } from './useAuth';
 
 const route = getRouteApi('/sign-in');
 

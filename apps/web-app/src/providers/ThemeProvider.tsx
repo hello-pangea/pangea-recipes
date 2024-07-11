@@ -1,4 +1,4 @@
-import { useAuth } from '#src/features/auth/AuthProvider';
+import { useAuth } from '#src/features/auth/useAuth';
 import { getThemeForMode } from '#src/theme/theme';
 import {
   CssBaseline,

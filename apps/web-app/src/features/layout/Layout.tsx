@@ -11,7 +11,7 @@ import {
 } from '@mui/material';
 import { Navigate, Outlet } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useAuth } from '../auth/AuthProvider';
+import { useAuth } from '../auth/useAuth';
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

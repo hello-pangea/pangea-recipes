@@ -34,7 +34,7 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
-import { useAuthRequired } from '../auth/AuthProvider';
+import { useAuthRequired } from '../auth/useAuth';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { IngredientNotesButton } from './IngredientNotesButton';

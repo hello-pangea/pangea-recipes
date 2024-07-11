@@ -3,7 +3,7 @@ import { LoadingPage } from '#src/components/LoadingPage';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Box, Grid, Typography } from '@mui/material';
 import { useRecipes } from '@open-zero/features';
-import { useAuthRequired } from '../auth/AuthProvider';
+import { useAuthRequired } from '../auth/useAuth';
 import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {

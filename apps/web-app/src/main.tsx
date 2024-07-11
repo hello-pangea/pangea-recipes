@@ -3,18 +3,18 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/merriweather-sans';
 import { updateApiOptions } from '@open-zero/features';
 import { QueryClient } from '@tanstack/react-query';
-import { RouterProvider, createRouter } from '@tanstack/react-router';
+import { createRouter } from '@tanstack/react-router';
 import { StrictMode, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
+import { InnerApp } from './App';
 import { config } from './config/config';
-import { useAuth } from './features/auth/AuthProvider';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
 
 updateApiOptions({ prefixUrl: config.VITE_API_URL, credentials: 'include' });
 const queryClient = new QueryClient();
 
-const router = createRouter({
+export const router = createRouter({
   routeTree,
   context: { queryClient, auth: undefined },
   defaultPreload: 'intent',
@@ -30,30 +30,6 @@ declare module '@tanstack/react-router' {
   }
 }
 
-function InnerApp() {
-  const auth = useAuth();
-
-  if (!auth.isLoaded) {
-    return null;
-  }
-
-  return (
-    <RouterProvider
-      router={router}
-      defaultPreload="intent"
-      context={{ auth }}
-    />
-  );
-}
-
-function App() {
-  return (
-    <AppProviders queryClient={queryClient}>
-      <InnerApp />
-    </AppProviders>
-  );
-}
-
 const rootElement = document.getElementById('root');
 
 if (!rootElement) {
@@ -66,7 +42,9 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <Suspense fallback={null}>
-        <App />
+        <AppProviders queryClient={queryClient}>
+          <InnerApp />
+        </AppProviders>
       </Suspense>
     </StrictMode>,
   );

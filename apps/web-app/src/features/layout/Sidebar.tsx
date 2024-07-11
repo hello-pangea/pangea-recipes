@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
-import { useAuthRequired } from '../auth/AuthProvider';
+import { useAuthRequired } from '../auth/useAuth';
 
 const drawerWidth = 240;
 
