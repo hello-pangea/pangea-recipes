@@ -7,7 +7,7 @@ import {
   DialogTitle,
   useTheme,
 } from '@mui/material';
-import Uppy from '@uppy/core';
+import Uppy, { type Meta } from '@uppy/core';
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 import { Dashboard } from '@uppy/react';
@@ -23,7 +23,7 @@ interface Props {
 export function UploadImageDialog({ open, onClose }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const [uppy] = useState(() =>
-    new Uppy({
+    new Uppy<Meta, { image_id: string; image_url: string }>({
       restrictions: {
         maxNumberOfFiles: 1,
         allowedFileTypes: ['image/*'],
@@ -31,14 +31,12 @@ export function UploadImageDialog({ open, onClose }: Props) {
     })
       .use(XHR, { endpoint: `${config.VITE_API_URL}/images` })
       .once('complete', (res) => {
-        uppy.cancelAll();
+        const uploadRes = res.successful?.at(0);
 
-        const uploadRes = res.successful.at(0);
-
-        if (uploadRes?.response) {
+        if (uploadRes?.response?.body) {
           const image = {
-            id: uploadRes.response.body['image_id'] as string,
-            url: uploadRes.response.body['image_url'] as string,
+            id: uploadRes.response.body.image_id,
+            url: uploadRes.response.body.image_url,
           };
 
           onClose(image);
@@ -53,6 +51,8 @@ export function UploadImageDialog({ open, onClose }: Props) {
             variant: 'error',
           });
         }
+
+        uppy.clear();
       }),
   );
 

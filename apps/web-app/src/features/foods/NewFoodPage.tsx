@@ -4,7 +4,7 @@ import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import { Stack, TextField, Typography, useTheme } from '@mui/material';
 import { useCreateFood } from '@open-zero/features';
-import Uppy from '@uppy/core';
+import Uppy, { type Meta } from '@uppy/core';
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
 import { Dashboard } from '@uppy/react';
@@ -34,7 +34,7 @@ export function NewFoodPage() {
     },
   });
   const [uppy] = useState(() =>
-    new Uppy({
+    new Uppy<Meta, { image_url: string; image_id: string }>({
       restrictions: {
         maxNumberOfFiles: 1,
         allowedFileTypes: ['image/*'],
@@ -42,14 +42,12 @@ export function NewFoodPage() {
     })
       .use(XHR, { endpoint: `${config.VITE_API_URL}/images/food-icon` })
       .once('complete', (res) => {
-        uppy.cancelAll();
+        const uploadRes = res.successful?.at(0);
 
-        const uploadRes = res.successful.at(0);
-
-        if (uploadRes?.response) {
+        if (uploadRes?.response?.body) {
           const image = {
-            id: uploadRes.response.body['image_id'] as string,
-            url: uploadRes.response.body['image_url'] as string,
+            id: uploadRes.response.body.image_id,
+            url: uploadRes.response.body.image_url,
           };
 
           setValue('iconId', image.id);
@@ -62,6 +60,8 @@ export function NewFoodPage() {
             variant: 'error',
           });
         }
+
+        uppy.clear();
       }),
   );
 
