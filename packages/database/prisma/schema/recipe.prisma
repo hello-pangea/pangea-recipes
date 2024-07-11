@@ -13,6 +13,8 @@ model Recipe {
   /// Amount in seconds
   prepTime Int? @map("prep_time")
 
+  originalUrl String? @map("original_url")
+
   ingredients       Ingredient[]
   instructionGroups InstructionGroup[]
 

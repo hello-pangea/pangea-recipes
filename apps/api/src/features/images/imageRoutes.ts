@@ -29,8 +29,8 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         }),
         response: {
           200: Type.Object({
-            image_id: Type.String({ format: 'uuid' }),
-            image_url: Type.String(),
+            imageId: Type.String({ format: 'uuid' }),
+            imageUrl: Type.String(),
           }),
         },
       },
@@ -75,8 +75,8 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       });
 
       return {
-        image_id: image.id,
-        image_url: modifiedImageUrl,
+        imageId: image.id,
+        imageUrl: modifiedImageUrl,
       };
     },
   );
@@ -94,8 +94,8 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         }),
         response: {
           200: Type.Object({
-            image_id: Type.String({ format: 'uuid' }),
-            image_url: Type.String(),
+            imageId: Type.String({ format: 'uuid' }),
+            imageUrl: Type.String(),
           }),
         },
       },
@@ -119,8 +119,8 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       });
 
       return {
-        image_id: image.id,
-        image_url: imageKey,
+        imageId: image.id,
+        imageUrl: imageKey,
       };
     },
   );

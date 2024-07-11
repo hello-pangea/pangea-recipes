@@ -1,6 +1,7 @@
 import { alpha, type PaletteOptions } from '@mui/material/styles';
+import type { User } from '@open-zero/features';
 
-export const lightTheme: PaletteOptions = {
+const lightTheme: PaletteOptions = {
   mode: 'light',
   primary: {
     main: '#2E86C1',
@@ -29,7 +30,7 @@ export const lightTheme: PaletteOptions = {
   divider: alpha('#2C3E50', 0.18),
 };
 
-export const darkTheme: PaletteOptions = {
+const darkTheme: PaletteOptions = {
   mode: 'dark',
   primary: {
     main: '#5DADE2',
@@ -58,7 +59,7 @@ export const darkTheme: PaletteOptions = {
   divider: alpha('#E0E0E0', 0.18),
 };
 
-export const autumnTheme: PaletteOptions = {
+const autumnTheme: PaletteOptions = {
   mode: 'light',
   primary: {
     main: '#994636',
@@ -87,7 +88,7 @@ export const autumnTheme: PaletteOptions = {
   divider: alpha('#242423', 0.18),
 };
 
-export const mintTheme: PaletteOptions = {
+const mintTheme: PaletteOptions = {
   mode: 'light',
   primary: {
     main: '#48C9B0',
@@ -114,4 +115,42 @@ export const mintTheme: PaletteOptions = {
     disabled: '#B2DFDB',
   },
   divider: alpha('#0E6655', 0.18),
+};
+
+const lavendarTheme: PaletteOptions = {
+  mode: 'light',
+  primary: {
+    main: '#7E57C2',
+  },
+  secondary: {
+    main: '#D1C4E9',
+  },
+  success: {
+    main: '#81C784',
+  },
+  warning: {
+    main: '#FFB74D',
+  },
+  error: {
+    main: '#E57373',
+  },
+  background: {
+    paper: '#F3E5F5',
+    default: '#FAF5FF',
+  },
+  text: {
+    primary: '#4A148C',
+    secondary: '#7E57C2',
+    disabled: '#D1C4E9',
+  },
+  divider: alpha('#4A148C', 0.18),
+};
+
+export const themeMap: Record<User['themePreference'], PaletteOptions> = {
+  light: lightTheme,
+  dark: darkTheme,
+  system: lightTheme,
+  autumn: autumnTheme,
+  mint: mintTheme,
+  lavendar: lavendarTheme,
 };

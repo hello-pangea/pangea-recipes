@@ -46,6 +46,9 @@ export function AccountPage() {
         <Grid xs={12} sm={6}>
           <ThemeCard themeName="Mint" themeMode="mint" />
         </Grid>
+        <Grid xs={12} sm={6}>
+          <ThemeCard themeName="Lavendar" themeMode="lavendar" />
+        </Grid>
       </Grid>
       <LoadingButton
         loading={isLoading}

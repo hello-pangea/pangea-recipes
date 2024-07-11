@@ -1,16 +1,9 @@
 import { createTheme } from '@mui/material/styles';
 import type { User } from '@open-zero/features';
-import { autumnTheme, darkTheme, lightTheme, mintTheme } from './themeModes';
+import { themeMap } from './themeModes';
 
 export function getThemeForMode(themeMode: User['themePreference']) {
-  const partialColorPalette =
-    themeMode === 'dark'
-      ? darkTheme
-      : themeMode == 'autumn'
-        ? autumnTheme
-        : themeMode == 'mint'
-          ? mintTheme
-          : lightTheme;
+  const partialColorPalette = themeMap[themeMode];
 
   return createTheme({
     palette: partialColorPalette,

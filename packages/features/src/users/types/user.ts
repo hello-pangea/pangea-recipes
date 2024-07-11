@@ -23,6 +23,7 @@ export const userSchema = Type.Object(
       Type.Literal('system'),
       Type.Literal('autumn'),
       Type.Literal('mint'),
+      Type.Literal('lavendar'),
     ]),
   },
   { $id: 'User' },

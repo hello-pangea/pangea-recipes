@@ -23,7 +23,7 @@ interface Props {
 export function UploadImageDialog({ open, onClose }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const [uppy] = useState(() =>
-    new Uppy<Meta, { image_id: string; image_url: string }>({
+    new Uppy<Meta, { imageId: string; imageUrl: string }>({
       restrictions: {
         maxNumberOfFiles: 1,
         allowedFileTypes: ['image/*'],
@@ -35,8 +35,8 @@ export function UploadImageDialog({ open, onClose }: Props) {
 
         if (uploadRes?.response?.body) {
           const image = {
-            id: uploadRes.response.body.image_id,
-            url: uploadRes.response.body.image_url,
+            id: uploadRes.response.body.imageId,
+            url: uploadRes.response.body.imageUrl,
           };
 
           onClose(image);

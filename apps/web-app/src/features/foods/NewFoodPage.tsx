@@ -34,7 +34,7 @@ export function NewFoodPage() {
     },
   });
   const [uppy] = useState(() =>
-    new Uppy<Meta, { image_url: string; image_id: string }>({
+    new Uppy<Meta, { imageUrl: string; imageId: string }>({
       restrictions: {
         maxNumberOfFiles: 1,
         allowedFileTypes: ['image/*'],
@@ -46,8 +46,8 @@ export function NewFoodPage() {
 
         if (uploadRes?.response?.body) {
           const image = {
-            id: uploadRes.response.body.image_id,
-            url: uploadRes.response.body.image_url,
+            id: uploadRes.response.body.imageId,
+            url: uploadRes.response.body.imageUrl,
           };
 
           setValue('iconId', image.id);

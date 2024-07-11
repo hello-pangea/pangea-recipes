@@ -12,6 +12,7 @@ export interface AuthContext {
   signOut: () => Promise<void>;
   user: User | null;
   isLoaded: boolean;
+  refreshUser: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContext | null>(null);
@@ -39,6 +40,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     [],
   );
 
+  const refreshUser = useCallback(async () => {
+    getSignedInUser().then((res) => {
+      setUser(res.user);
+    });
+  }, []);
+
   useEffect(() => {
     getSignedInUser()
       .then((res) => {
@@ -57,6 +64,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         signIn,
         signOut,
         isLoaded,
+        refreshUser,
       }}
     >
       {children}
