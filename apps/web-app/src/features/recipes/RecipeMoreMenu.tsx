@@ -23,7 +23,7 @@ export function RecipeMoreMenu({
   onClose,
   onDelete,
 }: Props) {
-  const recipeQuery = useRecipe({ recipeId: recipeId ?? '' });
+  const recipeQuery = useRecipe({ recipeId: recipeId });
   const recipe = recipeQuery.data?.recipe;
   const deleteRecipe = useDeleteRecipe();
   const open = Boolean(anchorEl);

@@ -15,7 +15,7 @@ interface Props {
 
 export function RequiredRecipeCard({ recipeId, onRemove }: Props) {
   const recipeQuery = useRecipe({
-    recipeId: recipeId ?? '',
+    recipeId: recipeId,
   });
   const recipe = recipeQuery.data?.recipe;
 

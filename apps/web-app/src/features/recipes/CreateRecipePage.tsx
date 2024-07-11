@@ -267,7 +267,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 <Grid container key={field.id} spacing={1}>
                   <Grid xs={6} sm="auto">
                     <TextFieldElement
-                      label="Amount"
+                      placeholder="Amount"
                       name={`ingredients.${index}.amount`}
                       id={`ingredients.${index}.amount`}
                       type="number"
@@ -281,7 +281,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   </Grid>
                   <Grid xs={6} sm="auto">
                     <AutocompleteElement
-                      label="Unit"
                       name={`ingredients.${index}.unit`}
                       options={
                         Object.entries(unitRecord).map(
@@ -301,6 +300,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                         sx: {
                           width: { xs: undefined, sm: 115 },
                         },
+                      }}
+                      textFieldProps={{
+                        placeholder: 'Unit',
                       }}
                     />
                   </Grid>
@@ -374,7 +376,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                               {...params}
                               inputRef={ref}
                               required
-                              label="Food"
+                              placeholder="Food*"
                             />
                           )}
                           renderOption={(props, option) => (
