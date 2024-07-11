@@ -1,4 +1,3 @@
-import { LoadingPage } from '#src/components/LoadingPage';
 import Sidebar from '#src/features/layout/Sidebar';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
@@ -10,26 +9,18 @@ import {
   useMediaQuery,
   type Theme,
 } from '@mui/material';
-import { useSignedInUser } from '@open-zero/features';
 import { Navigate, Outlet } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useAuth } from '../auth/AuthProvider';
 
 export function Layout() {
-  const userQuery = useSignedInUser({
-    queryConfig: {
-      retry: false,
-    },
-  });
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
+  const { isAuthenticated } = useAuth();
 
-  if (userQuery.isPending) {
-    return <LoadingPage message="Loading user" />;
-  }
-
-  if (!userQuery.data?.user) {
+  if (!isAuthenticated) {
     return <Navigate to="/sign-in" />;
   }
 

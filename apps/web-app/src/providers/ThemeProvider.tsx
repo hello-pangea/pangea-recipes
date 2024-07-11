@@ -1,20 +1,20 @@
+import { useAuth } from '#src/features/auth/AuthProvider';
 import { getThemeForMode } from '#src/theme/theme';
 import {
   CssBaseline,
   ThemeProvider as MuiThemeProvider,
   useMediaQuery,
 } from '@mui/material';
-import { useSignedInUser } from '@open-zero/features';
 
 interface Props {
   children: React.ReactNode;
 }
 
 export function ThemeProvider({ children }: Props) {
-  const userQuery = useSignedInUser();
+  const { user } = useAuth();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const userThemePreference = userQuery.data?.user?.themePreference ?? 'light';
+  const userThemePreference = user?.themePreference ?? 'system';
 
   const theme = getThemeForMode(
     userThemePreference === 'system'

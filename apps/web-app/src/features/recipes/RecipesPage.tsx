@@ -2,14 +2,15 @@ import { ButtonLink } from '#src/components/ButtonLink';
 import { LoadingPage } from '#src/components/LoadingPage';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Box, Grid, Typography } from '@mui/material';
-import { useRecipes, useSignedInUser } from '@open-zero/features';
+import { useRecipes } from '@open-zero/features';
+import { useAuthRequired } from '../auth/AuthProvider';
 import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {
-  const userQuery = useSignedInUser();
+  const { user } = useAuthRequired();
   const recipesQuery = useRecipes({
     options: {
-      userId: userQuery.data?.user?.id ?? '',
+      userId: user.id,
     },
   });
 

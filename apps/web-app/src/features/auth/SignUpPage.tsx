@@ -3,7 +3,6 @@ import { Copyright } from '#src/components/Copyright';
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Container, Stack, Typography } from '@mui/material';
 import { useSignUpUser } from '@open-zero/features';
-import { useNavigate } from '@tanstack/react-router';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
 
@@ -14,16 +13,9 @@ interface SignUpFormInputs {
 }
 
 export function SignUpPage() {
-  const navigate = useNavigate();
   const { handleSubmit, control } = useForm<SignUpFormInputs>();
 
-  const signUpUser = useSignUpUser({
-    mutationConfig: {
-      onSuccess: () => {
-        navigate({ to: '/' });
-      },
-    },
-  });
+  const signUpUser = useSignUpUser();
 
   const onSubmit: SubmitHandler<SignUpFormInputs> = (data) => {
     signUpUser.mutate({

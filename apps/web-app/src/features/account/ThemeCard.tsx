@@ -7,7 +7,8 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useSignedInUser, useUpdateUser, type User } from '@open-zero/features';
+import { useUpdateUser, type User } from '@open-zero/features';
+import { useAuthRequired } from '../auth/AuthProvider';
 
 interface Props {
   themeName: string;
@@ -17,10 +18,10 @@ interface Props {
 
 export function ThemeCard({ themeMode, themeName, subtext }: Props) {
   const updateUserMutation = useUpdateUser();
-  const userQuery = useSignedInUser();
+  const { user } = useAuthRequired();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const isSelected = userQuery.data?.user?.themePreference === themeMode;
+  const isSelected = user.themePreference === themeMode;
 
   const theme =
     themeMode === 'system'
@@ -53,7 +54,7 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
               onClick={() => {
                 updateUserMutation.mutate({
                   themePreference: themeMode,
-                  id: userQuery.data?.user?.id ?? '',
+                  id: user.id,
                 });
               }}
             >

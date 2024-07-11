@@ -3,44 +3,25 @@ import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
 import { LoadingButton } from '@mui/lab';
 import { Box, Typography } from '@mui/material';
 import Grid from '@mui/material/Unstable_Grid2';
-import { useSignedInUser, useSignOutUser } from '@open-zero/features';
-import { useNavigate } from '@tanstack/react-router';
+import { useRouter } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useAuthRequired } from '../auth/AuthProvider';
 import { ThemeCard } from './ThemeCard';
 
 export function AccountPage() {
-  const navigate = useNavigate();
-  const userQuery = useSignedInUser({
-    queryConfig: {
-      retry: false,
-    },
-  });
-
-  const signOutMutation = useSignOutUser();
-
-  function signOut() {
-    signOutMutation.mutate(undefined, {
-      onSuccess: () => {
-        localStorage.clear();
-        sessionStorage.clear();
-
-        navigate({ to: '/sign-in' });
-      },
-    });
-  }
-
-  if (!userQuery.data?.user) {
-    return null;
-  }
+  const { user, signOut } = useAuthRequired();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
         Account
       </Typography>
-      <Typography>Hello, {userQuery.data?.user.name}</Typography>
+      <Typography>Hello, {user.name}</Typography>
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
         <MailOutlineRoundedIcon fontSize="inherit" sx={{ mr: 1 }} />
-        <Typography variant="body2">{userQuery.data?.user.email}</Typography>
+        <Typography variant="body2">{user.email}</Typography>
       </Box>
       <Typography variant="h2" sx={{ mb: 2 }}>
         Theme preferences
@@ -67,9 +48,15 @@ export function AccountPage() {
         </Grid>
       </Grid>
       <LoadingButton
-        loading={signOutMutation.isPending}
+        loading={isLoading}
         color="error"
-        onClick={signOut}
+        onClick={() => {
+          setIsLoading(true);
+
+          signOut().then(() => {
+            router.invalidate();
+          });
+        }}
         sx={{ mt: 8 }}
       >
         Sign out

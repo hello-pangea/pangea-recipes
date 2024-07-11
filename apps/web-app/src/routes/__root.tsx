@@ -1,4 +1,5 @@
 import { config } from '#src/config/config';
+import type { AuthContext } from '#src/features/auth/AuthProvider';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
@@ -15,9 +16,12 @@ const TanStackRouterDevtools = config.PROD
       })),
     );
 
-export const Route = createRootRouteWithContext<{
+interface RouterContext {
   queryClient: QueryClient;
-}>()({
+  auth: AuthContext;
+}
+
+export const Route = createRootRouteWithContext<RouterContext>()({
   component: () => (
     <>
       <Outlet />

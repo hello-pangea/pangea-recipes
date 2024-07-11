@@ -20,7 +20,6 @@ import {
   useCreateRecipe,
   useFoods,
   useRecipes,
-  useSignedInUser,
   useUpdateRecipe,
   type Unit,
 } from '@open-zero/features';
@@ -35,6 +34,7 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { AutocompleteElement, TextFieldElement } from 'react-hook-form-mui';
+import { useAuthRequired } from '../auth/AuthProvider';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { IngredientNotesButton } from './IngredientNotesButton';
@@ -90,7 +90,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       instructionGroups: [],
     },
   });
-  const userQuery = useSignedInUser();
+  const { user } = useAuthRequired();
   const { handleSubmit, control, reset } = form;
   const {
     fields: ingredients,
@@ -130,7 +130,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   const recipesQuery = useRecipes({
     options: {
-      userId: userQuery.data?.user?.id ?? '',
+      userId: user.id,
     },
   });
 

@@ -14,6 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
+import { useAuthRequired } from '../auth/AuthProvider';
 
 const drawerWidth = 240;
 
@@ -24,6 +25,8 @@ interface Props {
 }
 
 export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
+  const { user } = useAuthRequired();
+
   const sidebarContent = (
     <>
       {/* Header */}
@@ -58,7 +61,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             icon={<RestaurantMenuRoundedIcon />}
             label="Recipes"
           />
-          <ListItem to="/foods" icon={<CarrotIcon />} label="Foods" />
+          {user.accessRole === 'admin' && (
+            <ListItem to="/foods" icon={<CarrotIcon />} label="Foods" />
+          )}
           {/* <Tooltip title="Coming soon" arrow placement="right">
             <span>
               <ListItem

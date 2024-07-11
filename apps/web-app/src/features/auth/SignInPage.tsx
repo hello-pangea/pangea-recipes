@@ -2,10 +2,13 @@ import { ButtonLink } from '#src/components/ButtonLink';
 import { Copyright } from '#src/components/Copyright';
 import { LoadingButton } from '@mui/lab';
 import { Box, Card, Container, Link, Stack, Typography } from '@mui/material';
-import { useSignInUser, useSignedInUser } from '@open-zero/features';
-import { Navigate, useNavigate } from '@tanstack/react-router';
+import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router';
+import { useLayoutEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
+import { useAuth } from './AuthProvider';
+
+const route = getRouteApi('/sign-in');
 
 interface SignInFormInputs {
   email: string;
@@ -14,31 +17,35 @@ interface SignInFormInputs {
 
 export function SignInPage() {
   const navigate = useNavigate();
+  const router = useRouter();
   const { handleSubmit, control } = useForm<SignInFormInputs>();
-  const userQuery = useSignedInUser({
-    queryConfig: {
-      retry: false,
-    },
-  });
-
-  const signInUser = useSignInUser({
-    mutationConfig: {
-      onSuccess: () => {
-        navigate({ to: '/' });
-      },
-    },
-  });
-
-  if (userQuery.data?.user) {
-    return <Navigate to="/" />;
-  }
+  const { signIn, isAuthenticated, isLoaded } = useAuth();
+  const search = route.useSearch();
+  const [loading, setLoading] = useState(false);
 
   const onSubmit: SubmitHandler<SignInFormInputs> = (data) => {
-    signInUser.mutate({
-      email: data.email,
-      password: data.password,
+    setLoading(true);
+
+    signIn(data).then(() => {
+      setLoading(false);
     });
   };
+
+  useLayoutEffect(() => {
+    if (!isLoaded) {
+      return;
+    }
+
+    if (isAuthenticated) {
+      if (search.redirect) {
+        router.history.push(search.redirect);
+      } else {
+        navigate({
+          to: '/recipes',
+        });
+      }
+    }
+  }, [isAuthenticated, isLoaded, search.redirect, navigate, router.history]);
 
   return (
     <Container
@@ -103,7 +110,7 @@ export function SignInPage() {
             <LoadingButton
               variant="contained"
               type="submit"
-              loading={signInUser.isPending}
+              loading={loading}
               fullWidth
             >
               Log in
