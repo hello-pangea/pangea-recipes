@@ -146,6 +146,35 @@ const lavendarTheme: PaletteOptions = {
   divider: alpha('#4A148C', 0.18),
 };
 
+const oceanTheme: PaletteOptions = {
+  mode: 'light',
+  primary: {
+    main: '#0077B6',
+  },
+  secondary: {
+    main: '#90E0EF',
+  },
+  success: {
+    main: '#00B4D8',
+  },
+  warning: {
+    main: '#FFD166',
+  },
+  error: {
+    main: '#FF6B6B',
+  },
+  background: {
+    paper: '#F1FAFE',
+    default: '#E0F7FA',
+  },
+  text: {
+    primary: '#023E8A',
+    secondary: '#4682B4',
+    disabled: '#B0C4DE',
+  },
+  divider: alpha('#023E8A', 0.18),
+};
+
 export const themeMap: Record<User['themePreference'], PaletteOptions> = {
   light: lightTheme,
   dark: darkTheme,
@@ -153,4 +182,5 @@ export const themeMap: Record<User['themePreference'], PaletteOptions> = {
   autumn: autumnTheme,
   mint: mintTheme,
   lavendar: lavendarTheme,
+  ocean: oceanTheme,
 };

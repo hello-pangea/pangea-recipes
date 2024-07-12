@@ -39,4 +39,5 @@ enum ThemePreference {
   autumn
   mint
   lavendar
+  ocean
 }
