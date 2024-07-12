@@ -13,3 +13,13 @@ model Image {
 
   @@map("images")
 }
+
+model Tag {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name    String
+  recipes RecipeTag[]
+
+  @@map("tags")
+}

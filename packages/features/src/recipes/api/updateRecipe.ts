@@ -3,6 +3,7 @@ import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import type { Recipe } from '../types/recipe.js';
 import type { UpdateRecipeDto } from '../types/updateRecipeDto.js';
+import { getRecipeQueryOptions } from './getRecipe.js';
 import { getListRecipesQueryOptions } from './listRecipes.js';
 
 function updateRecipe(data: UpdateRecipeDto & { id: string }) {
@@ -22,9 +23,15 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
 
   return useMutation({
     onSuccess: (...args) => {
+      const [data] = args;
+
       void queryClient.invalidateQueries({
         queryKey: getListRecipesQueryOptions({ userId: '' }).queryKey,
       });
+      queryClient.setQueryData(
+        getRecipeQueryOptions(data.recipe.id).queryKey,
+        data,
+      );
 
       onSuccess?.(...args);
     },

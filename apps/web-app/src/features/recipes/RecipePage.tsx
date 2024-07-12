@@ -1,9 +1,9 @@
 import { LoadingPage } from '#src/components/LoadingPage';
+import { TagEditor } from '#src/components/TagEditor';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Checkbox,
-  Chip,
   IconButton,
   Link,
   Stack,
@@ -14,6 +14,7 @@ import {
   getRecipeQueryOptions,
   numberToFraction,
   unitRecord,
+  useUpdateRecipe,
 } from '@open-zero/features';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
@@ -28,6 +29,8 @@ export function RecipePage() {
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
+  const recipeUpdater = useUpdateRecipe();
+
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
   const recipeQuery = useSuspenseQuery(getRecipeQueryOptions(recipeId));
@@ -52,13 +55,11 @@ export function RecipePage() {
           >
             <Box>
               <Typography variant="h1">{recipe.name}</Typography>
-              <Link
-                href="https://rainbowplantlife.com/eggy-tofu-scramble/"
-                target="_blank"
-                rel="nofollow"
-              >
-                Original source
-              </Link>
+              {recipe.originalUrl && (
+                <Link href={recipe.originalUrl} target="_blank" rel="nofollow">
+                  Original source
+                </Link>
+              )}
             </Box>
             <IconButton
               id="more-button"
@@ -78,11 +79,16 @@ export function RecipePage() {
               <MoreVertRoundedIcon />
             </IconButton>
           </Box>
-          <Stack direction={'row'} spacing={1} sx={{ mb: 1 }}>
-            {['Breakfast', 'Vegan'].map((tag) => (
-              <Chip key={tag} label={tag} />
-            ))}
-          </Stack>
+          <TagEditor
+            tags={recipe.tags}
+            onTagsChange={(newTags) => {
+              console.log('tags changed');
+              recipeUpdater.mutate({
+                id: recipe.id,
+                tags: newTags,
+              });
+            }}
+          />
           <Typography>{recipe.description}</Typography>
         </Grid>
         <Grid xs={6}>

@@ -1,1 +1,1 @@
-export { prisma } from '@open-zero/database';
+export { prisma, type Prisma } from '@open-zero/database';

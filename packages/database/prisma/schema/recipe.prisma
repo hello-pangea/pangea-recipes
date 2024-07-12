@@ -23,6 +23,8 @@ model Recipe {
 
   images RecipeImage[]
 
+  tags RecipeTag[]
+
   @@map("recipes")
 }
 
@@ -121,4 +123,15 @@ model LinkedRecipes {
   usesRecipeId String @map("linked_recipe") @db.Uuid
 
   @@map("linked_recipes")
+}
+
+model RecipeTag {
+  recipeId String @map("recipe_id") @db.Uuid
+  tagId    String @map("tag_id") @db.Uuid
+
+  recipe Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([recipeId, tagId])
+  @@map("recipe_tags")
 }

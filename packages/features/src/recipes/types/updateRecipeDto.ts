@@ -11,5 +11,6 @@ export const updateRecipeDtoScema = Type.Partial(
     'ingredients',
     'instructionGroups',
     'usesRecipes',
+    'tags',
   ]),
 );

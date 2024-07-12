@@ -115,9 +115,23 @@ export function getThemeForMode(themeMode: User['themePreference']) {
           variant: 'h2',
         },
       },
+      MuiPopover: {
+        styleOverrides: {
+          paper: {
+            borderRadius: 4,
+          },
+        },
+      },
       MuiTooltip: {
         styleOverrides: {
           tooltip: {
+            borderRadius: 4,
+          },
+        },
+      },
+      MuiOutlinedInput: {
+        styleOverrides: {
+          root: {
             borderRadius: 4,
           },
         },

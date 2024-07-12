@@ -1,4 +1,5 @@
 import { Type, type Static } from '@sinclair/typebox';
+import { createTagDtoSchema } from '../../common/tag.js';
 import { createFoodDtoScema } from '../../foods/index.js';
 import { Nullable } from '../../lib/nullable.js';
 import { unitSchema } from '../../units/index.js';
@@ -34,4 +35,12 @@ export const createRecipeDtoScema = Type.Object({
     }),
   ),
   usesRecipes: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
+  tags: Type.Optional(
+    Type.Array(
+      Type.Union([
+        Type.Object({ id: Type.String({ format: 'uuid' }) }),
+        createTagDtoSchema,
+      ]),
+    ),
+  ),
 });
