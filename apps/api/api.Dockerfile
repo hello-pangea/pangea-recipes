@@ -7,8 +7,8 @@ FROM node:20-bookworm-slim AS base
 RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
 # Set environment variables for PNPM
-ENV PNPM_HOME="/pnpm" \
-    PATH="$PNPM_HOME:$PATH"
+ENV PNPM_HOME="/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 
 # Enable corepack and install turbo globally
 RUN corepack enable && pnpm install turbo --global
