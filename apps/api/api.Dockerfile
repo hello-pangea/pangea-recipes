@@ -39,7 +39,7 @@ COPY turbo.json turbo.json
 # Should be quick due to the earlier fetch
 RUN pnpm install --frozen-lockfile --offline
 
-RUN pnpm exec playwright install --with-deps
+RUN pnpm --filter=recipe-importer exec playwright install --with-deps
 
 # Force prisma's postinstall script to work properly
 RUN pnpm rebuild -F=database
