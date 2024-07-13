@@ -1,4 +1,4 @@
-import type { Page } from 'playwright';
+import type { Page } from 'playwright-chromium';
 
 export function getTextFromPage(page: Page, selector: string) {
   const locator = page.locator(selector);

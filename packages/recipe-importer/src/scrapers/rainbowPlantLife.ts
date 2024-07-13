@@ -1,6 +1,6 @@
 import { unitSchema } from '@open-zero/features';
 import { Value } from '@sinclair/typebox/value';
-import type { Page } from 'playwright';
+import type { Page } from 'playwright-chromium';
 import { BaseScraper } from '../utils/baseScraper.js';
 import { getTextArrayFromPage } from '../utils/getTextArrayFromPage.js';
 import { getTextFromPage } from '../utils/getTextFromPage.js';

@@ -1,6 +1,6 @@
 import type { ImportedIngredient, ImportedRecipe } from '@open-zero/features';
-import type { Page } from 'playwright';
-import playwright from 'playwright';
+import type { Page } from 'playwright-chromium';
+import playwright from 'playwright-chromium';
 
 export abstract class BaseScraper {
   abstract hosts: string[];

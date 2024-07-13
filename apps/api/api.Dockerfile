@@ -4,14 +4,18 @@
 FROM node:20-bookworm-slim AS base
 
 # Install openssl and clean up in a single layer
-RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
+RUN apt-get update -y && apt-get install -y openssl
 
-# Set environment variables for PNPM
+# Playwright vars
+ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
+# PNPM vars
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
 # Enable corepack and install turbo globally
 RUN corepack enable && pnpm install turbo --global
+
+RUN pnpm dlx playwright-chromium install chromium --with-deps && rm -rf /var/lib/apt/lists/*
 
 # Builder stage
 FROM base AS builder
@@ -38,8 +42,6 @@ COPY turbo.json turbo.json
 
 # Should be quick due to the earlier fetch
 RUN pnpm install --frozen-lockfile --offline
-
-RUN pnpm --filter=recipe-importer exec playwright install --with-deps
 
 # Force prisma's postinstall script to work properly
 RUN pnpm rebuild -F=database
