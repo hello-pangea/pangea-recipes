@@ -3,20 +3,24 @@
 
 FROM node:20-bookworm-slim AS base
 
-RUN apt-get update -y && apt-get install -y openssl
+# Install openssl and clean up in a single layer
+RUN apt-get update -y && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 
-ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
-RUN corepack enable
-RUN pnpm install turbo --global
+# Set environment variables for PNPM
+ENV PNPM_HOME="/pnpm" \
+    PATH="$PNPM_HOME:$PATH"
 
+# Enable corepack and install turbo globally
+RUN corepack enable && pnpm install turbo --global
+
+# Builder stage
 FROM base AS builder
 
 WORKDIR /app
-
 COPY . .
 RUN turbo prune api --docker
 
+# Installer stage
 FROM base AS installer
 
 WORKDIR /app
@@ -35,6 +39,8 @@ COPY turbo.json turbo.json
 # Should be quick due to the earlier fetch
 RUN pnpm install --frozen-lockfile --offline
 
+RUN pnpm exec playwright install --with-deps
+
 # Force prisma's postinstall script to work properly
 RUN pnpm rebuild -F=database
 
@@ -50,7 +56,7 @@ RUN turbo build --filter=api...
 FROM base AS runner
 
 # Set node to production after installing dependencies and before building
-ENV NODE_ENV production
+ENV NODE_ENV="production"
 
 USER node
 
@@ -60,4 +66,4 @@ COPY --from=installer --chown=node:node /app .
 
 EXPOSE 8080
 
-CMD node apps/api/dist/index.js
+CMD ["node", "apps/api/dist/index.js"]
