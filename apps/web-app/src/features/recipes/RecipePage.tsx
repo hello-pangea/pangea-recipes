@@ -88,6 +88,9 @@ export function RecipePage() {
                 tags: newTags,
               });
             }}
+            sx={{
+              mb: 2,
+            }}
           />
           <Typography>{recipe.description}</Typography>
         </Grid>

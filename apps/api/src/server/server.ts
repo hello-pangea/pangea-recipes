@@ -1,3 +1,4 @@
+import auth from '@fastify/auth';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
@@ -7,8 +8,8 @@ import { foodSchema, recipeSchema, userSchema } from '@open-zero/features';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
 import { config, enablePrettyLogs } from '../config/config.js';
-import { csrfPlugin } from '../lib/csrfPlugin.js';
-import { lucia } from '../lib/lucia.js';
+import { csrfPlugin } from '../features/auth/csrfPlugin.js';
+import { lucia } from '../features/auth/lucia.js';
 import { routes } from './routes.js';
 
 export async function createServer() {
@@ -54,6 +55,8 @@ export async function createServer() {
 
   void fastify.register(helmet);
 
+  void fastify.register(auth);
+
   void fastify.addSchema(foodSchema);
   void fastify.addSchema(recipeSchema);
   void fastify.addSchema(userSchema);
@@ -89,8 +92,12 @@ export async function createServer() {
       ],
       servers: [
         {
+          url: 'https://api.hellorecipes.com',
+          description: 'Production',
+        },
+        {
           url: 'http://localhost:3001',
-          description: 'Local server',
+          description: 'Local',
         },
       ],
     },
@@ -150,6 +157,26 @@ export async function createServer() {
 
         void reply.header('set-cookie', sessionCookie.serialize());
       }
+    }
+  });
+
+  fastify.setErrorHandler((error, _request, reply) => {
+    console.error('Error:', error);
+
+    const statusCode = error.statusCode;
+
+    if (!statusCode || statusCode >= 500 || statusCode < 400) {
+      return reply.code(500).send({
+        error: 'Internal server error',
+        message: 'Something went wrong',
+        statusCode: 500,
+      });
+    } else {
+      return reply.code(statusCode).send({
+        error: error.name,
+        message: error.message,
+        statusCode: statusCode,
+      });
     }
   });
 

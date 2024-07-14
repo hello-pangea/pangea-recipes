@@ -4,6 +4,8 @@ import { Type } from '@sinclair/typebox';
 import sharp from 'sharp';
 import { prisma } from '../../lib/prisma.js';
 import { uploadFile } from '../../lib/s3.js';
+import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
+import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Images';
 
@@ -18,6 +20,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get params to authenticate an upload with Transloadit',
@@ -84,6 +87,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '/food-icon',
     {
+      preHandler: fastify.auth([verifyIsAdmin]),
       schema: {
         tags: [routeTag],
         consumes: ['multipart/form-data'],

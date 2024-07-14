@@ -9,8 +9,10 @@ import {
   type Recipe,
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
+import { ApiError } from '../../lib/ApiError.js';
 import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';
+import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Recipes';
 
@@ -18,6 +20,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Create a recipe',
@@ -173,6 +176,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'List recipes',
@@ -188,6 +192,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
     },
     async (request) => {
       const { userId } = request.query;
+
+      if (userId !== request.session?.userId) {
+        throw new ApiError({
+          statusCode: 403,
+          message: 'Forbidden',
+          name: 'AuthError',
+        });
+      }
 
       const recipes = await prisma.recipe.findMany({
         where: {
@@ -349,6 +361,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: recipeId,
         },
         select: {
+          userId: true,
           tags: {
             select: {
               tagId: true,
@@ -356,6 +369,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           },
         },
       });
+
+      if (oldRecipe.userId !== request.session?.userId) {
+        throw new ApiError({
+          statusCode: 403,
+          message: 'Forbidden',
+          name: 'AuthError',
+        });
+      }
 
       const newTagIds = tags?.map((tag) => ('id' in tag ? tag.id : null));
 
@@ -526,6 +547,23 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
     },
     async (request, reply) => {
       const { recipeId } = request.params;
+
+      const recipe = await prisma.recipe.findUniqueOrThrow({
+        where: {
+          id: recipeId,
+        },
+        select: {
+          userId: true,
+        },
+      });
+
+      if (recipe.userId !== request.session?.userId) {
+        throw new ApiError({
+          statusCode: 403,
+          message: 'Forbidden',
+          name: 'AuthError',
+        });
+      }
 
       await prisma.recipe.delete({
         where: {

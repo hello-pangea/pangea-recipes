@@ -7,8 +7,11 @@ import {
   type Food,
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
+import { ApiError } from '../../lib/ApiError.js';
 import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';
+import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
+import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Foods';
 
@@ -16,6 +19,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '',
     {
+      preHandler: fastify.auth([verifyIsAdmin]),
       schema: {
         tags: [routeTag],
         summary: 'Create a food',
@@ -56,6 +60,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'List foods',
@@ -97,6 +102,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '/:foodId',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get a food',
@@ -141,6 +147,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.patch(
     '/:foodId',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Update a food',
@@ -158,6 +165,23 @@ export async function foodRoutes(fastify: FastifyTypebox) {
     async (request) => {
       const { foodId } = request.params;
       const { name, pluralName, iconId } = request.body;
+
+      const oldFood = await prisma.food.findUniqueOrThrow({
+        where: {
+          id: foodId,
+        },
+        select: {
+          isOfficial: true,
+        },
+      });
+
+      if (oldFood.isOfficial && request.session?.accessRole !== 'admin') {
+        throw new ApiError({
+          name: 'AuthError',
+          message: 'Forbidden',
+          statusCode: 403,
+        });
+      }
 
       const food = await prisma.food.update({
         where: {
@@ -185,6 +209,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.delete(
     '/:foodId',
     {
+      preHandler: fastify.auth([verifyIsAdmin]),
       schema: {
         tags: [routeTag],
         summary: 'Delete food',

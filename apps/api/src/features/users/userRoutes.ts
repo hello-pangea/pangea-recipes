@@ -8,8 +8,10 @@ import {
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
 import { randomBytes, randomUUID, scryptSync } from 'node:crypto';
-import { lucia } from '../../lib/lucia.js';
+import { ApiError } from '../../lib/ApiError.js';
 import { noContentSchema } from '../../types/noContent.js';
+import { lucia } from '../auth/lucia.js';
+import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Users';
 
@@ -225,6 +227,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
   fastify.patch(
     '/:userId',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Update a user',
@@ -242,6 +245,14 @@ export async function userRoutes(fastify: FastifyTypebox) {
     async (request) => {
       const { themePreference } = request.body;
       const { userId } = request.params;
+
+      if (userId !== request.session?.userId) {
+        throw new ApiError({
+          statusCode: 403,
+          message: 'Forbidden',
+          name: 'AuthError',
+        });
+      }
 
       const user = await prisma.user.update({
         where: {

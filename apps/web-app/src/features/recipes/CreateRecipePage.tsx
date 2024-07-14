@@ -270,7 +270,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                       placeholder="Amount"
                       name={`ingredients.${index}.amount`}
                       id={`ingredients.${index}.amount`}
-                      type="number"
+                      inputMode="decimal"
                       control={control}
                       size="small"
                       fullWidth
