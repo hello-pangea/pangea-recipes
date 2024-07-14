@@ -22,6 +22,7 @@ import { Route as LayoutRecipesNewImport } from './routes/_layout.recipes.new'
 import { Route as LayoutRecipesRecipeIdImport } from './routes/_layout.recipes.$recipeId'
 import { Route as LayoutFoodsNewImport } from './routes/_layout.foods.new'
 import { Route as LayoutRecipesRecipeIdEditImport } from './routes/_layout.recipes_.$recipeId.edit'
+import { Route as LayoutFoodsFoodIdEditImport } from './routes/_layout.foods_.$foodId.edit'
 
 // Create/Update Routes
 
@@ -77,6 +78,11 @@ const LayoutFoodsNewRoute = LayoutFoodsNewImport.update({
 
 const LayoutRecipesRecipeIdEditRoute = LayoutRecipesRecipeIdEditImport.update({
   path: '/recipes/$recipeId/edit',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutFoodsFoodIdEditRoute = LayoutFoodsFoodIdEditImport.update({
+  path: '/foods/$foodId/edit',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -154,6 +160,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRecipesIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/foods/$foodId/edit': {
+      id: '/_layout/foods/$foodId/edit'
+      path: '/foods/$foodId/edit'
+      fullPath: '/foods/$foodId/edit'
+      preLoaderRoute: typeof LayoutFoodsFoodIdEditImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/recipes/$recipeId/edit': {
       id: '/_layout/recipes/$recipeId/edit'
       path: '/recipes/$recipeId/edit'
@@ -175,6 +188,7 @@ export const routeTree = rootRoute.addChildren({
     LayoutRecipesNewRoute,
     LayoutFoodsIndexRoute,
     LayoutRecipesIndexRoute,
+    LayoutFoodsFoodIdEditRoute,
     LayoutRecipesRecipeIdEditRoute,
   }),
   SignInRoute,
@@ -207,6 +221,7 @@ export const routeTree = rootRoute.addChildren({
         "/_layout/recipes/new",
         "/_layout/foods/",
         "/_layout/recipes/",
+        "/_layout/foods/$foodId/edit",
         "/_layout/recipes/$recipeId/edit"
       ]
     },
@@ -238,6 +253,10 @@ export const routeTree = rootRoute.addChildren({
     },
     "/_layout/recipes/": {
       "filePath": "_layout.recipes.index.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/foods/$foodId/edit": {
+      "filePath": "_layout.foods_.$foodId.edit.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes/$recipeId/edit": {

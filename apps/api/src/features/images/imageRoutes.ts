@@ -106,6 +106,8 @@ export async function imageRoutes(fastify: FastifyTypebox) {
 
       const imageKey = `food-icons/${crypto.randomUUID()}.svg`;
 
+      const imageUrl = `https://assets.hellorecipes.com/${imageKey}`;
+
       await uploadFile({
         buffer: originalBuffer,
         key: imageKey,
@@ -120,7 +122,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
 
       return {
         imageId: image.id,
-        imageUrl: imageKey,
+        imageUrl: imageUrl,
       };
     },
   );

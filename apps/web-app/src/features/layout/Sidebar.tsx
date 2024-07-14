@@ -60,9 +60,15 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             to="/recipes"
             icon={<RestaurantMenuRoundedIcon />}
             label="Recipes"
+            onClick={onClose}
           />
           {user.accessRole === 'admin' && (
-            <ListItem to="/foods" icon={<CarrotIcon />} label="Foods" />
+            <ListItem
+              to="/foods"
+              icon={<CarrotIcon />}
+              label="Foods"
+              onClick={onClose}
+            />
           )}
           {/* <Tooltip title="Coming soon" arrow placement="right">
             <span>
@@ -82,6 +88,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
           variant="text"
           startIcon={<PersonRoundedIcon />}
           fullWidth
+          onClick={onClose}
         >
           Account
         </ButtonLink>

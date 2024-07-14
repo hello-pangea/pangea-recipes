@@ -59,6 +59,7 @@ export function IngredientNotesButton({ sx = [], ingredientIndex }: Props) {
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
         onClose={handleClose}
+        disableRestoreFocus
         slotProps={{
           paper: {
             sx: {
@@ -81,6 +82,7 @@ export function IngredientNotesButton({ sx = [], ingredientIndex }: Props) {
           control={control}
           size="small"
           multiline
+          autoFocus
           sx={{
             minWidth: 200,
           }}

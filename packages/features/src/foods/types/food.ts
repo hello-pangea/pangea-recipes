@@ -13,7 +13,12 @@ export const foodSchema = Type.Object(
     name: Type.String(),
     pluralName: Type.Union([Type.Null(), Type.String()]),
 
-    iconUrl: Type.Optional(Type.String({ format: 'uri' })),
+    icon: Type.Optional(
+      Type.Object({
+        id: Type.String({ format: 'uri' }),
+        url: Type.String(),
+      }),
+    ),
   },
   { $id: 'Food' },
 );

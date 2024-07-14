@@ -130,7 +130,7 @@ export function RecipePage() {
                   <img
                     width={24}
                     height={24}
-                    src={ingredient.food.iconUrl ?? '/assets/ingredients.svg'}
+                    src={ingredient.food.icon?.url ?? '/assets/ingredients.svg'}
                   />
                 </Box>
                 {ingredient.amount !== null && (

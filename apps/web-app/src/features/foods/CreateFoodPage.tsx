@@ -3,7 +3,8 @@ import { config } from '#src/config/config';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import { Stack, TextField, Typography, useTheme } from '@mui/material';
-import { useCreateFood } from '@open-zero/features';
+import { useCreateFood, useUpdateFood } from '@open-zero/features';
+import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';
 import '@uppy/core/dist/style.min.css';
 import '@uppy/dashboard/dist/style.min.css';
@@ -11,15 +12,28 @@ import { Dashboard } from '@uppy/react';
 import XHR from '@uppy/xhr-upload';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { Controller, useForm, type SubmitHandler } from 'react-hook-form';
+import {
+  Controller,
+  useForm,
+  useWatch,
+  type SubmitHandler,
+} from 'react-hook-form';
 
-interface Inputs {
+interface FoodFormInputs {
   name: string;
-  pluralName: string;
-  iconId?: string;
+  pluralName: string | null;
+  icon: {
+    id: string;
+    url: string;
+  } | null;
 }
 
-export function NewFoodPage() {
+interface Props {
+  defaultFood?: FoodFormInputs & { id: string };
+}
+
+export function CreateFoodPage({ defaultFood }: Props) {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const {
     handleSubmit,
@@ -27,11 +41,17 @@ export function NewFoodPage() {
     formState: { errors },
     reset,
     setValue,
-  } = useForm<Inputs>({
-    defaultValues: {
+    getValues,
+  } = useForm<FoodFormInputs>({
+    defaultValues: defaultFood ?? {
       name: '',
       pluralName: '',
     },
+  });
+  const icon = useWatch({
+    control,
+    name: 'icon',
+    defaultValue: getValues('icon'),
   });
   const [uppy] = useState(() =>
     new Uppy<Meta, { imageUrl: string; imageId: string }>({
@@ -41,7 +61,7 @@ export function NewFoodPage() {
       },
     })
       .use(XHR, { endpoint: `${config.VITE_API_URL}/images/food-icon` })
-      .once('complete', (res) => {
+      .on('complete', (res) => {
         const uploadRes = res.successful?.at(0);
 
         if (uploadRes?.response?.body) {
@@ -50,7 +70,7 @@ export function NewFoodPage() {
             url: uploadRes.response.body.imageUrl,
           };
 
-          setValue('iconId', image.id);
+          setValue('icon', image);
 
           enqueueSnackbar('Uploaded image', {
             variant: 'success',
@@ -60,8 +80,6 @@ export function NewFoodPage() {
             variant: 'error',
           });
         }
-
-        uppy.clear();
       }),
   );
 
@@ -71,23 +89,45 @@ export function NewFoodPage() {
     mutationConfig: {
       onSuccess: () => {
         enqueueSnackbar('Food created', { variant: 'success' });
+        uppy.clear();
         reset();
       },
     },
   });
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    foodCreator.mutate({
-      name: data.name,
-      pluralName: data.pluralName || undefined,
-      iconId: data.iconId,
-    });
+  const foodUpdater = useUpdateFood({
+    mutationConfig: {
+      onSuccess: () => {
+        enqueueSnackbar('Food updated', { variant: 'success' });
+
+        navigate({
+          to: `/foods`,
+        });
+      },
+    },
+  });
+
+  const onSubmit: SubmitHandler<FoodFormInputs> = (data) => {
+    if (defaultFood) {
+      foodUpdater.mutate({
+        id: defaultFood.id,
+        name: data.name,
+        pluralName: data.pluralName || undefined,
+        iconId: data.icon?.id || undefined,
+      });
+    } else {
+      foodCreator.mutate({
+        name: data.name,
+        pluralName: data.pluralName || undefined,
+        iconId: data.icon?.id || undefined,
+      });
+    }
   };
 
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
-        New food
+        {defaultFood ? 'Edit' : 'New'} food
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack
@@ -131,13 +171,23 @@ export function NewFoodPage() {
               />
             )}
           />
-          <Dashboard
-            uppy={uppy}
-            proudlyDisplayPoweredByUppy={false}
-            showLinkToFileUploadResult={false}
-            height={'300px'}
-            theme={theme.palette.mode}
-          />
+          {icon ? (
+            <>
+              <img
+                src={icon.url}
+                alt="Icon"
+                style={{ width: 100, height: 100 }}
+              />
+            </>
+          ) : (
+            <Dashboard
+              uppy={uppy}
+              proudlyDisplayPoweredByUppy={false}
+              showLinkToFileUploadResult={false}
+              height={'300px'}
+              theme={theme.palette.mode}
+            />
+          )}
         </Stack>
         <LoadingButton
           variant="contained"

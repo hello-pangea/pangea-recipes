@@ -1,4 +1,5 @@
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   CardActionArea,
@@ -11,6 +12,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useDeleteFood, type Food } from '@open-zero/features';
+import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
 interface Props {
@@ -39,9 +41,9 @@ export function FoodCell({ food }: Props) {
         }}
       >
         <Stack direction="row" alignItems="center" spacing={1}>
-          {food.iconUrl && (
+          {food.icon && (
             <img
-              src={food.iconUrl}
+              src={food.icon.url}
               alt={food.pluralName || food.name}
               style={{
                 width: 20,
@@ -87,6 +89,18 @@ export function FoodCell({ food }: Props) {
           horizontal: 'right',
         }}
       >
+        <Link
+          to="/foods/$foodId/edit"
+          params={{ foodId: food.id }}
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <MenuItem>
+            <ListItemIcon>
+              <EditRoundedIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Edit</ListItemText>
+          </MenuItem>
+        </Link>
         <MenuItem
           onClick={() => {
             deleteFood.mutate({ foodId: food.id });

@@ -294,8 +294,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           ...ingredient,
           food: {
             ...ingredient.food,
-            iconUrl: ingredient.food.icon
-              ? getFileUrl(ingredient.food.icon.key)
+            icon: ingredient.food.icon
+              ? {
+                  id: ingredient.food.icon.id,
+                  url: getFileUrl(ingredient.food.icon.key),
+                }
               : undefined,
           },
         })),

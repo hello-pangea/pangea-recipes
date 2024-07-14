@@ -124,7 +124,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       return {
         name: f.name,
         id: f.id,
-        iconUrl: f.iconUrl,
+        iconUrl: f.icon?.url,
       };
     }) ?? [];
 
