@@ -36,7 +36,7 @@ export function RecipeCard({ recipeId }: Props) {
             recipeId: recipeId,
           }}
         >
-          {recipe.images ? (
+          {recipe.images?.length ? (
             <img
               src={recipe.images.at(0)?.url}
               height={200}
@@ -44,7 +44,21 @@ export function RecipeCard({ recipeId }: Props) {
               style={{ objectFit: 'cover', display: 'block' }}
             />
           ) : (
-            <Box sx={{ height: 200 }}></Box>
+            <Box
+              sx={{
+                height: 200,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <img
+                src={'/assets/lil-guy.svg'}
+                height={100}
+                width={'100%'}
+                style={{ objectFit: 'contain', display: 'block' }}
+              />
+            </Box>
           )}
           <Box
             sx={{

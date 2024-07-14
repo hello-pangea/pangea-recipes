@@ -41,10 +41,17 @@ export function RecipePage() {
 
   const recipe = recipeQuery.data.recipe;
 
+  const hasCoverImage = (recipe.images?.length ?? 0) > 0;
+
   return (
     <Box sx={{ p: 3, mt: 2 }}>
       <Grid container spacing={2} sx={{ mb: 2 }}>
-        <Grid xs={6}>
+        <Grid
+          xs={hasCoverImage ? 6 : 12}
+          sx={{
+            maxWidth: hasCoverImage ? undefined : 650,
+          }}
+        >
           <Box
             sx={{
               display: 'flex',
@@ -94,26 +101,28 @@ export function RecipePage() {
           />
           <Typography>{recipe.description}</Typography>
         </Grid>
-        <Grid xs={6}>
-          <Box
-            sx={{
-              boxShadow:
-                'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;',
-              borderRadius: 1,
-            }}
-          >
-            <img
-              src={recipe.images?.at(0)?.url}
-              height={300}
-              width={'100%'}
-              style={{
-                objectFit: 'cover',
-                display: 'block',
-                borderRadius: 12,
+        {hasCoverImage && (
+          <Grid xs={6}>
+            <Box
+              sx={{
+                boxShadow:
+                  'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;',
+                borderRadius: 1,
               }}
-            />
-          </Box>
-        </Grid>
+            >
+              <img
+                src={recipe.images?.at(0)?.url}
+                height={300}
+                width={'100%'}
+                style={{
+                  objectFit: 'cover',
+                  display: 'block',
+                  borderRadius: 12,
+                }}
+              />
+            </Box>
+          </Grid>
+        )}
       </Grid>
       <Grid container spacing={2}>
         <Grid xs={12} sm={6}>
