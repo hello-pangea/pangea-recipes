@@ -1,32 +1,40 @@
 import type { Prisma } from '@prisma/client';
 
-function gcd(a: number, b: number): number {
-  if (!b) {
-    return a;
-  }
-
-  return gcd(b, a % b);
-}
-
 export function numberToFraction(
   value: number | string | Prisma.Decimal,
 ): string {
-  let valueNumber = Number(value);
+  const valueNumber = Number(value);
 
   if (Number.isInteger(valueNumber)) {
     return valueNumber.toString();
   }
 
-  const tolerance = 0.0001;
+  const tolerance = 1 / 16;
+  let numerator = 1;
   let denominator = 1;
+  let minDifference = Math.abs(valueNumber - numerator / denominator);
 
-  while (Math.abs(valueNumber - Math.round(valueNumber)) > tolerance) {
-    valueNumber *= 2;
-    denominator *= 2;
+  for (let denom = 2; denom <= 16; denom++) {
+    const numer = Math.round(valueNumber * denom);
+    const difference = Math.abs(valueNumber - numer / denom);
+    if (difference < minDifference && difference <= tolerance) {
+      numerator = numer;
+      denominator = denom;
+      minDifference = difference;
+    }
   }
 
-  const numerator = Math.round(valueNumber);
-  const divisor = gcd(numerator, denominator);
+  // Simplify the fraction
+  const gcd = (a: number, b: number): number => {
+    if (!b) {
+      return a;
+    }
+    return gcd(b, a % b);
+  };
 
-  return `${String(numerator / divisor)}/${String(denominator / divisor)}`;
+  const greatestCommonDivisor = gcd(numerator, denominator);
+  numerator /= greatestCommonDivisor;
+  denominator /= greatestCommonDivisor;
+
+  return `${numerator.toString()}/${denominator.toString()}`;
 }
