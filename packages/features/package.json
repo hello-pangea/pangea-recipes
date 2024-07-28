@@ -19,15 +19,15 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.32.34",
-    "@tanstack/react-query": "^5.51.3",
-    "ky": "^1.4.0"
+    "@sinclair/typebox": "^0.32.35",
+    "@tanstack/react-query": "^5.51.15",
+    "ky": "^1.5.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@prisma/client": "^5.17.0",
-    "@types/node": "^20.14.11",
-    "typescript": "^5.5.3"
+    "@types/node": "^20.14.13",
+    "typescript": "^5.5.4"
   }
 }
