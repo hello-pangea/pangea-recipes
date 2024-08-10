@@ -15,7 +15,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.620.0",
+    "@aws-sdk/client-s3": "^3.627.0",
     "@fastify/auth": "^4.6.1",
     "@fastify/cookie": "^9.3.1",
     "@fastify/cors": "^9.0.1",
@@ -27,7 +27,7 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@open-zero/recipe-importer": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.24.58",
+    "@scalar/fastify-api-reference": "^1.24.73",
     "@sinclair/typebox": "^0.32.35",
     "chalk": "^5.3.0",
     "date-fns": "^3.6.0",
@@ -39,10 +39,10 @@
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.14.13",
+    "@types/node": "^20.14.15",
     "concurrently": "^8.2.2",
     "pino-pretty": "^11.2.2",
-    "tsup": "^8.2.3",
+    "tsup": "^8.2.4",
     "typescript": "^5.5.4"
   },
   "imports": {

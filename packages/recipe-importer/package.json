@@ -21,12 +21,12 @@
   "dependencies": {
     "@open-zero/features": "workspace:*",
     "@sinclair/typebox": "^0.32.35",
-    "playwright-chromium": "^1.45.3"
+    "playwright-chromium": "^1.46.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.14.13",
+    "@types/node": "^20.14.15",
     "typescript": "^5.5.4"
   }
 }
