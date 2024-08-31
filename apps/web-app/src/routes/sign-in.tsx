@@ -4,10 +4,13 @@ import { Value } from '@sinclair/typebox/value';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/sign-in')({
-  validateSearch: (input) =>
-    Value.Decode(
+  validateSearch: (search) => {
+    const res = Value.Parse(
       Type.Object({ redirect: Type.Optional(Type.String()) }),
-      input,
-    ),
+      search,
+    );
+
+    return res;
+  },
   component: SignInPage,
 });
