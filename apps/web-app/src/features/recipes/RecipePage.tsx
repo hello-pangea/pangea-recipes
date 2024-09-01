@@ -4,12 +4,12 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Checkbox,
+  Grid2,
   IconButton,
   Link,
   Stack,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
 import {
   getRecipeQueryOptions,
   numberToFraction,
@@ -45,9 +45,11 @@ export function RecipePage() {
 
   return (
     <Box sx={{ p: 3, mt: 2 }}>
-      <Grid container spacing={2} sx={{ mb: 2 }}>
-        <Grid
-          xs={hasCoverImage ? 6 : 12}
+      <Grid2 container spacing={2} sx={{ mb: 2 }}>
+        <Grid2
+          size={{
+            xs: hasCoverImage ? 6 : 12,
+          }}
           sx={{
             maxWidth: hasCoverImage ? undefined : 650,
           }}
@@ -100,9 +102,13 @@ export function RecipePage() {
             }}
           />
           <Typography>{recipe.description}</Typography>
-        </Grid>
+        </Grid2>
         {hasCoverImage && (
-          <Grid xs={6}>
+          <Grid2
+            size={{
+              xs: 6,
+            }}
+          >
             <Box
               sx={{
                 boxShadow:
@@ -121,11 +127,16 @@ export function RecipePage() {
                 }}
               />
             </Box>
-          </Grid>
+          </Grid2>
         )}
-      </Grid>
-      <Grid container spacing={2}>
-        <Grid xs={12} sm={6}>
+      </Grid2>
+      <Grid2 container spacing={2}>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 6,
+          }}
+        >
           <Typography variant="h2" sx={{ mb: 2 }}>
             Ingredients
           </Typography>
@@ -165,8 +176,13 @@ export function RecipePage() {
               </Box>
             ))}
           </Box>
-        </Grid>
-        <Grid xs={12} sm={6}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 6,
+          }}
+        >
           <Typography variant="h2" sx={{ mb: 2 }}>
             Instructions
           </Typography>
@@ -208,8 +224,8 @@ export function RecipePage() {
               </Box>
             ))}
           </Stack>
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
       <RecipeMoreMenu
         recipeId={recipe.id}
         anchorEl={moreMenuAnchorEl}

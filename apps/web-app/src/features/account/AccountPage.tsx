@@ -1,8 +1,7 @@
 import { Page } from '#src/components/Page';
 import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
 import { LoadingButton } from '@mui/lab';
-import { Box, Typography } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
+import { Box, Grid2, Typography } from '@mui/material';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useAuthRequired } from '../auth/useAuth';
@@ -26,33 +25,68 @@ export function AccountPage() {
       <Typography variant="h2" sx={{ mb: 2 }}>
         Theme preferences
       </Typography>
-      <Grid container spacing={2}>
-        <Grid xs={12} sm={4}>
+      <Grid2 container spacing={2}>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 4,
+          }}
+        >
           <ThemeCard themeName="Light" themeMode="light" />
-        </Grid>
-        <Grid xs={12} sm={4}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 4,
+          }}
+        >
           <ThemeCard themeName="Dark" themeMode="dark" />
-        </Grid>
-        <Grid xs={12} sm={4}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 4,
+          }}
+        >
           <ThemeCard
             themeName="Auto"
             themeMode="system"
             subtext="Matches your device settings"
           />
-        </Grid>
-        <Grid xs={12} sm={6}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 6,
+          }}
+        >
           <ThemeCard themeName="Autumn" themeMode="autumn" />
-        </Grid>
-        <Grid xs={12} sm={6}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 6,
+          }}
+        >
           <ThemeCard themeName="Mint" themeMode="mint" />
-        </Grid>
-        <Grid xs={12} sm={6}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 6,
+          }}
+        >
           <ThemeCard themeName="Lavendar" themeMode="lavendar" />
-        </Grid>
-        <Grid xs={12} sm={6}>
+        </Grid2>
+        <Grid2
+          size={{
+            xs: 12,
+            sm: 6,
+          }}
+        >
           <ThemeCard themeName="Ocean" themeMode="ocean" />
-        </Grid>
-      </Grid>
+        </Grid2>
+      </Grid2>
       <LoadingButton
         loading={isLoading}
         color="error"

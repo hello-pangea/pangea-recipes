@@ -2,11 +2,11 @@ import { getThemeForMode } from '#src/theme/theme';
 import {
   Button,
   Card,
+  Grid2,
   ThemeProvider,
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
 import { useUpdateUser, type User } from '@open-zero/features';
 import { useAuthRequired } from '../auth/useAuth';
 
@@ -41,8 +41,12 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
           borderWidth: isSelected ? 2 : undefined,
         }}
       >
-        <Grid container spacing={2}>
-          <Grid xs={6}>
+        <Grid2 container spacing={2}>
+          <Grid2
+            size={{
+              xs: 6,
+            }}
+          >
             <Typography sx={{ fontWeight: 'bold', mb: subtext ? 1 : 2 }}>
               {themeName}
             </Typography>
@@ -67,16 +71,20 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
             >
               Use {themeName.toLocaleLowerCase()}
             </Button>
-          </Grid>
-          <Grid xs={6}>
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 6,
+            }}
+          >
             <Card sx={{ p: 1 }}>
               <Typography sx={{ mb: 1 }}>
                 Hello hello! This is a preview of this theme.
               </Typography>
               <Typography variant="caption">Small text.</Typography>
             </Card>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Card>
     </ThemeProvider>
   );

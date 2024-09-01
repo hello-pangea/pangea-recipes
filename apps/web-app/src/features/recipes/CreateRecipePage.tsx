@@ -9,12 +9,12 @@ import {
   Autocomplete,
   Box,
   Button,
+  Grid2,
   IconButton,
   Stack,
   TextField,
   Typography,
 } from '@mui/material';
-import Grid from '@mui/material/Unstable_Grid2';
 import {
   unitRecord,
   useCreateRecipe,
@@ -264,8 +264,13 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           >
             {ingredients.map((field, index) => {
               return (
-                <Grid container key={field.id} spacing={1}>
-                  <Grid xs={6} sm="auto">
+                <Grid2 container key={field.id} spacing={1}>
+                  <Grid2
+                    size={{
+                      xs: 6,
+                      sm: 'auto',
+                    }}
+                  >
                     <TextFieldElement
                       placeholder="Amount"
                       name={`ingredients.${index}.amount`}
@@ -278,8 +283,13 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                         width: { xs: undefined, sm: 115 },
                       }}
                     />
-                  </Grid>
-                  <Grid xs={6} sm="auto">
+                  </Grid2>
+                  <Grid2
+                    size={{
+                      xs: 6,
+                      sm: 'auto',
+                    }}
+                  >
                     <AutocompleteElement
                       name={`ingredients.${index}.unit`}
                       options={
@@ -305,8 +315,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                         placeholder: 'Unit',
                       }}
                     />
-                  </Grid>
-                  <Grid xs={true}>
+                  </Grid2>
+                  <Grid2
+                    size={{
+                      xs: 'grow',
+                    }}
+                  >
                     <Controller
                       control={control}
                       name={`ingredients.${index}.food`}
@@ -397,8 +411,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                         />
                       )}
                     />
-                  </Grid>
-                  <Grid xs="auto" display="flex" alignItems="center">
+                  </Grid2>
+                  <Grid2
+                    size={{
+                      xs: 'auto',
+                    }}
+                    display="flex"
+                    alignItems="center"
+                  >
                     <IngredientNotesButton ingredientIndex={index} />
                     <IconButton
                       onClick={() => {
@@ -407,8 +427,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                     >
                       <DeleteRoundedIcon />
                     </IconButton>
-                  </Grid>
-                </Grid>
+                  </Grid2>
+                </Grid2>
               );
             })}
           </Stack>
@@ -473,18 +493,25 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             Required recipes
           </Typography>
           {usesRecipes.length > 0 && (
-            <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid2 container spacing={2} sx={{ mb: 3 }}>
               {usesRecipes.map((usesRecipe, index) => (
-                <Grid key={usesRecipe.recipeId} xs={12} md={4} lg={3}>
+                <Grid2
+                  key={usesRecipe.recipeId}
+                  size={{
+                    xs: 12,
+                    md: 4,
+                    lg: 3,
+                  }}
+                >
                   <RequiredRecipeCard
                     recipeId={usesRecipe.recipeId}
                     onRemove={() => {
                       removeRecipe(index);
                     }}
                   />
-                </Grid>
+                </Grid2>
               ))}
-            </Grid>
+            </Grid2>
           )}
           <Autocomplete
             options={
