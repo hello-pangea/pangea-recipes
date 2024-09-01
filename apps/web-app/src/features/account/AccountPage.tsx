@@ -93,8 +93,8 @@ export function AccountPage() {
         onClick={() => {
           setIsLoading(true);
 
-          signOut().then(() => {
-            router.invalidate();
+          void signOut().then(() => {
+            void router.invalidate();
           });
         }}
         sx={{ mt: 8 }}

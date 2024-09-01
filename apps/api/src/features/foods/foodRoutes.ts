@@ -15,6 +15,7 @@ import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Foods';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function foodRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '',

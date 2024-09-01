@@ -100,7 +100,7 @@ export function CreateFoodPage({ defaultFood }: Props) {
       onSuccess: () => {
         enqueueSnackbar('Food updated', { variant: 'success' });
 
-        navigate({
+        void navigate({
           to: `/foods`,
         });
       },
@@ -112,14 +112,14 @@ export function CreateFoodPage({ defaultFood }: Props) {
       foodUpdater.mutate({
         id: defaultFood.id,
         name: data.name,
-        pluralName: data.pluralName || undefined,
-        iconId: data.icon?.id || undefined,
+        pluralName: data.pluralName ?? undefined,
+        iconId: data.icon?.id ?? undefined,
       });
     } else {
       foodCreator.mutate({
         name: data.name,
-        pluralName: data.pluralName || undefined,
-        iconId: data.icon?.id || undefined,
+        pluralName: data.pluralName ?? undefined,
+        iconId: data.icon?.id ?? undefined,
       });
     }
   };

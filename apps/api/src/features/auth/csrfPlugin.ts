@@ -6,6 +6,7 @@ interface Options {
   enabled: boolean;
 }
 
+// eslint-disable-next-line @typescript-eslint/require-await
 async function plugin(fastify: FastifyTypebox, opts: Options) {
   if (!opts.enabled) {
     return;

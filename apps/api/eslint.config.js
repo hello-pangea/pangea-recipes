@@ -1,0 +1,18 @@
+import config from '@open-zero/eslint-config-node';
+
+export default config;
+
+
+// {
+//   "extends": ["@open-zero/eslint-config-node"],
+//   "parser": "@typescript-eslint/parser",
+//   "parserOptions": {
+//     "project": true
+//   },
+//   "rules": {
+//     "@typescript-eslint/require-await": "off",
+//     "@typescript-eslint/no-unsafe-assignment": "off",
+//     "@typescript-eslint/no-unsafe-call": "off",
+//     "@typescript-eslint/no-unsafe-member-access": "off"
+//   }
+// }

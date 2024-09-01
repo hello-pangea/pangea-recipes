@@ -41,13 +41,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   );
 
   const refreshUser = useCallback(async () => {
-    getSignedInUser().then((res) => {
+    return getSignedInUser().then((res) => {
       setUser(res.user);
     });
   }, []);
 
   useEffect(() => {
-    getSignedInUser()
+    void getSignedInUser()
       .then((res) => {
         setUser(res.user);
       })

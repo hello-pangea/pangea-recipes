@@ -15,6 +15,7 @@ import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Users';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function userRoutes(fastify: FastifyTypebox) {
   fastify.post(
     '/sign-up',

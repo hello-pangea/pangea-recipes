@@ -1,4 +1,3 @@
-import { LoadingPage } from '#src/components/LoadingPage';
 import { TagEditor } from '#src/components/TagEditor';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
@@ -34,10 +33,6 @@ export function RecipePage() {
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
   const recipeQuery = useSuspenseQuery(getRecipeQueryOptions(recipeId));
-
-  if (!recipeQuery.data) {
-    return <LoadingPage message="Loading recipe" />;
-  }
 
   const recipe = recipeQuery.data.recipe;
 
@@ -159,7 +154,7 @@ export function RecipePage() {
                 {ingredient.amount !== null && (
                   <b>{numberToFraction(ingredient.amount)}</b>
                 )}{' '}
-                {ingredient.unit && unitRecord[ingredient.unit]?.name}{' '}
+                {ingredient.unit && unitRecord[ingredient.unit].name}{' '}
                 {ingredient.food.name}
                 {ingredient.notes && (
                   <Typography
@@ -233,7 +228,7 @@ export function RecipePage() {
           setMoreMenuAnchorEl(null);
         }}
         onDelete={() => {
-          navigate({ to: '/recipes' });
+          void navigate({ to: '/recipes' });
         }}
       />
     </Box>

@@ -1,52 +1,39 @@
-const { resolve } = require('node:path');
+import eslint from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-const project = resolve(process.cwd(), 'tsconfig.json');
-
-/** @type {import("eslint").Linter.Config} */
-module.exports = {
-  env: {
-    es2023: true,
-    node: true,
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project,
+export default tseslint.config(
+  { ignores: ['dist', 'node_modules'] },
+  {
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+      eslintConfigPrettier,
+    ],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2023,
+      globals: globals.node,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          args: 'all',
+          argsIgnorePattern: '^_',
+          caughtErrors: 'all',
+          caughtErrorsIgnorePattern: '^_',
+          destructuredArrayIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+          ignoreRestSiblings: true,
+        },
+      ],
+    },
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/strict-type-checked',
-    'plugin:@typescript-eslint/stylistic-type-checked',
-    'turbo',
-    'prettier',
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 2023,
-    sourceType: 'module',
-  },
-  ignorePatterns: [
-    // Ignore dotfiles
-    '.*.js',
-    'tsup.config.ts',
-    'node_modules/',
-    'dist/',
-  ],
-  plugins: ['@typescript-eslint'],
-  rules: {
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      {
-        args: 'all',
-        argsIgnorePattern: '^_',
-        caughtErrors: 'all',
-        caughtErrorsIgnorePattern: '^_',
-        destructuredArrayIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-      },
-    ],
-  },
-};
+);

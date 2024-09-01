@@ -59,9 +59,9 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
           variant="contained"
           startIcon={<DownloadRoundedIcon />}
           onClick={() => {
-            importRecipe().then((res) => {
+            void importRecipe().then((res) => {
               if (res.data?.importedRecipe) {
-                onImport(res.data?.importedRecipe);
+                onImport(res.data.importedRecipe);
               }
             });
           }}

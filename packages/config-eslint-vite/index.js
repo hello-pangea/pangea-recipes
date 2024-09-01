@@ -1,62 +1,46 @@
-const { resolve } = require('node:path');
+import eslint from '@eslint/js';
+import eslintConfigPrettier from 'eslint-config-prettier';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
-const project = resolve(process.cwd(), 'tsconfig.json');
-
-/** @type {import("eslint").Linter.Config} */
-module.exports = {
-  env: {
-    es2023: true,
-    browser: true,
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project,
+export default tseslint.config(
+  { ignores: ['dist', 'node_modules'] },
+  {
+    extends: [
+      eslint.configs.recommended,
+      ...tseslint.configs.strictTypeChecked,
+      ...tseslint.configs.stylisticTypeChecked,
+      eslintConfigPrettier,
+    ],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2023,
+      globals: globals.browser,
+      parserOptions: {
+        projectService: true,
+        tsconfigRootDir: import.meta.dirname,
       },
     },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      '@typescript-eslint/only-throw-error': 'off',
+      '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/restrict-template-expressions': [
+        'error',
+        {
+          allowNumber: true,
+        },
+      ],
+    },
   },
-  extends: [
-    'eslint:recommended',
-    'plugin:@typescript-eslint/strict',
-    'plugin:@typescript-eslint/stylistic',
-    'plugin:react/recommended',
-    'plugin:react-hooks/recommended',
-    'turbo',
-    'prettier',
-  ],
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    ecmaVersion: 14,
-    sourceType: 'module',
-  },
-  ignorePatterns: [
-    'node_modules/',
-    'dist/',
-    '.eslintrc.json',
-    '**/*.css',
-    'vite.config.ts',
-    'vite-env.d.ts',
-  ],
-  plugins: ['@typescript-eslint', 'react-refresh'],
-  rules: {
-    'react/react-in-jsx-scope': 0,
-
-    'react-refresh/only-export-components': [
-      'warn',
-      { allowConstantExport: true },
-    ],
-
-    '@typescript-eslint/no-unused-vars': [
-      'warn',
-      {
-        args: 'all',
-        argsIgnorePattern: '^_',
-        caughtErrors: 'all',
-        caughtErrorsIgnorePattern: '^_',
-        destructuredArrayIgnorePattern: '^_',
-        varsIgnorePattern: '^_',
-        ignoreRestSiblings: true,
-      },
-    ],
-  },
-};
+);

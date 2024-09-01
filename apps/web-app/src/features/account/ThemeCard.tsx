@@ -63,7 +63,7 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
                   },
                   {
                     onSuccess: () => {
-                      refreshUser();
+                      void refreshUser();
                     },
                   },
                 );

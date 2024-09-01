@@ -6,6 +6,7 @@ import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Imported recipes';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function importedRecipeRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '',

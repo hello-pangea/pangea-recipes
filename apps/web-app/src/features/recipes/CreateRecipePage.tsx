@@ -137,7 +137,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   const recipeCreator = useCreateRecipe({
     mutationConfig: {
       onSuccess: (data) => {
-        navigate({
+        void navigate({
           to: `/recipes/$recipeId`,
           params: {
             recipeId: data.recipe.id,
@@ -152,7 +152,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       onSuccess: (data) => {
         enqueueSnackbar('Recipe updated', { variant: 'success' });
 
-        navigate({
+        void navigate({
           to: `/recipes/$recipeId`,
           params: {
             recipeId: data.recipe.id,
@@ -167,7 +167,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       recipeUpdater.mutate({
         id: defaultRecipe.id,
         name: data.name,
-        description: data.description || undefined,
+        description: data.description ?? undefined,
         ingredients: data.ingredients,
         instructionGroups: data.instructionGroups.map((ig) => ({
           title: ig.title,
@@ -177,7 +177,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     } else {
       recipeCreator.mutate({
         name: data.name,
-        description: data.description || undefined,
+        description: data.description ?? undefined,
         cookTime: data.cookTime ? parseInt(data.cookTime) : undefined,
         prepTime: data.prepTime ? parseInt(data.prepTime) : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
@@ -292,14 +292,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   >
                     <AutocompleteElement
                       name={`ingredients.${index}.unit`}
-                      options={
-                        Object.entries(unitRecord).map(
-                          ([unit, unitDetail]) => ({
-                            id: unit,
-                            label: unitDetail.abbreviation ?? unitDetail.name,
-                          }),
-                        ) ?? []
-                      }
+                      options={Object.entries(unitRecord).map(
+                        ([unit, unitDetail]) => ({
+                          id: unit,
+                          label: unitDetail.abbreviation ?? unitDetail.name,
+                        }),
+                      )}
                       control={control}
                       matchId
                       autocompleteProps={{
@@ -355,7 +353,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                               onChange({
                                 name: newValue,
                               });
-                            } else if (newValue && newValue.inputValue) {
+                            } else if (newValue?.inputValue) {
                               // Create a new value from the user input
                               onChange({
                                 name: newValue.inputValue,
@@ -436,7 +434,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             variant="outlined"
             size="small"
             startIcon={<AddRoundedIcon />}
-            onClick={() =>
+            onClick={() => {
               appendIngredient({
                 food: {
                   name: '',
@@ -444,8 +442,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 unit: null,
                 amount: null,
                 notes: null,
-              })
-            }
+              });
+            }}
             sx={{ mb: 6 }}
           >
             Add ingredient
@@ -475,7 +473,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             variant="outlined"
             size="small"
             startIcon={<AddRoundedIcon />}
-            onClick={() =>
+            onClick={() => {
               appendInstructionGroup({
                 title: null,
                 instructions: [
@@ -483,8 +481,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                     text: '',
                   },
                 ],
-              })
-            }
+              });
+            }}
             sx={{ mb: 6 }}
           >
             Add instruction group
@@ -548,7 +546,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       </FormProvider>
       <ImportRecipeDialog
         open={importDialogOpen}
-        onClose={() => setImportDialogOpen(false)}
+        onClose={() => {
+          setImportDialogOpen(false);
+        }}
         onImport={(importedRecipe) => {
           setImportDialogOpen(false);
 

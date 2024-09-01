@@ -6,9 +6,9 @@ import { userRoutes } from '../features/users/userRoutes.js';
 import type { FastifyTypebox } from './fastifyTypebox.js';
 
 export async function routes(fastify: FastifyTypebox) {
-  void fastify.register(foodRoutes, { prefix: '/foods' });
-  void fastify.register(importedRecipeRoutes, { prefix: '/imported-recipes' });
-  void fastify.register(recipeRoutes, { prefix: '/recipes' });
-  void fastify.register(imageRoutes, { prefix: '/images' });
-  void fastify.register(userRoutes, { prefix: '/users' });
+  await fastify.register(foodRoutes, { prefix: '/foods' });
+  await fastify.register(importedRecipeRoutes, { prefix: '/imported-recipes' });
+  await fastify.register(recipeRoutes, { prefix: '/recipes' });
+  await fastify.register(imageRoutes, { prefix: '/images' });
+  await fastify.register(userRoutes, { prefix: '/users' });
 }

@@ -26,7 +26,7 @@ export function SignInPage() {
   const onSubmit: SubmitHandler<SignInFormInputs> = (data) => {
     setLoading(true);
 
-    signIn(data).then(() => {
+    void signIn(data).then(() => {
       setLoading(false);
     });
   };
@@ -40,7 +40,7 @@ export function SignInPage() {
       if (search.redirect) {
         router.history.push(search.redirect);
       } else {
-        navigate({
+        void navigate({
           to: '/recipes',
         });
       }

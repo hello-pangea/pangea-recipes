@@ -44,7 +44,7 @@ export function FoodCell({ food }: Props) {
           {food.icon && (
             <img
               src={food.icon.url}
-              alt={food.pluralName || food.name}
+              alt={food.pluralName ?? food.name}
               style={{
                 width: 20,
                 height: 20,
@@ -53,7 +53,7 @@ export function FoodCell({ food }: Props) {
             />
           )}
           <Typography variant="body1">
-            {food.pluralName || food.name}
+            {food.pluralName ?? food.name}
           </Typography>
         </Stack>
         <IconButton

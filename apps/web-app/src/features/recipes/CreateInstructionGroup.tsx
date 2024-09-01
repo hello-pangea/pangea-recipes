@@ -94,7 +94,9 @@ export function CreateInstructionGroup({
         variant="outlined"
         size="small"
         startIcon={<AddRoundedIcon />}
-        onClick={() => appendInstruction({ text: '' })}
+        onClick={() => {
+          appendInstruction({ text: '' });
+        }}
         sx={{ ml: '58px' }}
       >
         Add instruction

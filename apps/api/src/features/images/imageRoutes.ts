@@ -9,6 +9,7 @@ import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Images';
 
+// eslint-disable-next-line @typescript-eslint/require-await
 export async function imageRoutes(fastify: FastifyTypebox) {
   void fastify.register(multipart, {
     attachFieldsToBody: true,
