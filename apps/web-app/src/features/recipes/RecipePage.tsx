@@ -137,37 +137,43 @@ export function RecipePage() {
           </Typography>
           <Box component="ul" sx={{ mb: 4 }}>
             {recipe.ingredients.map((ingredient) => (
-              <Box component={'li'} key={ingredient.id}>
+              <Box
+                component={'li'}
+                key={ingredient.id}
+                sx={{ display: 'flex', alignItems: 'center' }}
+              >
                 <Checkbox
                   sx={{
                     p: 0.75,
-                    mr: 1,
+                    mr: 1.5,
                   }}
                 />
-                <Box sx={{ mr: 2, display: 'inline' }}>
+                <Box sx={{ mr: 1.5 }}>
                   <img
                     width={24}
                     height={24}
                     src={ingredient.food.icon?.url ?? '/assets/ingredients.svg'}
                   />
                 </Box>
-                {ingredient.amount !== null && (
-                  <b>{numberToFraction(ingredient.amount)}</b>
-                )}{' '}
-                {ingredient.unit && unitRecord[ingredient.unit].name}{' '}
-                {ingredient.food.name}
-                {ingredient.notes && (
-                  <Typography
-                    component={'span'}
-                    sx={{
-                      color: (theme) => theme.palette.text.secondary,
-                      ml: 1,
-                      fontWeight: 300,
-                    }}
-                  >
-                    ({ingredient.notes})
-                  </Typography>
-                )}
+                <Box>
+                  {ingredient.amount !== null && (
+                    <b>{numberToFraction(ingredient.amount)}</b>
+                  )}{' '}
+                  {ingredient.unit && unitRecord[ingredient.unit].name}{' '}
+                  {ingredient.food.name}
+                  {ingredient.notes && (
+                    <Typography
+                      component={'span'}
+                      sx={{
+                        color: (theme) => theme.palette.text.secondary,
+                        ml: 1,
+                        fontWeight: 300,
+                      }}
+                    >
+                      ({ingredient.notes})
+                    </Typography>
+                  )}
+                </Box>
               </Box>
             ))}
           </Box>
