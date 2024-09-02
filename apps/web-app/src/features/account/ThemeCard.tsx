@@ -79,9 +79,10 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
           >
             <Card sx={{ p: 1 }}>
               <Typography sx={{ mb: 1 }}>
-                Hello hello! This is a preview of this theme.
+                Hello hello! This is an example of the {themeName.toLowerCase()}{' '}
+                theme.
               </Typography>
-              <Typography variant="caption">Small text.</Typography>
+              <Typography variant="caption">{themeName}!</Typography>
             </Card>
           </Grid2>
         </Grid2>
