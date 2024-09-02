@@ -39,7 +39,7 @@
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^20.16.2",
+    "@types/node": "^20.16.3",
     "concurrently": "^8.2.2",
     "pino-pretty": "^11.2.2",
     "tsup": "^8.2.4",
