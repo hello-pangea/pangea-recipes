@@ -357,174 +357,189 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       } = request.body;
       const { recipeId } = request.params;
 
-      const oldRecipe = await prisma.recipe.findUniqueOrThrow({
-        where: {
-          id: recipeId,
-        },
-        select: {
-          userId: true,
-          tags: {
-            select: {
-              tagId: true,
-            },
+      const recipeDto = await prisma.$transaction(async (prisma) => {
+        const oldRecipe = await prisma.recipe.findUniqueOrThrow({
+          where: {
+            id: recipeId,
           },
-        },
-      });
-
-      if (oldRecipe.userId !== request.session?.userId) {
-        throw new ApiError({
-          statusCode: 403,
-          message: 'Forbidden',
-          name: 'AuthError',
-        });
-      }
-
-      const newTagIds = tags?.map((tag) => ('id' in tag ? tag.id : null));
-
-      const oldTagIds = oldRecipe.tags.map((tag) => tag.tagId);
-
-      const tagsToDelete = oldTagIds.filter((id) => !newTagIds?.includes(id));
-
-      const tagsToCreate = tags?.filter(
-        (tag) => !('id' in tag),
-      ) as CreateTagDto[];
-      const tagsToConnect =
-        tags?.filter((tag) => 'id' in tag && !oldTagIds.includes(tag.id)) ?? [];
-
-      const tagsToCreateOrConnect = [...tagsToConnect, ...tagsToCreate];
-
-      const recipeUpdate: Prisma.RecipeUpdateInput = {
-        name: name,
-        description: description,
-        prepTime: prepTime,
-        cookTime: cookTime,
-        ingredients: !ingredients
-          ? undefined
-          : {
-              deleteMany: {},
-              create: ingredients.map((ingredient) => {
-                const { food, ...rest } = ingredient;
-
-                return {
-                  ...rest,
-                  unit: rest.unit ?? undefined,
-                  food:
-                    'id' in food
-                      ? { connect: { id: food.id } }
-                      : { create: food },
-                };
-              }),
-            },
-        instructionGroups: !instructionGroups
-          ? undefined
-          : {
-              deleteMany: {},
-              createMany: {
-                data: instructionGroups.map((instructionGroup, index) => ({
-                  title: instructionGroup.title,
-                  sort: index.toString(),
-                  instructions: {
-                    createMany: {
-                      data: instructionGroup.instructions.map(
-                        (instruction, index) => ({
-                          step: index,
-                          text: instruction,
-                        }),
-                      ),
-                    },
-                  },
-                })),
+          select: {
+            userId: true,
+            tags: {
+              select: {
+                tagId: true,
               },
             },
-        usesRecipes: !usesRecipes
-          ? undefined
-          : {
-              connect: usesRecipes.map((id) => ({
-                id: id,
-              })),
-            },
-        // Connect existing tags if id exists, or create and connect new tags if id does not exist
-        tags: !tags
-          ? undefined
-          : {
-              deleteMany: !tagsToDelete.length
+          },
+        });
+
+        if (oldRecipe.userId !== request.session?.userId) {
+          throw new ApiError({
+            statusCode: 403,
+            message: 'Forbidden',
+            name: 'AuthError',
+          });
+        }
+
+        // -
+        // Tags
+        // -
+
+        const existingTagIds = oldRecipe.tags.map((tag) => tag.tagId);
+
+        const tagsToCreate =
+          tags?.filter((tag) => 'name' in tag && !('id' in tag)) ??
+          ([] as CreateTagDto[]);
+
+        const tagsWithIds = tags?.filter((tag) => 'id' in tag) ?? [];
+
+        const tagsToAdd = tagsWithIds.filter(
+          (tag) => !existingTagIds.includes(tag.id),
+        );
+
+        const tagIdsToRemove = existingTagIds.filter(
+          (id) => !tagsWithIds.some((tag) => tag.id === id),
+        );
+
+        const tagsToCreateOrAdd = [...tagsToCreate, ...tagsToAdd];
+
+        const tagsUpdate:
+          | Prisma.RecipeTagUpdateManyWithoutRecipeNestedInput
+          | undefined = tags?.length
+          ? {
+              create: !tagsToCreateOrAdd.length
                 ? undefined
-                : {
-                    tagId: {
-                      in: tagsToDelete,
-                    },
-                  },
-              create: !tagsToCreateOrConnect.length
-                ? undefined
-                : tagsToCreateOrConnect.map((tag) => {
+                : tagsToCreateOrAdd.map((tag) => {
                     if ('id' in tag) {
                       return {
                         tag: {
-                          connect: {
-                            id: tag.id,
-                          },
+                          connect: tag,
                         },
                       };
                     } else {
                       return {
                         tag: {
-                          create: {
-                            name: tag.name,
-                          },
+                          create: tag,
                         },
                       };
                     }
                   }),
-            },
-      };
+              deleteMany: tagIdsToRemove.length
+                ? {
+                    tagId: {
+                      in: tagIdsToRemove,
+                    },
+                  }
+                : undefined,
+            }
+          : undefined;
 
-      const recipe = await prisma.recipe.update({
-        where: {
-          id: recipeId,
-        },
-        data: recipeUpdate,
-        include: {
-          ingredients: {
-            include: {
-              food: true,
+        // -
+        // Update
+        // -
+
+        const recipeUpdate: Prisma.RecipeUpdateInput = {
+          name: name,
+          description: description,
+          prepTime: prepTime,
+          cookTime: cookTime,
+          ingredients: !ingredients
+            ? undefined
+            : {
+                deleteMany: {},
+                create: ingredients.map((ingredient) => {
+                  const { food, ...rest } = ingredient;
+
+                  return {
+                    ...rest,
+                    unit: rest.unit ?? undefined,
+                    food:
+                      'id' in food
+                        ? { connect: { id: food.id } }
+                        : { create: food },
+                  };
+                }),
+              },
+          instructionGroups: !instructionGroups
+            ? undefined
+            : {
+                deleteMany: {},
+                createMany: {
+                  data: instructionGroups.map((instructionGroup, index) => ({
+                    title: instructionGroup.title,
+                    sort: index.toString(),
+                    instructions: {
+                      createMany: {
+                        data: instructionGroup.instructions.map(
+                          (instruction, index) => ({
+                            step: index,
+                            text: instruction,
+                          }),
+                        ),
+                      },
+                    },
+                  })),
+                },
+              },
+          usesRecipes: !usesRecipes
+            ? undefined
+            : {
+                connect: usesRecipes.map((id) => ({
+                  id: id,
+                })),
+              },
+          tags: tagsUpdate,
+        };
+
+        const recipe = await prisma.recipe.update({
+          where: {
+            id: recipeId,
+          },
+          data: recipeUpdate,
+          include: {
+            ingredients: {
+              include: {
+                food: true,
+              },
+            },
+            instructionGroups: {
+              include: {
+                instructions: true,
+              },
+            },
+            usesRecipes: {
+              select: {
+                usesRecipeId: true,
+              },
+            },
+            images: {
+              include: {
+                image: true,
+              },
+            },
+            tags: {
+              include: {
+                tag: true,
+              },
             },
           },
-          instructionGroups: {
-            include: {
-              instructions: true,
-            },
-          },
-          usesRecipes: {
-            select: {
-              usesRecipeId: true,
-            },
-          },
-          images: {
-            include: {
-              image: true,
-            },
-          },
-          tags: {
-            include: {
-              tag: true,
-            },
-          },
-        },
+        });
+
+        const recipeDto: Recipe = {
+          ...recipe,
+          usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
+          images: recipe.images.map((image) => ({
+            id: image.image.id,
+            url: getFileUrl(image.image.key),
+            favorite: image.favorite ?? false,
+          })),
+          tags: recipe.tags.map((tag) => ({
+            id: tag.tag.id,
+            name: tag.tag.name,
+          })),
+        };
+
+        return recipeDto;
       });
-
-      const recipeDto: Recipe = {
-        ...recipe,
-        usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        images: recipe.images.map((image) => ({
-          id: image.image.id,
-          url: getFileUrl(image.image.key),
-          favorite: image.favorite ?? false,
-        })),
-        tags: recipe.tags.map((tag) => ({
-          id: tag.tag.id,
-          name: tag.tag.name,
-        })),
-      };
 
       return {
         recipe: recipeDto,
