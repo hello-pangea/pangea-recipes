@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@open-zero/features": "workspace:*",
-    "@sinclair/typebox": "^0.33.7",
+    "@sinclair/typebox": "^0.33.9",
     "playwright-chromium": "^1.46.1"
   },
   "devDependencies": {
