@@ -35,5 +35,5 @@ async function plugin(fastify: FastifyTypebox, opts: Options) {
 
 export const csrfPlugin = fastifyPlugin(plugin, {
   name: 'csrfPlugin',
-  fastify: '4.x',
+  fastify: '5.x',
 });
