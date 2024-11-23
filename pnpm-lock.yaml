@@ -91,8 +91,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@types/node':
-        specifier: ^20.17.7
-        version: 20.17.7
+        specifier: ^22.9.3
+        version: 22.9.3
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
@@ -195,7 +195,7 @@ importers:
         version: link:../../packages/config-typescript
       '@tanstack/router-plugin':
         specifier: ^1.81.9
-        version: 1.81.9(vite@5.4.11(@types/node@20.17.7))
+        version: 1.81.9(vite@5.4.11(@types/node@22.9.3))
       '@types/react':
         specifier: ^18.3.12
         version: 18.3.12
@@ -204,7 +204,7 @@ importers:
         version: 18.3.1
       '@vitejs/plugin-react-swc':
         specifier: ^3.7.1
-        version: 3.7.1(vite@5.4.11(@types/node@20.17.7))
+        version: 3.7.1(vite@5.4.11(@types/node@22.9.3))
       concurrently:
         specifier: ^8.2.2
         version: 8.2.2
@@ -213,7 +213,7 @@ importers:
         version: 5.6.3
       vite:
         specifier: ^5.4.11
-        version: 5.4.11(@types/node@20.17.7)
+        version: 5.4.11(@types/node@22.9.3)
 
   packages/config-eslint-node:
     dependencies:
@@ -269,8 +269,8 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       '@types/node':
-        specifier: ^20.17.7
-        version: 20.17.7
+        specifier: ^22.9.3
+        version: 22.9.3
       prisma:
         specifier: ^5.22.0
         version: 5.22.0
@@ -303,8 +303,8 @@ importers:
         specifier: ^5.22.0
         version: 5.22.0(prisma@5.22.0)
       '@types/node':
-        specifier: ^20.17.7
-        version: 20.17.7
+        specifier: ^22.9.3
+        version: 22.9.3
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -328,8 +328,8 @@ importers:
         specifier: workspace:*
         version: link:../config-typescript
       '@types/node':
-        specifier: ^20.17.7
-        version: 20.17.7
+        specifier: ^22.9.3
+        version: 22.9.3
       typescript:
         specifier: 5.6.3
         version: 5.6.3
@@ -2016,8 +2016,8 @@ packages:
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
 
-  '@types/node@20.17.7':
-    resolution: {integrity: sha512-sZXXnpBFMKbao30dUAvzKbdwA2JM1fwUtVEq/kxKuPI5mMwZiRElCpTXb0Biq/LMEVpXDZL5G5V0RPnxKeyaYg==}
+  '@types/node@22.9.3':
+    resolution: {integrity: sha512-F3u1fs/fce3FFk+DAxbxc78DF8x0cY09RRL8GnXLmkJ1jvx3TtPdWoTT5/NiYfI5ASqXBmfqJi9dZ3gxMx4lzw==}
 
   '@types/parse-json@4.0.2':
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -5498,7 +5498,7 @@ snapshots:
       tsx: 4.19.2
       zod: 3.23.8
 
-  '@tanstack/router-plugin@1.81.9(vite@5.4.11(@types/node@20.17.7))':
+  '@tanstack/router-plugin@1.81.9(vite@5.4.11(@types/node@22.9.3))':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/generator': 7.26.2
@@ -5519,7 +5519,7 @@ snapshots:
       unplugin: 1.16.0
       zod: 3.23.8
     optionalDependencies:
-      vite: 5.4.11(@types/node@20.17.7)
+      vite: 5.4.11(@types/node@22.9.3)
     transitivePeerDependencies:
       - supports-color
 
@@ -5554,7 +5554,7 @@ snapshots:
 
   '@types/json-schema@7.0.15': {}
 
-  '@types/node@20.17.7':
+  '@types/node@22.9.3':
     dependencies:
       undici-types: 6.19.8
 
@@ -5771,10 +5771,10 @@ snapshots:
       '@uppy/core': 4.2.3
       '@uppy/utils': 6.0.4
 
-  '@vitejs/plugin-react-swc@3.7.1(vite@5.4.11(@types/node@20.17.7))':
+  '@vitejs/plugin-react-swc@3.7.1(vite@5.4.11(@types/node@22.9.3))':
     dependencies:
       '@swc/core': 1.9.3
-      vite: 5.4.11(@types/node@20.17.7)
+      vite: 5.4.11(@types/node@22.9.3)
     transitivePeerDependencies:
       - '@swc/helpers'
 
@@ -7133,13 +7133,13 @@ snapshots:
 
   uuid@9.0.1: {}
 
-  vite@5.4.11(@types/node@20.17.7):
+  vite@5.4.11(@types/node@22.9.3):
     dependencies:
       esbuild: 0.21.5
       postcss: 8.4.49
       rollup: 4.27.4
     optionalDependencies:
-      '@types/node': 20.17.7
+      '@types/node': 22.9.3
       fsevents: 2.3.3
 
   webidl-conversions@4.0.2: {}

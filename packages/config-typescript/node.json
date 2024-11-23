@@ -13,5 +13,5 @@
     "exactOptionalPropertyTypes": false
   },
   "exclude": ["node_modules", "dist"],
-  "extends": ["./bases/node20.json", "./bases/strictest.json"]
+  "extends": ["./bases/node22.json", "./bases/strictest.json"]
 }
