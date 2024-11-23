@@ -5,18 +5,16 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "exports": {
-    ".": "./dist/index.js"
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
   },
-  "types": "./dist/index.d.ts",
-  "files": [
-    "dist/",
-    "src/"
-  ],
   "scripts": {
-    "dev": "tsc --project tsconfig.build.json --watch",
-    "build": "tsc --project tsconfig.build.json",
-    "lint": "tsc --project tsconfig.build.json --emitDeclarationOnly false --noEmit && eslint src/",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "build": "tsc",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc --watch",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@open-zero/features": "workspace:*",

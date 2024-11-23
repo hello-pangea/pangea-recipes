@@ -1,11 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "dist",
-    "declarationDir": "./dist",
-    "paths": {
-      // This helps VSCode figure out "Go to definition"
-      "@open-zero/*": ["../*/src/index.ts"]
-    }
+    "outDir": "dist"
   },
   "extends": "@open-zero/typescript-config/node.json",
   "include": ["src", "index.d.ts"],
