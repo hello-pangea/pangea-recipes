@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateFoodPage } from './CreateFoodPage';
 
-const route = getRouteApi('/_layout/foods/$foodId/edit');
+const route = getRouteApi('/_layout/foods_/$foodId/edit');
 
 export function EditFoodPage() {
   const { foodId } = route.useParams();
