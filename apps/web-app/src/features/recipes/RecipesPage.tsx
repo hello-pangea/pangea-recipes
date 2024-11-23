@@ -1,6 +1,6 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid2, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useAuthRequired } from '../auth/useAuth';
@@ -26,13 +26,20 @@ export function RecipesPage() {
       >
         New recipe
       </ButtonLink>
-      <Grid container spacing={2}>
+      <Grid2 container spacing={2}>
         {recipesQuery.data.recipes.map((recipe) => (
-          <Grid item key={recipe.id} xs={12} md={6} lg={4}>
+          <Grid2
+            key={recipe.id}
+            size={{
+              xs: 12,
+              md: 6,
+              lg: 4,
+            }}
+          >
             <RecipeCard recipeId={recipe.id} />
-          </Grid>
+          </Grid2>
         ))}
-      </Grid>
+      </Grid2>
     </Box>
   );
 }
