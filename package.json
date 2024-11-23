@@ -3,33 +3,36 @@
   "version": "0.0.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
-  "scripts": {
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "build": "turbo run build",
-    "clean": "turbo run clean",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "db-generate": "pnpm run -F=database db-generate",
-    "db-migrate": "pnpm run -F=database db-migrate",
-    "db-deploy": "turbo run db-deploy",
-    "db-seed": "turbo run db-seed",
-    "db-studio": "turbo run db-studio"
-  },
-  "devDependencies": {
-    "prettier": "^3.3.3",
-    "tsx": "^4.19.2",
-    "turbo": "^2.3.1"
-  },
-  "engines": {
-    "node": ">=20.11.0"
-  },
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
+  "scripts": {
+    "build": "turbo run build",
+    "clean": "turbo run clean",
+    "db-deploy": "turbo run db-deploy",
+    "db-generate": "pnpm run -F=database db-generate",
+    "db-migrate": "pnpm run -F=database db-migrate",
+    "db-seed": "turbo run db-seed",
+    "db-studio": "turbo run db-studio",
+    "dev": "turbo run dev",
+    "format": "pnpm format:prettier && pnpm format:package-json",
+    "format:package-json": "sort-package-json \"package.json\" \"apps/*/package.json\" \"packages/*/package.json\"",
+    "format:prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "lint": "turbo run lint"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3",
+    "sort-package-json": "^2.11.0",
+    "tsx": "^4.19.2",
+    "turbo": "^2.3.1"
+  },
+  "packageManager": "pnpm@9.14.2",
+  "engines": {
+    "node": ">=20.11.0"
+  },
   "prisma": {
     "schema": "packages/database/prisma/schema",
     "seed": "tsx packages/database/src/seed.ts"
-  },
-  "packageManager": "pnpm@9.14.2"
+  }
 }

@@ -11,15 +11,15 @@
     }
   },
   "scripts": {
-    "dev": "tsc --project tsconfig.build.json --watch",
     "build": "tsc",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "db-deploy": "prisma migrate deploy",
     "db-generate": "prisma generate && prisma format",
     "db-migrate": "prisma migrate dev",
-    "db-deploy": "prisma migrate deploy",
     "db-seed": "tsx src/seed.ts",
     "db-studio": "prisma studio",
-    "lint": "eslint src/",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "dev": "tsc --project tsconfig.build.json --watch",
+    "lint": "eslint src/"
   },
   "dependencies": {
     "@prisma/client": "^5.19.1"

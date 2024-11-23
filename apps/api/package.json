@@ -4,15 +4,18 @@
   "private": true,
   "license": "AGPL-3.0-or-later",
   "type": "module",
+  "imports": {
+    "#src/*.js": "./dist/*.js"
+  },
   "exports": "./dist/index.js",
   "scripts": {
-    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
     "build": "tsup",
-    "start": "node dist/index.js",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
     "lint": "concurrently pnpm:lint:*",
-    "lint:type-check": "tsc --project tsconfig.build.json --noEmit",
     "lint:eslint": "eslint src/",
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
+    "lint:type-check": "tsc --project tsconfig.build.json --noEmit",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.637.0",
@@ -44,8 +47,5 @@
     "pino-pretty": "^11.2.2",
     "tsup": "^8.2.4",
     "typescript": "5.6.3"
-  },
-  "imports": {
-    "#src/*.js": "./dist/*.js"
   }
 }
