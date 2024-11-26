@@ -17,16 +17,12 @@
     "clean": {
       "cache": false
     },
-    "@open-zero/database#db-migrate": {
+    "dx": {
       "cache": false
     },
     "db-generate": {
       "cache": false
-    },
-    "db-deploy": {
-      "cache": false
-    },
-    "db-seed": {}
+    }
   },
   "ui": "tui"
 }

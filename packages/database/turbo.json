@@ -4,6 +4,22 @@
   "tasks": {
     "build": {
       "outputs": ["dist/**"]
+    },
+    "db-migrate": {
+      "cache": false,
+      "dependsOn": ["db-up"],
+      "inputs": ["./prisma/schema/**/*.prisma", "./prisma/migrations/**/*.sql"]
+    },
+    "db-seed": {
+      "cache": false,
+      "dependsOn": ["db-migrate"]
+    },
+    "db-up": {
+      "cache": false
+    },
+    "dx": {
+      "cache": false,
+      "dependsOn": ["db-migrate"]
     }
   }
 }

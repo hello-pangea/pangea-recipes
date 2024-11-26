@@ -1,21 +1,30 @@
 # Hello Recipes
 
-Save and savor your recipes. A modern, intuitive recipe manager.
+Save, savor, and share your recipes. A modern and intuitive recipe manager.
 
 ## Major technologies
 
 - [Turborepo](https://turbo.build/repo) (monorepo tooling)
-- [Postgres 16 and Prisma](https://www.prisma.io/) (database and ORM)
+- [Postgres and Prisma](https://www.prisma.io/) (database and ORM)
 - Typescript, ESLint, and Prettier are used to improve the developer experience
 
-## Requires
+## Prerequisites
 
-- [Node.js 20.x](https://nodejs.org/en/)
+- [Node.js 22.x](https://nodejs.org/en/)
 - [PNPM 9.x](https://pnpm.io/)
+- [Postgres 16.x](https://www.postgresql.org/)
 
-## Getting started
+## Development
 
-tbd
+### Setup
+
+1. Clone the repo
+
+2. Navigate to the project root
+
+3. Run `pnpm i` to install dependencies
+
+4. Run `pnpm dx` to start a local postgres instance with some seed data
 
 ## Apps
 
