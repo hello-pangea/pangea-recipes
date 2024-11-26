@@ -6,10 +6,7 @@
     "declaration": false,
     "declarationMap": false,
     "paths": {
-      "#src/*": ["src/*"],
-
-      // This helps VSCode figure out "Go to definition"
-      "@open-zero/*": ["../../packages/*/src"]
+      "#src/*": ["src/*"]
     }
   },
   "exclude": ["node_modules"],

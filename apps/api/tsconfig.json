@@ -4,9 +4,7 @@
     "outDir": "./dist",
     "baseUrl": ".",
     "paths": {
-      "#src/*": ["src/*"],
-      // This helps VSCode figure out "Go to definition"
-      "@open-zero/*": ["../../packages/*/src/index.ts"]
+      "#src/*": ["src/*"]
     }
   },
   "include": ["src", "index.d.ts"],

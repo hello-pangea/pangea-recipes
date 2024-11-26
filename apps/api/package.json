@@ -14,7 +14,7 @@
     "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
     "lint": "concurrently pnpm:lint:*",
     "lint:eslint": "eslint src/",
-    "lint:type-check": "tsc --project tsconfig.build.json --noEmit",
+    "lint:type-check": "tsc --noEmit",
     "start": "node dist/index.js"
   },
   "dependencies": {

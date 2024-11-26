@@ -10,7 +10,7 @@
     "dev": "vite",
     "lint": "concurrently --raw pnpm:lint:*",
     "lint:eslint": "eslint src/",
-    "lint:type-check": "tsc --project tsconfig.build.json --noEmit"
+    "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@emotion/react": "^11.13.5",
