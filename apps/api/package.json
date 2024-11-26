@@ -18,11 +18,11 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.699.0",
+    "@aws-sdk/client-s3": "^3.700.0",
     "@fastify/auth": "^5.0.1",
     "@fastify/cookie": "^11.0.1",
     "@fastify/cors": "^10.0.1",
-    "@fastify/helmet": "^12.0.1",
+    "@fastify/helmet": "^13.0.0",
     "@fastify/multipart": "^9.0.1",
     "@fastify/swagger": "^9.4.0",
     "@fastify/type-provider-typebox": "^5.0.1",
@@ -30,7 +30,7 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@open-zero/recipe-importer": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.25.70",
+    "@scalar/fastify-api-reference": "^1.25.71",
     "@sinclair/typebox": "^0.33.22",
     "chalk": "^5.3.0",
     "date-fns": "^4.1.0",
@@ -42,10 +42,10 @@
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.9.3",
+    "@types/node": "^22.10.0",
     "concurrently": "^9.1.0",
     "pino-pretty": "^13.0.0",
     "tsup": "^8.3.5",
-    "typescript": "5.6.3"
+    "typescript": "~5.7.2"
   }
 }
