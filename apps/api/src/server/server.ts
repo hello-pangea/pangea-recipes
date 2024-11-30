@@ -1,3 +1,4 @@
+import { validateSessionToken } from '#src/features/auth/session.js';
 import auth from '@fastify/auth';
 import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
@@ -9,7 +10,6 @@ import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
 import { config, enablePrettyLogs } from '../config/config.js';
 import { csrfPlugin } from '../features/auth/csrfPlugin.js';
-import { lucia } from '../features/auth/lucia.js';
 import { routes } from './routes.js';
 
 export async function createServer() {
@@ -127,15 +127,10 @@ export async function createServer() {
   // -
 
   fastify.addHook('onRequest', async (request, reply) => {
-    const sessionId = request.cookies[lucia.sessionCookieName];
+    const token = request.cookies['auth_session'];
 
-    console.log('Auth: sessionId', sessionId);
-
-    if (sessionId) {
-      const { session, user } = await lucia.validateSession(sessionId);
-
-      console.log('Auth: session', session);
-      console.log('Auth: user', user);
+    if (token) {
+      const { session, user } = await validateSessionToken(token);
 
       request.session =
         session && user.id
@@ -147,15 +142,15 @@ export async function createServer() {
           : null;
 
       if (!session) {
-        const sessionCookie = lucia.createBlankSessionCookie();
-
-        void reply.header('set-cookie', sessionCookie.serialize());
-      }
-
-      if (session?.fresh) {
-        const sessionCookie = lucia.createSessionCookie(session.id);
-
-        void reply.header('set-cookie', sessionCookie.serialize());
+        reply.clearCookie('auth_session');
+      } else {
+        reply.setCookie('auth_session', token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          path: '/',
+          sameSite: 'lax',
+          maxAge: 60 * 60 * 24 * 30,
+        });
       }
     }
   });

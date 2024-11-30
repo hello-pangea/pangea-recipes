@@ -7,10 +7,14 @@ import {
   userSchemaRef,
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
-import { randomBytes, randomUUID, scryptSync } from 'node:crypto';
+import { randomBytes, scryptSync } from 'node:crypto';
 import { ApiError } from '../../lib/ApiError.js';
 import { noContentSchema } from '../../types/noContent.js';
-import { lucia } from '../auth/lucia.js';
+import {
+  createSession,
+  generateSessionToken,
+  invalidateSession,
+} from '../auth/session.js';
 import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Users';
@@ -52,16 +56,16 @@ export async function userRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      const session = await lucia.createSession(
-        user.id,
-        {},
-        {
-          sessionId: randomUUID(),
-        },
-      );
+      const token = generateSessionToken();
+      await createSession(token, user.id);
 
-      const sessionCookie = lucia.createSessionCookie(session.id);
-      void reply.header('set-cookie', sessionCookie.serialize());
+      reply.setCookie('auth_session', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 30,
+      });
 
       const { hashedPassword: _, ...sanitizedUser } = user;
 
@@ -114,16 +118,16 @@ export async function userRoutes(fastify: FastifyTypebox) {
         throw new Error();
       }
 
-      const session = await lucia.createSession(
-        user.id,
-        {},
-        {
-          sessionId: randomUUID(),
-        },
-      );
+      const token = generateSessionToken();
+      await createSession(token, user.id);
 
-      const sessionCookie = lucia.createSessionCookie(session.id);
-      void reply.header('set-cookie', sessionCookie.serialize());
+      reply.setCookie('auth_session', token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 30,
+      });
 
       const { hashedPassword: _, ...sanitizedUser } = user;
 
@@ -151,10 +155,9 @@ export async function userRoutes(fastify: FastifyTypebox) {
         return reply.code(204).send();
       }
 
-      await lucia.invalidateSession(session.id);
+      await invalidateSession(session.id);
 
-      const blankSessionCookie = lucia.createBlankSessionCookie();
-      void reply.header('set-cookie', blankSessionCookie.serialize());
+      reply.clearCookie('auth_session');
 
       return reply.code(204).send();
     },

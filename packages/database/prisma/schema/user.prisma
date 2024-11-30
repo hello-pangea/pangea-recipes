@@ -18,7 +18,7 @@ model User {
 }
 
 model Session {
-  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id        String   @id
   expiresAt DateTime @map("expires_at")
 
   userId String @map("user_id") @db.Uuid

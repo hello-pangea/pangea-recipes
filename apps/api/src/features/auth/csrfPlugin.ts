@@ -1,6 +1,5 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { fastifyPlugin } from 'fastify-plugin';
-import { verifyRequestOrigin } from 'lucia';
 
 interface Options {
   enabled: boolean;
@@ -20,13 +19,15 @@ async function plugin(fastify: FastifyTypebox, opts: Options) {
     const originHeader = req.headers.origin ?? null;
     const hostHeader = req.headers.host ?? null;
 
-    if (
-      !originHeader ||
-      !hostHeader ||
-      !verifyRequestOrigin(originHeader, [hostHeader, 'hellorecipes.com'])
-    ) {
+    const allowedHosts = [hostHeader, 'hellorecipes.com'];
+
+    if (!originHeader || !hostHeader || !allowedHosts.includes(originHeader)) {
       console.error('Invalid origin', { originHeader, hostHeader });
-      return res.status(403);
+
+      return res.status(403).send({
+        message:
+          "Invalid origin. Please make sure you're using the correct URL.",
+      });
     }
 
     return;
