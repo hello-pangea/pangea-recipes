@@ -12,7 +12,7 @@ Save, savor, and share your recipes. A modern and intuitive recipe manager.
 
 - [Node.js 22.x](https://nodejs.org/en/)
 - [PNPM 9.x](https://pnpm.io/)
-- [Postgres 16.x](https://www.postgresql.org/)
+- [Postgres 17.x](https://www.postgresql.org/)
 
 ## Development
 
