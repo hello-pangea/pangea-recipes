@@ -1,6 +1,6 @@
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { Autocomplete, Box, Grid2, IconButton, TextField } from '@mui/material';
-import { unitRecord, useFoods } from '@open-zero/features';
+import { unitRecord, units, useFoods } from '@open-zero/features';
 import {
   AutocompleteElement,
   Controller,
@@ -62,10 +62,7 @@ export function NewIngredient({ index }: Props) {
       >
         <AutocompleteElement
           name={`ingredients.${index}.unit`}
-          options={Object.entries(unitRecord).map(([unit, unitDetail]) => ({
-            id: unit,
-            label: unitDetail.abbreviation ?? unitDetail.name,
-          }))}
+          options={units}
           control={control}
           matchId
           autocompleteProps={{
@@ -75,6 +72,19 @@ export function NewIngredient({ index }: Props) {
             disableClearable: true,
             sx: {
               width: { xs: undefined, sm: 115 },
+            },
+            getOptionLabel: (option) =>
+              unitRecord[option].abbreviation ?? unitRecord[option].name,
+            renderOption: (props, option) => {
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+              const { key, ...optionProps } = props;
+
+              return (
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                <li key={key} {...optionProps}>
+                  {unitRecord[option].name}
+                </li>
+              );
             },
           }}
           textFieldProps={{

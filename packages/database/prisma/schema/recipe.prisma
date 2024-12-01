@@ -44,18 +44,27 @@ model RecipeImage {
 }
 
 enum Unit {
+  // Metric weight
+  milligram
   gram
   kilogram
+  // Imperial weight
   ounce
   pound
-  teaspoon
-  tablespoon
-  cup
-  fluidOunce @map("fluid_ounce")
+  // Metric volume
   mililiter
   centiliter
   deciliter
   liter
+  // Imperial volume
+  teaspoon
+  tablespoon
+  cup
+  fluidOunce @map("fluid_ounce")
+  pint
+  quart
+  gallon
+  // Misc
   bottle
   can
   packet

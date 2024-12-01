@@ -7,6 +7,12 @@ export interface UnitDetails {
 }
 
 export const unitRecord: Record<Unit, UnitDetails> = {
+  // Metric weight
+  milligram: {
+    name: 'milligram',
+    pluralName: 'milligrams',
+    abbreviation: 'mg',
+  },
   gram: {
     name: 'gram',
     pluralName: 'grams',
@@ -17,6 +23,7 @@ export const unitRecord: Record<Unit, UnitDetails> = {
     pluralName: 'kilograms',
     abbreviation: 'kg',
   },
+  // Imperial weight
   ounce: {
     name: 'ounce',
     pluralName: 'ounces',
@@ -27,26 +34,7 @@ export const unitRecord: Record<Unit, UnitDetails> = {
     pluralName: 'pounds',
     abbreviation: 'lb',
   },
-  teaspoon: {
-    name: 'teaspoon',
-    pluralName: 'teaspoons',
-    abbreviation: 'tsp',
-  },
-  tablespoon: {
-    name: 'tablespoon',
-    pluralName: 'tablespoons',
-    abbreviation: 'tbsp',
-  },
-  cup: {
-    name: 'cup',
-    pluralName: 'cups',
-    abbreviation: 'c',
-  },
-  fluidOunce: {
-    name: 'fluid ounce',
-    pluralName: 'fluid ounces',
-    abbreviation: 'fl oz',
-  },
+  // Metric volume
   mililiter: {
     name: 'mililiter',
     pluralName: 'mililiters',
@@ -67,6 +55,43 @@ export const unitRecord: Record<Unit, UnitDetails> = {
     pluralName: 'liters',
     abbreviation: 'l',
   },
+  // Imperial volume
+  teaspoon: {
+    name: 'teaspoon',
+    pluralName: 'teaspoons',
+    abbreviation: 'tsp',
+  },
+  tablespoon: {
+    name: 'tablespoon',
+    pluralName: 'tablespoons',
+    abbreviation: 'tbsp',
+  },
+  cup: {
+    name: 'cup',
+    pluralName: 'cups',
+    abbreviation: 'c',
+  },
+  fluidOunce: {
+    name: 'fluid ounce',
+    pluralName: 'fluid ounces',
+    abbreviation: 'fl oz',
+  },
+  pint: {
+    name: 'pint',
+    pluralName: 'pints',
+    abbreviation: 'pt',
+  },
+  quart: {
+    name: 'quart',
+    pluralName: 'quarts',
+    abbreviation: 'qt',
+  },
+  gallon: {
+    name: 'gallon',
+    pluralName: 'gallons',
+    abbreviation: 'gal',
+  },
+  // Misc
   bottle: {
     name: 'bottle',
     pluralName: 'bottles',
@@ -88,3 +113,5 @@ export const unitRecord: Record<Unit, UnitDetails> = {
     pluralName: 'bunches',
   },
 };
+
+export const units = Object.keys(unitRecord) as Unit[];
