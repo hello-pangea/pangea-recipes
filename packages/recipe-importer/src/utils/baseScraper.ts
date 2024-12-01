@@ -6,11 +6,13 @@ export abstract class BaseScraper {
   abstract hosts: string[];
 
   async getPage(url: string) {
-    const browser = await playwright.chromium.launch();
+    const browser = await playwright.chromium.launch({
+      args: ['--disable-gl-drawing-for-tests'],
+    });
     const context = await browser.newContext();
     const page = await context.newPage();
 
-    await page.goto(url);
+    await page.goto(url, { waitUntil: 'domcontentloaded' });
 
     return page;
   }
