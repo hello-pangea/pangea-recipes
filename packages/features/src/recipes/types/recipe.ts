@@ -5,6 +5,8 @@ import { foodSchema } from '../../foods/index.js';
 import { Nullable } from '../../lib/nullable.js';
 import { unitSchema } from '../../units/index.js';
 
+const recipeSchemaId = 'Recipe';
+
 export type Recipe = Static<typeof recipeSchema>;
 export const recipeSchema = Type.Object(
   {
@@ -57,7 +59,7 @@ export const recipeSchema = Type.Object(
 
     usesRecipes: Type.Optional(Type.Array(Type.String())),
   },
-  { $id: 'Recipe' },
+  { $id: recipeSchemaId },
 );
 
-export const recipeSchemaRef = Type.Ref(recipeSchema);
+export const recipeSchemaRef = Type.Unsafe<Recipe>(Type.Ref(recipeSchemaId));

@@ -1,6 +1,8 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { unitSchema } from '../../units/index.js';
 
+const importedIngredientSchemaId = 'ImportedIngredient';
+
 export type ImportedIngredient = Static<typeof importedIngredientSchema>;
 export const importedIngredientSchema = Type.Object(
   {
@@ -9,7 +11,9 @@ export const importedIngredientSchema = Type.Object(
     amount: Type.Optional(Type.Number()),
     notes: Type.Optional(Type.String()),
   },
-  { $id: 'ImportedIngredient' },
+  { $id: importedIngredientSchemaId },
 );
 
-export const importedIngredientSchemaRef = Type.Ref(importedIngredientSchema);
+export const importedIngredientSchemaRef = Type.Unsafe<ImportedIngredient>(
+  Type.Ref(importedIngredientSchemaId),
+);

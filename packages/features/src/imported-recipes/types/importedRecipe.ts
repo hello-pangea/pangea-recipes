@@ -1,6 +1,8 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { importedIngredientSchema } from './importedIngredient.js';
 
+const importedRecipeSchemaId = 'ImportedRecipe';
+
 export type ImportedRecipe = Static<typeof importedRecipeSchema>;
 export const importedRecipeSchema = Type.Object(
   {
@@ -19,7 +21,9 @@ export const importedRecipeSchema = Type.Object(
 
     ingredients: Type.Optional(Type.Array(importedIngredientSchema)),
   },
-  { $id: 'ImportedRecipe' },
+  { $id: importedRecipeSchemaId },
 );
 
-export const importedRecipeSchemaRef = Type.Ref(importedRecipeSchema);
+export const importedRecipeSchemaRef = Type.Unsafe<ImportedRecipe>(
+  Type.Ref(importedRecipeSchemaId),
+);

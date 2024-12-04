@@ -1,6 +1,8 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { Nullable } from '../../lib/nullable.js';
 
+const userSchemaId = 'User';
+
 export type User = Static<typeof userSchema>;
 export const userSchema = Type.Object(
   {
@@ -27,7 +29,7 @@ export const userSchema = Type.Object(
       Type.Literal('ocean'),
     ]),
   },
-  { $id: 'User' },
+  { $id: userSchemaId },
 );
 
-export const userSchemaRef = Type.Ref(userSchema);
+export const userSchemaRef = Type.Unsafe<User>(Type.Ref(userSchemaId));

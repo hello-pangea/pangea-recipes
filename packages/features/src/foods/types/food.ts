@@ -1,5 +1,7 @@
 import { Type, type Static } from '@sinclair/typebox';
 
+const foodSchemaId = 'Food';
+
 export type Food = Static<typeof foodSchema>;
 export const foodSchema = Type.Object(
   {
@@ -20,7 +22,7 @@ export const foodSchema = Type.Object(
       }),
     ),
   },
-  { $id: 'Food' },
+  { $id: foodSchemaId },
 );
 
-export const foodSchemaRef = Type.Ref(foodSchema);
+export const foodSchemaRef = Type.Unsafe<Food>(Type.Ref(foodSchemaId));
