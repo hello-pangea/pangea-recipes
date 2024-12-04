@@ -19,7 +19,7 @@ async function plugin(fastify: FastifyTypebox, opts: Options) {
     const originHeader = req.headers.origin ?? null;
     const hostHeader = req.headers.host ?? null;
 
-    const allowedHosts = [hostHeader, 'hellorecipes.com'];
+    const allowedHosts = [hostHeader, 'https://hellorecipes.com'];
 
     if (!originHeader || !hostHeader || !allowedHosts.includes(originHeader)) {
       console.error('Invalid origin', { originHeader, hostHeader });
