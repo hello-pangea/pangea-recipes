@@ -166,6 +166,9 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: tag.tag.id,
           name: tag.tag.name,
         })),
+        instructionGroups: recipe.instructionGroups.sort((a, b) => {
+          return parseInt(a.sort) - parseInt(b.sort);
+        }),
       };
 
       return {
@@ -319,6 +322,9 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: tag.tag.id,
           name: tag.tag.name,
         })),
+        instructionGroups: recipe.instructionGroups.sort((a, b) => {
+          return parseInt(a.sort) - parseInt(b.sort);
+        }),
       };
 
       return {
@@ -369,6 +375,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                 tagId: true,
               },
             },
+            instructionGroups: true,
           },
         });
 
@@ -404,34 +411,119 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
 
         const tagsUpdate:
           | Prisma.RecipeTagUpdateManyWithoutRecipeNestedInput
-          | undefined = tags?.length
-          ? {
-              create: !tagsToCreateOrAdd.length
-                ? undefined
-                : tagsToCreateOrAdd.map((tag) => {
-                    if ('id' in tag) {
-                      return {
-                        tag: {
-                          connect: tag,
-                        },
-                      };
-                    } else {
-                      return {
-                        tag: {
-                          create: tag,
-                        },
-                      };
+          | undefined =
+          tags !== undefined
+            ? {
+                create: !tagsToCreateOrAdd.length
+                  ? undefined
+                  : tagsToCreateOrAdd.map((tag) => {
+                      if ('id' in tag) {
+                        return {
+                          tag: {
+                            connect: tag,
+                          },
+                        };
+                      } else {
+                        return {
+                          tag: {
+                            create: tag,
+                          },
+                        };
+                      }
+                    }),
+                deleteMany: tagIdsToRemove.length
+                  ? {
+                      tagId: {
+                        in: tagIdsToRemove,
+                      },
                     }
-                  }),
-              deleteMany: tagIdsToRemove.length
-                ? {
-                    tagId: {
-                      in: tagIdsToRemove,
+                  : undefined,
+              }
+            : undefined;
+
+        // -
+        // Instruction groups
+        // -
+
+        if (instructionGroups) {
+          const existingInstructionGroups = oldRecipe.instructionGroups;
+
+          const existingInstructionGroupIds = existingInstructionGroups.map(
+            (group) => group.id,
+          );
+
+          const instructionGroupsToDelete = existingInstructionGroups.filter(
+            (group) => !instructionGroups.some((g) => g.id === group.id),
+          );
+
+          const instructionGroupsToUpdate = instructionGroups.filter(
+            (group) =>
+              group.id && existingInstructionGroupIds.includes(group.id),
+          );
+
+          const instructionGroupsToCreate = instructionGroups.filter(
+            (group) => !group.id,
+          );
+
+          if (instructionGroupsToDelete.length) {
+            await prisma.instructionGroup.deleteMany({
+              where: {
+                id: {
+                  in: instructionGroupsToDelete.map((group) => group.id),
+                },
+              },
+            });
+          }
+
+          if (instructionGroupsToCreate.length) {
+            await Promise.all(
+              instructionGroupsToCreate.map(async (instructionGroup) => {
+                const index = instructionGroups.indexOf(instructionGroup);
+
+                return prisma.instructionGroup.create({
+                  data: {
+                    recipeId: recipeId,
+                    title: instructionGroup.title ?? null,
+                    sort: index.toString(),
+                    instructions: {
+                      create: instructionGroup.instructions.map(
+                        (instruction, index) => ({
+                          step: index,
+                          text: instruction.text,
+                        }),
+                      ),
                     },
-                  }
-                : undefined,
-            }
-          : undefined;
+                  },
+                });
+              }),
+            );
+          }
+
+          if (instructionGroupsToUpdate.length) {
+            await Promise.all(
+              instructionGroupsToUpdate.map(async (group) => {
+                const index = instructionGroups.indexOf(group);
+
+                return prisma.instructionGroup.update({
+                  where: {
+                    id: group.id,
+                  },
+                  data: {
+                    title: group.title ?? null,
+                    sort: index.toString(),
+                    instructions: {
+                      deleteMany: {},
+                      create: group.instructions.map((instruction, index) => ({
+                        step: index,
+                        text: instruction.text,
+                      })),
+                    },
+                  },
+                });
+              }),
+            );
+          }
+        }
 
         // -
         // Update
@@ -458,27 +550,6 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                         : { create: food },
                   };
                 }),
-              },
-          instructionGroups: !instructionGroups
-            ? undefined
-            : {
-                deleteMany: {},
-                createMany: {
-                  data: instructionGroups.map((instructionGroup, index) => ({
-                    title: instructionGroup.title,
-                    sort: index.toString(),
-                    instructions: {
-                      createMany: {
-                        data: instructionGroup.instructions.map(
-                          (instruction, index) => ({
-                            step: index,
-                            text: instruction,
-                          }),
-                        ),
-                      },
-                    },
-                  })),
-                },
               },
           usesRecipes: !usesRecipes
             ? undefined
@@ -536,6 +607,9 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             id: tag.tag.id,
             name: tag.tag.name,
           })),
+          instructionGroups: recipe.instructionGroups.sort((a, b) => {
+            return parseInt(a.sort) - parseInt(b.sort);
+          }),
         };
 
         return recipeDto;

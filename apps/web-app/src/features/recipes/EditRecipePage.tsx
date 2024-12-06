@@ -42,6 +42,7 @@ export function EditRecipePage() {
         })),
         instructionGroups: recipeQuery.data.recipe.instructionGroups.map(
           (instructionGroup) => ({
+            id: instructionGroup.id,
             title: instructionGroup.title,
             instructions: instructionGroup.instructions,
           }),

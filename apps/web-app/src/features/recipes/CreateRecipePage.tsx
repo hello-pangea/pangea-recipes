@@ -61,6 +61,7 @@ export interface RecipeFormInputs {
   }[];
   usesRecipes: { recipeId: string }[];
   instructionGroups: {
+    id: string | null;
     title: string | null;
     instructions: { text: string }[];
   }[];
@@ -151,6 +152,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         description: data.description ?? undefined,
         ingredients: data.ingredients,
         instructionGroups: data.instructionGroups.map((ig) => ({
+          id: ig.id ?? undefined,
           title: ig.title,
           instructions: ig.instructions,
         })),
@@ -294,6 +296,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             startIcon={<AddRoundedIcon />}
             onClick={() => {
               appendInstructionGroup({
+                id: null,
                 title: null,
                 instructions: [
                   {

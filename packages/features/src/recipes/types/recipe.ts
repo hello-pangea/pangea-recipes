@@ -45,6 +45,7 @@ export const recipeSchema = Type.Object(
 
     instructionGroups: Type.Array(
       Type.Object({
+        id: Type.String(),
         title: Nullable(Type.String()),
         instructions: Type.Array(
           Type.Object({
