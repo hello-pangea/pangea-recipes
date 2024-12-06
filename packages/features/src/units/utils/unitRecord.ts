@@ -6,7 +6,7 @@ export interface UnitDetails {
   abbreviation?: string;
 }
 
-export const unitRecord: Record<Unit, UnitDetails> = {
+export const unitRecord: Record<Exclude<Unit, null>, UnitDetails> = {
   // Metric weight
   milligram: {
     name: 'milligram',
@@ -92,6 +92,34 @@ export const unitRecord: Record<Unit, UnitDetails> = {
     abbreviation: 'gal',
   },
   // Misc
+  whole: {
+    name: 'whole',
+    pluralName: 'whole',
+  },
+  slice: {
+    name: 'slice',
+    pluralName: 'slices',
+  },
+  piece: {
+    name: 'piece',
+    pluralName: 'pieces',
+  },
+  clove: {
+    name: 'clove',
+    pluralName: 'cloves',
+  },
+  stick: {
+    name: 'stick',
+    pluralName: 'sticks',
+  },
+  drop: {
+    name: 'drop',
+    pluralName: 'drops',
+  },
+  dash: {
+    name: 'dash',
+    pluralName: 'dashes',
+  },
   bottle: {
     name: 'bottle',
     pluralName: 'bottles',

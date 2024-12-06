@@ -1,8 +1,8 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { importedRecipeSchema } from '@open-zero/features';
-import { getImportedRecipeFromUrl } from '@open-zero/recipe-importer';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';
+import { getLlmImportRecipe } from './getLlmImportRecipe.js';
 
 const routeTag = 'Imported recipes';
 
@@ -28,10 +28,10 @@ export async function importedRecipeRoutes(fastify: FastifyTypebox) {
     async (request) => {
       const { url } = request.query;
 
-      const importedRecipe = await getImportedRecipeFromUrl(url);
+      const recipe = await getLlmImportRecipe(url);
 
       return {
-        importedRecipe: importedRecipe,
+        importedRecipe: recipe,
       };
     },
   );

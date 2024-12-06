@@ -65,6 +65,13 @@ enum Unit {
   quart
   gallon
   // Misc
+  clove
+  whole
+  slice
+  drop
+  dash
+  stick
+  piece
   bottle
   can
   packet

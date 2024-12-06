@@ -2,6 +2,7 @@ import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
+import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import {
@@ -184,13 +185,15 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         <Typography variant="h1">
           {defaultRecipe ? 'Edit recipe' : 'New recipe'}
         </Typography>
-        {/* <Button
+        <Button
           size="small"
           startIcon={<LinkRoundedIcon />}
-          onClick={() => setImportDialogOpen(true)}
+          onClick={() => {
+            setImportDialogOpen(true);
+          }}
         >
           Import from url
-        </Button> */}
+        </Button>
       </Box>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -369,8 +372,10 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           setImportDialogOpen(false);
 
           reset({
-            name: importedRecipe.name,
+            name: importedRecipe.name ?? undefined,
             description: importedRecipe.description,
+            cookTime: importedRecipe.cookTime?.toString(),
+            prepTime: importedRecipe.prepTime?.toString(),
             instructionGroups: importedRecipe.instructionGroups?.map((ig) => ({
               title: ig.title,
               instructions: ig.instructions.map((i) => ({ text: i })),

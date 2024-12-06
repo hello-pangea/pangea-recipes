@@ -12,6 +12,7 @@ const envSchema = Type.Object({
   CLOUDFLARE_ACCOUNT_ID: Type.String(),
   CLOUDFLARE_R2_ACCESS_KEY_ID: Type.String(),
   CLOUDFLARE_R2_SECRET_ACCESS_KEY: Type.String(),
+  OPENAI_API_KEY: Type.String(),
 });
 
 export const config = parseEnv(envSchema, process.env);

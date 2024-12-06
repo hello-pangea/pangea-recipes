@@ -34,6 +34,8 @@ export default tseslint.config(
           ignoreRestSiblings: true,
         },
       ],
+      '@typescript-eslint/no-unsafe-call': 'off',
+      'eslint@typescript-eslint/no-unsafe-assignment': 'off',
     },
   },
 );

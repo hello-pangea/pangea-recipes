@@ -13,12 +13,13 @@
     "db-deploy": "turbo run db-deploy",
     "db-migrate": "pnpm run -F=database db-migrate",
     "db-studio": "pnpm run -F=database db-studio",
-    "dx": "turbo run dx",
     "dev": "turbo run dev",
+    "dx": "turbo run dx",
     "format": "pnpm format:prettier && pnpm format:package-json",
     "format:package-json": "sort-package-json \"package.json\" \"apps/*/package.json\" \"packages/*/package.json\"",
     "format:prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "prettier": "^3.4.2",

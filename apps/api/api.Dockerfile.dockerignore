@@ -5,7 +5,6 @@
 !apps/api
 !packages/database
 !packages/features
-!packages/recipe-importer
 !packages/config-typescript
 !packages/config-eslint-node
 !turbo.json

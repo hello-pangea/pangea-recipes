@@ -7,7 +7,7 @@
       "outputs": ["dist/**"]
     },
     "lint": {
-      "dependsOn": ["^build"]
+      "dependsOn": ["^db-generate", "^build"]
     },
     "dev": {
       "dependsOn": ["^db-generate", "^build"],
@@ -16,6 +16,9 @@
     },
     "clean": {
       "cache": false
+    },
+    "test": {
+      "dependsOn": []
     },
     "dx": {
       "cache": false

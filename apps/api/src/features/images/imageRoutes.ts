@@ -1,11 +1,11 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import multipart, { type MultipartFile } from '@fastify/multipart';
 import { Type } from '@sinclair/typebox';
-import sharp from 'sharp';
 import { prisma } from '../../lib/prisma.js';
 import { uploadFile } from '../../lib/s3.js';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
 import { verifySession } from '../auth/verifySession.js';
+import { processAndUploadImage } from './processAndUploadImage.js';
 
 const routeTag = 'Images';
 
@@ -43,44 +43,11 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       const file = request.body.file;
       const originalBuffer = await file.toBuffer();
 
-      const sharpInstance = sharp(originalBuffer);
-
-      const originalImageKey = `images/original/${crypto.randomUUID()}.jpg`;
-
-      const rotatedImage = await sharpInstance.rotate().toBuffer();
-
-      await uploadFile({
-        buffer: rotatedImage,
-        key: originalImageKey,
-        mimeType: file.mimetype,
-      });
-
-      const modifiedBuffer = await sharpInstance
-        .rotate()
-        .resize({ width: 800, withoutEnlargement: true })
-        .jpeg()
-        .toBuffer();
-
-      const modifiedImageKey = `images/transformed${crypto.randomUUID()}.jpg`;
-
-      await uploadFile({
-        buffer: modifiedBuffer,
-        key: modifiedImageKey,
-        mimeType: 'image/jpeg',
-      });
-
-      const modifiedImageUrl = `https://assets.hellorecipes.com/${modifiedImageKey}`;
-
-      const image = await prisma.image.create({
-        data: {
-          key: modifiedImageKey,
-          originalKey: originalImageKey,
-        },
-      });
+      const { imageId, imageUrl } = await processAndUploadImage(originalBuffer);
 
       return {
-        imageId: image.id,
-        imageUrl: modifiedImageUrl,
+        imageId: imageId,
+        imageUrl: imageUrl,
       };
     },
   );

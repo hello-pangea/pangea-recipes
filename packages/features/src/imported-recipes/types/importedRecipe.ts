@@ -1,4 +1,5 @@
 import { Type, type Static } from '@sinclair/typebox';
+import { Nullable } from '../../lib/nullable.js';
 import { importedIngredientSchema } from './importedIngredient.js';
 
 const importedRecipeSchemaId = 'ImportedRecipe';
@@ -6,20 +7,27 @@ const importedRecipeSchemaId = 'ImportedRecipe';
 export type ImportedRecipe = Static<typeof importedRecipeSchema>;
 export const importedRecipeSchema = Type.Object(
   {
-    name: Type.Optional(Type.String()),
+    name: Nullable(Type.String()),
 
-    description: Type.Optional(Type.String()),
+    description: Nullable(Type.String()),
 
-    instructionGroups: Type.Optional(
+    /** Minutes */
+    prepTime: Nullable(Type.Number({ description: 'Minutes' })),
+    /** Minutes */
+    cookTime: Nullable(Type.Number({ description: 'Minutes' })),
+    /** Minutes */
+    totalTime: Nullable(Type.Number({ description: 'Minutes' })),
+
+    ingredients: Nullable(Type.Array(importedIngredientSchema)),
+
+    instructionGroups: Nullable(
       Type.Array(
         Type.Object({
-          title: Type.Optional(Type.String()),
+          title: Nullable(Type.String()),
           instructions: Type.Array(Type.String()),
         }),
       ),
     ),
-
-    ingredients: Type.Optional(Type.Array(importedIngredientSchema)),
   },
   { $id: importedRecipeSchemaId },
 );

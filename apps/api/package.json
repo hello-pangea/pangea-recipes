@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist/index.js' --watch '../../packages/recipe-importer/dist/index.js' --onSuccess \"node --env-file=.env dist/index.js\"",
+    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist' --onSuccess \"node --env-file=.env dist/index.js\"",
     "lint": "concurrently pnpm:lint:*",
     "lint:eslint": "eslint src/",
     "lint:type-check": "tsc --noEmit",
@@ -28,7 +28,6 @@
     "@fastify/type-provider-typebox": "^5.1.0",
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@open-zero/recipe-importer": "workspace:*",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
     "@scalar/fastify-api-reference": "^1.25.75",
@@ -37,6 +36,9 @@
     "date-fns": "^4.1.0",
     "fastify": "^5.1.0",
     "fastify-plugin": "^5.0.1",
+    "file-type": "^19.6.0",
+    "openai": "^4.75.0",
+    "playwright-chromium": "^1.49.0",
     "sharp": "^0.33.5"
   },
   "devDependencies": {

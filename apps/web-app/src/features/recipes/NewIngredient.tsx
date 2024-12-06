@@ -74,7 +74,9 @@ export function NewIngredient({ index }: Props) {
               width: { xs: undefined, sm: 115 },
             },
             getOptionLabel: (option) =>
-              unitRecord[option].abbreviation ?? unitRecord[option].name,
+              option
+                ? (unitRecord[option].abbreviation ?? unitRecord[option].name)
+                : '',
             renderOption: (props, option) => {
               // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
               const { key, ...optionProps } = props;
@@ -82,7 +84,7 @@ export function NewIngredient({ index }: Props) {
               return (
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                 <li key={key} {...optionProps}>
-                  {unitRecord[option].name}
+                  {option ? unitRecord[option].name : ''}
                 </li>
               );
             },

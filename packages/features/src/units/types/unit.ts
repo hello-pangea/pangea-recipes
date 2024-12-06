@@ -23,9 +23,17 @@ export const unitSchema = Type.Union([
   Type.Literal('quart'),
   Type.Literal('gallon'),
   // Misc
+  Type.Literal('slice'),
+  Type.Literal('piece'),
+  Type.Literal('clove'),
+  Type.Literal('stick'),
+  Type.Literal('drop'),
+  Type.Literal('dash'),
+  Type.Literal('whole'),
   Type.Literal('bottle'),
   Type.Literal('can'),
   Type.Literal('packet'),
   Type.Literal('pinch'),
   Type.Literal('bunch'),
+  Type.Null(),
 ]);
