@@ -18,7 +18,14 @@ export const importedRecipeSchema = Type.Object(
     /** Minutes */
     totalTime: Nullable(Type.Number({ description: 'Minutes' })),
 
-    ingredients: Nullable(Type.Array(importedIngredientSchema)),
+    ingredientGroups: Nullable(
+      Type.Array(
+        Type.Object({
+          title: Nullable(Type.String()),
+          ingredients: Type.Array(importedIngredientSchema),
+        }),
+      ),
+    ),
 
     instructionGroups: Nullable(
       Type.Array(

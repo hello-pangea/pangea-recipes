@@ -12,14 +12,15 @@ import type { FoodOption, RecipeFormInputs } from './CreateRecipePage';
 import { IngredientNotesButton } from './IngredientNotesButton';
 
 interface Props {
+  ingredientGroupIndex: number;
   index: number;
 }
 
-export function NewIngredient({ index }: Props) {
+export function NewIngredient({ index, ingredientGroupIndex }: Props) {
   const { control } = useFormContext<RecipeFormInputs>();
   const { append: appendIngredient, remove: removeIngredient } = useFieldArray({
     control,
-    name: `ingredients`,
+    name: `ingredientGroups.${ingredientGroupIndex}.ingredients`,
   });
 
   const foodsQuery = useFoods();
@@ -43,8 +44,8 @@ export function NewIngredient({ index }: Props) {
       >
         <TextFieldElement
           placeholder="Amount"
-          name={`ingredients.${index}.amount`}
-          id={`ingredients.${index}.amount`}
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.amount`}
+          id={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.amount`}
           inputMode="decimal"
           control={control}
           size="small"
@@ -61,7 +62,7 @@ export function NewIngredient({ index }: Props) {
         }}
       >
         <AutocompleteElement
-          name={`ingredients.${index}.unit`}
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit`}
           options={units}
           control={control}
           matchId
@@ -101,7 +102,7 @@ export function NewIngredient({ index }: Props) {
       >
         <Controller
           control={control}
-          name={`ingredients.${index}.food`}
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.food`}
           rules={{
             required: 'Required',
           }}
@@ -159,7 +160,9 @@ export function NewIngredient({ index }: Props) {
                   // run this code in 50ms
                   setTimeout(() => {
                     document
-                      .getElementById(`ingredients.${index + 1}.amount`)
+                      .getElementById(
+                        `ingredientGroups.${ingredientGroupIndex}.ingredients.${index + 1}.amount`,
+                      )
                       ?.focus();
                   }, 50);
                 }
@@ -204,7 +207,10 @@ export function NewIngredient({ index }: Props) {
         display="flex"
         alignItems="center"
       >
-        <IngredientNotesButton ingredientIndex={index} />
+        <IngredientNotesButton
+          ingredientGroupIndex={ingredientGroupIndex}
+          ingredientIndex={index}
+        />
         <IconButton
           onClick={() => {
             removeIngredient(index);

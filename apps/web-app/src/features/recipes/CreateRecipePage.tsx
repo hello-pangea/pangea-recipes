@@ -31,9 +31,9 @@ import {
 } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
 import { useAuthRequired } from '../auth/useAuth';
+import { CreateIngredientGroup } from './CreateIngredientGroup';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
-import { NewIngredient } from './NewIngredient';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
@@ -53,16 +53,20 @@ export interface RecipeFormInputs {
     id: string;
     url: string;
   } | null;
-  ingredients: {
-    food: FoodOption;
-    unit: Unit | null;
-    amount: number | null;
-    notes: string | null;
+  ingredientGroups: {
+    id: string | null;
+    name: string | null;
+    ingredients: {
+      food: FoodOption;
+      unit: Unit | null;
+      amount: number | null;
+      notes: string | null;
+    }[];
   }[];
   usesRecipes: { recipeId: string }[];
   instructionGroups: {
     id: string | null;
-    title: string | null;
+    name: string | null;
     instructions: { text: string }[];
   }[];
 }
@@ -82,17 +86,13 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       prepTime: '',
       cookTime: '',
       image: null,
-      ingredients: [],
+      ingredientGroups: [],
       usesRecipes: [],
       instructionGroups: [],
     },
   });
   const { user } = useAuthRequired();
   const { handleSubmit, control, reset } = form;
-  const { fields: ingredients, append: appendIngredient } = useFieldArray({
-    control,
-    name: 'ingredients',
-  });
   const {
     fields: usesRecipes,
     append: appendRecipe,
@@ -108,6 +108,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   } = useFieldArray({
     control,
     name: 'instructionGroups',
+  });
+  const {
+    fields: ingredientGroups,
+    append: appendIngredientGroup,
+    remove: removeIngredientGroup,
+  } = useFieldArray({
+    control,
+    name: 'ingredientGroups',
   });
 
   const recipesQuery = useRecipes({
@@ -150,10 +158,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         id: defaultRecipe.id,
         name: data.name,
         description: data.description ?? undefined,
-        ingredients: data.ingredients,
+        ingredientGroups: data.ingredientGroups.map((ig) => ({
+          id: ig.id ?? undefined,
+          name: ig.name,
+          ingredients: ig.ingredients,
+        })),
         instructionGroups: data.instructionGroups.map((ig) => ({
           id: ig.id ?? undefined,
-          title: ig.title,
+          name: ig.name,
           instructions: ig.instructions,
         })),
       });
@@ -164,9 +176,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         cookTime: data.cookTime ? parseInt(data.cookTime) : undefined,
         prepTime: data.prepTime ? parseInt(data.prepTime) : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
-        ingredients: data.ingredients,
+        ingredientGroups: data.ingredientGroups.map((ig) => ({
+          name: ig.name,
+          ingredients: ig.ingredients,
+        })),
         instructionGroups: data.instructionGroups.map((ig) => ({
-          title: ig.title,
+          name: ig.name,
           instructions: ig.instructions,
         })),
       });
@@ -247,27 +262,40 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             spacing={2}
             sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
           >
-            {ingredients.map((field, index) => {
-              return <NewIngredient index={index} key={field.id} />;
-            })}
+            {ingredientGroups.map((ingredientGroup, ingredientGroupIndex) => (
+              <CreateIngredientGroup
+                key={ingredientGroup.id}
+                index={ingredientGroupIndex}
+                minimal={ingredientGroups.length <= 1}
+                onRemove={() => {
+                  removeIngredientGroup(ingredientGroupIndex);
+                }}
+              />
+            ))}
           </Stack>
           <Button
-            variant="outlined"
+            variant="text"
             size="small"
             startIcon={<AddRoundedIcon />}
             onClick={() => {
-              appendIngredient({
-                food: {
-                  name: '',
-                },
-                unit: null,
-                amount: null,
-                notes: null,
+              appendIngredientGroup({
+                id: null,
+                name: null,
+                ingredients: [
+                  {
+                    food: {
+                      name: '',
+                    },
+                    unit: null,
+                    amount: null,
+                    notes: null,
+                  },
+                ],
               });
             }}
             sx={{ mb: 6 }}
           >
-            Add ingredient
+            Add ingredient group
           </Button>
           <Typography variant="h2" sx={{ mb: 2 }}>
             Instructions
@@ -291,13 +319,13 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             )}
           </Stack>
           <Button
-            variant="outlined"
+            variant="text"
             size="small"
             startIcon={<AddRoundedIcon />}
             onClick={() => {
               appendInstructionGroup({
                 id: null,
-                title: null,
+                name: null,
                 instructions: [
                   {
                     text: '',
@@ -380,30 +408,33 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             cookTime: importedRecipe.cookTime?.toString(),
             prepTime: importedRecipe.prepTime?.toString(),
             instructionGroups: importedRecipe.instructionGroups?.map((ig) => ({
-              title: ig.title,
+              name: ig.title,
               instructions: ig.instructions.map((i) => ({ text: i })),
             })),
-            ingredients: importedRecipe.ingredients?.map((ingredient) => {
-              if (typeof ingredient === 'string') {
-                return {
-                  amount: null,
-                  food: {
-                    name: ingredient,
-                  },
-                  unit: null,
-                  notes: null,
-                };
-              } else {
-                return {
-                  food: {
-                    name: ingredient.name,
-                  },
-                  unit: ingredient.unit ?? null,
-                  amount: ingredient.amount ?? null,
-                  notes: ingredient.notes ?? null,
-                };
-              }
-            }),
+            ingredientGroups: importedRecipe.ingredientGroups?.map((ig) => ({
+              name: ig.title,
+              ingredients: ig.ingredients.map((ingredient) => {
+                if (typeof ingredient === 'string') {
+                  return {
+                    amount: null,
+                    food: {
+                      name: ingredient,
+                    },
+                    unit: null,
+                    notes: null,
+                  };
+                } else {
+                  return {
+                    food: {
+                      name: ingredient.name,
+                    },
+                    unit: ingredient.unit ?? null,
+                    amount: ingredient.amount ?? null,
+                    notes: ingredient.notes ?? null,
+                  };
+                }
+              }),
+            })),
           });
         }}
       />

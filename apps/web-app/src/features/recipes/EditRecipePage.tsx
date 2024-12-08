@@ -30,20 +30,26 @@ export function EditRecipePage() {
               id: recipeQuery.data.recipe.images.at(0).id,
             }
           : null,
-        ingredients: recipeQuery.data.recipe.ingredients.map((ingredient) => ({
-          food: {
-            name: ingredient.food.name,
-            id: ingredient.food.id,
-          },
-          id: ingredient.id,
-          amount: ingredient.amount as unknown as number,
-          unit: ingredient.unit,
-          notes: ingredient.notes,
-        })),
+        ingredientGroups: recipeQuery.data.recipe.ingredientGroups.map(
+          (ingredientGroup) => ({
+            id: ingredientGroup.id,
+            name: ingredientGroup.name,
+            ingredients: ingredientGroup.ingredients.map((ingredient) => ({
+              food: {
+                name: ingredient.food.name,
+                id: ingredient.food.id,
+              },
+              id: ingredient.id,
+              amount: ingredient.amount as unknown as number,
+              unit: ingredient.unit,
+              notes: ingredient.notes,
+            })),
+          }),
+        ),
         instructionGroups: recipeQuery.data.recipe.instructionGroups.map(
           (instructionGroup) => ({
             id: instructionGroup.id,
-            title: instructionGroup.title,
+            name: instructionGroup.name,
             instructions: instructionGroup.instructions,
           }),
         ),

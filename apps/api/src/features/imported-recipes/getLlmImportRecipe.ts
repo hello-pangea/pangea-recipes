@@ -65,14 +65,22 @@ const llmRecipeSchema = Type.Object(
     /** Minutes */
     totalTime: Nullable(Type.Number({ description: 'Total time in minutes' })),
 
-    ingredients: Nullable(
+    ingredientGroups: Nullable(
       Type.Array(
         Type.Object(
           {
-            name: Type.String(),
-            unit: unitSchema,
-            amount: Nullable(Type.Number()),
-            notes: Nullable(Type.String()),
+            title: Nullable(Type.String()),
+            ingredients: Type.Array(
+              Type.Object(
+                {
+                  name: Type.String(),
+                  unit: unitSchema,
+                  amount: Nullable(Type.Number()),
+                  notes: Nullable(Type.String()),
+                },
+                { additionalProperties: false },
+              ),
+            ),
           },
           { additionalProperties: false },
         ),

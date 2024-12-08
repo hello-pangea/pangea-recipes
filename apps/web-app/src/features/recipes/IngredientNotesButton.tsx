@@ -18,23 +18,33 @@ import type { RecipeFormInputs } from './CreateRecipePage';
 
 interface Props {
   sx?: SxProps<Theme>;
+  ingredientGroupIndex: number;
   ingredientIndex: number;
 }
 
-export function IngredientNotesButton({ sx = [], ingredientIndex }: Props) {
+export function IngredientNotesButton({
+  sx = [],
+  ingredientGroupIndex,
+  ingredientIndex,
+}: Props) {
   const { control, setValue, getValues } = useFormContext<RecipeFormInputs>();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const ingredient = useWatch({
     control,
-    name: `ingredients.${ingredientIndex}`,
-    defaultValue: getValues(`ingredients.${ingredientIndex}`),
+    name: `ingredientGroups.${ingredientGroupIndex}.ingredients.${ingredientIndex}`,
+    defaultValue: getValues(
+      `ingredientGroups.${ingredientGroupIndex}.ingredients.${ingredientIndex}`,
+    ),
   });
 
   function handleClose() {
     setAnchorEl(null);
 
     if (ingredient.notes === '') {
-      setValue(`ingredients.${ingredientIndex}.notes`, null);
+      setValue(
+        `ingredientGroups.${ingredientGroupIndex}.ingredients.${ingredientIndex}.notes`,
+        null,
+      );
     }
   }
 
@@ -78,7 +88,7 @@ export function IngredientNotesButton({ sx = [], ingredientIndex }: Props) {
       >
         <TextFieldElement
           label="Notes"
-          name={`ingredients.${ingredientIndex}.notes`}
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${ingredientIndex}.notes`}
           control={control}
           size="small"
           multiline

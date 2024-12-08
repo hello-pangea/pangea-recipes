@@ -11,22 +11,27 @@ export const createRecipeDtoScema = Type.Object({
   prepTime: Type.Optional(Type.Number()),
   cookTime: Type.Optional(Type.Number()),
   imageIds: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
-  ingredients: Type.Array(
+  ingredientGroups: Type.Array(
     Type.Object({
-      food: Type.Union([
+      name: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
+      ingredients: Type.Array(
         Type.Object({
-          id: Type.String({ format: 'uuid' }),
+          food: Type.Union([
+            Type.Object({
+              id: Type.String({ format: 'uuid' }),
+            }),
+            createFoodDtoScema,
+          ]),
+          unit: Type.Optional(Type.Union([unitSchema, Type.Null()])),
+          amount: Type.Optional(Nullable(Type.Number())),
+          notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
         }),
-        createFoodDtoScema,
-      ]),
-      unit: Type.Optional(Type.Union([unitSchema, Type.Null()])),
-      amount: Type.Optional(Nullable(Type.Number())),
-      notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
+      ),
     }),
   ),
   instructionGroups: Type.Array(
     Type.Object({
-      title: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
+      name: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
       instructions: Type.Array(
         Type.Object({
           text: Type.String({ minLength: 1 }),

@@ -15,7 +15,7 @@ model Recipe {
 
   originalUrl String? @map("original_url")
 
-  ingredients       Ingredient[]
+  ingredientGroups  IngredientGroup[]
   instructionGroups InstructionGroup[]
 
   usesRecipes   LinkedRecipes[] @relation("UsesRecipes")
@@ -79,14 +79,27 @@ enum Unit {
   bunch
 }
 
-// Pivot table
-/// Ingredients are parts of recipes that combine a food, a unit, and an amount.
+model IngredientGroup {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name  String?
+  order Int
+
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeId String @map("recipe_id") @db.Uuid
+
+  ingredients Ingredient[]
+
+  @@map("ingredient_groups")
+}
+
 model Ingredient {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
-  recipeId String @map("recipe_id") @db.Uuid
+  ingredientGroup   IngredientGroup @relation(fields: [ingredientGroupId], references: [id], onDelete: Cascade)
+  ingredientGroupId String          @map("ingredient_group_id") @db.Uuid
 
   amount Decimal?
 
@@ -104,8 +117,8 @@ model InstructionGroup {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  title String?
-  sort  String
+  name  String?
+  order Int
 
   recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
   recipeId String @map("recipe_id") @db.Uuid
@@ -119,8 +132,8 @@ model Instruction {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  text String
-  step Int
+  text  String
+  order Int
 
   instructionGroup   InstructionGroup @relation(fields: [instructionGroupId], references: [id], onDelete: Cascade)
   instructionGroupId String           @map("instruction_group_id") @db.Uuid

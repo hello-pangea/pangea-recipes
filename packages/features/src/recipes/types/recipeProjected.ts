@@ -3,6 +3,6 @@ import { recipeSchema } from './recipe.js';
 
 export type RecipeProjected = Static<typeof recipeProjectedSchema>;
 export const recipeProjectedSchema = Type.Omit(recipeSchema, [
-  'ingredients',
+  'ingredientGroups',
   'instructionGroups',
 ]);

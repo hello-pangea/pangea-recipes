@@ -33,20 +33,26 @@ export const recipeSchema = Type.Object(
       ),
     ),
 
-    ingredients: Type.Array(
+    ingredientGroups: Type.Array(
       Type.Object({
         id: Type.String(),
-        food: foodSchema,
-        amount: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
-        unit: Type.Union([unitSchema, Type.Null()]),
-        notes: Nullable(Type.String()),
+        name: Nullable(Type.String()),
+        ingredients: Type.Array(
+          Type.Object({
+            id: Type.String(),
+            food: foodSchema,
+            amount: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
+            unit: Type.Union([unitSchema, Type.Null()]),
+            notes: Nullable(Type.String()),
+          }),
+        ),
       }),
     ),
 
     instructionGroups: Type.Array(
       Type.Object({
         id: Type.String(),
-        title: Nullable(Type.String()),
+        name: Nullable(Type.String()),
         instructions: Type.Array(
           Type.Object({
             id: Type.String(),

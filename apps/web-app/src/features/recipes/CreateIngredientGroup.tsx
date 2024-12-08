@@ -7,6 +7,7 @@ import {
   useFormContext,
 } from 'react-hook-form-mui';
 import type { RecipeFormInputs } from './CreateRecipePage';
+import { NewIngredient } from './NewIngredient';
 
 interface Props {
   index: number;
@@ -14,19 +15,19 @@ interface Props {
   onRemove: () => void;
 }
 
-export function CreateInstructionGroup({
-  index: instructionGroupIndex,
+export function CreateIngredientGroup({
+  index: ingredientGroupIndex,
   minimal,
   onRemove,
 }: Props) {
   const { control } = useFormContext<RecipeFormInputs>();
   const {
-    fields: instructions,
-    append: appendInstruction,
-    remove: removeInstruction,
+    fields: ingredients,
+    append: appendIngredient,
+    // remove: removeIngredient,
   } = useFieldArray({
     control,
-    name: `instructionGroups.${instructionGroupIndex}.instructions`,
+    name: `ingredientGroups.${ingredientGroupIndex}.ingredients`,
   });
 
   return (
@@ -41,7 +42,7 @@ export function CreateInstructionGroup({
           }}
         >
           <TextFieldElement
-            name={`instructionGroups.${instructionGroupIndex}.name`}
+            name={`ingredientGroups.${ingredientGroupIndex}.name`}
             label="Title"
             placeholder="ex. Cake, Frosting"
             control={control}
@@ -55,32 +56,12 @@ export function CreateInstructionGroup({
         </Stack>
       )}
       <Stack direction={'column'} spacing={2} sx={{ mb: 2, maxWidth: '750px' }}>
-        {instructions.map((instruction, instructionIndex) => (
-          <Stack
-            direction={'row'}
-            alignItems={'flex-start'}
-            spacing={2}
-            key={instruction.id}
-          >
-            <TextFieldElement
-              name={`instructionGroups.${instructionGroupIndex}.instructions.${instructionIndex}.text`}
-              placeholder="Add the secret ingredient!"
-              label={`Step ${instructionIndex + 1}`}
-              required
-              control={control}
-              size="small"
-              fullWidth
-              multiline
-              minRows={2}
-            />
-            <IconButton
-              onClick={() => {
-                removeInstruction(instructionIndex);
-              }}
-            >
-              <DeleteRoundedIcon />
-            </IconButton>
-          </Stack>
+        {ingredients.map((ingredient, ingredientIndex) => (
+          <NewIngredient
+            ingredientGroupIndex={ingredientGroupIndex}
+            index={ingredientIndex}
+            key={ingredient.id}
+          />
         ))}
       </Stack>
       <Button
@@ -88,10 +69,17 @@ export function CreateInstructionGroup({
         size="small"
         startIcon={<AddRoundedIcon />}
         onClick={() => {
-          appendInstruction({ text: '' });
+          appendIngredient({
+            food: {
+              name: '',
+            },
+            unit: null,
+            amount: null,
+            notes: null,
+          });
         }}
       >
-        Add step
+        Add ingredient
       </Button>
     </Card>
   );

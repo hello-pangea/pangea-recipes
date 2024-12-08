@@ -13,6 +13,8 @@ import { ApiError } from '../../lib/ApiError.js';
 import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';
 import { verifySession } from '../auth/verifySession.js';
+import { updateIngredientGroups } from './updateIngredientGroups.js';
+import { updateInstructionGroups } from './updateInstructionGroups.js';
 
 const routeTag = 'Recipes';
 
@@ -40,7 +42,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         cookTime,
         prepTime,
         imageIds,
-        ingredients,
+        ingredientGroups,
         instructionGroups,
         usesRecipes,
         tags,
@@ -70,28 +72,34 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                 })),
               }
             : undefined,
-          ingredients: {
-            create: ingredients.map((ingredient) => {
-              const { food, ...rest } = ingredient;
+          ingredientGroups: {
+            create: ingredientGroups.map((ingredientGroup, index) => ({
+              name: ingredientGroup.name ?? null,
+              order: index,
+              ingredients: {
+                create: ingredientGroup.ingredients.map((ingredient) => {
+                  const { food, ...rest } = ingredient;
 
-              return {
-                ...rest,
-                unit: rest.unit ?? undefined,
-                food:
-                  'id' in food
-                    ? { connect: { id: food.id } }
-                    : { create: food },
-              };
-            }),
+                  return {
+                    ...rest,
+                    unit: rest.unit ?? undefined,
+                    food:
+                      'id' in food
+                        ? { connect: { id: food.id } }
+                        : { create: food },
+                  };
+                }),
+              },
+            })),
           },
           instructionGroups: {
             create: instructionGroups.map((instructionGroup, index) => ({
-              title: instructionGroup.title ?? null,
-              sort: index.toString(),
+              name: instructionGroup.name ?? null,
+              order: index,
               instructions: {
                 create: instructionGroup.instructions.map(
                   (instruction, index) => ({
-                    step: index,
+                    order: index,
                     text: instruction.text,
                   }),
                 ),
@@ -126,9 +134,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           },
         },
         include: {
-          ingredients: {
+          ingredientGroups: {
             include: {
-              food: true,
+              ingredients: {
+                include: {
+                  food: true,
+                },
+              },
             },
           },
           instructionGroups: {
@@ -166,8 +178,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: tag.tag.id,
           name: tag.tag.name,
         })),
+        ingredientGroups: recipe.ingredientGroups.sort((a, b) => {
+          return a.order - b.order;
+        }),
         instructionGroups: recipe.instructionGroups.sort((a, b) => {
-          return parseInt(a.sort) - parseInt(b.sort);
+          return a.order - b.order;
         }),
       };
 
@@ -266,11 +281,15 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: recipeId,
         },
         include: {
-          ingredients: {
+          ingredientGroups: {
             include: {
-              food: {
+              ingredients: {
                 include: {
-                  icon: true,
+                  food: {
+                    include: {
+                      icon: true,
+                    },
+                  },
                 },
               },
             },
@@ -306,24 +325,31 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           url: getFileUrl(image.image.key),
           favorite: image.favorite ?? false,
         })),
-        ingredients: recipe.ingredients.map((ingredient) => ({
-          ...ingredient,
-          food: {
-            ...ingredient.food,
-            icon: ingredient.food.icon
-              ? {
-                  id: ingredient.food.icon.id,
-                  url: getFileUrl(ingredient.food.icon.key),
-                }
-              : undefined,
-          },
-        })),
+        ingredientGroups: recipe.ingredientGroups
+          .sort((a, b) => {
+            return a.order - b.order;
+          })
+          .map((group) => ({
+            ...group,
+            ingredients: group.ingredients.map((ingredient) => ({
+              ...ingredient,
+              food: {
+                ...ingredient.food,
+                icon: ingredient.food.icon
+                  ? {
+                      id: ingredient.food.icon.id,
+                      url: getFileUrl(ingredient.food.icon.key),
+                    }
+                  : undefined,
+              },
+            })),
+          })),
         tags: recipe.tags.map((tag) => ({
           id: tag.tag.id,
           name: tag.tag.name,
         })),
         instructionGroups: recipe.instructionGroups.sort((a, b) => {
-          return parseInt(a.sort) - parseInt(b.sort);
+          return a.order - b.order;
         }),
       };
 
@@ -356,7 +382,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         description,
         cookTime,
         prepTime,
-        ingredients,
+        ingredientGroups,
         instructionGroups,
         usesRecipes,
         tags,
@@ -376,6 +402,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               },
             },
             instructionGroups: true,
+            ingredientGroups: true,
           },
         });
 
@@ -441,89 +468,19 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               }
             : undefined;
 
-        // -
-        // Instruction groups
-        // -
+        await updateInstructionGroups({
+          tx: prisma,
+          newInstructionGroups: instructionGroups,
+          oldInstructionGroups: oldRecipe.instructionGroups,
+          recipeId: recipeId,
+        });
 
-        if (instructionGroups) {
-          const existingInstructionGroups = oldRecipe.instructionGroups;
-
-          const existingInstructionGroupIds = existingInstructionGroups.map(
-            (group) => group.id,
-          );
-
-          const instructionGroupsToDelete = existingInstructionGroups.filter(
-            (group) => !instructionGroups.some((g) => g.id === group.id),
-          );
-
-          const instructionGroupsToUpdate = instructionGroups.filter(
-            (group) =>
-              group.id && existingInstructionGroupIds.includes(group.id),
-          );
-
-          const instructionGroupsToCreate = instructionGroups.filter(
-            (group) => !group.id,
-          );
-
-          if (instructionGroupsToDelete.length) {
-            await prisma.instructionGroup.deleteMany({
-              where: {
-                id: {
-                  in: instructionGroupsToDelete.map((group) => group.id),
-                },
-              },
-            });
-          }
-
-          if (instructionGroupsToCreate.length) {
-            await Promise.all(
-              instructionGroupsToCreate.map(async (instructionGroup) => {
-                const index = instructionGroups.indexOf(instructionGroup);
-
-                return prisma.instructionGroup.create({
-                  data: {
-                    recipeId: recipeId,
-                    title: instructionGroup.title ?? null,
-                    sort: index.toString(),
-                    instructions: {
-                      create: instructionGroup.instructions.map(
-                        (instruction, index) => ({
-                          step: index,
-                          text: instruction.text,
-                        }),
-                      ),
-                    },
-                  },
-                });
-              }),
-            );
-          }
-
-          if (instructionGroupsToUpdate.length) {
-            await Promise.all(
-              instructionGroupsToUpdate.map(async (group) => {
-                const index = instructionGroups.indexOf(group);
-
-                return prisma.instructionGroup.update({
-                  where: {
-                    id: group.id,
-                  },
-                  data: {
-                    title: group.title ?? null,
-                    sort: index.toString(),
-                    instructions: {
-                      deleteMany: {},
-                      create: group.instructions.map((instruction, index) => ({
-                        step: index,
-                        text: instruction.text,
-                      })),
-                    },
-                  },
-                });
-              }),
-            );
-          }
-        }
+        await updateIngredientGroups({
+          tx: prisma,
+          newIngredientGroups: ingredientGroups,
+          oldIngredientGroups: oldRecipe.ingredientGroups,
+          recipeId: recipeId,
+        });
 
         // -
         // Update
@@ -534,23 +491,6 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           description: description,
           prepTime: prepTime,
           cookTime: cookTime,
-          ingredients: !ingredients
-            ? undefined
-            : {
-                deleteMany: {},
-                create: ingredients.map((ingredient) => {
-                  const { food, ...rest } = ingredient;
-
-                  return {
-                    ...rest,
-                    unit: rest.unit ?? undefined,
-                    food:
-                      'id' in food
-                        ? { connect: { id: food.id } }
-                        : { create: food },
-                  };
-                }),
-              },
           usesRecipes: !usesRecipes
             ? undefined
             : {
@@ -567,9 +507,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           },
           data: recipeUpdate,
           include: {
-            ingredients: {
+            ingredientGroups: {
               include: {
-                food: true,
+                ingredients: {
+                  include: {
+                    food: true,
+                  },
+                },
               },
             },
             instructionGroups: {
@@ -607,8 +551,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             id: tag.tag.id,
             name: tag.tag.name,
           })),
+          ingredientGroups: recipe.ingredientGroups.sort((a, b) => {
+            return a.order - b.order;
+          }),
           instructionGroups: recipe.instructionGroups.sort((a, b) => {
-            return parseInt(a.sort) - parseInt(b.sort);
+            return a.order - b.order;
           }),
         };
 
