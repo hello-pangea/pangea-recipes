@@ -82,17 +82,19 @@ export async function foodRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      const foodsWithIcon: Food[] = foods.map((food) => {
-        return {
-          ...food,
-          icon: !food.icon
-            ? undefined
-            : {
-                id: food.icon.id,
-                url: getFileUrl(food.icon.key),
-              },
-        };
-      });
+      const foodsWithIcon: Food[] = await Promise.all(
+        foods.map(async (food) => {
+          return {
+            ...food,
+            icon: !food.icon
+              ? undefined
+              : {
+                  id: food.icon.id,
+                  url: await getFileUrl(food.icon.key),
+                },
+          };
+        }),
+      );
 
       return {
         foods: foodsWithIcon,
@@ -135,7 +137,7 @@ export async function foodRoutes(fastify: FastifyTypebox) {
           ? undefined
           : {
               id: food.icon.id,
-              url: getFileUrl(food.icon.key),
+              url: await getFileUrl(food.icon.key),
             },
       };
 

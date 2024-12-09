@@ -29,7 +29,10 @@ export function UploadImageDialog({ open, onClose }: Props) {
         allowedFileTypes: ['image/*'],
       },
     })
-      .use(XHR, { endpoint: `${config.VITE_API_URL}/images` })
+      .use(XHR, {
+        endpoint: `${config.VITE_API_URL}/images`,
+        withCredentials: true,
+      })
       .once('complete', (res) => {
         const uploadRes = res.successful?.at(0);
 

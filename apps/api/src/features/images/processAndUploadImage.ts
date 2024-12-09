@@ -1,5 +1,5 @@
 import { prisma } from '#src/lib/prisma.js';
-import { uploadFile } from '#src/lib/s3.js';
+import { getFileUrl, uploadFile } from '#src/lib/s3.js';
 import { fileTypeFromBuffer } from 'file-type';
 import sharp from 'sharp';
 
@@ -32,7 +32,7 @@ export async function processAndUploadImage(imageBuffer: Buffer) {
     mimeType: 'image/jpeg',
   });
 
-  const modifiedImageUrl = `https://assets.hellorecipes.com/${modifiedImageKey}`;
+  const modifiedImagePresignedUrl = await getFileUrl(modifiedImageKey);
 
   const image = await prisma.image.create({
     data: {
@@ -43,6 +43,6 @@ export async function processAndUploadImage(imageBuffer: Buffer) {
 
   return {
     imageId: image.id,
-    imageUrl: modifiedImageUrl,
+    imageUrl: modifiedImagePresignedUrl,
   };
 }

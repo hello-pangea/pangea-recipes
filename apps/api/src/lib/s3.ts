@@ -1,11 +1,13 @@
 import {
+  GetObjectCommand,
   PutObjectCommand,
   S3Client,
   type PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { config } from '../config/config.js';
 
-const s3Client = new S3Client({
+export const s3Client = new S3Client({
   region: 'auto',
   endpoint: `https://${config.CLOUDFLARE_ACCOUNT_ID}.r2.cloudflarestorage.com`,
   credentials: {
@@ -31,6 +33,12 @@ export function uploadFile(data: {
   return s3Client.send(uploadCommand);
 }
 
-export function getFileUrl(key: string) {
-  return `https://assets.hellorecipes.com/${key}`;
+export async function getFileUrl(key: string) {
+  const presignedUrl = await getSignedUrl(
+    s3Client,
+    new GetObjectCommand({ Bucket: 'hello-recipes', Key: key }),
+    { expiresIn: 3600 },
+  );
+
+  return presignedUrl;
 }

@@ -2,7 +2,7 @@ import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import multipart, { type MultipartFile } from '@fastify/multipart';
 import { Type } from '@sinclair/typebox';
 import { prisma } from '../../lib/prisma.js';
-import { uploadFile } from '../../lib/s3.js';
+import { getFileUrl, uploadFile } from '../../lib/s3.js';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
 import { verifySession } from '../auth/verifySession.js';
 import { processAndUploadImage } from './processAndUploadImage.js';
@@ -78,8 +78,6 @@ export async function imageRoutes(fastify: FastifyTypebox) {
 
       const imageKey = `food-icons/${crypto.randomUUID()}.svg`;
 
-      const imageUrl = `https://assets.hellorecipes.com/${imageKey}`;
-
       await uploadFile({
         buffer: originalBuffer,
         key: imageKey,
@@ -92,9 +90,11 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         },
       });
 
+      const presignedUrl = await getFileUrl(imageKey);
+
       return {
         imageId: image.id,
-        imageUrl: imageUrl,
+        imageUrl: presignedUrl,
       };
     },
   );

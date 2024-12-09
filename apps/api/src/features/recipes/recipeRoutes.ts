@@ -169,11 +169,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       const recipeDto: Recipe = {
         ...recipe,
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        images: recipe.images.map((image) => ({
-          id: image.image.id,
-          url: getFileUrl(image.image.key),
-          favorite: image.favorite ?? false,
-        })),
+        images: await Promise.all(
+          recipe.images.map(async (image) => ({
+            id: image.image.id,
+            url: await getFileUrl(image.image.key),
+            favorite: image.favorite ?? false,
+          })),
+        ),
         tags: recipe.tags.map((tag) => ({
           id: tag.tag.id,
           name: tag.tag.name,
@@ -238,18 +240,22 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      const recipeDtos = recipes.map((recipe) => ({
-        ...recipe,
-        images: recipe.images.map((image) => ({
-          id: image.image.id,
-          url: getFileUrl(image.image.key),
-          favorite: image.favorite ?? false,
+      const recipeDtos = await Promise.all(
+        recipes.map(async (recipe) => ({
+          ...recipe,
+          images: await Promise.all(
+            recipe.images.map(async (image) => ({
+              id: image.image.id,
+              url: await getFileUrl(image.image.key),
+              favorite: image.favorite ?? false,
+            })),
+          ),
+          tags: recipe.tags.map((tag) => ({
+            id: tag.tag.id,
+            name: tag.tag.name,
+          })),
         })),
-        tags: recipe.tags.map((tag) => ({
-          id: tag.tag.id,
-          name: tag.tag.name,
-        })),
-      }));
+      );
 
       return {
         recipes: recipeDtos,
@@ -320,30 +326,36 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       const recipeDto: Recipe = {
         ...recipe,
         usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        images: recipe.images.map((image) => ({
-          id: image.image.id,
-          url: getFileUrl(image.image.key),
-          favorite: image.favorite ?? false,
-        })),
-        ingredientGroups: recipe.ingredientGroups
-          .sort((a, b) => {
-            return a.order - b.order;
-          })
-          .map((group) => ({
-            ...group,
-            ingredients: group.ingredients.map((ingredient) => ({
-              ...ingredient,
-              food: {
-                ...ingredient.food,
-                icon: ingredient.food.icon
-                  ? {
-                      id: ingredient.food.icon.id,
-                      url: getFileUrl(ingredient.food.icon.key),
-                    }
-                  : undefined,
-              },
-            })),
+        images: await Promise.all(
+          recipe.images.map(async (image) => ({
+            id: image.image.id,
+            url: await getFileUrl(image.image.key),
+            favorite: image.favorite ?? false,
           })),
+        ),
+        ingredientGroups: await Promise.all(
+          recipe.ingredientGroups
+            .sort((a, b) => {
+              return a.order - b.order;
+            })
+            .map(async (group) => ({
+              ...group,
+              ingredients: await Promise.all(
+                group.ingredients.map(async (ingredient) => ({
+                  ...ingredient,
+                  food: {
+                    ...ingredient.food,
+                    icon: ingredient.food.icon
+                      ? {
+                          id: ingredient.food.icon.id,
+                          url: await getFileUrl(ingredient.food.icon.key),
+                        }
+                      : undefined,
+                  },
+                })),
+              ),
+            })),
+        ),
         tags: recipe.tags.map((tag) => ({
           id: tag.tag.id,
           name: tag.tag.name,
@@ -542,11 +554,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         const recipeDto: Recipe = {
           ...recipe,
           usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-          images: recipe.images.map((image) => ({
-            id: image.image.id,
-            url: getFileUrl(image.image.key),
-            favorite: image.favorite ?? false,
-          })),
+          images: await Promise.all(
+            recipe.images.map(async (image) => ({
+              id: image.image.id,
+              url: await getFileUrl(image.image.key),
+              favorite: image.favorite ?? false,
+            })),
+          ),
           tags: recipe.tags.map((tag) => ({
             id: tag.tag.id,
             name: tag.tag.name,
