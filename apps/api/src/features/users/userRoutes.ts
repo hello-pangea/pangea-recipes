@@ -101,7 +101,11 @@ export async function userRoutes(fastify: FastifyTypebox) {
       const [salt, hashedPassword] = hashedPasswordAndSalt.split(':');
 
       if (!salt || !hashedPassword) {
-        throw new Error();
+        throw new ApiError({
+          statusCode: 401,
+          message: 'Invalid credentials',
+          name: 'AuthError',
+        });
       }
 
       const newNormalizedPassword = password.normalize('NFKC');
@@ -115,7 +119,11 @@ export async function userRoutes(fastify: FastifyTypebox) {
       const isValidPassword = newHashedPassword === hashedPassword;
 
       if (!isValidPassword || !user) {
-        throw new Error();
+        throw new ApiError({
+          statusCode: 401,
+          message: 'Invalid credentials',
+          name: 'AuthError',
+        });
       }
 
       const token = generateSessionToken();

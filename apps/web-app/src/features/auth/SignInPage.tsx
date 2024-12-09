@@ -1,7 +1,18 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import { Copyright } from '#src/components/Copyright';
+import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Container, Link, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  Container,
+  IconButton,
+  InputAdornment,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router';
 import { useLayoutEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
@@ -22,13 +33,20 @@ export function SignInPage() {
   const { signIn, isAuthenticated, isLoaded } = useAuth();
   const search = route.useSearch();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit: SubmitHandler<SignInFormInputs> = (data) => {
     setLoading(true);
 
-    void signIn(data).then(() => {
-      setLoading(false);
-    });
+    void signIn(data)
+      .then(() => {
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setError('Invalid email or password');
+      });
   };
 
   useLayoutEffect(() => {
@@ -60,7 +78,7 @@ export function SignInPage() {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-        <img src="/assets/lil-guy.svg" width={24} height={24} />
+        <img src="/assets/lil-guy.svg" width={32} height={32} />
         <Typography
           variant="h1"
           sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
@@ -104,9 +122,41 @@ export function SignInPage() {
               required
               control={control}
               fullWidth
-              type="password"
-              autoComplete="new-password"
+              type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPassword
+                            ? 'hide the password'
+                            : 'display the password'
+                        }
+                        onClick={() => {
+                          setShowPassword((show) => !show);
+                        }}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        onMouseUp={(event) => {
+                          event.preventDefault();
+                        }}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityOffRoundedIcon />
+                        ) : (
+                          <VisibilityRoundedIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
+            {error && <Typography color="error">{error}</Typography>}
             <LoadingButton
               variant="contained"
               type="submit"

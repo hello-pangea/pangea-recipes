@@ -1,10 +1,23 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import { Copyright } from '#src/components/Copyright';
+import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
+import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import { LoadingButton } from '@mui/lab';
-import { Box, Card, Container, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  Container,
+  IconButton,
+  InputAdornment,
+  Stack,
+  Typography,
+} from '@mui/material';
 import { useSignUpUser } from '@open-zero/features';
+import { useNavigate } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
+import { useAuth } from './useAuth';
 
 interface SignUpFormInputs {
   name?: string;
@@ -13,16 +26,36 @@ interface SignUpFormInputs {
 }
 
 export function SignUpPage() {
+  const navigate = useNavigate();
   const { handleSubmit, control } = useForm<SignUpFormInputs>();
+  const { isAuthenticated } = useAuth();
+  const [showPassword, setShowPassword] = useState(false);
 
   const signUpUser = useSignUpUser();
 
+  useEffect(() => {
+    if (isAuthenticated) {
+      void navigate({
+        to: '/recipes',
+      });
+    }
+  }, [isAuthenticated, navigate]);
+
   const onSubmit: SubmitHandler<SignUpFormInputs> = (data) => {
-    signUpUser.mutate({
-      name: data.name,
-      email: data.email,
-      password: data.password,
-    });
+    signUpUser.mutate(
+      {
+        name: data.name,
+        email: data.email,
+        password: data.password,
+      },
+      {
+        onSuccess: () => {
+          void navigate({
+            to: '/recipes',
+          });
+        },
+      },
+    );
   };
 
   return (
@@ -38,7 +71,7 @@ export function SignUpPage() {
       }}
     >
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-        <img src="/assets/lil-guy.svg" width={24} height={24} />
+        <img src="/assets/lil-guy.svg" width={32} height={32} />
         <Typography
           variant="h1"
           sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
@@ -89,8 +122,39 @@ export function SignUpPage() {
               required
               control={control}
               fullWidth
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               autoComplete="new-password"
+              slotProps={{
+                input: {
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label={
+                          showPassword
+                            ? 'hide the password'
+                            : 'display the password'
+                        }
+                        onClick={() => {
+                          setShowPassword((show) => !show);
+                        }}
+                        onMouseDown={(event) => {
+                          event.preventDefault();
+                        }}
+                        onMouseUp={(event) => {
+                          event.preventDefault();
+                        }}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityOffRoundedIcon />
+                        ) : (
+                          <VisibilityRoundedIcon />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
             />
             <LoadingButton
               variant="contained"
