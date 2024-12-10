@@ -85,31 +85,33 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
           onChange={(event) => {
             setsSearch(event.target.value);
           }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchRoundedIcon
-                  sx={{ color: (theme) => theme.palette.text.disabled }}
-                />
-              </InputAdornment>
-            ),
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="clear search"
-                  size="small"
-                  onClick={() => {
-                    setsSearch('');
-                  }}
-                >
-                  <ClearRoundedIcon fontSize="small" />
-                </IconButton>
-              </InputAdornment>
-            ),
-            sx: {
-              pr: 0.5,
-              pl: 1,
-              mb: 1,
+          slotProps={{
+            input: {
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchRoundedIcon
+                    sx={{ color: (theme) => theme.palette.text.disabled }}
+                  />
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="clear search"
+                    size="small"
+                    onClick={() => {
+                      setsSearch('');
+                    }}
+                  >
+                    <ClearRoundedIcon fontSize="small" />
+                  </IconButton>
+                </InputAdornment>
+              ),
+              sx: {
+                pr: 0.5,
+                pl: 1,
+                mb: 1,
+              },
             },
           }}
         />
