@@ -46,6 +46,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         instructionGroups,
         usesRecipes,
         tags,
+        websitePageId,
       } = request.body;
 
       const userId = request.session?.userId;
@@ -132,6 +133,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               }
             }),
           },
+          sourceWebsitePage: websitePageId
+            ? {
+                connect: {
+                  id: websitePageId,
+                },
+              }
+            : undefined,
         },
         include: {
           ingredientGroups: {
@@ -163,6 +171,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               tag: true,
             },
           },
+          sourceWebsitePage: {
+            include: {
+              website: true,
+            },
+          },
         },
       });
 
@@ -186,6 +199,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         instructionGroups: recipe.instructionGroups.sort((a, b) => {
           return a.order - b.order;
         }),
+        websiteSource: recipe.sourceWebsitePage
+          ? {
+              title: recipe.sourceWebsitePage.website.title,
+              url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
+            }
+          : null,
       };
 
       return {
@@ -237,6 +256,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               tag: true,
             },
           },
+          sourceWebsitePage: {
+            include: {
+              website: true,
+            },
+          },
         },
       });
 
@@ -254,6 +278,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             id: tag.tag.id,
             name: tag.tag.name,
           })),
+          websiteSource: recipe.sourceWebsitePage
+            ? {
+                title: recipe.sourceWebsitePage.website.title,
+                url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
+              }
+            : null,
         })),
       );
 
@@ -320,6 +350,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               tag: true,
             },
           },
+          sourceWebsitePage: {
+            include: {
+              website: true,
+            },
+          },
         },
       });
 
@@ -363,6 +398,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         instructionGroups: recipe.instructionGroups.sort((a, b) => {
           return a.order - b.order;
         }),
+        websiteSource: recipe.sourceWebsitePage
+          ? {
+              title: recipe.sourceWebsitePage.website.title,
+              url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
+            }
+          : null,
       };
 
       return {
@@ -548,6 +589,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                 tag: true,
               },
             },
+            sourceWebsitePage: {
+              include: {
+                website: true,
+              },
+            },
           },
         });
 
@@ -571,6 +617,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           instructionGroups: recipe.instructionGroups.sort((a, b) => {
             return a.order - b.order;
           }),
+          websiteSource: recipe.sourceWebsitePage
+            ? {
+                title: recipe.sourceWebsitePage.website.title,
+                url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
+              }
+            : null,
         };
 
         return recipeDto;

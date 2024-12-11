@@ -15,7 +15,7 @@ import { useState } from 'react';
 interface Props {
   open: boolean;
   onClose: () => void;
-  onImport: (importedRecipe: ImportedRecipe) => void;
+  onImport: (importedRecipe: ImportedRecipe, websitePageId: string) => void;
 }
 
 export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
@@ -60,9 +60,11 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
           startIcon={<DownloadRoundedIcon />}
           onClick={() => {
             void importRecipe().then((res) => {
-              if (res.data?.importedRecipe) {
-                onImport(res.data.importedRecipe);
+              if (!res.data) {
+                return;
               }
+
+              onImport(res.data.importedRecipe, res.data.websitePageId);
             });
           }}
         >

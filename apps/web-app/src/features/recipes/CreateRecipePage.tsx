@@ -69,6 +69,7 @@ export interface RecipeFormInputs {
     name: string | null;
     instructions: { text: string }[];
   }[];
+  websitePageId?: string;
 }
 
 interface Props {
@@ -173,6 +174,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       recipeCreator.mutate({
         name: data.name,
         description: data.description ?? undefined,
+        websitePageId: data.websitePageId,
         cookTime: data.cookTime ? parseInt(data.cookTime) : undefined,
         prepTime: data.prepTime ? parseInt(data.prepTime) : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
@@ -399,7 +401,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         onClose={() => {
           setImportDialogOpen(false);
         }}
-        onImport={(importedRecipe) => {
+        onImport={(importedRecipe, websitePageId) => {
           setImportDialogOpen(false);
 
           reset({
@@ -411,6 +413,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               name: ig.title,
               instructions: ig.instructions.map((i) => ({ text: i })),
             })),
+            websitePageId,
             ingredientGroups: importedRecipe.ingredientGroups?.map((ig) => ({
               name: ig.title,
               ingredients: ig.ingredients.map((ingredient) => {

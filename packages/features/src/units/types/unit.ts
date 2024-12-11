@@ -2,6 +2,7 @@ import { Type, type Static } from '@sinclair/typebox';
 
 export type Unit = Static<typeof unitSchema>;
 export const unitSchema = Type.Union([
+  Type.Null(),
   // Metric weight
   Type.Literal('milligram'),
   Type.Literal('gram'),
@@ -35,5 +36,4 @@ export const unitSchema = Type.Union([
   Type.Literal('packet'),
   Type.Literal('pinch'),
   Type.Literal('bunch'),
-  Type.Null(),
 ]);

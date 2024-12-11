@@ -48,4 +48,5 @@ export const createRecipeDtoScema = Type.Object({
       ]),
     ),
   ),
+  websitePageId: Type.Optional(Type.String({ format: 'uuid' })),
 });

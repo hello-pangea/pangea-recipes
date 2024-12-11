@@ -21,7 +21,12 @@ export const recipeSchema = Type.Object(
 
     description: Nullable(Type.String()),
 
-    originalUrl: Nullable(Type.String()),
+    websiteSource: Nullable(
+      Type.Object({
+        title: Nullable(Type.String()),
+        url: Type.String(),
+      }),
+    ),
 
     images: Nullable(
       Type.Array(

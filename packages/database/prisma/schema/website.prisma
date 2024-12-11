@@ -1,0 +1,27 @@
+model Website {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  host        String  @unique
+  title       String?
+  description String?
+
+  pages WebsitePage[]
+
+  @@map("websites")
+}
+
+model WebsitePage {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  path String
+
+  website   Website @relation(fields: [websiteId], references: [id], onDelete: Cascade)
+  websiteId String  @map("website_id") @db.Uuid
+
+  recipes Recipe[]
+
+  @@unique([path, websiteId])
+  @@map("website_pages")
+}

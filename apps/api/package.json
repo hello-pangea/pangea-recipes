@@ -12,7 +12,7 @@
     "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsup --watch './src/**' --watch '../../packages/features/dist' --onSuccess \"node --env-file=.env dist/index.js\"",
-    "lint": "concurrently pnpm:lint:*",
+    "lint": "concurrently --raw pnpm:lint:*",
     "lint:eslint": "eslint src/",
     "lint:type-check": "tsc --noEmit",
     "start": "node dist/index.js"
