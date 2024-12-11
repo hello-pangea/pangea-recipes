@@ -162,11 +162,13 @@ function ListItem({ icon, label, to, onClick }: ListItemProps) {
       </ListItemIcon>
       <ListItemText
         primary={label}
-        primaryTypographyProps={{
-          sx: {
-            fontWeight: selected ? 'bold' : 'normal',
-            color: (theme) =>
-              selected ? theme.palette.primary.main : undefined,
+        slotProps={{
+          primary: {
+            sx: {
+              fontWeight: selected ? 'bold' : 'normal',
+              color: (theme) =>
+                selected ? theme.palette.primary.main : undefined,
+            },
           },
         }}
       />
