@@ -15,6 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  emptyStringToUndefined,
   useCreateRecipe,
   useRecipes,
   useUpdateRecipe,
@@ -158,7 +159,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       recipeUpdater.mutate({
         id: defaultRecipe.id,
         name: data.name,
-        description: data.description ?? undefined,
+        description: emptyStringToUndefined(data.description),
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,
@@ -173,7 +174,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     } else {
       recipeCreator.mutate({
         name: data.name,
-        description: data.description ?? undefined,
+        description: emptyStringToUndefined(data.description),
         websitePageId: data.websitePageId,
         cookTime: data.cookTime ? parseInt(data.cookTime) : undefined,
         prepTime: data.prepTime ? parseInt(data.prepTime) : undefined,

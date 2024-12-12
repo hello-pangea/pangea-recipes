@@ -56,7 +56,7 @@ export async function updateIngredientGroups(data: {
             name: ingredientGroup.name ?? null,
             order: index,
             ingredients: {
-              create: ingredientGroup.ingredients.map((ingredient) => {
+              create: ingredientGroup.ingredients.map((ingredient, index) => {
                 const { food, ...rest } = ingredient;
 
                 return {
@@ -66,6 +66,7 @@ export async function updateIngredientGroups(data: {
                     'id' in food
                       ? { connect: { id: food.id } }
                       : { create: food },
+                  order: index,
                 };
               }),
             },
@@ -89,7 +90,7 @@ export async function updateIngredientGroups(data: {
             order: index,
             ingredients: {
               deleteMany: {},
-              create: group.ingredients.map((ingredient) => {
+              create: group.ingredients.map((ingredient, index) => {
                 const { food, ...rest } = ingredient;
 
                 return {
@@ -99,6 +100,7 @@ export async function updateIngredientGroups(data: {
                     'id' in food
                       ? { connect: { id: food.id } }
                       : { create: food },
+                  order: index,
                 };
               }),
             },

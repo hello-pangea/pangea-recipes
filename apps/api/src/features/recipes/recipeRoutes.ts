@@ -78,7 +78,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               name: ingredientGroup.name ?? null,
               order: index,
               ingredients: {
-                create: ingredientGroup.ingredients.map((ingredient) => {
+                create: ingredientGroup.ingredients.map((ingredient, index) => {
                   const { food, ...rest } = ingredient;
 
                   return {
@@ -88,6 +88,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                       'id' in food
                         ? { connect: { id: food.id } }
                         : { create: food },
+                    order: index,
                   };
                 }),
               },
@@ -193,9 +194,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           id: tag.tag.id,
           name: tag.tag.name,
         })),
-        ingredientGroups: recipe.ingredientGroups.sort((a, b) => {
-          return a.order - b.order;
-        }),
+        ingredientGroups: recipe.ingredientGroups
+          .sort((a, b) => {
+            return a.order - b.order;
+          })
+          .map((ig) => {
+            ig.ingredients.sort((a, b) => a.order - b.order);
+            return ig;
+          }),
         instructionGroups: recipe.instructionGroups.sort((a, b) => {
           return a.order - b.order;
         }),
@@ -376,18 +382,20 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             .map(async (group) => ({
               ...group,
               ingredients: await Promise.all(
-                group.ingredients.map(async (ingredient) => ({
-                  ...ingredient,
-                  food: {
-                    ...ingredient.food,
-                    icon: ingredient.food.icon
-                      ? {
-                          id: ingredient.food.icon.id,
-                          url: await getFileUrl(ingredient.food.icon.key),
-                        }
-                      : undefined,
-                  },
-                })),
+                group.ingredients
+                  .sort((a, b) => a.order - b.order)
+                  .map(async (ingredient) => ({
+                    ...ingredient,
+                    food: {
+                      ...ingredient.food,
+                      icon: ingredient.food.icon
+                        ? {
+                            id: ingredient.food.icon.id,
+                            url: await getFileUrl(ingredient.food.icon.key),
+                          }
+                        : undefined,
+                    },
+                  })),
               ),
             })),
         ),
@@ -611,9 +619,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             id: tag.tag.id,
             name: tag.tag.name,
           })),
-          ingredientGroups: recipe.ingredientGroups.sort((a, b) => {
-            return a.order - b.order;
-          }),
+          ingredientGroups: recipe.ingredientGroups
+            .sort((a, b) => {
+              return a.order - b.order;
+            })
+            .map((ig) => {
+              ig.ingredients.sort((a, b) => a.order - b.order);
+              return ig;
+            }),
           instructionGroups: recipe.instructionGroups.sort((a, b) => {
             return a.order - b.order;
           }),

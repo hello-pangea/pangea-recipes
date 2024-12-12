@@ -111,6 +111,8 @@ model Ingredient {
 
   notes String?
 
+  order Int
+
   @@map("ingredients")
 }
 
