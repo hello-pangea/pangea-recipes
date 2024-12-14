@@ -1,0 +1,26 @@
+model CanonicalIngredient {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name String @unique
+
+  iconId String? @map("icon_id") @db.Uuid
+  icon   Image?  @relation(fields: [iconId], references: [id])
+
+  aliases     CanonicalIngredientAlias[]
+  ingredients Ingredient[]
+
+  @@map("canonical_ingredients")
+}
+
+model CanonicalIngredientAlias {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name String @unique
+
+  canonicalIngredient   CanonicalIngredient @relation(fields: [canonicalIngredientId], references: [id])
+  canonicalIngredientId String              @map("canonical_ingredient_id") @db.Uuid
+
+  @@map("canonical_ingredient_aliases")
+}

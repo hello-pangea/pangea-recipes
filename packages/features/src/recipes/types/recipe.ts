@@ -1,7 +1,6 @@
 import type { Prisma } from '@prisma/client';
 import { Type, type Static } from '@sinclair/typebox';
 import { tagSchema } from '../../common/tag.js';
-import { foodSchema } from '../../foods/index.js';
 import { Nullable } from '../../lib/nullable.js';
 import { unitSchema } from '../../units/index.js';
 
@@ -45,10 +44,11 @@ export const recipeSchema = Type.Object(
         ingredients: Type.Array(
           Type.Object({
             id: Type.String(),
-            food: foodSchema,
+            name: Type.String(),
             amount: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
-            unit: Type.Union([unitSchema, Type.Null()]),
+            unit: unitSchema,
             notes: Nullable(Type.String()),
+            icon_url: Nullable(Type.String()),
           }),
         ),
       }),

@@ -15,7 +15,11 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import DragIndicatorRoundedIcon from '@mui/icons-material/DragIndicatorRounded';
 import { Autocomplete, Box, Grid2, IconButton, TextField } from '@mui/material';
-import { unitRecord, units, useFoods } from '@open-zero/features';
+import {
+  unitRecord,
+  units,
+  useCanonicalIngredients,
+} from '@open-zero/features';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import {
@@ -26,7 +30,7 @@ import {
   useFormContext,
   useWatch,
 } from 'react-hook-form-mui';
-import type { FoodOption, RecipeFormInputs } from './CreateRecipePage';
+import type { RecipeFormInputs } from './CreateRecipePage';
 import { IngredientNotesButton } from './IngredientNotesButton';
 
 interface Props {
@@ -51,7 +55,7 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
     control,
     name: `ingredientGroups.${ingredientGroupIndex}.ingredients.${index}`,
   });
-  const foodsQuery = useFoods();
+  const canonicalIngredientsQuery = useCanonicalIngredients();
 
   useEffect(() => {
     const element = ref.current;
@@ -179,15 +183,6 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
     );
   }, [index, ingredientGroupIndex, ingredient]);
 
-  const foodOptions: FoodOption[] =
-    foodsQuery.data?.foods.map((f) => {
-      return {
-        name: f.name,
-        id: f.id,
-        iconUrl: f.icon?.url,
-      };
-    }) ?? [];
-
   return (
     <>
       <div
@@ -285,7 +280,7 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
           >
             <Controller
               control={control}
-              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.food`}
+              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.name`}
               rules={{
                 required: 'Required',
               }}
@@ -299,44 +294,25 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                   autoHighlight
                   autoSelect
                   size="small"
-                  options={foodOptions}
-                  getOptionLabel={(option) => {
-                    // Value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                      return option;
-                    }
-                    // Add "xxx" option created dynamically
-                    if (option.inputValue) {
-                      return option.inputValue;
-                    }
-                    // Regular option
-                    return option.name;
-                  }}
-                  getOptionKey={(option) =>
-                    typeof option === 'string'
-                      ? option
-                      : (option.id ?? option.name)
+                  options={
+                    canonicalIngredientsQuery.data?.canonicalIngredients.map(
+                      (ci) => ci.name,
+                    ) ?? []
                   }
+                  getOptionLabel={(option) => {
+                    return (
+                      canonicalIngredientsQuery.data?.canonicalIngredients.find(
+                        (ci) => ci.name === option,
+                      )?.name ?? ''
+                    );
+                  }}
                   onChange={(_event, newValue) => {
-                    if (typeof newValue === 'string') {
-                      onChange({
-                        name: newValue,
-                      });
-                    } else if (newValue?.inputValue) {
-                      // Create a new value from the user input
-                      onChange({
-                        name: newValue.inputValue,
-                      });
-                    } else {
-                      onChange(newValue);
-                    }
+                    onChange(newValue);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Tab') {
                       appendIngredient({
-                        food: {
-                          name: '',
-                        },
+                        name: '',
                         unit: null,
                         amount: null,
                         notes: null,
@@ -364,20 +340,25 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const { key, ...optionProps } = props;
 
+                    const canonicalIngredient =
+                      canonicalIngredientsQuery.data?.canonicalIngredients.find(
+                        (ci) => ci.name === option,
+                      );
+
                     return (
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                       <li key={key} {...optionProps}>
-                        {option.iconUrl ? (
+                        {canonicalIngredient?.icon ? (
                           <img
                             width={16}
                             height={16}
-                            src={option.iconUrl}
+                            src={canonicalIngredient.icon.url}
                             style={{ marginRight: 8 }}
                           />
                         ) : (
                           <Box sx={{ width: 16, mr: 1 }} />
                         )}
-                        {option.name}
+                        {canonicalIngredient?.name}
                       </li>
                     );
                   }}
@@ -409,7 +390,7 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
       </div>
       {previewContainer
         ? createPortal(
-            <DragPreview text={ingredient.food.name || 'Ingredient'} />,
+            <DragPreview text={ingredient.name || 'Ingredient'} />,
             previewContainer,
           )
         : null}

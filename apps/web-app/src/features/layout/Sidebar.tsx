@@ -64,9 +64,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
           />
           {user.accessRole === 'admin' && (
             <ListItem
-              to="/foods"
+              to="/canonical-ingredients"
               icon={<CarrotIcon />}
-              label="Foods"
+              label="Canonical ingredients"
               onClick={onClose}
             />
           )}

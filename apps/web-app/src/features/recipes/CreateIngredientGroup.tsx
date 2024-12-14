@@ -193,9 +193,7 @@ export function CreateIngredientGroup({
         startIcon={<AddRoundedIcon />}
         onClick={() => {
           appendIngredient({
-            food: {
-              name: '',
-            },
+            name: '',
             unit: null,
             amount: null,
             notes: null,

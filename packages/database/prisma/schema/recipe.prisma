@@ -106,12 +106,14 @@ model Ingredient {
 
   unit Unit?
 
-  food   Food   @relation(fields: [foodId], references: [id])
-  foodId String @map("food_id") @db.Uuid
+  name String
 
   notes String?
 
   order Int
+
+  canonicalIngredient   CanonicalIngredient? @relation(fields: [canonicalIngredientId], references: [id])
+  canonicalIngredientId String?              @map("canonical_ingredient_id") @db.Uuid
 
   @@map("ingredients")
 }

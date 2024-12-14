@@ -1,9 +1,9 @@
 import { Type, type Static } from '@sinclair/typebox';
 
-const foodSchemaId = 'Food';
+const canonicalIngredientSchemaId = 'CanonicalIngredient';
 
-export type Food = Static<typeof foodSchema>;
-export const foodSchema = Type.Object(
+export type CanonicalIngredient = Static<typeof canonicalIngredientSchema>;
+export const canonicalIngredientSchema = Type.Object(
   {
     id: Type.String({
       format: 'uuid',
@@ -13,7 +13,6 @@ export const foodSchema = Type.Object(
     createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
 
     name: Type.String(),
-    pluralName: Type.Union([Type.Null(), Type.String()]),
 
     icon: Type.Optional(
       Type.Object({
@@ -22,7 +21,9 @@ export const foodSchema = Type.Object(
       }),
     ),
   },
-  { $id: foodSchemaId },
+  { $id: canonicalIngredientSchemaId },
 );
 
-export const foodSchemaRef = Type.Unsafe<Food>(Type.Ref(foodSchemaId));
+export const canonicalIngredientSchemaRef = Type.Unsafe<CanonicalIngredient>(
+  Type.Ref(canonicalIngredientSchemaId),
+);

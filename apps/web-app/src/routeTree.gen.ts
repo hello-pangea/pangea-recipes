@@ -17,12 +17,12 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as LayoutAccountImport } from './routes/_layout.account'
 import { Route as LayoutRecipesIndexImport } from './routes/_layout.recipes.index'
-import { Route as LayoutFoodsIndexImport } from './routes/_layout.foods.index'
+import { Route as LayoutCanonicalIngredientsIndexImport } from './routes/_layout.canonical-ingredients.index'
 import { Route as LayoutRecipesNewImport } from './routes/_layout.recipes.new'
 import { Route as LayoutRecipesRecipeIdImport } from './routes/_layout.recipes.$recipeId'
-import { Route as LayoutFoodsNewImport } from './routes/_layout.foods.new'
+import { Route as LayoutCanonicalIngredientsNewImport } from './routes/_layout.canonical-ingredients.new'
 import { Route as LayoutRecipesRecipeIdEditImport } from './routes/_layout.recipes_.$recipeId.edit'
-import { Route as LayoutFoodsFoodIdEditImport } from './routes/_layout.foods_.$foodId.edit'
+import { Route as LayoutCanonicalIngredientsCanonicalIngredientIdEditImport } from './routes/_layout.canonical-ingredients_.$canonicalIngredientId.edit'
 
 // Create/Update Routes
 
@@ -61,11 +61,12 @@ const LayoutRecipesIndexRoute = LayoutRecipesIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutFoodsIndexRoute = LayoutFoodsIndexImport.update({
-  id: '/foods/',
-  path: '/foods/',
-  getParentRoute: () => LayoutRoute,
-} as any)
+const LayoutCanonicalIngredientsIndexRoute =
+  LayoutCanonicalIngredientsIndexImport.update({
+    id: '/canonical-ingredients/',
+    path: '/canonical-ingredients/',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 const LayoutRecipesNewRoute = LayoutRecipesNewImport.update({
   id: '/recipes/new',
@@ -79,11 +80,12 @@ const LayoutRecipesRecipeIdRoute = LayoutRecipesRecipeIdImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutFoodsNewRoute = LayoutFoodsNewImport.update({
-  id: '/foods/new',
-  path: '/foods/new',
-  getParentRoute: () => LayoutRoute,
-} as any)
+const LayoutCanonicalIngredientsNewRoute =
+  LayoutCanonicalIngredientsNewImport.update({
+    id: '/canonical-ingredients/new',
+    path: '/canonical-ingredients/new',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 const LayoutRecipesRecipeIdEditRoute = LayoutRecipesRecipeIdEditImport.update({
   id: '/recipes_/$recipeId/edit',
@@ -91,11 +93,12 @@ const LayoutRecipesRecipeIdEditRoute = LayoutRecipesRecipeIdEditImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutFoodsFoodIdEditRoute = LayoutFoodsFoodIdEditImport.update({
-  id: '/foods_/$foodId/edit',
-  path: '/foods/$foodId/edit',
-  getParentRoute: () => LayoutRoute,
-} as any)
+const LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute =
+  LayoutCanonicalIngredientsCanonicalIngredientIdEditImport.update({
+    id: '/canonical-ingredients_/$canonicalIngredientId/edit',
+    path: '/canonical-ingredients/$canonicalIngredientId/edit',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -136,11 +139,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutAccountImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/foods/new': {
-      id: '/_layout/foods/new'
-      path: '/foods/new'
-      fullPath: '/foods/new'
-      preLoaderRoute: typeof LayoutFoodsNewImport
+    '/_layout/canonical-ingredients/new': {
+      id: '/_layout/canonical-ingredients/new'
+      path: '/canonical-ingredients/new'
+      fullPath: '/canonical-ingredients/new'
+      preLoaderRoute: typeof LayoutCanonicalIngredientsNewImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/recipes/$recipeId': {
@@ -157,11 +160,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRecipesNewImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/foods/': {
-      id: '/_layout/foods/'
-      path: '/foods'
-      fullPath: '/foods'
-      preLoaderRoute: typeof LayoutFoodsIndexImport
+    '/_layout/canonical-ingredients/': {
+      id: '/_layout/canonical-ingredients/'
+      path: '/canonical-ingredients'
+      fullPath: '/canonical-ingredients'
+      preLoaderRoute: typeof LayoutCanonicalIngredientsIndexImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/recipes/': {
@@ -171,11 +174,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutRecipesIndexImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/foods_/$foodId/edit': {
-      id: '/_layout/foods_/$foodId/edit'
-      path: '/foods/$foodId/edit'
-      fullPath: '/foods/$foodId/edit'
-      preLoaderRoute: typeof LayoutFoodsFoodIdEditImport
+    '/_layout/canonical-ingredients_/$canonicalIngredientId/edit': {
+      id: '/_layout/canonical-ingredients_/$canonicalIngredientId/edit'
+      path: '/canonical-ingredients/$canonicalIngredientId/edit'
+      fullPath: '/canonical-ingredients/$canonicalIngredientId/edit'
+      preLoaderRoute: typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/recipes_/$recipeId/edit': {
@@ -192,23 +195,24 @@ declare module '@tanstack/react-router' {
 
 interface LayoutRouteChildren {
   LayoutAccountRoute: typeof LayoutAccountRoute
-  LayoutFoodsNewRoute: typeof LayoutFoodsNewRoute
+  LayoutCanonicalIngredientsNewRoute: typeof LayoutCanonicalIngredientsNewRoute
   LayoutRecipesRecipeIdRoute: typeof LayoutRecipesRecipeIdRoute
   LayoutRecipesNewRoute: typeof LayoutRecipesNewRoute
-  LayoutFoodsIndexRoute: typeof LayoutFoodsIndexRoute
+  LayoutCanonicalIngredientsIndexRoute: typeof LayoutCanonicalIngredientsIndexRoute
   LayoutRecipesIndexRoute: typeof LayoutRecipesIndexRoute
-  LayoutFoodsFoodIdEditRoute: typeof LayoutFoodsFoodIdEditRoute
+  LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute: typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
   LayoutRecipesRecipeIdEditRoute: typeof LayoutRecipesRecipeIdEditRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
   LayoutAccountRoute: LayoutAccountRoute,
-  LayoutFoodsNewRoute: LayoutFoodsNewRoute,
+  LayoutCanonicalIngredientsNewRoute: LayoutCanonicalIngredientsNewRoute,
   LayoutRecipesRecipeIdRoute: LayoutRecipesRecipeIdRoute,
   LayoutRecipesNewRoute: LayoutRecipesNewRoute,
-  LayoutFoodsIndexRoute: LayoutFoodsIndexRoute,
+  LayoutCanonicalIngredientsIndexRoute: LayoutCanonicalIngredientsIndexRoute,
   LayoutRecipesIndexRoute: LayoutRecipesIndexRoute,
-  LayoutFoodsFoodIdEditRoute: LayoutFoodsFoodIdEditRoute,
+  LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute:
+    LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute,
   LayoutRecipesRecipeIdEditRoute: LayoutRecipesRecipeIdEditRoute,
 }
 
@@ -221,12 +225,12 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/account': typeof LayoutAccountRoute
-  '/foods/new': typeof LayoutFoodsNewRoute
+  '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/recipes/new': typeof LayoutRecipesNewRoute
-  '/foods': typeof LayoutFoodsIndexRoute
+  '/canonical-ingredients': typeof LayoutCanonicalIngredientsIndexRoute
   '/recipes': typeof LayoutRecipesIndexRoute
-  '/foods/$foodId/edit': typeof LayoutFoodsFoodIdEditRoute
+  '/canonical-ingredients/$canonicalIngredientId/edit': typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
   '/recipes/$recipeId/edit': typeof LayoutRecipesRecipeIdEditRoute
 }
 
@@ -236,12 +240,12 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/account': typeof LayoutAccountRoute
-  '/foods/new': typeof LayoutFoodsNewRoute
+  '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/recipes/new': typeof LayoutRecipesNewRoute
-  '/foods': typeof LayoutFoodsIndexRoute
+  '/canonical-ingredients': typeof LayoutCanonicalIngredientsIndexRoute
   '/recipes': typeof LayoutRecipesIndexRoute
-  '/foods/$foodId/edit': typeof LayoutFoodsFoodIdEditRoute
+  '/canonical-ingredients/$canonicalIngredientId/edit': typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
   '/recipes/$recipeId/edit': typeof LayoutRecipesRecipeIdEditRoute
 }
 
@@ -252,12 +256,12 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/_layout/account': typeof LayoutAccountRoute
-  '/_layout/foods/new': typeof LayoutFoodsNewRoute
+  '/_layout/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/_layout/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/_layout/recipes/new': typeof LayoutRecipesNewRoute
-  '/_layout/foods/': typeof LayoutFoodsIndexRoute
+  '/_layout/canonical-ingredients/': typeof LayoutCanonicalIngredientsIndexRoute
   '/_layout/recipes/': typeof LayoutRecipesIndexRoute
-  '/_layout/foods_/$foodId/edit': typeof LayoutFoodsFoodIdEditRoute
+  '/_layout/canonical-ingredients_/$canonicalIngredientId/edit': typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
   '/_layout/recipes_/$recipeId/edit': typeof LayoutRecipesRecipeIdEditRoute
 }
 
@@ -269,12 +273,12 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/account'
-    | '/foods/new'
+    | '/canonical-ingredients/new'
     | '/recipes/$recipeId'
     | '/recipes/new'
-    | '/foods'
+    | '/canonical-ingredients'
     | '/recipes'
-    | '/foods/$foodId/edit'
+    | '/canonical-ingredients/$canonicalIngredientId/edit'
     | '/recipes/$recipeId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -283,12 +287,12 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/account'
-    | '/foods/new'
+    | '/canonical-ingredients/new'
     | '/recipes/$recipeId'
     | '/recipes/new'
-    | '/foods'
+    | '/canonical-ingredients'
     | '/recipes'
-    | '/foods/$foodId/edit'
+    | '/canonical-ingredients/$canonicalIngredientId/edit'
     | '/recipes/$recipeId/edit'
   id:
     | '__root__'
@@ -297,12 +301,12 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/_layout/account'
-    | '/_layout/foods/new'
+    | '/_layout/canonical-ingredients/new'
     | '/_layout/recipes/$recipeId'
     | '/_layout/recipes/new'
-    | '/_layout/foods/'
+    | '/_layout/canonical-ingredients/'
     | '/_layout/recipes/'
-    | '/_layout/foods_/$foodId/edit'
+    | '/_layout/canonical-ingredients_/$canonicalIngredientId/edit'
     | '/_layout/recipes_/$recipeId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -344,12 +348,12 @@ export const routeTree = rootRoute
       "filePath": "_layout.tsx",
       "children": [
         "/_layout/account",
-        "/_layout/foods/new",
+        "/_layout/canonical-ingredients/new",
         "/_layout/recipes/$recipeId",
         "/_layout/recipes/new",
-        "/_layout/foods/",
+        "/_layout/canonical-ingredients/",
         "/_layout/recipes/",
-        "/_layout/foods_/$foodId/edit",
+        "/_layout/canonical-ingredients_/$canonicalIngredientId/edit",
         "/_layout/recipes_/$recipeId/edit"
       ]
     },
@@ -363,8 +367,8 @@ export const routeTree = rootRoute
       "filePath": "_layout.account.tsx",
       "parent": "/_layout"
     },
-    "/_layout/foods/new": {
-      "filePath": "_layout.foods.new.tsx",
+    "/_layout/canonical-ingredients/new": {
+      "filePath": "_layout.canonical-ingredients.new.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes/$recipeId": {
@@ -375,16 +379,16 @@ export const routeTree = rootRoute
       "filePath": "_layout.recipes.new.tsx",
       "parent": "/_layout"
     },
-    "/_layout/foods/": {
-      "filePath": "_layout.foods.index.tsx",
+    "/_layout/canonical-ingredients/": {
+      "filePath": "_layout.canonical-ingredients.index.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes/": {
       "filePath": "_layout.recipes.index.tsx",
       "parent": "/_layout"
     },
-    "/_layout/foods_/$foodId/edit": {
-      "filePath": "_layout.foods_.$foodId.edit.tsx",
+    "/_layout/canonical-ingredients_/$canonicalIngredientId/edit": {
+      "filePath": "_layout.canonical-ingredients_.$canonicalIngredientId.edit.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes_/$recipeId/edit": {

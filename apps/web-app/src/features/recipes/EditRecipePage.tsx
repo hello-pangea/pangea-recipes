@@ -35,11 +35,8 @@ export function EditRecipePage() {
             id: ingredientGroup.id,
             name: ingredientGroup.name,
             ingredients: ingredientGroup.ingredients.map((ingredient) => ({
-              food: {
-                name: ingredient.food.name,
-                id: ingredient.food.id,
-              },
               id: ingredient.id,
+              name: ingredient.name,
               amount: ingredient.amount as unknown as number,
               unit: ingredient.unit,
               notes: ingredient.notes,

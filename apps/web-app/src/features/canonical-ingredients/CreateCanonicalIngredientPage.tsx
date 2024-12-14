@@ -3,7 +3,10 @@ import { config } from '#src/config/config';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
 import { Stack, TextField, Typography, useTheme } from '@mui/material';
-import { useCreateFood, useUpdateFood } from '@open-zero/features';
+import {
+  useCreateCanonicalIngredient,
+  useUpdateCanonicalIngredient,
+} from '@open-zero/features';
 import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';
 import '@uppy/core/dist/style.min.css';
@@ -19,9 +22,8 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 
-interface FoodFormInputs {
+interface CanonicalIngredientFormInputs {
   name: string;
-  pluralName: string | null;
   icon: {
     id: string;
     url: string;
@@ -29,10 +31,12 @@ interface FoodFormInputs {
 }
 
 interface Props {
-  defaultFood?: FoodFormInputs & { id: string };
+  defaultCanonicalIngredient?: CanonicalIngredientFormInputs & { id: string };
 }
 
-export function CreateFoodPage({ defaultFood }: Props) {
+export function CreateCanonicalIngredientPage({
+  defaultCanonicalIngredient,
+}: Props) {
   const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const {
@@ -42,10 +46,9 @@ export function CreateFoodPage({ defaultFood }: Props) {
     reset,
     setValue,
     getValues,
-  } = useForm<FoodFormInputs>({
-    defaultValues: defaultFood ?? {
+  } = useForm<CanonicalIngredientFormInputs>({
+    defaultValues: defaultCanonicalIngredient ?? {
       name: '',
-      pluralName: '',
     },
   });
   const icon = useWatch({
@@ -60,7 +63,10 @@ export function CreateFoodPage({ defaultFood }: Props) {
         allowedFileTypes: ['image/*'],
       },
     })
-      .use(XHR, { endpoint: `${config.VITE_API_URL}/images/food-icon` })
+      .use(XHR, {
+        endpoint: `${config.VITE_API_URL}/images/food-icon`,
+        withCredentials: true,
+      })
       .on('complete', (res) => {
         const uploadRes = res.successful?.at(0);
 
@@ -85,40 +91,38 @@ export function CreateFoodPage({ defaultFood }: Props) {
 
   const theme = useTheme();
 
-  const foodCreator = useCreateFood({
+  const canonicalIngredientCreator = useCreateCanonicalIngredient({
     mutationConfig: {
       onSuccess: () => {
-        enqueueSnackbar('Food created', { variant: 'success' });
+        enqueueSnackbar('Canonical ingredient created', { variant: 'success' });
         uppy.clear();
         reset();
       },
     },
   });
 
-  const foodUpdater = useUpdateFood({
+  const canonicalIngredientUpdater = useUpdateCanonicalIngredient({
     mutationConfig: {
       onSuccess: () => {
-        enqueueSnackbar('Food updated', { variant: 'success' });
+        enqueueSnackbar('Canonical ingredient updated', { variant: 'success' });
 
         void navigate({
-          to: `/foods`,
+          to: `/canonical-ingredients`,
         });
       },
     },
   });
 
-  const onSubmit: SubmitHandler<FoodFormInputs> = (data) => {
-    if (defaultFood) {
-      foodUpdater.mutate({
-        id: defaultFood.id,
+  const onSubmit: SubmitHandler<CanonicalIngredientFormInputs> = (data) => {
+    if (defaultCanonicalIngredient) {
+      canonicalIngredientUpdater.mutate({
+        id: defaultCanonicalIngredient.id,
         name: data.name,
-        pluralName: data.pluralName ?? undefined,
         iconId: data.icon?.id ?? undefined,
       });
     } else {
-      foodCreator.mutate({
+      canonicalIngredientCreator.mutate({
         name: data.name,
-        pluralName: data.pluralName ?? undefined,
         iconId: data.icon?.id ?? undefined,
       });
     }
@@ -127,7 +131,7 @@ export function CreateFoodPage({ defaultFood }: Props) {
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
-        {defaultFood ? 'Edit' : 'New'} food
+        {defaultCanonicalIngredient ? 'Edit' : 'New'} canonical ingredient
       </Typography>
       <form onSubmit={handleSubmit(onSubmit)}>
         <Stack
@@ -142,31 +146,13 @@ export function CreateFoodPage({ defaultFood }: Props) {
             rules={{ required: true }}
             render={({ field }) => (
               <TextField
-                label="Food name"
+                label="Name"
                 placeholder="Example: Carrot"
                 variant="outlined"
                 fullWidth
                 required
                 error={!!errors.name}
                 helperText={errors.name ? errors.name.message : undefined}
-                {...field}
-              />
-            )}
-          />
-          <Controller
-            name="pluralName"
-            defaultValue={''}
-            control={control}
-            render={({ field }) => (
-              <TextField
-                label="Plural name"
-                placeholder="Example: Carrots"
-                variant="outlined"
-                fullWidth
-                error={!!errors.pluralName}
-                helperText={
-                  errors.pluralName ? errors.pluralName.message : undefined
-                }
                 {...field}
               />
             )}
@@ -194,7 +180,7 @@ export function CreateFoodPage({ defaultFood }: Props) {
           startIcon={<SaveRoundedIcon />}
           fullWidth
           type="submit"
-          loading={foodCreator.isPending}
+          loading={canonicalIngredientCreator.isPending}
         >
           Save
         </LoadingButton>

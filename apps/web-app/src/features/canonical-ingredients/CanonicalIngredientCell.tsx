@@ -11,16 +11,19 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useDeleteFood, type Food } from '@open-zero/features';
+import {
+  useDeleteCanonicalIngredient,
+  type CanonicalIngredient,
+} from '@open-zero/features';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
 interface Props {
-  food: Food;
+  canonicalIngredient: CanonicalIngredient;
 }
 
-export function FoodCell({ food }: Props) {
-  const deleteFood = useDeleteFood();
+export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
+  const deleteCanonicalIngredient = useDeleteCanonicalIngredient();
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
@@ -41,10 +44,10 @@ export function FoodCell({ food }: Props) {
         }}
       >
         <Stack direction="row" alignItems="center" spacing={1}>
-          {food.icon && (
+          {canonicalIngredient.icon && (
             <img
-              src={food.icon.url}
-              alt={food.pluralName ?? food.name}
+              src={canonicalIngredient.icon.url}
+              alt={canonicalIngredient.name}
               style={{
                 width: 20,
                 height: 20,
@@ -52,9 +55,7 @@ export function FoodCell({ food }: Props) {
               }}
             />
           )}
-          <Typography variant="body1">
-            {food.pluralName ?? food.name}
-          </Typography>
+          <Typography variant="body1">{canonicalIngredient.name}</Typography>
         </Stack>
         <IconButton
           id="more-button"
@@ -90,8 +91,8 @@ export function FoodCell({ food }: Props) {
         }}
       >
         <Link
-          to="/foods/$foodId/edit"
-          params={{ foodId: food.id }}
+          to="/canonical-ingredients/$canonicalIngredientId/edit"
+          params={{ canonicalIngredientId: canonicalIngredient.id }}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >
           <MenuItem>
@@ -103,7 +104,9 @@ export function FoodCell({ food }: Props) {
         </Link>
         <MenuItem
           onClick={() => {
-            deleteFood.mutate({ foodId: food.id });
+            deleteCanonicalIngredient.mutate({
+              canonicalIngredientId: canonicalIngredient.id,
+            });
 
             handleMoreMenuClose();
           }}

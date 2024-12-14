@@ -1,5 +1,4 @@
 import { Type, type Static } from '@sinclair/typebox';
-import { createFoodDtoScema } from '../../foods/index.js';
 import { Nullable } from '../../lib/nullable.js';
 import { unitSchema } from '../../units/index.js';
 import { createRecipeDtoScema } from './createRecipeDto.js';
@@ -23,12 +22,7 @@ export const updateRecipeDtoScema = Type.Partial(
           ingredients: Type.Array(
             Type.Object({
               id: Type.Optional(Type.String({ format: 'uuid' })),
-              food: Type.Union([
-                Type.Object({
-                  id: Type.String({ format: 'uuid' }),
-                }),
-                createFoodDtoScema,
-              ]),
+              name: Type.String({ minLength: 1 }),
               unit: Type.Optional(Type.Union([unitSchema, Type.Null()])),
               amount: Type.Optional(Nullable(Type.Number())),
               notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),

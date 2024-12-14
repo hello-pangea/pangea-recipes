@@ -2,25 +2,25 @@ import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Divider, Stack, Typography } from '@mui/material';
-import { useFoods } from '@open-zero/features';
-import { FoodCell } from './FoodCell';
+import { useCanonicalIngredients } from '@open-zero/features';
+import { CanonicalIngredientCell } from './CanonicalIngredientCell';
 
-export function FoodsPage() {
-  const foodsQuery = useFoods();
+export function CanonicalIngredientsPage() {
+  const canonicalIngredientsQuery = useCanonicalIngredients();
 
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
-        Food
+        Canonical ingredient
       </Typography>
       <ButtonLink
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        to="/foods/new"
+        to="/canonical-ingredients/new"
         size="small"
       >
-        New food
+        New canonical ingredient
       </ButtonLink>
       <Stack
         divider={<Divider />}
@@ -28,9 +28,14 @@ export function FoodsPage() {
         justifyContent={'stretch'}
         sx={{ width: '100%' }}
       >
-        {foodsQuery.data?.foods.map((food) => (
-          <FoodCell key={food.id} food={food} />
-        ))}
+        {canonicalIngredientsQuery.data?.canonicalIngredients.map(
+          (canonicalIngredient) => (
+            <CanonicalIngredientCell
+              key={canonicalIngredient.id}
+              canonicalIngredient={canonicalIngredient}
+            />
+          ),
+        )}
       </Stack>
     </Page>
   );

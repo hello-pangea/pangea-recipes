@@ -1,9 +1,9 @@
 import { prisma } from './index.js';
-import { foods } from './seed-data/foods.js';
+import { canonicalIngredients } from './seed-data/canonicalIngredients.js';
 
 async function seedDatabase() {
-  await prisma.food.createMany({
-    data: foods,
+  await prisma.canonicalIngredient.createMany({
+    data: canonicalIngredients,
   });
 }
 

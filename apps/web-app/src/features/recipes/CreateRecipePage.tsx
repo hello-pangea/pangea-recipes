@@ -38,13 +38,6 @@ import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { RequiredRecipeCard } from './RequiredRecipeCard';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
-export interface FoodOption {
-  inputValue?: string;
-  name: string;
-  id?: string;
-  iconUrl?: string;
-}
-
 export interface RecipeFormInputs {
   name: string;
   description: string | null;
@@ -58,7 +51,7 @@ export interface RecipeFormInputs {
     id: string | null;
     name: string | null;
     ingredients: {
-      food: FoodOption;
+      name: string;
       unit: Unit | null;
       amount: number | null;
       notes: string | null;
@@ -286,9 +279,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 name: null,
                 ingredients: [
                   {
-                    food: {
-                      name: '',
-                    },
+                    name: '',
                     unit: null,
                     amount: null,
                     notes: null,

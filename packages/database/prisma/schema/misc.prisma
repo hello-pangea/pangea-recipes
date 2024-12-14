@@ -8,8 +8,8 @@ model Image {
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @map("user_id") @db.Uuid
 
-  recipeImages RecipeImage[]
-  foods        Food[]
+  recipeImages         RecipeImage[]
+  canonicalIngredients CanonicalIngredient[]
 
   @@map("images")
 }

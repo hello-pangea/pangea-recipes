@@ -160,10 +160,7 @@ export function RecipePage() {
                         <img
                           width={24}
                           height={24}
-                          src={
-                            ingredient.food.icon?.url ??
-                            '/assets/ingredients.svg'
-                          }
+                          src={ingredient.icon_url ?? '/assets/ingredients.svg'}
                         />
                       </Box>
                       <Box>
@@ -171,7 +168,7 @@ export function RecipePage() {
                           <b>{numberToFraction(ingredient.amount)}</b>
                         )}{' '}
                         {ingredient.unit && unitRecord[ingredient.unit].name}{' '}
-                        {ingredient.food.name}
+                        {ingredient.name}
                         {ingredient.notes && (
                           <Typography
                             component={'span'}

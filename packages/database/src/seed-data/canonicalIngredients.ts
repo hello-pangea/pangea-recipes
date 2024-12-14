@@ -1,6 +1,6 @@
 import { Prisma } from '../index.js';
 
-export const foods: Prisma.FoodCreateInput[] = [
+export const canonicalIngredients: Prisma.CanonicalIngredientCreateInput[] = [
   {
     name: 'paprika',
   },

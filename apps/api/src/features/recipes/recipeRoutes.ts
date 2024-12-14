@@ -6,13 +6,13 @@ import {
   recipeSchema,
   updateRecipeDtoScema,
   type CreateTagDto,
-  type Recipe,
 } from '@open-zero/features';
 import { Type } from '@sinclair/typebox';
 import { ApiError } from '../../lib/ApiError.js';
 import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';
 import { verifySession } from '../auth/verifySession.js';
+import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.js';
 import { updateIngredientGroups } from './updateIngredientGroups.js';
 import { updateInstructionGroups } from './updateInstructionGroups.js';
 
@@ -79,15 +79,8 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               order: index,
               ingredients: {
                 create: ingredientGroup.ingredients.map((ingredient, index) => {
-                  const { food, ...rest } = ingredient;
-
                   return {
-                    ...rest,
-                    unit: rest.unit ?? undefined,
-                    food:
-                      'id' in food
-                        ? { connect: { id: food.id } }
-                        : { create: food },
+                    ...ingredient,
                     order: index,
                   };
                 }),
@@ -142,76 +135,10 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               }
             : undefined,
         },
-        include: {
-          ingredientGroups: {
-            include: {
-              ingredients: {
-                include: {
-                  food: true,
-                },
-              },
-            },
-          },
-          instructionGroups: {
-            include: {
-              instructions: true,
-            },
-          },
-          usesRecipes: {
-            select: {
-              usesRecipeId: true,
-            },
-          },
-          images: {
-            include: {
-              image: true,
-            },
-          },
-          tags: {
-            include: {
-              tag: true,
-            },
-          },
-          sourceWebsitePage: {
-            include: {
-              website: true,
-            },
-          },
-        },
+        include: recipeInclude,
       });
 
-      const recipeDto: Recipe = {
-        ...recipe,
-        usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        images: await Promise.all(
-          recipe.images.map(async (image) => ({
-            id: image.image.id,
-            url: await getFileUrl(image.image.key),
-            favorite: image.favorite ?? false,
-          })),
-        ),
-        tags: recipe.tags.map((tag) => ({
-          id: tag.tag.id,
-          name: tag.tag.name,
-        })),
-        ingredientGroups: recipe.ingredientGroups
-          .sort((a, b) => {
-            return a.order - b.order;
-          })
-          .map((ig) => {
-            ig.ingredients.sort((a, b) => a.order - b.order);
-            return ig;
-          }),
-        instructionGroups: recipe.instructionGroups.sort((a, b) => {
-          return a.order - b.order;
-        }),
-        websiteSource: recipe.sourceWebsitePage
-          ? {
-              title: recipe.sourceWebsitePage.website.title,
-              url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
-            }
-          : null,
-      };
+      const recipeDto = await mapToRecipeDto(recipe);
 
       return {
         recipe: recipeDto,
@@ -322,97 +249,10 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         where: {
           id: recipeId,
         },
-        include: {
-          ingredientGroups: {
-            include: {
-              ingredients: {
-                include: {
-                  food: {
-                    include: {
-                      icon: true,
-                    },
-                  },
-                },
-              },
-            },
-          },
-          instructionGroups: {
-            include: {
-              instructions: true,
-            },
-          },
-          usesRecipes: {
-            select: {
-              usesRecipeId: true,
-            },
-          },
-          images: {
-            include: {
-              image: true,
-            },
-          },
-          tags: {
-            include: {
-              tag: true,
-            },
-          },
-          sourceWebsitePage: {
-            include: {
-              website: true,
-            },
-          },
-        },
+        include: recipeInclude,
       });
 
-      const recipeDto: Recipe = {
-        ...recipe,
-        usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-        images: await Promise.all(
-          recipe.images.map(async (image) => ({
-            id: image.image.id,
-            url: await getFileUrl(image.image.key),
-            favorite: image.favorite ?? false,
-          })),
-        ),
-        ingredientGroups: await Promise.all(
-          recipe.ingredientGroups
-            .sort((a, b) => {
-              return a.order - b.order;
-            })
-            .map(async (group) => ({
-              ...group,
-              ingredients: await Promise.all(
-                group.ingredients
-                  .sort((a, b) => a.order - b.order)
-                  .map(async (ingredient) => ({
-                    ...ingredient,
-                    food: {
-                      ...ingredient.food,
-                      icon: ingredient.food.icon
-                        ? {
-                            id: ingredient.food.icon.id,
-                            url: await getFileUrl(ingredient.food.icon.key),
-                          }
-                        : undefined,
-                    },
-                  })),
-              ),
-            })),
-        ),
-        tags: recipe.tags.map((tag) => ({
-          id: tag.tag.id,
-          name: tag.tag.name,
-        })),
-        instructionGroups: recipe.instructionGroups.sort((a, b) => {
-          return a.order - b.order;
-        }),
-        websiteSource: recipe.sourceWebsitePage
-          ? {
-              title: recipe.sourceWebsitePage.website.title,
-              url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
-            }
-          : null,
-      };
+      const recipeDto = await mapToRecipeDto(recipe);
 
       return {
         recipe: recipeDto,
@@ -567,76 +407,10 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
             id: recipeId,
           },
           data: recipeUpdate,
-          include: {
-            ingredientGroups: {
-              include: {
-                ingredients: {
-                  include: {
-                    food: true,
-                  },
-                },
-              },
-            },
-            instructionGroups: {
-              include: {
-                instructions: true,
-              },
-            },
-            usesRecipes: {
-              select: {
-                usesRecipeId: true,
-              },
-            },
-            images: {
-              include: {
-                image: true,
-              },
-            },
-            tags: {
-              include: {
-                tag: true,
-              },
-            },
-            sourceWebsitePage: {
-              include: {
-                website: true,
-              },
-            },
-          },
+          include: recipeInclude,
         });
 
-        const recipeDto: Recipe = {
-          ...recipe,
-          usesRecipes: recipe.usesRecipes.map((r) => r.usesRecipeId),
-          images: await Promise.all(
-            recipe.images.map(async (image) => ({
-              id: image.image.id,
-              url: await getFileUrl(image.image.key),
-              favorite: image.favorite ?? false,
-            })),
-          ),
-          tags: recipe.tags.map((tag) => ({
-            id: tag.tag.id,
-            name: tag.tag.name,
-          })),
-          ingredientGroups: recipe.ingredientGroups
-            .sort((a, b) => {
-              return a.order - b.order;
-            })
-            .map((ig) => {
-              ig.ingredients.sort((a, b) => a.order - b.order);
-              return ig;
-            }),
-          instructionGroups: recipe.instructionGroups.sort((a, b) => {
-            return a.order - b.order;
-          }),
-          websiteSource: recipe.sourceWebsitePage
-            ? {
-                title: recipe.sourceWebsitePage.website.title,
-                url: `https://${recipe.sourceWebsitePage.website.host}${recipe.sourceWebsitePage.path}`,
-              }
-            : null,
-        };
+        const recipeDto = await mapToRecipeDto(recipe);
 
         return recipeDto;
       });
