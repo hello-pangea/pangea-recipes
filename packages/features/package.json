@@ -17,14 +17,14 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.34.11",
-    "@tanstack/react-query": "^5.62.7",
-    "ky": "^1.7.3"
+    "@sinclair/typebox": "^0.34.13",
+    "@tanstack/react-query": "^5.62.10",
+    "ky": "^1.7.4"
   },
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@prisma/client": "^6.0.1",
+    "@prisma/client": "^6.1.0",
     "@types/node": "^22.10.2",
     "typescript": "~5.7.2"
   }
