@@ -31,7 +31,7 @@
     "@open-zero/features": "workspace:*",
     "@oslojs/crypto": "^1.0.1",
     "@oslojs/encoding": "^1.1.0",
-    "@scalar/fastify-api-reference": "^1.25.96",
+    "@scalar/fastify-api-reference": "^1.25.99",
     "@sinclair/typebox": "^0.34.13",
     "chalk": "^5.4.1",
     "date-fns": "^4.1.0",
