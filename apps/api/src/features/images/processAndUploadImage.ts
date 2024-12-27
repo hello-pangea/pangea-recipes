@@ -16,6 +16,7 @@ export async function processAndUploadImage(imageBuffer: Buffer) {
     buffer: rotatedImage,
     key: originalImageKey,
     mimeType: originalMimeType?.mime ?? 'image/jpeg',
+    public: false,
   });
 
   const modifiedBuffer = await sharpInstance
@@ -30,9 +31,13 @@ export async function processAndUploadImage(imageBuffer: Buffer) {
     buffer: modifiedBuffer,
     key: modifiedImageKey,
     mimeType: 'image/jpeg',
+    public: false,
   });
 
-  const modifiedImagePresignedUrl = await getFileUrl(modifiedImageKey);
+  const modifiedImagePresignedUrl = await getFileUrl({
+    key: modifiedImageKey,
+    public: false,
+  });
 
   const image = await prisma.image.create({
     data: {

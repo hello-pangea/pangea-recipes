@@ -84,7 +84,10 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
                 ? undefined
                 : {
                     id: canonicalIngredient.icon.id,
-                    url: await getFileUrl(canonicalIngredient.icon.key),
+                    url: await getFileUrl({
+                      key: canonicalIngredient.icon.key,
+                      public: true,
+                    }),
                   },
             };
           }),
@@ -132,7 +135,10 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
           ? undefined
           : {
               id: canonicalIngredient.icon.id,
-              url: await getFileUrl(canonicalIngredient.icon.key),
+              url: await getFileUrl({
+                key: canonicalIngredient.icon.key,
+                public: true,
+              }),
             },
       };
 

@@ -54,7 +54,7 @@ export async function mapToRecipeDto(recipeData: RecipeData): Promise<Recipe> {
     images: await Promise.all(
       recipeData.images.map(async (image) => ({
         id: image.image.id,
-        url: await getFileUrl(image.image.key),
+        url: await getFileUrl({ key: image.image.key, public: false }),
         favorite: image.favorite ?? false,
       })),
     ),
@@ -77,7 +77,10 @@ export async function mapToRecipeDto(recipeData: RecipeData): Promise<Recipe> {
                   return {
                     ...i,
                     icon_url: i.canonicalIngredient?.icon?.key
-                      ? await getFileUrl(i.canonicalIngredient.icon.key)
+                      ? await getFileUrl({
+                          key: i.canonicalIngredient.icon.key,
+                          public: true,
+                        })
                       : null,
                   };
                 }),

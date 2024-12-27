@@ -203,7 +203,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           images: await Promise.all(
             recipe.images.map(async (image) => ({
               id: image.image.id,
-              url: await getFileUrl(image.image.key),
+              url: await getFileUrl({ key: image.image.key, public: false }),
               favorite: image.favorite ?? false,
             })),
           ),

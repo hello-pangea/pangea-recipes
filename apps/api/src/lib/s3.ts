@@ -20,9 +20,12 @@ export function uploadFile(data: {
   key: string;
   buffer: Buffer;
   mimeType: string;
+  public?: boolean;
 }) {
   const uploadParams: PutObjectCommandInput = {
-    Bucket: 'hello-recipes',
+    Bucket: data.public
+      ? config.PUBLIC_BUCKET_NAME
+      : config.PRIVATE_BUCKET_NAME,
     Key: data.key,
     Body: data.buffer,
     ContentType: data.mimeType,
@@ -33,10 +36,14 @@ export function uploadFile(data: {
   return s3Client.send(uploadCommand);
 }
 
-export async function getFileUrl(key: string) {
+export async function getFileUrl(data: { key: string; public: boolean }) {
+  if (data.public) {
+    return `https://${config.PUBLIC_BUCKET_DOMAIN}/${data.key}`;
+  }
+
   const presignedUrl = await getSignedUrl(
     s3Client,
-    new GetObjectCommand({ Bucket: 'hello-recipes', Key: key }),
+    new GetObjectCommand({ Bucket: config.PRIVATE_BUCKET_NAME, Key: data.key }),
     { expiresIn: 3600 },
   );
 

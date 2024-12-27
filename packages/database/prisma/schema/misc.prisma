@@ -8,6 +8,8 @@ model Image {
   user   User?   @relation(fields: [userId], references: [id])
   userId String? @map("user_id") @db.Uuid
 
+  public Boolean @default(false)
+
   recipeImages         RecipeImage[]
   canonicalIngredients CanonicalIngredient[]
 

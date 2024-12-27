@@ -73,7 +73,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const file = request.body.file;
+      const { file } = request.body;
       const originalBuffer = await file.toBuffer();
 
       const imageKey = `food-icons/${crypto.randomUUID()}.svg`;
@@ -82,6 +82,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         buffer: originalBuffer,
         key: imageKey,
         mimeType: file.mimetype,
+        public: true,
       });
 
       const image = await prisma.image.create({
@@ -90,7 +91,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      const presignedUrl = await getFileUrl(imageKey);
+      const presignedUrl = await getFileUrl({ key: imageKey, public: true });
 
       return {
         imageId: image.id,
