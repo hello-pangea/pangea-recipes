@@ -1,14 +1,14 @@
-import type { Edge } from "@atlaskit/pragmatic-drag-and-drop-hitbox/types";
-import { Box } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
+import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/types';
+import { Box } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 
-type Orientation = "horizontal" | "vertical";
+type Orientation = 'horizontal' | 'vertical';
 
 const edgeToOrientationMap: Record<Edge, Orientation> = {
-  top: "horizontal",
-  bottom: "horizontal",
-  left: "vertical",
-  right: "vertical",
+  top: 'horizontal',
+  bottom: 'horizontal',
+  left: 'vertical',
+  right: 'vertical',
 };
 
 const strokeSize = 2;
@@ -31,20 +31,20 @@ export function DropIndicator({
   return (
     <Box
       sx={{
-        position: "absolute",
+        position: 'absolute',
         zIndex: 1000,
         backgroundColor: theme.palette.primary.main,
-        pointerEvents: "none",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        ...(orientation === "horizontal"
+        pointerEvents: 'none',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...(orientation === 'horizontal'
           ? {
               height: `${strokeSize}px`,
               left: `${terminalSize / 2}px`,
               right: 0,
-              top: edge === "top" ? lineOffset : undefined,
-              bottom: edge === "bottom" ? lineOffset : undefined,
+              top: edge === 'top' ? lineOffset : undefined,
+              bottom: edge === 'bottom' ? lineOffset : undefined,
             }
           : {
               width: `${strokeSize}px`,
@@ -58,14 +58,14 @@ export function DropIndicator({
         sx={{
           width: `${terminalSize}px`,
           height: `${terminalSize}px`,
-          boxSizing: "border-box",
-          position: "absolute",
+          boxSizing: 'border-box',
+          position: 'absolute',
           borderWidth: `${strokeSize}px`,
-          borderStyle: "solid",
+          borderStyle: 'solid',
           borderColor: theme.palette.primary.main,
           backgroundColor: theme.palette.background.paper,
-          borderRadius: "50%",
-          ...(orientation === "horizontal"
+          borderRadius: '50%',
+          ...(orientation === 'horizontal'
             ? { left: `-${terminalSize - insetValue}px` }
             : { top: `-${terminalSize - insetValue}px` }),
         }}

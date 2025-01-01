@@ -5,11 +5,8 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
 import openApi from '@fastify/swagger';
-import {
-  canonicalIngredientSchema,
-  recipeSchema,
-  userSchema,
-} from '@open-zero/features';
+import { canonicalIngredientSchema, userSchema } from '@open-zero/features';
+import { recipeSchema } from '@open-zero/features/recipes';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
 import { config, enablePrettyLogs } from '../config/config.js';

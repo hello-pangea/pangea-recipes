@@ -9,12 +9,11 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { numberToFraction, unitRecord } from '@open-zero/features';
 import {
   getRecipeQueryOptions,
-  numberToFraction,
-  unitRecord,
   useUpdateRecipe,
-} from '@open-zero/features';
+} from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';

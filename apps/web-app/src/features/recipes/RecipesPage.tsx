@@ -1,7 +1,7 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Box, Grid2, Typography } from '@mui/material';
-import { getListRecipesQueryOptions } from '@open-zero/features';
+import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useAuthRequired } from '../auth/useAuth';
 import { RecipeCard } from './RecipeCard';

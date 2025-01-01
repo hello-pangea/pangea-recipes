@@ -6,7 +6,7 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { useRecipe } from '@open-zero/features';
+import { useRecipe } from '@open-zero/features/recipes';
 
 interface Props {
   recipeId: string;

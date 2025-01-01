@@ -1,5 +1,5 @@
 import { type Prisma } from '#src/lib/prisma.js';
-import { type UpdateRecipeDto } from '@open-zero/features';
+import { type UpdateRecipeDto } from '@open-zero/features/recipes';
 
 export async function updateIngredientGroups(data: {
   tx: Prisma.TransactionClient;

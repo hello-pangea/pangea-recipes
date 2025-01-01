@@ -8,7 +8,7 @@ import {
   Link,
   Typography,
 } from '@mui/material';
-import { useRecipe } from '@open-zero/features';
+import { useRecipe } from '@open-zero/features/recipes';
 import { useState } from 'react';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 

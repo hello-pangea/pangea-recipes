@@ -1,5 +1,5 @@
 import { EditRecipePage } from '#src/features/recipes/EditRecipePage';
-import { getRecipeQueryOptions } from '@open-zero/features';
+import { getRecipeQueryOptions } from '@open-zero/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_layout/recipes_/$recipeId/edit')({

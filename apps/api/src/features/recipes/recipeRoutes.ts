@@ -1,12 +1,12 @@
 import { prisma, type Prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import { type CreateTagDto } from '@open-zero/features';
 import {
   createRecipeDtoScema,
   recipeProjectedSchema,
   recipeSchema,
   updateRecipeDtoScema,
-  type CreateTagDto,
-} from '@open-zero/features';
+} from '@open-zero/features/recipes';
 import { Type } from '@sinclair/typebox';
 import { ApiError } from '../../lib/ApiError.js';
 import { getFileUrl } from '../../lib/s3.js';

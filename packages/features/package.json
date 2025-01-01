@@ -3,11 +3,16 @@
   "version": "0.0.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
+  "sideEffects": false,
   "type": "module",
   "exports": {
     ".": {
       "types": "./src/index.ts",
       "default": "./dist/index.js"
+    },
+    "./recipes": {
+      "types": "./src/recipes/index.ts",
+      "default": "./dist/recipes/index.js"
     }
   },
   "scripts": {

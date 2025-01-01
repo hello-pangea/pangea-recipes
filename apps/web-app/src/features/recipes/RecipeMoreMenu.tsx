@@ -7,7 +7,7 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import { useDeleteRecipe, useRecipe } from '@open-zero/features';
+import { useDeleteRecipe, useRecipe } from '@open-zero/features/recipes';
 import { Link } from '@tanstack/react-router';
 
 interface Props {

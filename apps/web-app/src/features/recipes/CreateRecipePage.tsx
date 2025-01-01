@@ -14,13 +14,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
+import { emptyStringToUndefined, type Unit } from '@open-zero/features';
 import {
-  emptyStringToUndefined,
   useCreateRecipe,
   useRecipes,
   useUpdateRecipe,
-  type Unit,
-} from '@open-zero/features';
+} from '@open-zero/features/recipes';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
