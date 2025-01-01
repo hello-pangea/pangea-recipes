@@ -1,4 +1,4 @@
-import { getCanonicalIngredientQueryOptions } from '@open-zero/features';
+import { getCanonicalIngredientQueryOptions } from '@open-zero/features/canonical-ingredients';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateCanonicalIngredientPage } from './CreateCanonicalIngredientPage';

@@ -5,7 +5,7 @@ import {
   signUpUserDtoSchema,
   updateUserDtoSchema,
   userSchemaRef,
-} from '@open-zero/features';
+} from '@open-zero/features/users';
 import { Type } from '@sinclair/typebox';
 import { randomBytes, scryptSync } from 'node:crypto';
 import { ApiError } from '../../lib/ApiError.js';

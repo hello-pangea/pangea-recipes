@@ -12,7 +12,7 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useSignUpUser } from '@open-zero/features';
+import { useSignUpUser } from '@open-zero/features/users';
 import { useNavigate } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { useForm, type SubmitHandler } from 'react-hook-form';

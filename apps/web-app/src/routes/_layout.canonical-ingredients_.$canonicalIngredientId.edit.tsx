@@ -1,5 +1,5 @@
 import { EditCanonicalIngredientPage } from '#src/features/canonical-ingredients/EditCanonicalIngredientPage';
-import { getCanonicalIngredientQueryOptions } from '@open-zero/features';
+import { getCanonicalIngredientQueryOptions } from '@open-zero/features/canonical-ingredients';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute(

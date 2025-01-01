@@ -15,11 +15,8 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import DragIndicatorRoundedIcon from '@mui/icons-material/DragIndicatorRounded';
 import { Autocomplete, Box, Grid2, IconButton, TextField } from '@mui/material';
-import {
-  unitRecord,
-  units,
-  useCanonicalIngredients,
-} from '@open-zero/features';
+import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
+import { unitRecord, units } from '@open-zero/features/units';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Controller } from 'react-hook-form';

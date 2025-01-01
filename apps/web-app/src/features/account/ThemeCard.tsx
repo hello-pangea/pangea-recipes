@@ -7,7 +7,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { useUpdateUser, type User } from '@open-zero/features';
+import { useUpdateUser, type User } from '@open-zero/features/users';
 import { useAuthRequired } from '../auth/useAuth';
 
 interface Props {

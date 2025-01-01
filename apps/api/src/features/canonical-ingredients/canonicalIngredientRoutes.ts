@@ -5,7 +5,7 @@ import {
   createCanonicalIngredientDtoScema,
   updateCanonicalIngredientDtoSchema,
   type CanonicalIngredient,
-} from '@open-zero/features';
+} from '@open-zero/features/canonical-ingredients';
 import { Type } from '@sinclair/typebox';
 import { getFileUrl } from '../../lib/s3.js';
 import { noContentSchema } from '../../types/noContent.js';

@@ -1,5 +1,5 @@
 import { alpha, type PaletteOptions } from '@mui/material/styles';
-import type { User } from '@open-zero/features';
+import type { User } from '@open-zero/features/users';
 
 const lightTheme: PaletteOptions = {
   mode: 'light',

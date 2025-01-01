@@ -9,7 +9,10 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useImportedRecipe, type ImportedRecipe } from '@open-zero/features';
+import {
+  useImportedRecipe,
+  type ImportedRecipe,
+} from '@open-zero/features/imported-recipes';
 import { useState } from 'react';
 
 interface Props {

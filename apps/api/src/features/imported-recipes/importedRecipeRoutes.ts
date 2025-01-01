@@ -1,6 +1,6 @@
 import { ApiError } from '#src/lib/ApiError.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { importedRecipeSchema } from '@open-zero/features';
+import { importedRecipeSchema } from '@open-zero/features/imported-recipes';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';
 import { getLlmImportRecipe } from './getLlmImportRecipe.js';

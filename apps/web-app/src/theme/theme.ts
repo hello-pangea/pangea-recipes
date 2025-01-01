@@ -1,5 +1,5 @@
 import { createTheme } from '@mui/material/styles';
-import type { User } from '@open-zero/features';
+import type { User } from '@open-zero/features/users';
 import { themeMap } from './themeModes';
 
 export function getThemeForMode(themeMode: User['themePreference']) {

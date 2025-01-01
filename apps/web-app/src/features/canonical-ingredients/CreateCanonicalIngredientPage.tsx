@@ -6,7 +6,7 @@ import { Stack, TextField, Typography, useTheme } from '@mui/material';
 import {
   useCreateCanonicalIngredient,
   useUpdateCanonicalIngredient,
-} from '@open-zero/features';
+} from '@open-zero/features/canonical-ingredients';
 import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';
 import '@uppy/core/dist/style.min.css';

@@ -1,6 +1,6 @@
 import { openAi } from '#src/lib/openAi.js';
 import { prisma } from '@open-zero/database';
-import { unitSchema } from '@open-zero/features';
+import { unitSchema } from '@open-zero/features/units';
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 import playwright from 'playwright-chromium';

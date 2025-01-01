@@ -1,4 +1,4 @@
-import type { User } from '@open-zero/features';
+import type { User } from '@open-zero/features/users';
 import { useContext } from 'react';
 import { AuthContext } from './AuthProvider';
 

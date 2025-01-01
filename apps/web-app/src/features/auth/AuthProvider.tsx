@@ -3,7 +3,7 @@ import {
   signInUser,
   signOutUser,
   type User,
-} from '@open-zero/features';
+} from '@open-zero/features/users';
 import { createContext, useCallback, useEffect, useState } from 'react';
 
 export interface AuthContext {

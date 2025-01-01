@@ -13,6 +13,22 @@
     "./recipes": {
       "types": "./src/recipes/index.ts",
       "default": "./dist/recipes/index.js"
+    },
+    "./units": {
+      "types": "./src/units/index.ts",
+      "default": "./dist/units/index.js"
+    },
+    "./users": {
+      "types": "./src/users/index.ts",
+      "default": "./dist/users/index.js"
+    },
+    "./imported-recipes": {
+      "types": "./src/imported-recipes/index.ts",
+      "default": "./dist/imported-recipes/index.js"
+    },
+    "./canonical-ingredients": {
+      "types": "./src/canonical-ingredients/index.ts",
+      "default": "./dist/canonical-ingredients/index.js"
     }
   },
   "scripts": {
