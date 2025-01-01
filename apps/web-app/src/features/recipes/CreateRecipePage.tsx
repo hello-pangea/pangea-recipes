@@ -408,27 +408,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             websitePageId,
             ingredientGroups: importedRecipe.ingredientGroups?.map((ig) => ({
               name: ig.title,
-              ingredients: ig.ingredients.map((ingredient) => {
-                if (typeof ingredient === 'string') {
-                  return {
-                    amount: null,
-                    food: {
-                      name: ingredient,
-                    },
-                    unit: null,
-                    notes: null,
-                  };
-                } else {
-                  return {
-                    food: {
-                      name: ingredient.name,
-                    },
-                    unit: ingredient.unit ?? null,
-                    amount: ingredient.amount ?? null,
-                    notes: ingredient.notes ?? null,
-                  };
-                }
-              }),
+              ingredients: ig.ingredients.map((ingredient) => ({
+                name: ingredient.name,
+                unit: ingredient.unit ?? null,
+                amount: ingredient.amount ?? null,
+                notes: ingredient.notes ?? null,
+              })),
             })),
           });
         }}

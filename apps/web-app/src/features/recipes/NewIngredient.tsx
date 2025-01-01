@@ -22,9 +22,9 @@ import {
 } from '@open-zero/features';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Controller } from 'react-hook-form';
 import {
   AutocompleteElement,
-  Controller,
   TextFieldElement,
   useFieldArray,
   useFormContext,
@@ -284,15 +284,18 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
               rules={{
                 required: 'Required',
               }}
-              render={({ field: { ref, onChange, ...field } }) => (
+              render={({
+                field: { onChange, value, ref, onBlur, disabled },
+              }) => (
                 <Autocomplete
-                  {...field}
                   freeSolo
-                  fullWidth
+                  autoSelect
+                  autoHighlight
                   selectOnFocus
                   handleHomeEndKeys
-                  autoHighlight
-                  autoSelect
+                  fullWidth
+                  value={value}
+                  disableClearable
                   size="small"
                   options={
                     canonicalIngredientsQuery.data?.canonicalIngredients.map(
@@ -303,7 +306,7 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                     return (
                       canonicalIngredientsQuery.data?.canonicalIngredients.find(
                         (ci) => ci.name === option,
-                      )?.name ?? ''
+                      )?.name ?? option
                     );
                   }}
                   onChange={(_event, newValue) => {
@@ -331,9 +334,9 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                   renderInput={(params) => (
                     <TextField
                       {...params}
-                      inputRef={ref}
                       required
                       placeholder="Food *"
+                      inputRef={ref}
                     />
                   )}
                   renderOption={(props, option) => {
@@ -362,6 +365,8 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                       </li>
                     );
                   }}
+                  onBlur={onBlur}
+                  disabled={disabled}
                 />
               )}
             />
