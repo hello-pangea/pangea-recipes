@@ -6,4 +6,5 @@ export type CreateCanonicalIngredientDto = Static<
 export const createCanonicalIngredientDtoScema = Type.Object({
   name: Type.String({ minLength: 1 }),
   iconId: Type.Optional(Type.String({ format: 'uuid' })),
+  aliases: Type.Optional(Type.Array(Type.String({ minLength: 1 }))),
 });

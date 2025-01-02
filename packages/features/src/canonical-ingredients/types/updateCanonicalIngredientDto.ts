@@ -5,5 +5,5 @@ export type UpdateCanonicalIngredientDto = Static<
   typeof updateCanonicalIngredientDtoSchema
 >;
 export const updateCanonicalIngredientDtoSchema = Type.Partial(
-  Type.Pick(createCanonicalIngredientDtoScema, ['name', 'iconId']),
+  Type.Pick(createCanonicalIngredientDtoScema, ['name', 'iconId', 'aliases']),
 );

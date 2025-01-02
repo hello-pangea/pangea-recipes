@@ -22,6 +22,7 @@ export function EditCanonicalIngredientPage() {
         id: canonicalIngredient.id,
         name: canonicalIngredient.name,
         icon: canonicalIngredient.icon ?? null,
+        aliases: canonicalIngredient.aliases.map((alias) => ({ name: alias })),
       }}
     />
   );

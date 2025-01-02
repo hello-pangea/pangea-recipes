@@ -20,6 +20,8 @@ export const canonicalIngredientSchema = Type.Object(
         url: Type.String(),
       }),
     ),
+
+    aliases: Type.Array(Type.String()),
   },
   { $id: canonicalIngredientSchemaId },
 );

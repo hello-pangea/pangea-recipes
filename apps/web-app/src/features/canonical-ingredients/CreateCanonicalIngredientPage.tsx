@@ -1,8 +1,18 @@
 import { Page } from '#src/components/Page';
 import { config } from '#src/config/config';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
-import { Stack, TextField, Typography, useTheme } from '@mui/material';
+import {
+  Box,
+  Button,
+  IconButton,
+  Stack,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
 import {
   useCreateCanonicalIngredient,
   useUpdateCanonicalIngredient,
@@ -17,10 +27,12 @@ import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import {
   Controller,
+  useFieldArray,
   useForm,
   useWatch,
   type SubmitHandler,
 } from 'react-hook-form';
+import { TextFieldElement } from 'react-hook-form-mui';
 
 interface CanonicalIngredientFormInputs {
   name: string;
@@ -28,6 +40,7 @@ interface CanonicalIngredientFormInputs {
     id: string;
     url: string;
   } | null;
+  aliases: { name: string }[];
 }
 
 interface Props {
@@ -50,6 +63,14 @@ export function CreateCanonicalIngredientPage({
     defaultValues: defaultCanonicalIngredient ?? {
       name: '',
     },
+  });
+  const {
+    fields: aliases,
+    append: appendAlias,
+    remove: removeAlias,
+  } = useFieldArray({
+    control,
+    name: 'aliases',
   });
   const icon = useWatch({
     control,
@@ -119,11 +140,13 @@ export function CreateCanonicalIngredientPage({
         id: defaultCanonicalIngredient.id,
         name: data.name,
         iconId: data.icon?.id ?? undefined,
+        aliases: data.aliases.map((alias) => alias.name),
       });
     } else {
       canonicalIngredientCreator.mutate({
         name: data.name,
         iconId: data.icon?.id ?? undefined,
+        aliases: data.aliases.map((alias) => alias.name),
       });
     }
   };
@@ -174,6 +197,51 @@ export function CreateCanonicalIngredientPage({
               theme={theme.palette.mode}
             />
           )}
+          <Box>
+            <Typography variant="h2" sx={{ mb: 2 }}>
+              Aliases
+            </Typography>
+            <Stack spacing={2} alignItems={'flex-start'}>
+              {aliases.map((alias, index) => (
+                <Stack
+                  key={alias.id}
+                  direction="row"
+                  spacing={2}
+                  alignItems="center"
+                  width={'100%'}
+                >
+                  <TextFieldElement
+                    placeholder="Alias"
+                    name={`aliases.${index}.name`}
+                    id={`aliases.${index}.name`}
+                    control={control}
+                    size="small"
+                    fullWidth
+                  />
+                  <IconButton
+                    onClick={() => {
+                      removeAlias(index);
+                    }}
+                    aria-label="Remove alias"
+                  >
+                    <DeleteRoundedIcon />
+                  </IconButton>
+                </Stack>
+              ))}
+              <Button
+                variant="outlined"
+                size="small"
+                startIcon={<AddRoundedIcon />}
+                onClick={() => {
+                  appendAlias({
+                    name: '',
+                  });
+                }}
+              >
+                Add alias
+              </Button>
+            </Stack>
+          </Box>
         </Stack>
         <LoadingButton
           variant="contained"

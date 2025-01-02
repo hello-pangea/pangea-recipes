@@ -32,9 +32,9 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { name, iconId } = request.body;
+      const { name, iconId, aliases } = request.body;
 
-      const food = await prisma.canonicalIngredient.create({
+      const canonicalIngredient = await prisma.canonicalIngredient.create({
         data: {
           name: name,
           icon: iconId
@@ -44,11 +44,31 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
                 },
               }
             : undefined,
+          aliases:
+            aliases && aliases.length > 0
+              ? {
+                  createMany: {
+                    data: aliases.map((alias) => ({
+                      name: alias,
+                    })),
+                  },
+                }
+              : undefined,
+        },
+        include: {
+          aliases: {
+            select: {
+              name: true,
+            },
+          },
         },
       });
 
       return {
-        canonicalIngredient: food,
+        canonicalIngredient: {
+          ...canonicalIngredient,
+          aliases: canonicalIngredient.aliases.map((alias) => alias.name),
+        },
       };
     },
   );
@@ -72,6 +92,11 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
         where: {},
         include: {
           icon: true,
+          aliases: {
+            select: {
+              name: true,
+            },
+          },
         },
       });
 
@@ -89,6 +114,7 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
                       public: true,
                     }),
                   },
+              aliases: canonicalIngredient.aliases.map((alias) => alias.name),
             };
           }),
         );
@@ -126,6 +152,11 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
           },
           include: {
             icon: true,
+            aliases: {
+              select: {
+                name: true,
+              },
+            },
           },
         });
 
@@ -140,6 +171,7 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
                 public: true,
               }),
             },
+        aliases: canonicalIngredient.aliases.map((alias) => alias.name),
       };
 
       return {
@@ -168,7 +200,7 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
     },
     async (request) => {
       const { canonicalIngredientId } = request.params;
-      const { name, iconId } = request.body;
+      const { name, iconId, aliases } = request.body;
 
       const canonicalIngredient = await prisma.canonicalIngredient.update({
         where: {
@@ -183,11 +215,31 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
                 },
               }
             : undefined,
+          aliases: aliases
+            ? {
+                deleteMany: {},
+                createMany: {
+                  data: aliases.map((alias) => ({
+                    name: alias,
+                  })),
+                },
+              }
+            : undefined,
+        },
+        include: {
+          aliases: {
+            select: {
+              name: true,
+            },
+          },
         },
       });
 
       return {
-        canonicalIngredient: canonicalIngredient,
+        canonicalIngredient: {
+          ...canonicalIngredient,
+          aliases: canonicalIngredient.aliases.map((alias) => alias.name),
+        },
       };
     },
   );
