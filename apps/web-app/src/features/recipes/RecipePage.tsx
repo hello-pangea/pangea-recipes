@@ -158,9 +158,13 @@ export function RecipePage() {
                       />
                       <Box sx={{ mr: 1.5 }}>
                         <img
-                          width={24}
-                          height={24}
+                          width={28}
+                          height={28}
                           src={ingredient.icon_url ?? '/assets/ingredients.svg'}
+                          style={{
+                            objectFit: 'contain',
+                            display: 'block',
+                          }}
                         />
                       </Box>
                       <Box>
