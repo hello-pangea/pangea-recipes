@@ -31,11 +31,11 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { useAuthRequired } from '../auth/useAuth';
+import { useAuthRequired } from '../../auth/useAuth';
+import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { CreateIngredientGroup } from './CreateIngredientGroup';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
-import { RequiredRecipeCard } from './RequiredRecipeCard';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
 export interface RecipeFormInputs {
