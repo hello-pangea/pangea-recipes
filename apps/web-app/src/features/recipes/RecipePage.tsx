@@ -1,23 +1,14 @@
 import { TagEditor } from '#src/components/TagEditor';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import {
-  Box,
-  Checkbox,
-  Grid2,
-  IconButton,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { numberToFraction } from '@open-zero/features';
+import { Box, Grid2, IconButton, Link, Stack, Typography } from '@mui/material';
 import {
   getRecipeQueryOptions,
   useUpdateRecipe,
 } from '@open-zero/features/recipes';
-import { unitRecord } from '@open-zero/features/units';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { Ingredient } from './Ingredient';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
 const route = getRouteApi('/_layout/recipes/$recipeId');
@@ -145,48 +136,7 @@ export function RecipePage() {
                 )}
                 <Stack component={'ul'}>
                   {ingredientGroup.ingredients.map((ingredient) => (
-                    <Box
-                      component={'li'}
-                      key={ingredient.id}
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <Checkbox
-                        sx={{
-                          p: 0.75,
-                          mr: 1.5,
-                        }}
-                      />
-                      <Box sx={{ mr: 1.5 }}>
-                        <img
-                          width={28}
-                          height={28}
-                          src={ingredient.icon_url ?? '/assets/ingredients.svg'}
-                          style={{
-                            objectFit: 'contain',
-                            display: 'block',
-                          }}
-                        />
-                      </Box>
-                      <Box>
-                        {ingredient.amount !== null && (
-                          <b>{numberToFraction(ingredient.amount)}</b>
-                        )}{' '}
-                        {ingredient.unit && unitRecord[ingredient.unit].name}{' '}
-                        {ingredient.name}
-                        {ingredient.notes && (
-                          <Typography
-                            component={'span'}
-                            sx={{
-                              color: (theme) => theme.palette.text.secondary,
-                              ml: 1,
-                              fontWeight: 300,
-                            }}
-                          >
-                            ({ingredient.notes})
-                          </Typography>
-                        )}
-                      </Box>
-                    </Box>
+                    <Ingredient ingredient={ingredient} key={ingredient.id} />
                   ))}
                 </Stack>
               </Box>
