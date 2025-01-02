@@ -55,6 +55,40 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         throw new Error('User not authenticated');
       }
 
+      const ingredientNames = ingredientGroups.flatMap((group) =>
+        group.ingredients.map((ingredient) =>
+          ingredient.name.toLocaleLowerCase(),
+        ),
+      );
+
+      const canonicalIngredients = await prisma.canonicalIngredient.findMany({
+        where: {
+          OR: [
+            {
+              name: {
+                in: ingredientNames,
+              },
+            },
+            {
+              aliases: {
+                some: {
+                  name: {
+                    in: ingredientNames,
+                  },
+                },
+              },
+            },
+          ],
+        },
+        include: {
+          aliases: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      });
+
       const recipe = await prisma.recipe.create({
         data: {
           user: {
@@ -82,6 +116,19 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                   return {
                     ...ingredient,
                     order: index,
+                    canonicalIngredientId:
+                      canonicalIngredients.find(
+                        (canonicalIngredient) =>
+                          canonicalIngredient.name ===
+                          ingredient.name.toLocaleLowerCase(),
+                      )?.id ??
+                      canonicalIngredients.find((canonicalIngredient) =>
+                        canonicalIngredient.aliases.some(
+                          (alias) =>
+                            alias.name === ingredient.name.toLocaleLowerCase(),
+                        ),
+                      )?.id ??
+                      null,
                   };
                 }),
               },

@@ -19,6 +19,38 @@ export async function updateIngredientGroups(data: {
     return;
   }
 
+  const ingredientNames = newIngredientGroups.flatMap((group) =>
+    group.ingredients.map((ingredient) => ingredient.name.toLocaleLowerCase()),
+  );
+
+  const canonicalIngredients = await tx.canonicalIngredient.findMany({
+    where: {
+      OR: [
+        {
+          name: {
+            in: ingredientNames,
+          },
+        },
+        {
+          aliases: {
+            some: {
+              name: {
+                in: ingredientNames,
+              },
+            },
+          },
+        },
+      ],
+    },
+    include: {
+      aliases: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  });
+
   const existingIngredientGroupIds = oldIngredientGroups.map(
     (group) => group.id,
   );
@@ -60,6 +92,19 @@ export async function updateIngredientGroups(data: {
                 return {
                   ...ingredient,
                   order: index,
+                  canonicalIngredientId:
+                    canonicalIngredients.find(
+                      (canonicalIngredient) =>
+                        canonicalIngredient.name ===
+                        ingredient.name.toLocaleLowerCase(),
+                    )?.id ??
+                    canonicalIngredients.find((canonicalIngredient) =>
+                      canonicalIngredient.aliases.some(
+                        (alias) =>
+                          alias.name === ingredient.name.toLocaleLowerCase(),
+                      ),
+                    )?.id ??
+                    null,
                 };
               }),
             },
@@ -87,6 +132,19 @@ export async function updateIngredientGroups(data: {
                 return {
                   ...ingredient,
                   order: index,
+                  canonicalIngredientId:
+                    canonicalIngredients.find(
+                      (canonicalIngredient) =>
+                        canonicalIngredient.name ===
+                        ingredient.name.toLocaleLowerCase(),
+                    )?.id ??
+                    canonicalIngredients.find((canonicalIngredient) =>
+                      canonicalIngredient.aliases.some(
+                        (alias) =>
+                          alias.name === ingredient.name.toLocaleLowerCase(),
+                      ),
+                    )?.id ??
+                    null,
                 };
               }),
             },
