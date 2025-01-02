@@ -62,6 +62,7 @@ export function CreateCanonicalIngredientPage({
   } = useForm<CanonicalIngredientFormInputs>({
     defaultValues: defaultCanonicalIngredient ?? {
       name: '',
+      aliases: [],
     },
   });
   const {
