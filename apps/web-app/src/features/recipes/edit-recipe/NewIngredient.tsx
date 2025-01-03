@@ -1,5 +1,6 @@
 import { DragPreview } from '#src/components/DragPreview';
 import { DropIndicator } from '#src/components/DropIndicator';
+import { focusNextInput } from '#src/lib/focusNextInput';
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -19,11 +20,10 @@ import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredien
 import { unitRecord, units } from '@open-zero/features/units';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Controller } from 'react-hook-form';
+import { Controller, type UseFieldArrayRemove } from 'react-hook-form';
 import {
   AutocompleteElement,
   TextFieldElement,
-  useFieldArray,
   useFormContext,
   useWatch,
 } from 'react-hook-form-mui';
@@ -33,14 +33,15 @@ import { IngredientNotesButton } from './IngredientNotesButton';
 interface Props {
   ingredientGroupIndex: number;
   index: number;
+  removeIngredient: UseFieldArrayRemove;
 }
 
-export function NewIngredient({ index, ingredientGroupIndex }: Props) {
+export function NewIngredient({
+  index,
+  ingredientGroupIndex,
+  removeIngredient,
+}: Props) {
   const { control } = useFormContext<RecipeFormInputs>();
-  const { append: appendIngredient, remove: removeIngredient } = useFieldArray({
-    control,
-    name: `ingredientGroups.${ingredientGroupIndex}.ingredients`,
-  });
   const ref = useRef<null | HTMLDivElement>(null);
   const dragHandleRef = useRef<HTMLButtonElement>(null);
   const [dragging, setDragging] = useState<boolean>(false);
@@ -227,6 +228,12 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
               sx={{
                 width: { xs: undefined, sm: 115 },
               }}
+              onKeyDown={(event) => {
+                focusNextInput(
+                  event,
+                  `input[name="ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit"]`,
+                );
+              }}
             />
           </Grid2>
           <Grid2
@@ -245,6 +252,7 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                 size: 'small',
                 autoHighlight: true,
                 disableClearable: true,
+                openOnFocus: true,
                 sx: {
                   width: { xs: undefined, sm: 115 },
                 },
@@ -310,22 +318,8 @@ export function NewIngredient({ index, ingredientGroupIndex }: Props) {
                     onChange(newValue);
                   }}
                   onKeyDown={(e) => {
-                    if (e.key === 'Tab') {
-                      appendIngredient({
-                        name: '',
-                        unit: null,
-                        amount: null,
-                        notes: null,
-                      });
-
-                      // run this code in 50ms
-                      setTimeout(() => {
-                        document
-                          .getElementById(
-                            `ingredientGroups.${ingredientGroupIndex}.ingredients.${index + 1}.amount`,
-                          )
-                          ?.focus();
-                      }, 50);
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
                     }
                   }}
                   renderInput={(params) => (

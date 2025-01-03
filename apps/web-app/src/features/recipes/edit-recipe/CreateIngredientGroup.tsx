@@ -179,6 +179,7 @@ export function CreateIngredientGroup({
             ingredientGroupIndex={ingredientGroupIndex}
             index={ingredientIndex}
             key={ingredient.id}
+            removeIngredient={removeIngredient}
           />
         ))}
         {ingredients.length === 0 && (

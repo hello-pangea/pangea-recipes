@@ -1,5 +1,6 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
+import { focusNextInput } from '#src/lib/focusNextInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
@@ -221,6 +222,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               required
               control={control}
               fullWidth
+              onKeyDown={(event) => {
+                focusNextInput(event, 'textarea[name="description"]');
+              }}
             />
             <TextFieldElement
               label="Description"
@@ -229,6 +233,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               fullWidth
               multiline
               minRows={2}
+              onKeyDown={(event) => {
+                focusNextInput(event, 'input[name="prepTime"]');
+              }}
             />
             <Stack direction={'row'} spacing={2}>
               <TextFieldElement
@@ -238,6 +245,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 type="number"
                 fullWidth
                 size="small"
+                onKeyDown={(event) => {
+                  focusNextInput(event, 'input[name="cookTime"]');
+                }}
               />
               <TextFieldElement
                 label="Cook time (m)"
@@ -246,6 +256,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 type="number"
                 fullWidth
                 size="small"
+                onKeyDown={(event) => {
+                  event.preventDefault();
+                }}
               />
             </Stack>
           </Stack>
@@ -379,7 +392,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             variant="contained"
             startIcon={<SaveRoundedIcon />}
             type="submit"
-            loading={recipeCreator.isPending}
+            loading={recipeCreator.isPending || recipeUpdater.isPending}
             sx={{
               display: 'flex',
             }}
