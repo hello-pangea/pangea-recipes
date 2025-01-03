@@ -141,7 +141,13 @@ export function CreateIngredientGroup({
           source.data['type'] as string,
         ),
     });
-  }, []);
+  }, [
+    appendIngredient,
+    ingredientGroupIndex,
+    insertIngredient,
+    moveIngredient,
+    removeIngredient,
+  ]);
 
   return (
     <Card sx={{ p: 2 }}>
