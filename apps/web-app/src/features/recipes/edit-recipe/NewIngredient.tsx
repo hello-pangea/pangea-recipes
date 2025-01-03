@@ -16,7 +16,14 @@ import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/eleme
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import DragIndicatorRoundedIcon from '@mui/icons-material/DragIndicatorRounded';
-import { Autocomplete, Box, Grid2, IconButton, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Box,
+  createFilterOptions,
+  Grid2,
+  IconButton,
+  TextField,
+} from '@mui/material';
 import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
 import { unitRecord, units } from '@open-zero/features/units';
 import { useEffect, useRef, useState } from 'react';
@@ -268,9 +275,16 @@ export function NewIngredient({
                 sx: {
                   width: { xs: undefined, sm: 115 },
                 },
+                filterOptions: createFilterOptions({
+                  stringify: (option) =>
+                    option
+                      ? `${unitRecord[option].name} ${unitRecord[option].pluralName} ${unitRecord[option].abbreviation}`
+                      : '',
+                }),
                 getOptionLabel: (option) =>
                   option
-                    ? (unitRecord[option].abbreviation ??
+                    ? (unitRecord[option].displayName ??
+                      unitRecord[option].abbreviation ??
                       unitRecord[option].name)
                     : '',
                 renderOption: (props, option) => {

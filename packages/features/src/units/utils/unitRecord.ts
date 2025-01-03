@@ -4,6 +4,7 @@ export interface UnitDetails {
   name: string;
   pluralName: string;
   abbreviation?: string;
+  displayName?: string;
 }
 
 export const unitRecord: Record<Exclude<Unit, null>, UnitDetails> = {
@@ -70,6 +71,7 @@ export const unitRecord: Record<Exclude<Unit, null>, UnitDetails> = {
     name: 'cup',
     pluralName: 'cups',
     abbreviation: 'c',
+    displayName: 'cup',
   },
   fluidOunce: {
     name: 'fluid ounce',
