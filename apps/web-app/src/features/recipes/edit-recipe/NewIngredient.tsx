@@ -1,6 +1,7 @@
 import { DragPreview } from '#src/components/DragPreview';
 import { DropIndicator } from '#src/components/DropIndicator';
 import { focusNextInput } from '#src/lib/focusNextInput';
+import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -233,6 +234,17 @@ export function NewIngredient({
                   event,
                   `input[name="ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit"]`,
                 );
+              }}
+              rules={{
+                validate: (value: number | string | null) => {
+                  const parsedValue = getNumberFromInput(value);
+
+                  if (parsedValue === null || isNaN(parsedValue)) {
+                    return 'Invalid number';
+                  }
+
+                  return true;
+                },
               }}
             />
           </Grid2>

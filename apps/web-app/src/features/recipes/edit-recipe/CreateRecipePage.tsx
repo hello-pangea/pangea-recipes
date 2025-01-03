@@ -1,6 +1,7 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
 import { focusNextInput } from '#src/lib/focusNextInput';
+import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
@@ -157,7 +158,10 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,
-          ingredients: ig.ingredients,
+          ingredients: ig.ingredients.map((i) => ({
+            ...i,
+            amount: i.amount ? getNumberFromInput(i.amount) : null,
+          })),
         })),
         instructionGroups: data.instructionGroups.map((ig) => ({
           id: ig.id ?? undefined,
@@ -175,7 +179,10 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         imageIds: data.image ? [data.image.id] : undefined,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           name: ig.name,
-          ingredients: ig.ingredients,
+          ingredients: ig.ingredients.map((i) => ({
+            ...i,
+            amount: i.amount ? getNumberFromInput(i.amount) : null,
+          })),
         })),
         instructionGroups: data.instructionGroups.map((ig) => ({
           name: ig.name,
