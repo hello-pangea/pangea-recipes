@@ -14,6 +14,10 @@
       "types": "./src/recipes/index.ts",
       "default": "./dist/recipes/index.js"
     },
+    "./recipes-books": {
+      "types": "./src/recipe-books/index.ts",
+      "default": "./dist/recipe-books/index.js"
+    },
     "./units": {
       "types": "./src/units/index.ts",
       "default": "./dist/units/index.js"

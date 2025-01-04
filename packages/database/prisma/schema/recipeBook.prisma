@@ -1,0 +1,27 @@
+model RecipeBook {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id])
+
+  name        String
+  description String?
+
+  recipes RecipesOnRecipeBooks[]
+
+  @@map("recipe_books")
+}
+
+model RecipesOnRecipeBooks {
+  recipeId     String @map("recipe_id") @db.Uuid
+  recipeBookId String @map("recipe_book_id") @db.Uuid
+
+  recipe     Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeBook RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([recipeId, recipeBookId])
+  @@map("recipes_on_recipe_books")
+}

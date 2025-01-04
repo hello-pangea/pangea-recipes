@@ -26,6 +26,8 @@ model Recipe {
 
   tags RecipeTag[]
 
+  recipeBooks RecipesOnRecipeBooks[]
+
   @@map("recipes")
 }
 

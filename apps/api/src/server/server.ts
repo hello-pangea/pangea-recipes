@@ -7,6 +7,7 @@ import multipart from '@fastify/multipart';
 import openApi from '@fastify/swagger';
 import { canonicalIngredientSchema } from '@open-zero/features/canonical-ingredients';
 import { recipeSchema } from '@open-zero/features/recipes';
+import { recipeBookSchema } from '@open-zero/features/recipes-books';
 import { userSchema } from '@open-zero/features/users';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
@@ -61,6 +62,7 @@ export async function createServer() {
 
   void fastify.addSchema(canonicalIngredientSchema);
   void fastify.addSchema(recipeSchema);
+  void fastify.addSchema(recipeBookSchema);
   void fastify.addSchema(userSchema);
 
   void fastify.register(openApi, {

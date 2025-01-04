@@ -10,9 +10,10 @@ model User {
 
   themePreference ThemePreference @default(light) @map("theme_preference")
 
-  sessions Session[]
-  recipes  Recipe[]
-  images   Image[]
+  sessions    Session[]
+  recipes     Recipe[]
+  images      Image[]
+  recipeBooks RecipeBook[]
 
   @@map("users")
 }
