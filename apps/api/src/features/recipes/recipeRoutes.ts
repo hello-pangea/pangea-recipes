@@ -201,7 +201,8 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         tags: [routeTag],
         summary: 'List recipes',
         querystring: Type.Object({
-          userId: Type.String({ format: 'uuid' }),
+          userId: Type.Optional(Type.String({ format: 'uuid' })),
+          recipeBookId: Type.Optional(Type.String({ format: 'uuid' })),
         }),
         response: {
           200: Type.Object({
@@ -211,9 +212,9 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { userId } = request.query;
+      const { userId, recipeBookId } = request.query;
 
-      if (userId !== request.session?.userId) {
+      if (userId && userId !== request.session?.userId) {
         throw new ApiError({
           statusCode: 403,
           message: 'Forbidden',
@@ -224,6 +225,9 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       const recipes = await prisma.recipe.findMany({
         where: {
           userId: userId,
+          recipeBooks: recipeBookId
+            ? { some: { recipeBookId: recipeBookId } }
+            : undefined,
         },
         include: {
           images: {

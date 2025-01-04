@@ -13,7 +13,7 @@ model User {
   sessions    Session[]
   recipes     Recipe[]
   images      Image[]
-  recipeBooks RecipeBook[]
+  recipeBooks RecipeBookMembers[]
 
   @@map("users")
 }

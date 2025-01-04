@@ -1,6 +1,10 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import { CarrotIcon } from '#src/components/CarrotIcon';
 import { ListItemButtonLink } from '#src/components/ListItemButtonLink';
+import {
+  dropTargetForElements,
+  monitorForElements,
+} from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
@@ -9,6 +13,7 @@ import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import {
+  alpha,
   Box,
   Collapse,
   Divider,
@@ -20,9 +25,12 @@ import {
   ListItem as MuiListItem,
   Typography,
 } from '@mui/material';
-import { useRecipeBooks } from '@open-zero/features/recipes-books';
+import {
+  useAddRecipeToRecipeBook,
+  useRecipeBooks,
+} from '@open-zero/features/recipes-books';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAuthRequired } from '../auth/useAuth';
 
 const drawerWidth = 240;
@@ -38,6 +46,40 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const { data: recipeBooks } = useRecipeBooks({
     options: { userId: user.id },
   });
+  const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
+
+  useEffect(() => {
+    return monitorForElements({
+      onDrop(dropResult) {
+        const source = dropResult.source;
+        const sourceType = source.data['type'] as string | undefined;
+
+        const target = dropResult.location.current.dropTargets[0];
+
+        if (!target) {
+          return;
+        }
+
+        const targetType = target.data['type'] as string | undefined;
+
+        if (sourceType === 'recipe' && targetType === 'recipe_book_sidebar') {
+          console.log('DND: add recipe to recipe book');
+
+          const sourceRecipeId = source.data['recipeId'] as string;
+          const targetRecipeBookId = target.data['recipeBookId'] as string;
+
+          addRecipeToRecipeBook.mutate({
+            recipeId: sourceRecipeId,
+            recipeBookId: targetRecipeBookId,
+          });
+        }
+      },
+      canMonitor: ({ source }) =>
+        ['recipe', 'recipe_book_sidebar'].includes(
+          source.data['type'] as string,
+        ),
+    });
+  }, [addRecipeToRecipeBook]);
 
   const sidebarContent = (
     <>
@@ -88,9 +130,10 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
               to: '/recipe-books',
             }}
             plainPath="/recipe-books"
+            matchExact
           >
             {recipeBooks?.recipeBooks.map((recipeBook) => (
-              <ListItem
+              <DroppableRecipeBookListItem
                 key={recipeBook.id}
                 icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}
                 label={recipeBook.name}
@@ -102,6 +145,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
                   },
                 }}
                 plainPath={`/recipe-books/${recipeBook.id}`}
+                recipeBookId={recipeBook.id}
               />
             ))}
           </ListItem>
@@ -174,6 +218,8 @@ interface ListItemProps {
   small?: boolean;
   isNested?: boolean;
   plainPath: string;
+  matchExact?: boolean;
+  draggingOver?: boolean;
   children?: React.ReactNode;
 }
 
@@ -185,13 +231,17 @@ function ListItem({
   small,
   isNested,
   plainPath,
+  matchExact,
+  draggingOver,
   children,
 }: ListItemProps) {
   const [open, setOpen] = useState(false);
   const router = useRouterState();
   const location = router.location;
 
-  const selected = location.pathname === plainPath;
+  const selected = matchExact
+    ? location.pathname === plainPath
+    : location.pathname.startsWith(plainPath);
 
   return (
     <>
@@ -219,6 +269,14 @@ function ListItem({
             borderRadius: 1,
             pl: isNested ? 4 : undefined,
             py: small ? 0.5 : undefined,
+            border: 2,
+            borderColor: (theme) =>
+              draggingOver ? theme.palette.primary.main : 'transparent',
+            backgroundColor: (theme) =>
+              draggingOver ? alpha(theme.palette.primary.main, 0.2) : undefined,
+            transitionProperty: 'border-color, background-color',
+            transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
+            transitionDuration: '350ms',
           }}
           to={linkProps.to}
           params={linkProps.params}
@@ -255,5 +313,50 @@ function ListItem({
         </Collapse>
       )}
     </>
+  );
+}
+
+type DroppableRecipeBookListItemProps = ListItemProps & {
+  recipeBookId: string;
+};
+
+function DroppableRecipeBookListItem({
+  recipeBookId,
+  ...rest
+}: DroppableRecipeBookListItemProps) {
+  const ref = useRef<null | HTMLDivElement>(null);
+  const [isDraggedOver, setIsDraggedOver] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) {
+      return;
+    }
+
+    return dropTargetForElements({
+      element: el,
+      getData: () => ({
+        type: 'recipe_book_sidebar',
+        recipeBookId: recipeBookId,
+      }),
+      onDragEnter: () => {
+        setIsDraggedOver(true);
+      },
+      onDragLeave: () => {
+        setIsDraggedOver(false);
+      },
+      onDrop: () => {
+        setIsDraggedOver(false);
+      },
+      canDrop({ source }) {
+        return source.data['type'] === 'recipe';
+      },
+    });
+  }, [recipeBookId]);
+
+  return (
+    <div ref={ref}>
+      <ListItem {...rest} draggingOver={isDraggedOver} />
+    </div>
   );
 }

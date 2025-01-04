@@ -1,9 +1,11 @@
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import { Box, Grid2, IconButton, Typography } from '@mui/material';
+import { useRecipes } from '@open-zero/features/recipes';
 import { getRecipeBookQueryOptions } from '@open-zero/features/recipes-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
+import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 
 const route = getRouteApi('/_layout/recipe-books/$recipeBookId');
@@ -13,6 +15,7 @@ export function RecipeBookPage() {
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
+  const { data: recipes } = useRecipes({ options: { recipeBookId } });
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -64,6 +67,20 @@ export function RecipeBookPage() {
           </Box>
           <Typography>{recipeBook.description}</Typography>
         </Grid2>
+      </Grid2>
+      <Grid2 container spacing={2}>
+        {recipes?.recipes.map((recipe) => (
+          <Grid2
+            key={recipe.id}
+            size={{
+              xs: 12,
+              md: 6,
+              lg: 4,
+            }}
+          >
+            <RecipeCard recipeId={recipe.id} />
+          </Grid2>
+        ))}
       </Grid2>
       <RecipeBookMoreMenu
         recipeBookId={recipeBookId}

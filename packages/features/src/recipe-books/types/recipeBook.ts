@@ -16,6 +16,18 @@ export const recipeBookSchema = Type.Object(
     name: Type.String(),
 
     description: Nullable(Type.String()),
+
+    members: Type.Array(
+      Type.Object({
+        userId: Type.String({ format: 'uuid' }),
+        name: Type.Optional(Type.String()),
+        role: Type.Union([
+          Type.Literal('owner'),
+          Type.Literal('editor'),
+          Type.Literal('viewer'),
+        ]),
+      }),
+    ),
   },
   { $id: recipeBookSchemaId },
 );

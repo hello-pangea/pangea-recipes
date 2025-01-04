@@ -3,19 +3,23 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { RecipeProjected } from '../types/recipeProjected.js';
 
-function listRecipes(options: { userId: string }) {
+function listRecipes(options: { userId?: string; recipeBookId?: string }) {
   return api
     .get(`recipes`, {
       searchParams: {
-        userId: options.userId,
+        ...(options.userId && { userId: options.userId }),
+        ...(options.recipeBookId && { recipeBookId: options.recipeBookId }),
       },
     })
     .then((res) => res.json<{ recipes: RecipeProjected[] }>());
 }
 
-export function getListRecipesQueryOptions(options: { userId: string }) {
+export function getListRecipesQueryOptions(options: {
+  userId?: string;
+  recipeBookId?: string;
+}) {
   return queryOptions({
-    queryKey: ['recipes'],
+    queryKey: ['recipes', options],
     queryFn: () => listRecipes(options),
   });
 }
@@ -23,7 +27,8 @@ export function getListRecipesQueryOptions(options: { userId: string }) {
 interface Options {
   queryConfig?: QueryConfig<typeof getListRecipesQueryOptions>;
   options: {
-    userId: string;
+    userId?: string;
+    recipeBookId?: string;
   };
 }
 

@@ -2,13 +2,11 @@ model RecipeBook {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  userId String @map("user_id") @db.Uuid
-  user   User   @relation(fields: [userId], references: [id])
-
   name        String
   description String?
 
   recipes RecipesOnRecipeBooks[]
+  members RecipeBookMembers[]
 
   @@map("recipe_books")
 }
@@ -24,4 +22,25 @@ model RecipesOnRecipeBooks {
 
   @@id([recipeId, recipeBookId])
   @@map("recipes_on_recipe_books")
+}
+
+enum Role {
+  owner
+  editor
+  viewer
+}
+
+model RecipeBookMembers {
+  userId       String @map("user_id") @db.Uuid
+  recipeBookId String @map("recipe_book_id") @db.Uuid
+
+  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recipeBook RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  role Role
+
+  @@id([userId, recipeBookId])
+  @@map("recipe_book_members")
 }
