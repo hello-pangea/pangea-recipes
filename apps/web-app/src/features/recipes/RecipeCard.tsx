@@ -19,9 +19,10 @@ import { RecipeMoreMenu } from './RecipeMoreMenu';
 
 interface Props {
   recipeId: string;
+  onRemoveFromRecipeBook?: () => void;
 }
 
-export function RecipeCard({ recipeId }: Props) {
+export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
   const recipeQuery = useRecipe({ recipeId: recipeId });
   const ref = useRef<null | HTMLDivElement>(null);
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
@@ -163,6 +164,7 @@ export function RecipeCard({ recipeId }: Props) {
         onClose={() => {
           setMoreMenuAnchorEl(null);
         }}
+        onRemoveFromRecipeBook={onRemoveFromRecipeBook}
       />
       {previewContainer
         ? createPortal(<DragPreview text={recipe.name} />, previewContainer)

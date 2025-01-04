@@ -1,7 +1,11 @@
-import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import { Box, Grid2, IconButton, Typography } from '@mui/material';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
+import { Box, Button, Grid2, Typography } from '@mui/material';
 import { useRecipes } from '@open-zero/features/recipes';
-import { getRecipeBookQueryOptions } from '@open-zero/features/recipes-books';
+import {
+  getRecipeBookQueryOptions,
+  useRemoveRecipeFromRecipeBook,
+} from '@open-zero/features/recipes-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -15,6 +19,7 @@ export function RecipeBookPage() {
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
+  const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useRecipes({ options: { recipeBookId } });
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
@@ -26,48 +31,33 @@ export function RecipeBookPage() {
   const recipeBook = recipeBookQuery.data.recipeBook;
 
   return (
-    <Box sx={{ p: 3, mt: 2 }}>
-      <Grid2 container spacing={2} sx={{ mb: 2 }}>
-        <Grid2
-          size={{
-            xs: 12,
-          }}
+    <Box sx={{ p: 3 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          mb: 2,
+        }}
+      >
+        <MenuBookRoundedIcon sx={{ mr: 2 }} />
+        <Button
+          variant="text"
+          endIcon={<ArrowDropDownRoundedIcon />}
           sx={{
-            maxWidth: 650,
+            color: 'inherit',
           }}
+          onClick={(event) => {
+            setMoreMenuAnchorEl(event.currentTarget);
+          }}
+          id="more-button"
+          aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+          aria-haspopup="true"
+          aria-expanded={moreMenuOpen ? 'true' : undefined}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 2,
-            }}
-          >
-            <Box>
-              <Typography variant="h1">{recipeBook.name}</Typography>
-            </Box>
-            <IconButton
-              id="more-button"
-              aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={moreMenuOpen ? 'true' : undefined}
-              onClick={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                setMoreMenuAnchorEl(event.currentTarget);
-              }}
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
-              }}
-            >
-              <MoreVertRoundedIcon />
-            </IconButton>
-          </Box>
-          <Typography>{recipeBook.description}</Typography>
-        </Grid2>
-      </Grid2>
+          <Typography variant="h1">{recipeBook.name}</Typography>
+        </Button>
+      </Box>
+      <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
       <Grid2 container spacing={2}>
         {recipes?.recipes.map((recipe) => (
           <Grid2
@@ -78,7 +68,15 @@ export function RecipeBookPage() {
               lg: 4,
             }}
           >
-            <RecipeCard recipeId={recipe.id} />
+            <RecipeCard
+              recipeId={recipe.id}
+              onRemoveFromRecipeBook={() => {
+                removeRecipeFromRecipeBook.mutate({
+                  recipeId: recipe.id,
+                  recipeBookId,
+                });
+              }}
+            />
           </Grid2>
         ))}
       </Grid2>

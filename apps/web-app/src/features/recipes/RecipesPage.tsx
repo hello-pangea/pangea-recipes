@@ -1,6 +1,7 @@
 import { ButtonLink } from '#src/components/ButtonLink';
+import { Page } from '#src/components/Page';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Box, Grid2, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useAuthRequired } from '../auth/useAuth';
@@ -13,7 +14,7 @@ export function RecipesPage() {
   );
 
   return (
-    <Box sx={{ px: 3, py: 2 }}>
+    <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
         Recipes
       </Typography>
@@ -40,6 +41,6 @@ export function RecipesPage() {
           </Grid2>
         ))}
       </Grid2>
-    </Box>
+    </Page>
   );
 }

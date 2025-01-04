@@ -2,6 +2,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import {
   CircularProgress,
+  Divider,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -53,18 +54,26 @@ export function RecipeBookMoreMenu({
         horizontal: 'left',
       }}
     >
-      <Link
-        to="/recipe-books/$recipeBookId/edit"
-        params={{ recipeBookId: recipeBook.id }}
-        style={{ textDecoration: 'none', color: 'inherit' }}
-      >
-        <MenuItem>
+      <MenuItem sx={{ p: 0 }}>
+        <Link
+          to="/recipe-books/$recipeBookId/edit"
+          params={{ recipeBookId: recipeBook.id }}
+          style={{
+            textDecoration: 'none',
+            color: 'inherit',
+            padding: '6px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
           <ListItemIcon>
             <EditRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Edit</ListItemText>
-        </MenuItem>
-      </Link>
+        </Link>
+      </MenuItem>
+      <Divider />
       <MenuItem
         onClick={() => {
           deleteRecipeBook.mutate({ recipeBookId: recipeBook.id });

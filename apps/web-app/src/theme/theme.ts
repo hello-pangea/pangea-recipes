@@ -13,7 +13,7 @@ export function getThemeForMode(themeMode: User['themePreference']) {
       h1: {
         fontFamily: '"Merriweather Sans Variable", serif',
         fontWeight: 'bold',
-        fontSize: 32,
+        fontSize: 24,
       },
       h2: {
         fontFamily: '"Merriweather Sans Variable", serif',

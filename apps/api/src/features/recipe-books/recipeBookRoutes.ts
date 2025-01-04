@@ -343,8 +343,6 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
         summary: 'Remove a recipe from a recipe book',
         params: Type.Object({
           recipeBookId: Type.String({ format: 'uuid' }),
-        }),
-        body: Type.Object({
           recipeId: Type.String({ format: 'uuid' }),
         }),
         response: {
@@ -355,8 +353,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { recipeBookId } = request.params;
-      const { recipeId } = request.body;
+      const { recipeBookId, recipeId } = request.params;
 
       const recipeBook = await prisma.recipeBook.update({
         where: {

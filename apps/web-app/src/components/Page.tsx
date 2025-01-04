@@ -6,7 +6,5 @@ interface Props {
 }
 
 export function Page({ children }: Props) {
-  return (
-    <Box sx={{ px: { xs: 2, sm: 3 }, py: 2, width: '100%' }}>{children}</Box>
-  );
+  return <Box sx={{ p: { xs: 2, sm: 3 }, width: '100%' }}>{children}</Box>;
 }
