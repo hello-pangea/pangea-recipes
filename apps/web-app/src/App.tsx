@@ -13,7 +13,9 @@ export function App() {
     },
   });
 
-  if (!auth.isLoaded || isPending) {
+  const isFetchingUserFirstTime = auth.isLoaded && auth.isSignedIn && isPending;
+
+  if (!auth.isLoaded || isFetchingUserFirstTime) {
     return <LoadingPage />;
   }
 
