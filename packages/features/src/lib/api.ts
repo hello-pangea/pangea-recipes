@@ -6,5 +6,5 @@ export let api = ky.create({
 });
 
 export function updateApiOptions(options: Options) {
-  api = ky.extend(options);
+  api = api.extend(options);
 }

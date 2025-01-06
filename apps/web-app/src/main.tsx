@@ -1,4 +1,5 @@
 import '#src/theme/theme.css';
+import { type BrowserClerk } from '@clerk/clerk-react';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/merriweather-sans';
 import { updateApiOptions } from '@open-zero/features';
@@ -11,7 +12,27 @@ import { config } from './config/config';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
 
-updateApiOptions({ prefixUrl: config.VITE_API_URL, credentials: 'include' });
+type WindowWithClerk = Window & {
+  Clerk?: BrowserClerk;
+};
+
+async function getSessionToken() {
+  if (!(window as WindowWithClerk).Clerk?.session) return null;
+  return (await (window as WindowWithClerk).Clerk?.session?.getToken()) ?? null;
+}
+
+updateApiOptions({
+  prefixUrl: config.VITE_API_URL,
+  hooks: {
+    beforeRequest: [
+      async (request) => {
+        const token = await getSessionToken();
+
+        request.headers.set('Authorization', `Bearer ${token}`);
+      },
+    ],
+  },
+});
 const queryClient = new QueryClient();
 
 export const router = createRouter({
