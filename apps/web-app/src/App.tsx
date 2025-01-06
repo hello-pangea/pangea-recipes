@@ -1,9 +1,11 @@
+import { useUser } from '@clerk/clerk-react';
+import { useSignedInUser } from '@open-zero/features/users';
 import { RouterProvider } from '@tanstack/react-router';
-import { useAuth } from './features/auth/useAuth';
 import { router } from './main';
 
-export function InnerApp() {
-  const auth = useAuth();
+export function App() {
+  const auth = useUser();
+  const { data: user } = useSignedInUser();
 
   if (!auth.isLoaded) {
     return null;
@@ -13,7 +15,14 @@ export function InnerApp() {
     <RouterProvider
       router={router}
       defaultPreload="intent"
-      context={{ auth }}
+      context={{
+        auth: {
+          clerkUser: auth.user,
+          isLoaded: auth.isLoaded,
+          isSignedIn: auth.isSignedIn,
+          user: user?.user ?? null,
+        },
+      }}
     />
   );
 }

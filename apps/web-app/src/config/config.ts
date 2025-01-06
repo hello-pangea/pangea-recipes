@@ -4,6 +4,7 @@ import { parseEnv } from './configUtils';
 export type Env = Static<typeof envSchema>;
 const envSchema = Type.Object({
   VITE_API_URL: Type.String(),
+  VITE_CLERK_PUBLISHABLE_KEY: Type.String(),
   PROD: Type.Boolean(),
 });
 

@@ -2,29 +2,20 @@ model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
-  email          String  @unique
-  name           String?
-  hashedPassword String  @map("hashed_password")
+  emailAddress String? @unique @map("email_address")
+  phoneNumber  String? @unique @map("phone_number")
+  name         String?
+
+  clerkUserId String @unique @map("clerk_user_id")
 
   accessRole AccessRole @map("access_role")
 
   themePreference ThemePreference @default(light) @map("theme_preference")
 
-  sessions Session[]
-  recipes  Recipe[]
-  images   Image[]
+  recipes Recipe[]
+  images  Image[]
 
   @@map("users")
-}
-
-model Session {
-  id        String   @id
-  expiresAt DateTime @map("expires_at")
-
-  userId String @map("user_id") @db.Uuid
-  user   User   @relation(references: [id], fields: [userId], onDelete: Cascade)
-
-  @@map("sessions")
 }
 
 enum AccessRole {

@@ -1,4 +1,5 @@
 import Sidebar from '#src/features/layout/Sidebar';
+import { useUser } from '@clerk/clerk-react';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
   AppBar,
@@ -11,17 +12,18 @@ import {
 } from '@mui/material';
 import { Navigate, Outlet } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useAuth } from '../auth/useAuth';
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const { isAuthenticated } = useAuth();
+  const { user: clerkUser, isLoaded } = useUser();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/sign-in" />;
+  if (isLoaded && clerkUser && !clerkUser.publicMetadata.helloRecipesUserId) {
+    return <Navigate to="/finish-sign-up" />;
+  } else if (isLoaded && !clerkUser) {
+    return <Navigate to="/sign-in/$" />;
   }
 
   return (

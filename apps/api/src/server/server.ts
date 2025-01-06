@@ -1,6 +1,5 @@
-import { validateSessionToken } from '#src/features/auth/session.js';
+import { clerkPlugin, getAuth } from '@clerk/fastify';
 import auth from '@fastify/auth';
-import cookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
@@ -10,8 +9,7 @@ import { recipeSchema } from '@open-zero/features/recipes';
 import { userSchema } from '@open-zero/features/users';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
-import { config, enablePrettyLogs } from '../config/config.js';
-import { csrfPlugin } from '../features/auth/csrfPlugin.js';
+import { enablePrettyLogs } from '../config/config.js';
 import { routes } from './routes.js';
 
 export async function createServer() {
@@ -47,12 +45,6 @@ export async function createServer() {
       'https://hellorecipes.com',
       'https://api.hellorecipes.com',
     ],
-  });
-
-  void fastify.register(cookie, {
-    secret: 'my-secret', // for cookies signature
-    hook: 'onRequest', // set to false to disable cookie autoparsing or set autoparsing on any of the following hooks: 'onRequest', 'preParsing', 'preHandler', 'preValidation'. default: 'onRequest'
-    parseOptions: {}, // options for parsing cookies
   });
 
   void fastify.register(helmet);
@@ -109,8 +101,8 @@ export async function createServer() {
   // Custom plugins
   // -
 
-  void fastify.register(csrfPlugin, {
-    enabled: config.NODE_ENV === 'production',
+  await fastify.register(clerkPlugin, {
+    hookName: 'onRequest',
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
@@ -128,33 +120,22 @@ export async function createServer() {
   // Hooks
   // -
 
-  fastify.addHook('onRequest', async (request, reply) => {
-    const token = request.cookies['auth_session'];
+  // eslint-disable-next-line @typescript-eslint/require-await
+  fastify.addHook('onRequest', async (request) => {
+    const { userId: clerkUserId, sessionClaims } = getAuth(request);
 
-    if (token) {
-      const { session, user } = await validateSessionToken(token);
-
-      request.session =
-        session && user.id
-          ? {
-              id: session.id,
-              userId: user.id,
-              accessRole: user.accessRole,
-            }
-          : null;
-
-      if (!session) {
-        reply.clearCookie('auth_session');
-      } else {
-        reply.setCookie('auth_session', token, {
-          httpOnly: true,
-          secure: process.env.NODE_ENV === 'production',
-          path: '/',
-          sameSite: 'lax',
-          maxAge: 60 * 60 * 24 * 30,
-        });
-      }
+    if (!clerkUserId) {
+      return;
     }
+
+    if (!sessionClaims.metadata.helloRecipesUserId) {
+      return;
+    }
+
+    request.session = {
+      userId: sessionClaims.metadata.helloRecipesUserId,
+      accessRole: sessionClaims.metadata.accessRole ?? 'user',
+    };
   });
 
   fastify.setErrorHandler((error, _request, reply) => {

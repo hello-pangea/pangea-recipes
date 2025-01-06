@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.34.13",
-    "@tanstack/react-query": "^5.62.14",
+    "@tanstack/react-query": "^5.62.15",
     "ky": "^1.7.4"
   },
   "devDependencies": {

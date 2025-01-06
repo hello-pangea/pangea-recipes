@@ -1,15 +1,9 @@
-import type { User } from '@open-zero/features/users';
-import { useContext } from 'react';
-import { AuthContext } from './AuthProvider';
+import { useSignedInUser } from '@open-zero/features/users';
 
-export function useAuth() {
-  const context = useContext(AuthContext);
+export function useCustomAuth() {
+  const { data: signedInUser } = useSignedInUser();
 
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-
-  return context;
+  return { user: signedInUser?.user ?? null };
 }
 
 /**
@@ -17,17 +11,13 @@ export function useAuth() {
  * Guarentees the user is authenticated
  */
 export function useAuthRequired() {
-  const context = useContext(AuthContext);
+  const { data: signedInUser } = useSignedInUser();
 
-  if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-
-  if (!context.user) {
+  if (!signedInUser?.user) {
     throw new Error(
       'useAuth must be used where a user is guarenteed to be authenticated',
     );
   }
 
-  return context as AuthContext & { user: User };
+  return { user: signedInUser.user };
 }

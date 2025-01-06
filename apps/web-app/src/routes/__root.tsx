@@ -1,6 +1,7 @@
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { config } from '#src/config/config';
-import type { AuthContext } from '#src/features/auth/AuthProvider';
+import { useUser } from '@clerk/clerk-react';
+import type { User } from '@open-zero/features/users';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
@@ -19,7 +20,12 @@ const TanStackRouterDevtools = config.PROD
 
 interface RouterContext {
   queryClient: QueryClient;
-  auth: AuthContext;
+  auth: {
+    isLoaded: ReturnType<typeof useUser>['isLoaded'];
+    isSignedIn: ReturnType<typeof useUser>['isSignedIn'];
+    user: User | null;
+    clerkUser: ReturnType<typeof useUser>['user'];
+  };
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({

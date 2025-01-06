@@ -6,7 +6,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';
 import { StrictMode, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import { InnerApp } from './App';
+import { App } from './App';
 import { config } from './config/config';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
@@ -44,7 +44,7 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <Suspense fallback={null}>
         <AppProviders queryClient={queryClient}>
-          <InnerApp />
+          <App />
         </AppProviders>
       </Suspense>
     </StrictMode>,

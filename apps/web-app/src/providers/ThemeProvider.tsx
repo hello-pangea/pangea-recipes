@@ -1,4 +1,4 @@
-import { useAuth } from '#src/features/auth/useAuth';
+import { useCustomAuth } from '#src/features/auth/useAuth';
 import { getThemeForMode } from '#src/theme/theme';
 import {
   CssBaseline,
@@ -11,7 +11,7 @@ interface Props {
 }
 
 export function ThemeProvider({ children }: Props) {
-  const { user } = useAuth();
+  const { user } = useCustomAuth();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const userThemePreference = user?.themePreference ?? 'system';

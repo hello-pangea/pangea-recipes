@@ -11,10 +11,11 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignUpImport } from './routes/sign-up'
-import { Route as SignInImport } from './routes/sign-in'
+import { Route as FinishSignUpImport } from './routes/finish-sign-up'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as SignUpSplatImport } from './routes/sign-up.$'
+import { Route as SignInSplatImport } from './routes/sign-in.$'
 import { Route as LayoutAccountImport } from './routes/_layout.account'
 import { Route as LayoutRecipesIndexImport } from './routes/_layout.recipes.index'
 import { Route as LayoutCanonicalIngredientsIndexImport } from './routes/_layout.canonical-ingredients.index'
@@ -26,15 +27,9 @@ import { Route as LayoutCanonicalIngredientsCanonicalIngredientIdEditImport } fr
 
 // Create/Update Routes
 
-const SignUpRoute = SignUpImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const SignInRoute = SignInImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
+const FinishSignUpRoute = FinishSignUpImport.update({
+  id: '/finish-sign-up',
+  path: '/finish-sign-up',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,6 +41,18 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignUpSplatRoute = SignUpSplatImport.update({
+  id: '/sign-up/$',
+  path: '/sign-up/$',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignInSplatRoute = SignInSplatImport.update({
+  id: '/sign-in/$',
+  path: '/sign-in/$',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -118,18 +125,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/sign-in': {
-      id: '/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof SignInImport
-      parentRoute: typeof rootRoute
-    }
-    '/sign-up': {
-      id: '/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof SignUpImport
+    '/finish-sign-up': {
+      id: '/finish-sign-up'
+      path: '/finish-sign-up'
+      fullPath: '/finish-sign-up'
+      preLoaderRoute: typeof FinishSignUpImport
       parentRoute: typeof rootRoute
     }
     '/_layout/account': {
@@ -138,6 +138,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/account'
       preLoaderRoute: typeof LayoutAccountImport
       parentRoute: typeof LayoutImport
+    }
+    '/sign-in/$': {
+      id: '/sign-in/$'
+      path: '/sign-in/$'
+      fullPath: '/sign-in/$'
+      preLoaderRoute: typeof SignInSplatImport
+      parentRoute: typeof rootRoute
+    }
+    '/sign-up/$': {
+      id: '/sign-up/$'
+      path: '/sign-up/$'
+      fullPath: '/sign-up/$'
+      preLoaderRoute: typeof SignUpSplatImport
+      parentRoute: typeof rootRoute
     }
     '/_layout/canonical-ingredients/new': {
       id: '/_layout/canonical-ingredients/new'
@@ -222,9 +236,10 @@ const LayoutRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/finish-sign-up': typeof FinishSignUpRoute
   '/account': typeof LayoutAccountRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/recipes/new': typeof LayoutRecipesNewRoute
@@ -237,9 +252,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/finish-sign-up': typeof FinishSignUpRoute
   '/account': typeof LayoutAccountRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/recipes/new': typeof LayoutRecipesNewRoute
@@ -253,9 +269,10 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/finish-sign-up': typeof FinishSignUpRoute
   '/_layout/account': typeof LayoutAccountRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/_layout/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/_layout/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/_layout/recipes/new': typeof LayoutRecipesNewRoute
@@ -270,9 +287,10 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
-    | '/sign-in'
-    | '/sign-up'
+    | '/finish-sign-up'
     | '/account'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/canonical-ingredients/new'
     | '/recipes/$recipeId'
     | '/recipes/new'
@@ -284,9 +302,10 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
-    | '/sign-in'
-    | '/sign-up'
+    | '/finish-sign-up'
     | '/account'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/canonical-ingredients/new'
     | '/recipes/$recipeId'
     | '/recipes/new'
@@ -298,9 +317,10 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_layout'
-    | '/sign-in'
-    | '/sign-up'
+    | '/finish-sign-up'
     | '/_layout/account'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/_layout/canonical-ingredients/new'
     | '/_layout/recipes/$recipeId'
     | '/_layout/recipes/new'
@@ -314,15 +334,17 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
-  SignInRoute: typeof SignInRoute
-  SignUpRoute: typeof SignUpRoute
+  FinishSignUpRoute: typeof FinishSignUpRoute
+  SignInSplatRoute: typeof SignInSplatRoute
+  SignUpSplatRoute: typeof SignUpSplatRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
-  SignInRoute: SignInRoute,
-  SignUpRoute: SignUpRoute,
+  FinishSignUpRoute: FinishSignUpRoute,
+  SignInSplatRoute: SignInSplatRoute,
+  SignUpSplatRoute: SignUpSplatRoute,
 }
 
 export const routeTree = rootRoute
@@ -337,8 +359,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_layout",
-        "/sign-in",
-        "/sign-up"
+        "/finish-sign-up",
+        "/sign-in/$",
+        "/sign-up/$"
       ]
     },
     "/": {
@@ -357,15 +380,18 @@ export const routeTree = rootRoute
         "/_layout/recipes_/$recipeId/edit"
       ]
     },
-    "/sign-in": {
-      "filePath": "sign-in.tsx"
-    },
-    "/sign-up": {
-      "filePath": "sign-up.tsx"
+    "/finish-sign-up": {
+      "filePath": "finish-sign-up.tsx"
     },
     "/_layout/account": {
       "filePath": "_layout.account.tsx",
       "parent": "/_layout"
+    },
+    "/sign-in/$": {
+      "filePath": "sign-in.$.tsx"
+    },
+    "/sign-up/$": {
+      "filePath": "sign-up.$.tsx"
     },
     "/_layout/canonical-ingredients/new": {
       "filePath": "_layout.canonical-ingredients.new.tsx",

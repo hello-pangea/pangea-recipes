@@ -16,6 +16,8 @@ const envSchema = Type.Object({
   PUBLIC_BUCKET_DOMAIN: Type.String(),
   PRIVATE_BUCKET_NAME: Type.String(),
   OPENAI_API_KEY: Type.String(),
+  CLERK_PUBLISHABLE_KEY: Type.String(),
+  CLERK_SECRET_KEY: Type.String(),
 });
 
 export const config = parseEnv(envSchema, process.env);

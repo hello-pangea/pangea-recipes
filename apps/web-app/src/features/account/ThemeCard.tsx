@@ -18,7 +18,7 @@ interface Props {
 
 export function ThemeCard({ themeMode, themeName, subtext }: Props) {
   const updateUserMutation = useUpdateUser();
-  const { user, refreshUser } = useAuthRequired();
+  const { user } = useAuthRequired();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
   const isSelected = user.themePreference === themeMode;
@@ -56,17 +56,10 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
               color="primary"
               size="small"
               onClick={() => {
-                updateUserMutation.mutate(
-                  {
-                    themePreference: themeMode,
-                    id: user.id,
-                  },
-                  {
-                    onSuccess: () => {
-                      void refreshUser();
-                    },
-                  },
-                );
+                updateUserMutation.mutate({
+                  themePreference: themeMode,
+                  id: user.id,
+                });
               }}
             >
               Use {themeName.toLocaleLowerCase()}
