@@ -6,7 +6,6 @@ export const Route = createFileRoute('/finish-sign-up')({
     if (
       context.auth.isLoaded &&
       context.auth.isSignedIn &&
-      context.auth.user &&
       context.auth.clerkUser?.publicMetadata.helloRecipesUserId
     ) {
       throw redirect({

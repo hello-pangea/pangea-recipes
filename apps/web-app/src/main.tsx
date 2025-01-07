@@ -12,7 +12,10 @@ import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
 
 async function getSessionToken() {
-  if (!window.Clerk?.session) return null;
+  if (!window.Clerk?.session) {
+    return null;
+  }
+
   return (await window.Clerk.session.getToken()) ?? null;
 }
 

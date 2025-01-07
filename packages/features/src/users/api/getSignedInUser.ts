@@ -8,7 +8,8 @@ export function getSignedInUser() {
     .get(`users/signed-in-user`, {
       credentials: 'include',
     })
-    .then((res) => res.json<{ user: User | null }>());
+    .json<{ user: User | null }>()
+    .then((res) => res.user);
 }
 
 export function getSignedInUserQueryOptions() {

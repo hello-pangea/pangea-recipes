@@ -6,7 +6,7 @@ export const Route = createFileRoute('/_layout/recipes/')({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       getListRecipesQueryOptions({
-        userId: context.auth.user?.id ?? '',
+        userId: context.auth.clerkUser?.publicMetadata.helloRecipesUserId ?? '',
       }),
     );
   },

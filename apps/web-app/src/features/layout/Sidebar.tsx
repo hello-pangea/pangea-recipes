@@ -13,8 +13,8 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
+import { useSignedInUser } from '@open-zero/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
-import { useAuthRequired } from '../auth/useAuth';
 
 const drawerWidth = 240;
 
@@ -25,7 +25,7 @@ interface Props {
 }
 
 export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
-  const { user } = useAuthRequired();
+  const { data: user } = useSignedInUser();
 
   const sidebarContent = (
     <>
@@ -62,7 +62,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             label="Recipes"
             onClick={onClose}
           />
-          {user.accessRole === 'admin' && (
+          {user?.accessRole === 'admin' && (
             <ListItem
               to="/canonical-ingredients"
               icon={<CarrotIcon />}

@@ -3,7 +3,11 @@ import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/sign-up/$')({
   beforeLoad: ({ context, location }) => {
-    if (context.auth.isLoaded && context.auth.isSignedIn && context.auth.user) {
+    if (
+      context.auth.isLoaded &&
+      context.auth.isSignedIn &&
+      context.auth.clerkUser?.publicMetadata.helloRecipesUserId
+    ) {
       throw redirect({
         to: '/recipes',
         search: {

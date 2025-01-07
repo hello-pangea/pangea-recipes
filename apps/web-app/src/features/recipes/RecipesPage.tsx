@@ -3,13 +3,13 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Box, Grid2, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useAuthRequired } from '../auth/useAuth';
+import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {
-  const { user } = useAuthRequired();
+  const userId = useSignedInUserId();
   const recipesQuery = useSuspenseQuery(
-    getListRecipesQueryOptions({ userId: user.id }),
+    getListRecipesQueryOptions({ userId: userId }),
   );
 
   return (

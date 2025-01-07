@@ -15,7 +15,7 @@ export function FinishSignUpPage() {
       return;
     }
 
-    if (user?.user && clerkUser?.publicMetadata.helloRecipesUserId) {
+    if (user && clerkUser?.publicMetadata.helloRecipesUserId) {
       void naviate({
         to: '/recipes',
       });
