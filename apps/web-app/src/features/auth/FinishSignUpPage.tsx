@@ -1,4 +1,4 @@
-import { useUser } from '@clerk/clerk-react';
+import { useUser } from '@clerk/tanstack-start';
 import { CircularProgress, Container } from '@mui/material';
 import { useSetupUser, useSignedInUser } from '@open-zero/features/users';
 import { useNavigate } from '@tanstack/react-router';
@@ -35,6 +35,7 @@ export function FinishSignUpPage() {
         },
       },
     );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

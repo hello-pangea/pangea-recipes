@@ -1,6 +1,6 @@
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { config } from '#src/config/config';
-import { useUser } from '@clerk/clerk-react';
+import { ClerkLoaded, ClerkProvider } from '@clerk/tanstack-start';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
@@ -19,26 +19,36 @@ const TanStackRouterDevtools = config.PROD
 
 interface RouterContext {
   queryClient: QueryClient;
-  auth: {
-    isLoaded: ReturnType<typeof useUser>['isLoaded'];
-    isSignedIn: ReturnType<typeof useUser>['isSignedIn'];
-    clerkUser: ReturnType<typeof useUser>['user'];
-  };
+  userId: string | null;
 }
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   component: RootComponent,
   notFoundComponent: NotFoundPage,
+  beforeLoad: () => {
+    return {
+      userId: window.Clerk?.user?.publicMetadata.helloRecipesUserId ?? null,
+    };
+  },
 });
 
 function RootComponent() {
   return (
-    <>
-      <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <Suspense>
-        <TanStackRouterDevtools position="bottom-right" />
-      </Suspense>
-    </>
+    <ClerkProvider
+      publishableKey={config.VITE_CLERK_PUBLISHABLE_KEY}
+      afterSignOutUrl="/sign-in"
+      signUpUrl="/sign-up"
+      signInUrl="/sign-in"
+      signInFallbackRedirectUrl={'/recipes'}
+      signUpForceRedirectUrl={'/finish-sign-up'}
+    >
+      <ClerkLoaded>
+        <Outlet />
+        <ReactQueryDevtools buttonPosition="top-right" />
+        <Suspense>
+          <TanStackRouterDevtools position="bottom-right" />
+        </Suspense>
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 }

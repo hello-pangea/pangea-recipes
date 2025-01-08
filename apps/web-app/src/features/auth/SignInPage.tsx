@@ -1,5 +1,5 @@
 import { Copyright } from '#src/components/Copyright';
-import { SignIn } from '@clerk/clerk-react';
+import { SignIn } from '@clerk/tanstack-start';
 import { Box, Container } from '@mui/material';
 import { getRouteApi } from '@tanstack/react-router';
 
@@ -7,6 +7,8 @@ const route = getRouteApi('/sign-in/$');
 
 export function SignInPage() {
   const { redirect } = route.useSearch();
+
+  console.log('redirect', redirect);
 
   return (
     <Container

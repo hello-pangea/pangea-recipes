@@ -1,5 +1,5 @@
 import { Page } from '#src/components/Page';
-import { useAuth, useClerk } from '@clerk/clerk-react';
+import { useAuth, useClerk } from '@clerk/tanstack-start';
 import { LoadingButton } from '@mui/lab';
 import { Button, Grid2, Typography } from '@mui/material';
 import { useRouter } from '@tanstack/react-router';

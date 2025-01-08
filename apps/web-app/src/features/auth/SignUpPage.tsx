@@ -1,5 +1,5 @@
 import { Copyright } from '#src/components/Copyright';
-import { SignUp } from '@clerk/clerk-react';
+import { SignUp } from '@clerk/tanstack-start';
 import { Box, Container } from '@mui/material';
 
 export function SignUpPage() {
@@ -24,11 +24,7 @@ export function SignUpPage() {
           justifyContent: 'center',
         }}
       >
-        <SignUp
-          forceRedirectUrl="/finish-sign-up"
-          signInUrl="/sign-in"
-          routing="hash"
-        />
+        <SignUp routing="hash" />
       </Box>
       <Box>
         <Copyright />
