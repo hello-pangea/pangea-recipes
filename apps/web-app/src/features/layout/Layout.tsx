@@ -48,6 +48,7 @@ export function Layout() {
     isLoaded,
     router,
     clerkUser?.publicMetadata.helloRecipesUserId,
+    queryClient,
     navigate,
   ]);
 
