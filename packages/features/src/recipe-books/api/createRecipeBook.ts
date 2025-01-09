@@ -5,10 +5,11 @@ import type { CreateRecipeBookDto } from '../types/createRecipeBookDto.js';
 import type { RecipeBook } from '../types/recipeBook.js';
 import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
-function createRecipeBook(data: CreateRecipeBookDto) {
+function createRecipeBook(data: CreateRecipeBookDto): Promise<RecipeBook> {
   return api
     .post(`recipe-books`, { json: data })
-    .then((res) => res.json<{ recipeBook: RecipeBook }>());
+    .json<{ recipeBook: RecipeBook }>()
+    .then((res) => res.recipeBook);
 }
 
 interface Options {

@@ -132,7 +132,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             plainPath="/recipe-books"
             matchExact
           >
-            {recipeBooks?.recipeBooks.map((recipeBook) => (
+            {recipeBooks?.map((recipeBook) => (
               <DroppableRecipeBookListItem
                 key={recipeBook.id}
                 icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}

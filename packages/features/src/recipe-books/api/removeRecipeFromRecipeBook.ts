@@ -14,10 +14,13 @@ interface RemoveRecipeFromRecipeBook {
   recipeId: string;
 }
 
-function removeRecipeFromRecipeBook(data: RemoveRecipeFromRecipeBook) {
+function removeRecipeFromRecipeBook(
+  data: RemoveRecipeFromRecipeBook,
+): Promise<RecipeBook> {
   return api
     .delete(`recipe-books/${data.recipeBookId}/recipes/${data.recipeId}`)
-    .json<{ recipeBook: RecipeBook }>();
+    .json<{ recipeBook: RecipeBook }>()
+    .then((res) => res.recipeBook);
 }
 
 interface Options {
@@ -45,7 +48,7 @@ export function useRemoveRecipeFromRecipeBook({
         queryKey: getListRecipesQueryOptions({}).queryKey,
       });
       queryClient.setQueryData(
-        getRecipeBookQueryOptions(data.recipeBook.id).queryKey,
+        getRecipeBookQueryOptions(data.id).queryKey,
         data,
       );
 

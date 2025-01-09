@@ -6,10 +6,13 @@ import type { UpdateRecipeBookDto } from '../types/updateRecipeBookDto.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
-function updateRecipeBook(data: UpdateRecipeBookDto & { id: string }) {
+function updateRecipeBook(
+  data: UpdateRecipeBookDto & { id: string },
+): Promise<RecipeBook> {
   return api
     .patch(`recipe-books/${data.id}`, { json: data })
-    .then((res) => res.json<{ recipeBook: RecipeBook }>());
+    .json<{ recipeBook: RecipeBook }>()
+    .then((res) => res.recipeBook);
 }
 
 interface Options {
@@ -29,7 +32,7 @@ export function useUpdateRecipeBook({ mutationConfig }: Options = {}) {
         queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
       });
       queryClient.setQueryData(
-        getRecipeBookQueryOptions(data.recipeBook.id).queryKey,
+        getRecipeBookQueryOptions(data.id).queryKey,
         data,
       );
 

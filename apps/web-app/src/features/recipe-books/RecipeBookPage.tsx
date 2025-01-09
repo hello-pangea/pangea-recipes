@@ -24,11 +24,9 @@ export function RecipeBookPage() {
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
-  const recipeBookQuery = useSuspenseQuery(
+  const { data: recipeBook } = useSuspenseQuery(
     getRecipeBookQueryOptions(recipeBookId),
   );
-
-  const recipeBook = recipeBookQuery.data.recipeBook;
 
   return (
     <Box sx={{ p: 3 }}>

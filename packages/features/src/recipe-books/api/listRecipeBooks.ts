@@ -3,14 +3,15 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { RecipeBook } from '../types/recipeBook.js';
 
-function listRecipeBooks(options: { userId: string }) {
+function listRecipeBooks(options: { userId: string }): Promise<RecipeBook[]> {
   return api
     .get(`recipe-books`, {
       searchParams: {
         userId: options.userId,
       },
     })
-    .then((res) => res.json<{ recipeBooks: RecipeBook[] }>());
+    .json<{ recipeBooks: RecipeBook[] }>()
+    .then((res) => res.recipeBooks);
 }
 
 export function getListRecipeBooksQueryOptions(options: { userId: string }) {

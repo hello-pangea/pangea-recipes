@@ -35,11 +35,11 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
 
   const recipeBookCreator = useCreateRecipeBook({
     mutationConfig: {
-      onSuccess: (data) => {
+      onSuccess: (createdRecipeBook) => {
         void navigate({
           to: `/recipe-books/$recipeBookId`,
           params: {
-            recipeBookId: data.recipeBook.id,
+            recipeBookId: createdRecipeBook.id,
           },
         });
       },
@@ -48,13 +48,13 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
 
   const recipeBookUpdater = useUpdateRecipeBook({
     mutationConfig: {
-      onSuccess: (data) => {
+      onSuccess: (updatedRecipeBook) => {
         enqueueSnackbar('Recipe book updated', { variant: 'success' });
 
         void navigate({
           to: `/recipe-books/$recipeBookId`,
           params: {
-            recipeBookId: data.recipeBook.id,
+            recipeBookId: updatedRecipeBook.id,
           },
         });
       },

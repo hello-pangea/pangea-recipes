@@ -16,8 +16,7 @@ interface Props {
 }
 
 export function RecipeBookCard({ recipeBookId }: Props) {
-  const recipeBookQuery = useRecipeBook({ recipeBookId: recipeBookId });
-  const recipeBook = recipeBookQuery.data?.recipeBook;
+  const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );

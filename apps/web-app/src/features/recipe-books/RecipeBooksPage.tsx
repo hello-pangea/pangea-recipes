@@ -9,11 +9,9 @@ import { RecipeBookCard } from './RecipeBookCard';
 
 export function RecipeBooksPage() {
   const userId = useSignedInUserId();
-  const recipeBooksQuery = useSuspenseQuery(
+  const { data: recipeBooks } = useSuspenseQuery(
     getListRecipeBooksQueryOptions({ userId: userId }),
   );
-
-  const recipeBooks = recipeBooksQuery.data.recipeBooks;
 
   return (
     <Page>

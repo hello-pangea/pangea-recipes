@@ -11,12 +11,15 @@ interface AddRecipeToRecipeBook {
   recipeId: string;
 }
 
-function addRecipeToRecipeBook(data: AddRecipeToRecipeBook) {
+function addRecipeToRecipeBook(
+  data: AddRecipeToRecipeBook,
+): Promise<RecipeBook> {
   return api
     .post(`recipe-books/${data.recipeBookId}/recipes`, {
       json: { recipeId: data.recipeId },
     })
-    .json<{ recipeBook: RecipeBook }>();
+    .json<{ recipeBook: RecipeBook }>()
+    .then((res) => res.recipeBook);
 }
 
 interface Options {
@@ -39,7 +42,7 @@ export function useAddRecipeToRecipeBook({ mutationConfig }: Options = {}) {
         queryKey: getRecipeQueryOptions(args[1].recipeId).queryKey,
       });
       queryClient.setQueryData(
-        getRecipeBookQueryOptions(data.recipeBook.id).queryKey,
+        getRecipeBookQueryOptions(data.id).queryKey,
         data,
       );
 
