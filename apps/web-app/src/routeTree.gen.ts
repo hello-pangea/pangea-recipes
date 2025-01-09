@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TermsOfServiceImport } from './routes/terms-of-service'
 import { Route as FinishSignUpImport } from './routes/finish-sign-up'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
@@ -26,6 +27,12 @@ import { Route as LayoutRecipesRecipeIdEditImport } from './routes/_layout.recip
 import { Route as LayoutCanonicalIngredientsCanonicalIngredientIdEditImport } from './routes/_layout.canonical-ingredients_.$canonicalIngredientId.edit'
 
 // Create/Update Routes
+
+const TermsOfServiceRoute = TermsOfServiceImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const FinishSignUpRoute = FinishSignUpImport.update({
   id: '/finish-sign-up',
@@ -130,6 +137,13 @@ declare module '@tanstack/react-router' {
       path: '/finish-sign-up'
       fullPath: '/finish-sign-up'
       preLoaderRoute: typeof FinishSignUpImport
+      parentRoute: typeof rootRoute
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceImport
       parentRoute: typeof rootRoute
     }
     '/_layout/account': {
@@ -237,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/finish-sign-up': typeof FinishSignUpRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/account': typeof LayoutAccountRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
@@ -253,6 +268,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/finish-sign-up': typeof FinishSignUpRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/account': typeof LayoutAccountRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
@@ -270,6 +286,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/finish-sign-up': typeof FinishSignUpRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/_layout/account': typeof LayoutAccountRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
@@ -288,6 +305,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/finish-sign-up'
+    | '/terms-of-service'
     | '/account'
     | '/sign-in/$'
     | '/sign-up/$'
@@ -303,6 +321,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/finish-sign-up'
+    | '/terms-of-service'
     | '/account'
     | '/sign-in/$'
     | '/sign-up/$'
@@ -318,6 +337,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_layout'
     | '/finish-sign-up'
+    | '/terms-of-service'
     | '/_layout/account'
     | '/sign-in/$'
     | '/sign-up/$'
@@ -335,6 +355,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   FinishSignUpRoute: typeof FinishSignUpRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
   SignInSplatRoute: typeof SignInSplatRoute
   SignUpSplatRoute: typeof SignUpSplatRoute
 }
@@ -343,6 +364,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   FinishSignUpRoute: FinishSignUpRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
   SignInSplatRoute: SignInSplatRoute,
   SignUpSplatRoute: SignUpSplatRoute,
 }
@@ -360,6 +382,7 @@ export const routeTree = rootRoute
         "/",
         "/_layout",
         "/finish-sign-up",
+        "/terms-of-service",
         "/sign-in/$",
         "/sign-up/$"
       ]
@@ -382,6 +405,9 @@ export const routeTree = rootRoute
     },
     "/finish-sign-up": {
       "filePath": "finish-sign-up.tsx"
+    },
+    "/terms-of-service": {
+      "filePath": "terms-of-service.tsx"
     },
     "/_layout/account": {
       "filePath": "_layout.account.tsx",
