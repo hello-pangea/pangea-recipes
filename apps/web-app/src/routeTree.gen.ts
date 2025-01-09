@@ -12,6 +12,7 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TermsOfServiceImport } from './routes/terms-of-service'
+import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as FinishSignUpImport } from './routes/finish-sign-up'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
@@ -31,6 +32,12 @@ import { Route as LayoutCanonicalIngredientsCanonicalIngredientIdEditImport } fr
 const TermsOfServiceRoute = TermsOfServiceImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const PrivacyPolicyRoute = PrivacyPolicyImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -137,6 +144,13 @@ declare module '@tanstack/react-router' {
       path: '/finish-sign-up'
       fullPath: '/finish-sign-up'
       preLoaderRoute: typeof FinishSignUpImport
+      parentRoute: typeof rootRoute
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyImport
       parentRoute: typeof rootRoute
     }
     '/terms-of-service': {
@@ -251,6 +265,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/finish-sign-up': typeof FinishSignUpRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/account': typeof LayoutAccountRoute
   '/sign-in/$': typeof SignInSplatRoute
@@ -268,6 +283,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
   '/finish-sign-up': typeof FinishSignUpRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/account': typeof LayoutAccountRoute
   '/sign-in/$': typeof SignInSplatRoute
@@ -286,6 +302,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
   '/finish-sign-up': typeof FinishSignUpRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/_layout/account': typeof LayoutAccountRoute
   '/sign-in/$': typeof SignInSplatRoute
@@ -305,6 +322,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/finish-sign-up'
+    | '/privacy-policy'
     | '/terms-of-service'
     | '/account'
     | '/sign-in/$'
@@ -321,6 +339,7 @@ export interface FileRouteTypes {
     | '/'
     | ''
     | '/finish-sign-up'
+    | '/privacy-policy'
     | '/terms-of-service'
     | '/account'
     | '/sign-in/$'
@@ -337,6 +356,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_layout'
     | '/finish-sign-up'
+    | '/privacy-policy'
     | '/terms-of-service'
     | '/_layout/account'
     | '/sign-in/$'
@@ -355,6 +375,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
   FinishSignUpRoute: typeof FinishSignUpRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   SignInSplatRoute: typeof SignInSplatRoute
   SignUpSplatRoute: typeof SignUpSplatRoute
@@ -364,6 +385,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
   FinishSignUpRoute: FinishSignUpRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   SignInSplatRoute: SignInSplatRoute,
   SignUpSplatRoute: SignUpSplatRoute,
@@ -382,6 +404,7 @@ export const routeTree = rootRoute
         "/",
         "/_layout",
         "/finish-sign-up",
+        "/privacy-policy",
         "/terms-of-service",
         "/sign-in/$",
         "/sign-up/$"
@@ -405,6 +428,9 @@ export const routeTree = rootRoute
     },
     "/finish-sign-up": {
       "filePath": "finish-sign-up.tsx"
+    },
+    "/privacy-policy": {
+      "filePath": "privacy-policy.tsx"
     },
     "/terms-of-service": {
       "filePath": "terms-of-service.tsx"
