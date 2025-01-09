@@ -20,7 +20,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.723.0",
     "@aws-sdk/s3-request-presigner": "^3.723.0",
-    "@clerk/fastify": "^2.1.4",
+    "@clerk/fastify": "^2.1.5",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^10.0.2",
     "@fastify/helmet": "^13.0.1",
@@ -29,14 +29,14 @@
     "@fastify/type-provider-typebox": "^5.1.0",
     "@open-zero/database": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.25.100",
+    "@scalar/fastify-api-reference": "^1.25.101",
     "@sinclair/typebox": "^0.34.13",
     "chalk": "^5.4.1",
     "date-fns": "^4.1.0",
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",
     "file-type": "^19.6.0",
-    "openai": "^4.77.3",
+    "openai": "^4.77.4",
     "playwright-chromium": "^1.49.1",
     "sharp": "^0.33.5"
   },
@@ -47,6 +47,6 @@
     "concurrently": "^9.1.2",
     "pino-pretty": "^13.0.0",
     "tsup": "8.3.0",
-    "typescript": "~5.7.2"
+    "typescript": "~5.7.3"
   }
 }
