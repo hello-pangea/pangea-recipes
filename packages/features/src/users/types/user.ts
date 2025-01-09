@@ -15,7 +15,8 @@ export const userSchema = Type.Object(
 
     name: Nullable(Type.String()),
 
-    email: Type.String(),
+    emailAddress: Nullable(Type.String()),
+    phoneNumber: Nullable(Type.String()),
 
     accessRole: Type.Union([Type.Literal('admin'), Type.Literal('user')]),
 

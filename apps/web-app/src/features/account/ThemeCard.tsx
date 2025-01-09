@@ -7,8 +7,11 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { useUpdateUser, type User } from '@open-zero/features/users';
-import { useAuthRequired } from '../auth/useAuth';
+import {
+  useSignedInUser,
+  useUpdateUser,
+  type User,
+} from '@open-zero/features/users';
 
 interface Props {
   themeName: string;
@@ -17,11 +20,11 @@ interface Props {
 }
 
 export function ThemeCard({ themeMode, themeName, subtext }: Props) {
-  const updateUserMutation = useUpdateUser();
-  const { user, refreshUser } = useAuthRequired();
+  const updateUser = useUpdateUser();
+  const { data: user } = useSignedInUser();
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
 
-  const isSelected = user.themePreference === themeMode;
+  const isSelected = user?.themePreference === themeMode;
 
   const theme =
     themeMode === 'system'
@@ -56,17 +59,10 @@ export function ThemeCard({ themeMode, themeName, subtext }: Props) {
               color="primary"
               size="small"
               onClick={() => {
-                updateUserMutation.mutate(
-                  {
-                    themePreference: themeMode,
-                    id: user.id,
-                  },
-                  {
-                    onSuccess: () => {
-                      void refreshUser();
-                    },
-                  },
-                );
+                updateUser.mutate({
+                  themePreference: themeMode,
+                  id: user?.id ?? '',
+                });
               }}
             >
               Use {themeName.toLocaleLowerCase()}

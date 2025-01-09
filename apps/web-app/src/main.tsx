@@ -6,18 +6,36 @@ import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';
 import { StrictMode, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
-import { InnerApp } from './App';
+import { App } from './App';
 import { config } from './config/config';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
 
-updateApiOptions({ prefixUrl: config.VITE_API_URL, credentials: 'include' });
+async function getSessionToken() {
+  if (!window.Clerk?.session) {
+    return null;
+  }
+
+  return (await window.Clerk.session.getToken()) ?? null;
+}
+
+updateApiOptions({
+  prefixUrl: config.VITE_API_URL,
+  hooks: {
+    beforeRequest: [
+      async (request) => {
+        const token = await getSessionToken();
+
+        request.headers.set('Authorization', `Bearer ${token}`);
+      },
+    ],
+  },
+});
 const queryClient = new QueryClient();
 
 export const router = createRouter({
   routeTree,
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  context: { queryClient, auth: undefined! },
+  context: { queryClient, userId: null },
   defaultPreload: 'intent',
   // Since we're using React Query, we don't want loader calls to ever be stale
   // This will ensure that the loader is always called when the route is preloaded or visited
@@ -44,7 +62,7 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <Suspense fallback={null}>
         <AppProviders queryClient={queryClient}>
-          <InnerApp />
+          <App />
         </AppProviders>
       </Suspense>
     </StrictMode>,

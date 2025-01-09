@@ -29,9 +29,9 @@ import {
   useAddRecipeToRecipeBook,
   useRecipeBooks,
 } from '@open-zero/features/recipes-books';
+import { useSignedInUser } from '@open-zero/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
-import { useAuthRequired } from '../auth/useAuth';
 
 const drawerWidth = 240;
 
@@ -42,9 +42,9 @@ interface Props {
 }
 
 export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
-  const { user } = useAuthRequired();
+  const { data: user } = useSignedInUser();
   const { data: recipeBooks } = useRecipeBooks({
-    options: { userId: user.id },
+    options: { userId: user?.id ?? '' },
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
 
@@ -149,7 +149,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
               />
             ))}
           </ListItem>
-          {user.accessRole === 'admin' && (
+          {user?.accessRole === 'admin' && (
             <ListItem
               icon={<CarrotIcon />}
               label="Canonical ingredients"

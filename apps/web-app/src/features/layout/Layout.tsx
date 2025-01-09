@@ -1,4 +1,5 @@
 import Sidebar from '#src/features/layout/Sidebar';
+import { useUser } from '@clerk/tanstack-start';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
   AppBar,
@@ -9,19 +10,52 @@ import {
   useMediaQuery,
   type Theme,
 } from '@mui/material';
-import { Navigate, Outlet } from '@tanstack/react-router';
-import { useState } from 'react';
-import { useAuth } from '../auth/useAuth';
+import { getSignedInUserQueryOptions } from '@open-zero/features/users';
+import { useQueryClient } from '@tanstack/react-query';
+import {
+  Navigate,
+  Outlet,
+  useNavigate,
+  useRouter,
+} from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const { isAuthenticated } = useAuth();
+  const { user: clerkUser, isLoaded, isSignedIn } = useUser();
+  const router = useRouter();
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
-  if (!isAuthenticated) {
-    return <Navigate to="/sign-in" />;
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      void router.invalidate();
+      void queryClient.invalidateQueries({
+        queryKey: getSignedInUserQueryOptions().queryKey,
+      });
+
+      if (!clerkUser.publicMetadata.helloRecipesUserId) {
+        void navigate({
+          to: '/finish-sign-up',
+        });
+      }
+    }
+  }, [
+    isSignedIn,
+    isLoaded,
+    router,
+    clerkUser?.publicMetadata.helloRecipesUserId,
+    queryClient,
+    navigate,
+  ]);
+
+  if (isLoaded && clerkUser && !clerkUser.publicMetadata.helloRecipesUserId) {
+    return <Navigate to="/finish-sign-up" />;
+  } else if (isLoaded && !clerkUser) {
+    return <Navigate to="/sign-in/$" />;
   }
 
   return (

@@ -1,20 +1,13 @@
 import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import { clerkClient, getAuth } from '@clerk/fastify';
 import {
-  signInUserDtoSchema,
-  signUpUserDtoSchema,
+  setupUserDtoSchema,
   updateUserDtoSchema,
   userSchemaRef,
 } from '@open-zero/features/users';
 import { Type } from '@sinclair/typebox';
-import { randomBytes, scryptSync } from 'node:crypto';
 import { ApiError } from '../../lib/ApiError.js';
-import { noContentSchema } from '../../types/noContent.js';
-import {
-  createSession,
-  generateSessionToken,
-  invalidateSession,
-} from '../auth/session.js';
 import { verifySession } from '../auth/verifySession.js';
 
 const routeTag = 'Users';
@@ -22,12 +15,12 @@ const routeTag = 'Users';
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function userRoutes(fastify: FastifyTypebox) {
   fastify.post(
-    '/sign-up',
+    '/setup',
     {
       schema: {
         tags: [routeTag],
-        summary: 'Sign up a new user',
-        body: signUpUserDtoSchema,
+        summary: 'Setup a new user after Clerk auth',
+        body: setupUserDtoSchema,
         response: {
           200: Type.Object({
             user: userSchemaRef,
@@ -35,139 +28,42 @@ export async function userRoutes(fastify: FastifyTypebox) {
         },
       },
     },
-    async (request, reply) => {
-      const { name, email, password } = request.body;
+    async (request) => {
+      const { name } = request.body;
+      const { userId: clerkUserId } = getAuth(request);
 
-      const salt = randomBytes(16).toString('hex');
-      const normalizedPassword = password.normalize('NFKC');
+      if (!clerkUserId) {
+        throw new ApiError({
+          statusCode: 401,
+          message: 'Unauthorized',
+          name: 'AuthError',
+        });
+      }
 
-      const hashedPassword = scryptSync(normalizedPassword, salt, 64).toString(
-        'hex',
-      );
+      const clerkUser = await clerkClient.users.getUser(clerkUserId);
 
-      const hashedPasswordAndSalt = `${salt}:${hashedPassword}`;
-
-      const user = await prisma.user.create({
-        data: {
-          email: email,
-          name: name,
-          hashedPassword: hashedPasswordAndSalt,
-          accessRole: 'user',
-        },
-      });
-
-      const token = generateSessionToken();
-      await createSession(token, user.id);
-
-      reply.setCookie('auth_session', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 30,
-      });
-
-      const { hashedPassword: _, ...sanitizedUser } = user;
-
-      return { user: sanitizedUser };
-    },
-  );
-
-  fastify.post(
-    '/sign-in',
-    {
-      schema: {
-        tags: [routeTag],
-        summary: 'Sign in an existing user',
-        body: signInUserDtoSchema,
-        response: {
-          200: Type.Object({
-            user: userSchemaRef,
-          }),
-        },
-      },
-    },
-    async (request, reply) => {
-      const { email, password } = request.body;
-
-      const user = await prisma.user.findFirst({
+      const user = await prisma.user.upsert({
         where: {
-          email: email,
+          clerkUserId: clerkUserId,
+        },
+        create: {
+          emailAddress: clerkUser.primaryEmailAddress?.emailAddress ?? null,
+          phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
+          name: name ?? clerkUser.fullName,
+          accessRole: 'user',
+          clerkUserId: clerkUserId,
+        },
+        update: {},
+      });
+
+      await clerkClient.users.updateUserMetadata(clerkUserId, {
+        publicMetadata: {
+          helloRecipesUserId: user.id,
+          accessRole: user.accessRole,
         },
       });
 
-      const hashedPasswordAndSalt = user?.hashedPassword ?? 'salt:password';
-
-      const [salt, hashedPassword] = hashedPasswordAndSalt.split(':');
-
-      if (!salt || !hashedPassword) {
-        throw new ApiError({
-          statusCode: 401,
-          message: 'Invalid credentials',
-          name: 'AuthError',
-        });
-      }
-
-      const newNormalizedPassword = password.normalize('NFKC');
-
-      const newHashedPassword = scryptSync(
-        newNormalizedPassword,
-        salt,
-        64,
-      ).toString('hex');
-
-      const isValidPassword = newHashedPassword === hashedPassword;
-
-      if (!isValidPassword || !user) {
-        throw new ApiError({
-          statusCode: 401,
-          message: 'Invalid credentials',
-          name: 'AuthError',
-        });
-      }
-
-      const token = generateSessionToken();
-      await createSession(token, user.id);
-
-      reply.setCookie('auth_session', token, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        path: '/',
-        sameSite: 'lax',
-        maxAge: 60 * 60 * 24 * 30,
-      });
-
-      const { hashedPassword: _, ...sanitizedUser } = user;
-
-      return { user: sanitizedUser };
-    },
-  );
-
-  fastify.post(
-    '/sign-out',
-    {
-      schema: {
-        tags: [routeTag],
-        summary: 'Sign out current user',
-        description:
-          'Invalidates the current session and clears the session cookie.',
-        response: {
-          204: noContentSchema,
-        },
-      },
-    },
-    async (request, reply) => {
-      const { session } = request;
-
-      if (!session) {
-        return reply.code(204).send();
-      }
-
-      await invalidateSession(session.id);
-
-      reply.clearCookie('auth_session');
-
-      return reply.code(204).send();
+      return { user: user };
     },
   );
 
@@ -275,10 +171,8 @@ export async function userRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      const { hashedPassword: _, ...sanitizedUser } = user;
-
       return {
-        user: sanitizedUser,
+        user: user,
       };
     },
   );

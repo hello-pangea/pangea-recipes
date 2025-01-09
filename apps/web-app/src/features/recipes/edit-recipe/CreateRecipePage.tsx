@@ -1,5 +1,6 @@
 import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
+import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { focusNextInput } from '#src/lib/focusNextInput';
 import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -33,7 +34,6 @@ import {
   type SubmitHandler,
 } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
-import { useAuthRequired } from '../../auth/useAuth';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { CreateIngredientGroup } from './CreateIngredientGroup';
 import { CreateInstructionGroup } from './CreateInstructionGroup';
@@ -88,7 +88,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       instructionGroups: [],
     },
   });
-  const { user } = useAuthRequired();
+  const userId = useSignedInUserId();
   const { handleSubmit, control, reset } = form;
   const {
     fields: usesRecipes,
@@ -117,7 +117,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   const recipesQuery = useRecipes({
     options: {
-      userId: user.id,
+      userId: userId,
     },
   });
 

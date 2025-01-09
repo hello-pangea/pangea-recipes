@@ -1,27 +1,33 @@
 import { Page } from '#src/components/Page';
-import MailOutlineRoundedIcon from '@mui/icons-material/MailOutlineRounded';
+import { useAuth, useClerk } from '@clerk/tanstack-start';
 import { LoadingButton } from '@mui/lab';
-import { Box, Grid2, Typography } from '@mui/material';
+import { Button, Grid2, Typography } from '@mui/material';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useAuthRequired } from '../auth/useAuth';
 import { ThemeCard } from './ThemeCard';
 
 export function AccountPage() {
-  const { user, signOut } = useAuthRequired();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+  const { signOut } = useAuth();
+  const { openUserProfile } = useClerk();
 
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
         Account
       </Typography>
-      <Typography>Hello, {user.name}</Typography>
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-        <MailOutlineRoundedIcon fontSize="inherit" sx={{ mr: 1 }} />
-        <Typography variant="body2">{user.email}</Typography>
-      </Box>
+      <Typography variant="h2" sx={{ mb: 2 }}>
+        Manage profile and security
+      </Typography>
+      <Button
+        onClick={() => {
+          openUserProfile();
+        }}
+        sx={{ mb: 4 }}
+      >
+        Open
+      </Button>
       <Typography variant="h2" sx={{ mb: 2 }}>
         Theme preferences
       </Typography>

@@ -4,9 +4,13 @@ import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_layout/recipe-books/')({
   loader: async ({ context }) => {
+    if (!context.userId) {
+      return;
+    }
+
     await context.queryClient.ensureQueryData(
       getListRecipeBooksQueryOptions({
-        userId: context.auth.user?.id ?? '',
+        userId: context.userId,
       }),
     );
   },

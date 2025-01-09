@@ -4,13 +4,13 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Grid2, Typography } from '@mui/material';
 import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipes-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useAuthRequired } from '../auth/useAuth';
+import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeBookCard } from './RecipeBookCard';
 
 export function RecipeBooksPage() {
-  const { user } = useAuthRequired();
+  const userId = useSignedInUserId();
   const recipeBooksQuery = useSuspenseQuery(
-    getListRecipeBooksQueryOptions({ userId: user.id }),
+    getListRecipeBooksQueryOptions({ userId: userId }),
   );
 
   const recipeBooks = recipeBooksQuery.data.recipeBooks;

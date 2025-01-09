@@ -11,10 +11,13 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SignUpImport } from './routes/sign-up'
-import { Route as SignInImport } from './routes/sign-in'
+import { Route as TermsOfServiceImport } from './routes/terms-of-service'
+import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
+import { Route as FinishSignUpImport } from './routes/finish-sign-up'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
+import { Route as SignUpSplatImport } from './routes/sign-up.$'
+import { Route as SignInSplatImport } from './routes/sign-in.$'
 import { Route as LayoutAccountImport } from './routes/_layout.account'
 import { Route as LayoutRecipesIndexImport } from './routes/_layout.recipes.index'
 import { Route as LayoutRecipeBooksIndexImport } from './routes/_layout.recipe-books.index'
@@ -30,15 +33,21 @@ import { Route as LayoutCanonicalIngredientsCanonicalIngredientIdEditImport } fr
 
 // Create/Update Routes
 
-const SignUpRoute = SignUpImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
+const TermsOfServiceRoute = TermsOfServiceImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
   getParentRoute: () => rootRoute,
 } as any)
 
-const SignInRoute = SignInImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
+const PrivacyPolicyRoute = PrivacyPolicyImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const FinishSignUpRoute = FinishSignUpImport.update({
+  id: '/finish-sign-up',
+  path: '/finish-sign-up',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -50,6 +59,18 @@ const LayoutRoute = LayoutImport.update({
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignUpSplatRoute = SignUpSplatImport.update({
+  id: '/sign-up/$',
+  path: '/sign-up/$',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignInSplatRoute = SignInSplatImport.update({
+  id: '/sign-in/$',
+  path: '/sign-in/$',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -148,18 +169,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutImport
       parentRoute: typeof rootRoute
     }
-    '/sign-in': {
-      id: '/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof SignInImport
+    '/finish-sign-up': {
+      id: '/finish-sign-up'
+      path: '/finish-sign-up'
+      fullPath: '/finish-sign-up'
+      preLoaderRoute: typeof FinishSignUpImport
       parentRoute: typeof rootRoute
     }
-    '/sign-up': {
-      id: '/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof SignUpImport
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyImport
+      parentRoute: typeof rootRoute
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceImport
       parentRoute: typeof rootRoute
     }
     '/_layout/account': {
@@ -168,6 +196,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/account'
       preLoaderRoute: typeof LayoutAccountImport
       parentRoute: typeof LayoutImport
+    }
+    '/sign-in/$': {
+      id: '/sign-in/$'
+      path: '/sign-in/$'
+      fullPath: '/sign-in/$'
+      preLoaderRoute: typeof SignInSplatImport
+      parentRoute: typeof rootRoute
+    }
+    '/sign-up/$': {
+      id: '/sign-up/$'
+      path: '/sign-up/$'
+      fullPath: '/sign-up/$'
+      preLoaderRoute: typeof SignUpSplatImport
+      parentRoute: typeof rootRoute
     }
     '/_layout/canonical-ingredients/new': {
       id: '/_layout/canonical-ingredients/new'
@@ -289,9 +331,12 @@ const LayoutRouteWithChildren =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/finish-sign-up': typeof FinishSignUpRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/account': typeof LayoutAccountRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/recipe-books/$recipeBookId': typeof LayoutRecipeBooksRecipeBookIdRoute
   '/recipe-books/new': typeof LayoutRecipeBooksNewRoute
@@ -308,9 +353,12 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof LayoutRouteWithChildren
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/finish-sign-up': typeof FinishSignUpRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/account': typeof LayoutAccountRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/recipe-books/$recipeBookId': typeof LayoutRecipeBooksRecipeBookIdRoute
   '/recipe-books/new': typeof LayoutRecipeBooksNewRoute
@@ -328,9 +376,12 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_layout': typeof LayoutRouteWithChildren
-  '/sign-in': typeof SignInRoute
-  '/sign-up': typeof SignUpRoute
+  '/finish-sign-up': typeof FinishSignUpRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/_layout/account': typeof LayoutAccountRoute
+  '/sign-in/$': typeof SignInSplatRoute
+  '/sign-up/$': typeof SignUpSplatRoute
   '/_layout/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
   '/_layout/recipe-books/$recipeBookId': typeof LayoutRecipeBooksRecipeBookIdRoute
   '/_layout/recipe-books/new': typeof LayoutRecipeBooksNewRoute
@@ -349,9 +400,12 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
-    | '/sign-in'
-    | '/sign-up'
+    | '/finish-sign-up'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/account'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/canonical-ingredients/new'
     | '/recipe-books/$recipeBookId'
     | '/recipe-books/new'
@@ -367,9 +421,12 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
-    | '/sign-in'
-    | '/sign-up'
+    | '/finish-sign-up'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/account'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/canonical-ingredients/new'
     | '/recipe-books/$recipeBookId'
     | '/recipe-books/new'
@@ -385,9 +442,12 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_layout'
-    | '/sign-in'
-    | '/sign-up'
+    | '/finish-sign-up'
+    | '/privacy-policy'
+    | '/terms-of-service'
     | '/_layout/account'
+    | '/sign-in/$'
+    | '/sign-up/$'
     | '/_layout/canonical-ingredients/new'
     | '/_layout/recipe-books/$recipeBookId'
     | '/_layout/recipe-books/new'
@@ -405,15 +465,21 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LayoutRoute: typeof LayoutRouteWithChildren
-  SignInRoute: typeof SignInRoute
-  SignUpRoute: typeof SignUpRoute
+  FinishSignUpRoute: typeof FinishSignUpRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
+  SignInSplatRoute: typeof SignInSplatRoute
+  SignUpSplatRoute: typeof SignUpSplatRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   LayoutRoute: LayoutRouteWithChildren,
-  SignInRoute: SignInRoute,
-  SignUpRoute: SignUpRoute,
+  FinishSignUpRoute: FinishSignUpRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
+  SignInSplatRoute: SignInSplatRoute,
+  SignUpSplatRoute: SignUpSplatRoute,
 }
 
 export const routeTree = rootRoute
@@ -428,8 +494,11 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_layout",
-        "/sign-in",
-        "/sign-up"
+        "/finish-sign-up",
+        "/privacy-policy",
+        "/terms-of-service",
+        "/sign-in/$",
+        "/sign-up/$"
       ]
     },
     "/": {
@@ -452,15 +521,24 @@ export const routeTree = rootRoute
         "/_layout/recipes_/$recipeId/edit"
       ]
     },
-    "/sign-in": {
-      "filePath": "sign-in.tsx"
+    "/finish-sign-up": {
+      "filePath": "finish-sign-up.tsx"
     },
-    "/sign-up": {
-      "filePath": "sign-up.tsx"
+    "/privacy-policy": {
+      "filePath": "privacy-policy.tsx"
+    },
+    "/terms-of-service": {
+      "filePath": "terms-of-service.tsx"
     },
     "/_layout/account": {
       "filePath": "_layout.account.tsx",
       "parent": "/_layout"
+    },
+    "/sign-in/$": {
+      "filePath": "sign-in.$.tsx"
+    },
+    "/sign-up/$": {
+      "filePath": "sign-up.$.tsx"
     },
     "/_layout/canonical-ingredients/new": {
       "filePath": "_layout.canonical-ingredients.new.tsx",

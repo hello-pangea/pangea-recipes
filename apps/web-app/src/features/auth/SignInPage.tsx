@@ -1,69 +1,14 @@
-import { ButtonLink } from '#src/components/ButtonLink';
 import { Copyright } from '#src/components/Copyright';
-import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
-import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
-import { LoadingButton } from '@mui/lab';
-import {
-  Box,
-  Card,
-  Container,
-  IconButton,
-  InputAdornment,
-  Link,
-  Stack,
-  Typography,
-} from '@mui/material';
-import { getRouteApi, useNavigate, useRouter } from '@tanstack/react-router';
-import { useLayoutEffect, useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
-import { useAuth } from './useAuth';
+import { SignIn } from '@clerk/tanstack-start';
+import { Box, Container } from '@mui/material';
+import { getRouteApi } from '@tanstack/react-router';
 
-const route = getRouteApi('/sign-in');
-
-interface SignInFormInputs {
-  email: string;
-  password: string;
-}
+const route = getRouteApi('/sign-in/$');
 
 export function SignInPage() {
-  const navigate = useNavigate();
-  const router = useRouter();
-  const { handleSubmit, control } = useForm<SignInFormInputs>();
-  const { signIn, isAuthenticated, isLoaded } = useAuth();
-  const search = route.useSearch();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [showPassword, setShowPassword] = useState(false);
+  const { redirect } = route.useSearch();
 
-  const onSubmit: SubmitHandler<SignInFormInputs> = (data) => {
-    setLoading(true);
-
-    void signIn(data)
-      .then(() => {
-        setLoading(false);
-      })
-      .catch(() => {
-        setLoading(false);
-        setError('Invalid email or password');
-      });
-  };
-
-  useLayoutEffect(() => {
-    if (!isLoaded) {
-      return;
-    }
-
-    if (isAuthenticated) {
-      if (search.redirect) {
-        router.history.push(search.redirect);
-      } else {
-        void navigate({
-          to: '/recipes',
-        });
-      }
-    }
-  }, [isAuthenticated, isLoaded, search.redirect, navigate, router.history]);
+  console.log('redirect', redirect);
 
   return (
     <Container
@@ -74,106 +19,28 @@ export function SignInPage() {
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        justifyContent: 'center',
+        justifyContent: 'space-between',
+        py: 2,
       }}
     >
-      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-        <img src="/assets/lil-guy.svg" width={32} height={32} />
-        <Typography
-          variant="h1"
-          sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
-        >
-          Hello Recipes
-        </Typography>
+      <Box
+        sx={{
+          mb: 4,
+          flex: 1,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <SignIn
+          forceRedirectUrl={redirect ?? '/recipes'}
+          signUpUrl="/sign-up"
+          routing="hash"
+        />
       </Box>
-      <Card variant="outlined" sx={{ p: 2, mb: 2 }}>
-        <Box
-          sx={{
-            mb: 4,
-            display: 'flex',
-            alignItems: 'flex-start',
-            justifyContent: 'space-between',
-            width: '100%',
-          }}
-        >
-          <Typography variant="h1">Log in</Typography>
-          <ButtonLink variant="text" to="/sign-up" size="small">
-            Sign up
-          </ButtonLink>
-        </Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack
-            direction={'column'}
-            spacing={2}
-            sx={{ maxWidth: '400px', display: 'block' }}
-          >
-            <TextFieldElement
-              label="Email"
-              name="email"
-              required
-              control={control}
-              fullWidth
-              type="email"
-              autoComplete="email"
-            />
-            <TextFieldElement
-              label="Password"
-              name="password"
-              required
-              control={control}
-              fullWidth
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? 'hide the password'
-                            : 'display the password'
-                        }
-                        onClick={() => {
-                          setShowPassword((show) => !show);
-                        }}
-                        onMouseDown={(event) => {
-                          event.preventDefault();
-                        }}
-                        onMouseUp={(event) => {
-                          event.preventDefault();
-                        }}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityOffRoundedIcon />
-                        ) : (
-                          <VisibilityRoundedIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
-            />
-            {error && <Typography color="error">{error}</Typography>}
-            <LoadingButton
-              variant="contained"
-              type="submit"
-              loading={loading}
-              fullWidth
-            >
-              Log in
-            </LoadingButton>
-            <Typography variant="body2" align="center">
-              <Link href="/forgot-password" variant="body2">
-                Forgot password?
-              </Link>
-            </Typography>
-          </Stack>
-        </form>
-      </Card>
-      <Copyright />
+      <Box>
+        <Copyright />
+      </Box>
     </Container>
   );
 }
