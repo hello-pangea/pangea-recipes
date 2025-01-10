@@ -18,9 +18,9 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.723.0",
-    "@aws-sdk/s3-request-presigner": "^3.723.0",
-    "@clerk/fastify": "^2.1.5",
+    "@aws-sdk/client-s3": "^3.726.0",
+    "@aws-sdk/s3-request-presigner": "^3.726.0",
+    "@clerk/fastify": "^2.1.6",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^10.0.2",
     "@fastify/helmet": "^13.0.1",
@@ -36,7 +36,7 @@
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",
     "file-type": "^19.6.0",
-    "openai": "^4.77.4",
+    "openai": "^4.78.0",
     "playwright-chromium": "^1.49.1",
     "sharp": "^0.33.5"
   },
