@@ -74,8 +74,8 @@ export async function createServer() {
           description: 'Recipe related endpoints',
         },
         {
-          name: 'Units',
-          description: 'Unit related endpoints',
+          name: 'Recipe books',
+          description: 'Collections of recipes that you can share with others',
         },
         {
           name: 'Users',

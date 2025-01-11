@@ -32,6 +32,7 @@
     "@scalar/fastify-api-reference": "^1.25.101",
     "@sinclair/typebox": "^0.34.13",
     "chalk": "^5.4.1",
+    "close-with-grace": "^2.1.0",
     "date-fns": "^4.1.0",
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",

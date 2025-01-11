@@ -28,6 +28,16 @@ export const recipeBookSchema = Type.Object(
         ]),
       }),
     ),
+    invites: Type.Array(
+      Type.Object({
+        inviteeEmailAddress: Type.String({ format: 'email' }),
+        role: Type.Union([
+          Type.Literal('owner'),
+          Type.Literal('editor'),
+          Type.Literal('viewer'),
+        ]),
+      }),
+    ),
   },
   { $id: recipeBookSchemaId },
 );

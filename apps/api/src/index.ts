@@ -1,28 +1,25 @@
 import { createServer } from '#src/server/server.js';
+import closeWithGrace from 'close-with-grace';
 import { config } from './config/config.js';
 
 const server = await createServer();
 
 const port = Number(config.PORT);
 
+closeWithGrace({ delay: 500 }, async function ({ err }) {
+  if (err) {
+    server.log.error(err);
+  }
+  await server.close();
+});
+
 server.listen({ port: port, host: '::' }, (err, address) => {
   if (err) {
-    console.error(err);
+    server.log.error(err);
     process.exit(1);
   }
 
   console.log(`👂 Api server listening to: '${address}'`);
 });
-
-function closeGracefully(signal: string) {
-  console.log(`Received signal to terminate: ${signal}`);
-
-  void server.close();
-
-  process.kill(process.pid, signal);
-}
-
-process.once('SIGINT', closeGracefully);
-process.once('SIGTERM', closeGracefully);
 
 await server.ready();

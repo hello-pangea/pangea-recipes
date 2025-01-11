@@ -6,7 +6,8 @@ model RecipeBook {
   description String?
 
   recipes RecipesOnRecipeBooks[]
-  members RecipeBookMembers[]
+  members RecipeBookMember[]
+  invites RecipeBookInvite[]
 
   @@map("recipe_books")
 }
@@ -30,17 +31,36 @@ enum Role {
   viewer
 }
 
-model RecipeBookMembers {
-  userId       String @map("user_id") @db.Uuid
-  recipeBookId String @map("recipe_book_id") @db.Uuid
-
-  user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  recipeBook RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
-
+model RecipeBookMember {
   createdAt DateTime @default(now()) @map("created_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  recipeBookId String     @map("recipe_book_id") @db.Uuid
+  recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
 
   role Role
 
   @@id([userId, recipeBookId])
   @@map("recipe_book_members")
+}
+
+model RecipeBookInvite {
+  createdAt DateTime @default(now()) @map("created_at")
+
+  inviteeEmailAddress String @map("invitee_email_address")
+
+  recipeBookId String     @map("recipe_book_id") @db.Uuid
+  recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  invitedByUserId String @map("invited_by_user_id") @db.Uuid
+  invitedByUser   User   @relation(fields: [invitedByUserId], references: [id], onDelete: Cascade)
+
+  clerkInviteId String? @map("clerk_invite_id")
+
+  role Role
+
+  @@id([inviteeEmailAddress, recipeBookId])
+  @@map("recipe_book_invites")
 }

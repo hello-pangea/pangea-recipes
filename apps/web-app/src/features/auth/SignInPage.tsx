@@ -8,8 +8,6 @@ const route = getRouteApi('/sign-in/$');
 export function SignInPage() {
   const { redirect } = route.useSearch();
 
-  console.log('redirect', redirect);
-
   return (
     <Container
       component="main"
@@ -34,7 +32,7 @@ export function SignInPage() {
       >
         <SignIn
           forceRedirectUrl={redirect ?? '/recipes'}
-          signUpUrl="/sign-up"
+          signUpUrl={redirect ? `/sign-up?redirect=${redirect}` : '/sign-up'}
           routing="hash"
         />
       </Box>

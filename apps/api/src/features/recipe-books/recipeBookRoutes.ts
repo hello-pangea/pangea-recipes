@@ -9,6 +9,8 @@ import { Type } from '@sinclair/typebox';
 import { ApiError } from '../../lib/ApiError.js';
 import { noContentSchema } from '../../types/noContent.js';
 import { verifySession } from '../auth/verifySession.js';
+import { recipeBookMemberRoutes } from './recipeBookMemberRoutes.js';
+import { recipeBookRecipeRoutes } from './recipeBookRecipeRoutes.js';
 
 const routeTag = 'Recipe books';
 
@@ -118,6 +120,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
               },
             },
           },
+          invites: true,
         },
       });
 
@@ -162,11 +165,18 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
               },
             },
           },
+          invites: true,
         },
       });
 
       return {
-        recipeBook: recipeBook,
+        recipeBook: {
+          ...recipeBook,
+          members: recipeBook.members.map((member) => ({
+            ...member,
+            name: member.user.name,
+          })),
+        },
       };
     },
   );
@@ -212,6 +222,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
               },
             },
           },
+          invites: true,
         },
       });
 
@@ -274,116 +285,6 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
     },
   );
 
-  fastify.post(
-    '/:recipeBookId/recipes',
-    {
-      preHandler: fastify.auth([verifySession]),
-      schema: {
-        tags: [routeTag],
-        summary: 'Add a recipe to a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
-        }),
-        body: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: Type.Object({
-            recipeBook: recipeBookSchemaRef,
-          }),
-        },
-      },
-    },
-    async (request) => {
-      const { recipeBookId } = request.params;
-      const { recipeId } = request.body;
-
-      const recipeBook = await prisma.recipeBook.update({
-        where: {
-          id: recipeBookId,
-        },
-        data: {
-          recipes: {
-            create: {
-              recipe: {
-                connect: {
-                  id: recipeId,
-                },
-              },
-            },
-          },
-        },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      });
-
-      return {
-        recipeBook: recipeBook,
-      };
-    },
-  );
-
-  fastify.delete(
-    '/:recipeBookId/recipes/:recipeId',
-    {
-      preHandler: fastify.auth([verifySession]),
-      schema: {
-        tags: [routeTag],
-        summary: 'Remove a recipe from a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
-          recipeId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: Type.Object({
-            recipeBook: recipeBookSchemaRef,
-          }),
-        },
-      },
-    },
-    async (request) => {
-      const { recipeBookId, recipeId } = request.params;
-
-      const recipeBook = await prisma.recipeBook.update({
-        where: {
-          id: recipeBookId,
-        },
-        data: {
-          recipes: {
-            deleteMany: {
-              recipeId: recipeId,
-            },
-          },
-        },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
-      });
-
-      return {
-        recipeBook: recipeBook,
-      };
-    },
-  );
+  fastify.register(recipeBookRecipeRoutes);
+  fastify.register(recipeBookMemberRoutes);
 }

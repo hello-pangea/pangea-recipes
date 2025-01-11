@@ -1,6 +1,14 @@
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import { Box, Button, Grid2, Typography } from '@mui/material';
+import {
+  Box,
+  Button,
+  Grid2,
+  IconButton,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { useRecipes } from '@open-zero/features/recipes';
 import {
   getRecipeBookQueryOptions,
@@ -11,6 +19,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
+import { RecipeBookShareDialog } from './RecipeBookShareDialog';
 
 const route = getRouteApi('/_layout/recipe-books/$recipeBookId');
 
@@ -21,6 +30,7 @@ export function RecipeBookPage() {
   );
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useRecipes({ options: { recipeBookId } });
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -54,6 +64,22 @@ export function RecipeBookPage() {
         >
           <Typography variant="h1">{recipeBook.name}</Typography>
         </Button>
+        {recipeBook.members.length > 1 && (
+          <Tooltip title="Shared">
+            <IconButton
+              onClick={() => {
+                setShareDialogOpen(true);
+              }}
+              sx={{ ml: 1 }}
+            >
+              <GroupRoundedIcon
+                sx={{
+                  color: (theme) => theme.palette.text.secondary,
+                }}
+              />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
       <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
       <Grid2 container spacing={2}>
@@ -83,6 +109,13 @@ export function RecipeBookPage() {
         anchorEl={moreMenuAnchorEl}
         onClose={() => {
           setMoreMenuAnchorEl(null);
+        }}
+      />
+      <RecipeBookShareDialog
+        recipeBookId={recipeBookId}
+        open={shareDialogOpen}
+        onClose={() => {
+          setShareDialogOpen(false);
         }}
       />
     </Box>

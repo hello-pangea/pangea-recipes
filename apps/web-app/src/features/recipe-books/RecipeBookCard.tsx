@@ -1,10 +1,13 @@
 import { CardActionAreaLink } from '#src/components/CardActionAreaLink';
+import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Card,
   CircularProgress,
   IconButton,
+  Stack,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import { useRecipeBook } from '@open-zero/features/recipes-books';
@@ -58,7 +61,18 @@ export function RecipeBookCard({ recipeBookId }: Props) {
               p: 1,
             }}
           >
-            <Typography variant="body1">{recipeBook.name}</Typography>
+            <Stack direction="row" spacing={1} alignItems="center">
+              <Typography variant="body1">{recipeBook.name}</Typography>
+              {recipeBook.members.length > 1 && (
+                <Tooltip title="Shared">
+                  <GroupRoundedIcon
+                    sx={{
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
+                  />
+                </Tooltip>
+              )}
+            </Stack>
             <IconButton
               id="more-button"
               aria-controls={moreMenuOpen ? 'more-menu' : undefined}

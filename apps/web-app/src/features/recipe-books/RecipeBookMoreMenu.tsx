@@ -1,7 +1,8 @@
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
+import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import {
-  CircularProgress,
   Divider,
   ListItemIcon,
   ListItemText,
@@ -10,9 +11,13 @@ import {
 } from '@mui/material';
 import {
   useDeleteRecipeBook,
+  useDeleteRecipeBookMember,
   useRecipeBook,
 } from '@open-zero/features/recipes-books';
 import { Link } from '@tanstack/react-router';
+import { useState } from 'react';
+import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { RecipeBookShareDialog } from './RecipeBookShareDialog';
 
 interface Props {
   recipeBookId: string;
@@ -27,70 +32,135 @@ export function RecipeBookMoreMenu({
   onClose,
   onDelete,
 }: Props) {
+  const userId = useSignedInUserId();
   const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
   const deleteRecipeBook = useDeleteRecipeBook();
   const open = Boolean(anchorEl);
+  const [shareDialogOpen, setShareDialogOpen] = useState(false);
+  const deleteRecipeBookMember = useDeleteRecipeBookMember();
 
-  if (!recipeBook) {
-    return <CircularProgress />;
-  }
+  const myRole =
+    recipeBook?.members.find((member) => member.userId === userId)?.role ??
+    'viewer';
 
-  return (
-    <Menu
-      id="more-menu"
-      anchorEl={anchorEl}
-      open={open}
-      onClose={onClose}
-      MenuListProps={{
-        'aria-labelledby': 'more-button',
-      }}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'left',
-      }}
-    >
-      <MenuItem sx={{ p: 0 }}>
-        <Link
-          to="/recipe-books/$recipeBookId/edit"
-          params={{ recipeBookId: recipeBook.id }}
-          style={{
-            textDecoration: 'none',
-            color: 'inherit',
-            padding: '6px 16px',
-            display: 'flex',
-            alignItems: 'center',
-            width: '100%',
+  if (myRole === 'viewer') {
+    return (
+      <Menu
+        id="more-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={onClose}
+        MenuListProps={{
+          'aria-labelledby': 'more-button',
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem
+          onClick={() => {
+            deleteRecipeBookMember.mutate({
+              recipeBookId: recipeBookId,
+              userId: userId,
+            });
+
+            onClose();
           }}
         >
           <ListItemIcon>
-            <EditRoundedIcon fontSize="small" />
+            <LogoutRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Edit</ListItemText>
-        </Link>
-      </MenuItem>
-      <Divider />
-      <MenuItem
-        onClick={() => {
-          deleteRecipeBook.mutate({ recipeBookId: recipeBook.id });
+          <ListItemText>Leave</ListItemText>
+        </MenuItem>
+      </Menu>
+    );
+  }
 
-          if (onDelete) {
-            onDelete();
-          }
-
-          onClose();
+  return (
+    <>
+      <Menu
+        id="more-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={onClose}
+        MenuListProps={{
+          'aria-labelledby': 'more-button',
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
         }}
       >
-        <ListItemIcon>
-          <DeleteRoundedIcon color="error" fontSize="small" />
-        </ListItemIcon>
-        <ListItemText sx={{ color: (theme) => theme.palette.error.main }}>
-          Delete
-        </ListItemText>
-      </MenuItem>
-    </Menu>
+        <MenuItem sx={{ p: 0 }}>
+          <Link
+            to="/recipe-books/$recipeBookId/edit"
+            params={{ recipeBookId: recipeBookId }}
+            style={{
+              textDecoration: 'none',
+              color: 'inherit',
+              padding: '6px 16px',
+              display: 'flex',
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <ListItemIcon>
+              <EditRoundedIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Edit</ListItemText>
+          </Link>
+        </MenuItem>
+        <MenuItem
+          onClick={() => {
+            setShareDialogOpen(true);
+            onClose();
+          }}
+        >
+          <ListItemIcon>
+            <GroupAddRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Share</ListItemText>
+        </MenuItem>
+        {myRole === 'owner' && (
+          <>
+            <Divider />
+            <MenuItem
+              onClick={() => {
+                deleteRecipeBook.mutate({ recipeBookId: recipeBookId });
+
+                if (onDelete) {
+                  onDelete();
+                }
+
+                onClose();
+              }}
+            >
+              <ListItemIcon>
+                <DeleteRoundedIcon color="error" fontSize="small" />
+              </ListItemIcon>
+              <ListItemText sx={{ color: (theme) => theme.palette.error.main }}>
+                Delete
+              </ListItemText>
+            </MenuItem>
+          </>
+        )}
+      </Menu>
+      <RecipeBookShareDialog
+        recipeBookId={recipeBookId}
+        open={shareDialogOpen}
+        onClose={() => {
+          setShareDialogOpen(false);
+        }}
+      />
+    </>
   );
 }

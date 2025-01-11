@@ -63,6 +63,33 @@ export async function userRoutes(fastify: FastifyTypebox) {
         },
       });
 
+      if (user.emailAddress) {
+        const recipeBookInvites = await prisma.recipeBookInvite.findMany({
+          where: {
+            inviteeEmailAddress: user.emailAddress,
+          },
+        });
+
+        for (const invite of recipeBookInvites) {
+          await prisma.recipeBookMember.create({
+            data: {
+              recipeBookId: invite.recipeBookId,
+              userId: user.id,
+              role: invite.role,
+            },
+          });
+
+          await prisma.recipeBookInvite.delete({
+            where: {
+              inviteeEmailAddress_recipeBookId: {
+                inviteeEmailAddress: invite.inviteeEmailAddress,
+                recipeBookId: invite.recipeBookId,
+              },
+            },
+          });
+        }
+      }
+
       return { user: user };
     },
   );

@@ -1,8 +1,13 @@
 import { Copyright } from '#src/components/Copyright';
 import { SignUp } from '@clerk/tanstack-start';
 import { Box, Container } from '@mui/material';
+import { getRouteApi } from '@tanstack/react-router';
+
+const route = getRouteApi('/sign-up/$');
 
 export function SignUpPage() {
+  const { redirect } = route.useSearch();
+
   return (
     <Container
       component="main"
@@ -24,7 +29,10 @@ export function SignUpPage() {
           justifyContent: 'center',
         }}
       >
-        <SignUp routing="hash" />
+        <SignUp
+          routing="hash"
+          signInUrl={redirect ? `/sign-in?redirect=${redirect}` : '/sign-in'}
+        />
       </Box>
       <Box>
         <Copyright />
