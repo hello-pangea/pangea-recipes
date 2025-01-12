@@ -9,7 +9,6 @@ import {
   Card,
   CircularProgress,
   IconButton,
-  Link,
   Typography,
 } from '@mui/material';
 import { useRecipe } from '@open-zero/features/recipes';
@@ -122,19 +121,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               <Typography variant="body1">{recipe.name}</Typography>
               {recipe.websiteSource && (
                 <Typography variant="caption">
-                  <Link
-                    href={recipe.websiteSource.url}
-                    rel="nofollow noopener"
-                    sx={{
-                      color: 'text.secondary',
-                      textDecoration: 'none',
-                      '&:hover': {
-                        textDecoration: 'underline',
-                      },
-                    }}
-                  >
-                    {recipe.websiteSource.title ?? 'Source'}
-                  </Link>
+                  {recipe.websiteSource.title ?? 'Source'}
                 </Typography>
               )}
             </Box>

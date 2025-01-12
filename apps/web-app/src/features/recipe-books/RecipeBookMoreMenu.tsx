@@ -130,26 +130,24 @@ export function RecipeBookMoreMenu({
           </ListItemIcon>
           <ListItemText>Share</ListItemText>
         </MenuItem>
+        {myRole === 'owner' && <Divider />}{' '}
         {myRole === 'owner' && (
-          <>
-            <Divider />
-            <MenuItem
-              onClick={() => {
-                deleteRecipeBook.mutate({ recipeBookId: recipeBookId });
+          <MenuItem
+            onClick={() => {
+              deleteRecipeBook.mutate({ recipeBookId: recipeBookId });
 
-                if (onDelete) {
-                  onDelete();
-                }
+              if (onDelete) {
+                onDelete();
+              }
 
-                onClose();
-              }}
-            >
-              <ListItemIcon>
-                <DeleteRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Delete</ListItemText>
-            </MenuItem>
-          </>
+              onClose();
+            }}
+          >
+            <ListItemIcon>
+              <DeleteRoundedIcon fontSize="small" />
+            </ListItemIcon>
+            <ListItemText>Delete</ListItemText>
+          </MenuItem>
         )}
       </Menu>
       <RecipeBookShareDialog

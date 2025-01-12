@@ -32,6 +32,7 @@ import {
 import { useSignedInUser } from '@open-zero/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
+import { useSignedInUserId } from '../auth/useSignedInUserId';
 
 const drawerWidth = 240;
 
@@ -43,8 +44,9 @@ interface Props {
 
 export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const { data: user } = useSignedInUser();
+  const userId = useSignedInUserId();
   const { data: recipeBooks } = useRecipeBooks({
-    options: { userId: user?.id ?? '' },
+    options: { userId: userId },
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
 

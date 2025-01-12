@@ -75,22 +75,20 @@ export function RecipeMoreMenu({
       </MenuItem>
       <Divider />
       {onRemoveFromRecipeBook && (
-        <>
-          <MenuItem
-            onClick={() => {
-              onRemoveFromRecipeBook();
+        <MenuItem
+          onClick={() => {
+            onRemoveFromRecipeBook();
 
-              onClose();
-            }}
-          >
-            <ListItemIcon>
-              <RemoveCircleRoundedIcon fontSize="small" />
-            </ListItemIcon>
-            <ListItemText>Remove from recipe book</ListItemText>
-          </MenuItem>
-          <Divider />
-        </>
+            onClose();
+          }}
+        >
+          <ListItemIcon>
+            <RemoveCircleRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Remove from recipe book</ListItemText>
+        </MenuItem>
       )}
+      {onRemoveFromRecipeBook && <Divider />}
       <MenuItem
         onClick={() => {
           deleteRecipe.mutate({ recipeId: recipe.id });
