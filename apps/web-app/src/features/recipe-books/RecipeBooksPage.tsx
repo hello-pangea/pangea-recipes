@@ -1,5 +1,5 @@
-import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Grid2, Typography } from '@mui/material';
 import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipes-books';
@@ -18,7 +18,7 @@ export function RecipeBooksPage() {
       <Typography variant="h1" sx={{ mb: 2 }}>
         Recipe books
       </Typography>
-      <ButtonLink
+      <RouterButton
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
@@ -26,7 +26,7 @@ export function RecipeBooksPage() {
         size="small"
       >
         New recipe book
-      </ButtonLink>
+      </RouterButton>
       <Grid2 container spacing={2}>
         {recipeBooks.map((recipeBook) => (
           <Grid2

@@ -1,33 +1,21 @@
 import { Page } from '#src/components/Page';
-import { useAuth, useClerk } from '@clerk/tanstack-start';
+import { useAuth } from '@clerk/tanstack-start';
 import { LoadingButton } from '@mui/lab';
-import { Button, Grid2, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ThemeCard } from './ThemeCard';
 
-export function AccountPage() {
+export function SettingsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { signOut } = useAuth();
-  const { openUserProfile } = useClerk();
 
   return (
     <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
-        Account
+        Settings
       </Typography>
-      <Typography variant="h2" sx={{ mb: 2 }}>
-        Manage profile and security
-      </Typography>
-      <Button
-        onClick={() => {
-          openUserProfile();
-        }}
-        sx={{ mb: 4 }}
-      >
-        Open
-      </Button>
       <Typography variant="h2" sx={{ mb: 2 }}>
         Theme preferences
       </Typography>

@@ -18,7 +18,7 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignUpSplatImport } from './routes/sign-up.$'
 import { Route as SignInSplatImport } from './routes/sign-in.$'
-import { Route as LayoutAccountImport } from './routes/_layout.account'
+import { Route as LayoutSettingsImport } from './routes/_layout.settings'
 import { Route as LayoutRecipesIndexImport } from './routes/_layout.recipes.index'
 import { Route as LayoutRecipeBooksIndexImport } from './routes/_layout.recipe-books.index'
 import { Route as LayoutCanonicalIngredientsIndexImport } from './routes/_layout.canonical-ingredients.index'
@@ -74,9 +74,9 @@ const SignInSplatRoute = SignInSplatImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutAccountRoute = LayoutAccountImport.update({
-  id: '/account',
-  path: '/account',
+const LayoutSettingsRoute = LayoutSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -190,11 +190,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfServiceImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/account': {
-      id: '/_layout/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof LayoutAccountImport
+    '/_layout/settings': {
+      id: '/_layout/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof LayoutSettingsImport
       parentRoute: typeof LayoutImport
     }
     '/sign-in/$': {
@@ -294,7 +294,7 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface LayoutRouteChildren {
-  LayoutAccountRoute: typeof LayoutAccountRoute
+  LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutCanonicalIngredientsNewRoute: typeof LayoutCanonicalIngredientsNewRoute
   LayoutRecipeBooksRecipeBookIdRoute: typeof LayoutRecipeBooksRecipeBookIdRoute
   LayoutRecipeBooksNewRoute: typeof LayoutRecipeBooksNewRoute
@@ -309,7 +309,7 @@ interface LayoutRouteChildren {
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutAccountRoute: LayoutAccountRoute,
+  LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutCanonicalIngredientsNewRoute: LayoutCanonicalIngredientsNewRoute,
   LayoutRecipeBooksRecipeBookIdRoute: LayoutRecipeBooksRecipeBookIdRoute,
   LayoutRecipeBooksNewRoute: LayoutRecipeBooksNewRoute,
@@ -334,7 +334,7 @@ export interface FileRoutesByFullPath {
   '/finish-sign-up': typeof FinishSignUpRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/account': typeof LayoutAccountRoute
+  '/settings': typeof LayoutSettingsRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
@@ -356,7 +356,7 @@ export interface FileRoutesByTo {
   '/finish-sign-up': typeof FinishSignUpRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/account': typeof LayoutAccountRoute
+  '/settings': typeof LayoutSettingsRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
@@ -379,7 +379,7 @@ export interface FileRoutesById {
   '/finish-sign-up': typeof FinishSignUpRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/_layout/account': typeof LayoutAccountRoute
+  '/_layout/settings': typeof LayoutSettingsRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/_layout/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
@@ -403,7 +403,7 @@ export interface FileRouteTypes {
     | '/finish-sign-up'
     | '/privacy-policy'
     | '/terms-of-service'
-    | '/account'
+    | '/settings'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/canonical-ingredients/new'
@@ -424,7 +424,7 @@ export interface FileRouteTypes {
     | '/finish-sign-up'
     | '/privacy-policy'
     | '/terms-of-service'
-    | '/account'
+    | '/settings'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/canonical-ingredients/new'
@@ -445,7 +445,7 @@ export interface FileRouteTypes {
     | '/finish-sign-up'
     | '/privacy-policy'
     | '/terms-of-service'
-    | '/_layout/account'
+    | '/_layout/settings'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/_layout/canonical-ingredients/new'
@@ -507,7 +507,7 @@ export const routeTree = rootRoute
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
-        "/_layout/account",
+        "/_layout/settings",
         "/_layout/canonical-ingredients/new",
         "/_layout/recipe-books/$recipeBookId",
         "/_layout/recipe-books/new",
@@ -530,8 +530,8 @@ export const routeTree = rootRoute
     "/terms-of-service": {
       "filePath": "terms-of-service.tsx"
     },
-    "/_layout/account": {
-      "filePath": "_layout.account.tsx",
+    "/_layout/settings": {
+      "filePath": "_layout.settings.tsx",
       "parent": "/_layout"
     },
     "/sign-in/$": {

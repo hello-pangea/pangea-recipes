@@ -1,10 +1,11 @@
-import { ButtonLink } from '#src/components/ButtonLink';
 import { CarrotIcon } from '#src/components/CarrotIcon';
 import { ListItemButtonLink } from '#src/components/ListItemButtonLink';
+import { RouterButton } from '#src/components/RouterButton';
 import {
   dropTargetForElements,
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
+import { useClerk } from '@clerk/tanstack-start';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
@@ -12,6 +13,7 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
+import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import {
   alpha,
   Box,
@@ -20,6 +22,7 @@ import {
   Drawer,
   IconButton,
   List,
+  ListItemButton,
   ListItemIcon,
   ListItemText,
   ListItem as MuiListItem,
@@ -49,6 +52,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
     options: { userId: userId },
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
+  const { openUserProfile } = useClerk();
 
   useEffect(() => {
     return monitorForElements({
@@ -101,13 +105,13 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
         </Typography>
       </Box>
       <Box sx={{ p: 1 }}>
-        <ButtonLink
+        <RouterButton
           to="/recipes/new"
           variant="contained"
           startIcon={<AddRoundedIcon />}
         >
           New
-        </ButtonLink>
+        </RouterButton>
       </Box>
       {/* Navigation */}
       <Box
@@ -164,17 +168,48 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
           )}
         </List>
       </Box>
-      <Divider />
-      <Box sx={{ px: 2, py: 1 }}>
-        <ButtonLink
-          to="/account"
-          variant="text"
-          startIcon={<PersonRoundedIcon />}
-          fullWidth
+      <Box sx={{ pb: 1 }}>
+        <Divider sx={{ mb: 1 }} />
+        <MuiListItem disablePadding>
+          <ListItemButton
+            onClick={() => {
+              openUserProfile();
+            }}
+            sx={{
+              mx: 1,
+              borderRadius: 1,
+              border: 2,
+              borderColor: 'transparent',
+            }}
+          >
+            <ListItemIcon
+              sx={{
+                minWidth: '42px',
+              }}
+            >
+              <PersonRoundedIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={'Account'}
+              slotProps={{
+                primary: {
+                  sx: {
+                    fontSize: 16,
+                  },
+                },
+              }}
+            />
+          </ListItemButton>
+        </MuiListItem>
+        <ListItem
+          icon={<SettingsRoundedIcon />}
+          label="Settings"
           onClick={onClose}
-        >
-          Account
-        </ButtonLink>
+          linkProps={{
+            to: '/settings',
+          }}
+          plainPath="/settings"
+        />
       </Box>
     </>
   );

@@ -1,5 +1,5 @@
-import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { focusNextInput } from '#src/lib/focusNextInput';
 import { getNumberFromInput } from '#src/lib/getNumberFromInput';
@@ -194,14 +194,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   return (
     <Page>
-      <ButtonLink
+      <RouterButton
         size="small"
         startIcon={<ChevronLeftRoundedIcon />}
         color="inherit"
         to="/recipes"
       >
         Back
-      </ButtonLink>
+      </RouterButton>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
           {defaultRecipe ? 'Edit recipe' : 'New recipe'}

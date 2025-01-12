@@ -1,5 +1,5 @@
-import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { LoadingButton } from '@mui/lab';
@@ -78,14 +78,14 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
 
   return (
     <Page>
-      <ButtonLink
+      <RouterButton
         size="small"
         startIcon={<ChevronLeftRoundedIcon />}
         color="inherit"
         to="/recipe-books"
       >
         Back
-      </ButtonLink>
+      </RouterButton>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
           {defaultRecipeBook ? 'Edit recipe book' : 'New recipe book'}
