@@ -145,11 +145,9 @@ export function RecipeBookMoreMenu({
               }}
             >
               <ListItemIcon>
-                <DeleteRoundedIcon color="error" fontSize="small" />
+                <DeleteRoundedIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText sx={{ color: (theme) => theme.palette.error.main }}>
-                Delete
-              </ListItemText>
+              <ListItemText>Delete</ListItemText>
             </MenuItem>
           </>
         )}

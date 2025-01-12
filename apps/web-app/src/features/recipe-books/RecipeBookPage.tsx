@@ -64,7 +64,7 @@ export function RecipeBookPage() {
         >
           <Typography variant="h1">{recipeBook.name}</Typography>
         </Button>
-        {recipeBook.members.length > 1 && (
+        {(recipeBook.members.length > 1 || recipeBook.invites.length > 0) && (
           <Tooltip title="Shared">
             <IconButton
               onClick={() => {

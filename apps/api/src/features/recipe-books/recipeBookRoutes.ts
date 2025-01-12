@@ -9,6 +9,7 @@ import { Type } from '@sinclair/typebox';
 import { ApiError } from '../../lib/ApiError.js';
 import { noContentSchema } from '../../types/noContent.js';
 import { verifySession } from '../auth/verifySession.js';
+import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.js';
 import { recipeBookMemberRoutes } from './recipeBookMemberRoutes.js';
 import { recipeBookRecipeRoutes } from './recipeBookRecipeRoutes.js';
 
@@ -51,23 +52,11 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
             },
           },
         },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
+        include: recipeBookInclude,
       });
 
       return {
-        recipeBook: recipeBook,
+        recipeBook: mapToRecipeBookDto(recipeBook),
       };
     },
   );
@@ -108,24 +97,11 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
             },
           },
         },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-          invites: true,
-        },
+        include: recipeBookInclude,
       });
 
       return {
-        recipeBooks: recipeBooks,
+        recipeBooks: recipeBooks.map(mapToRecipeBookDto),
       };
     },
   );
@@ -153,30 +129,11 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
         where: {
           id: recipeBookId,
         },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-          invites: true,
-        },
+        include: recipeBookInclude,
       });
 
       return {
-        recipeBook: {
-          ...recipeBook,
-          members: recipeBook.members.map((member) => ({
-            ...member,
-            name: member.user.name,
-          })),
-        },
+        recipeBook: mapToRecipeBookDto(recipeBook),
       };
     },
   );
@@ -210,24 +167,11 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
           name: name,
           description: description,
         },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-          invites: true,
-        },
+        include: recipeBookInclude,
       });
 
       return {
-        recipeBook: recipeBook,
+        recipeBook: mapToRecipeBookDto(recipeBook),
       };
     },
   );

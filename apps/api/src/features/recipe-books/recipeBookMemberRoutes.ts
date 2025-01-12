@@ -3,6 +3,7 @@ import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { noContentSchema } from '#src/types/noContent.js';
 import { clerkClient } from '@clerk/fastify';
+import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipes-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';
 
@@ -20,58 +21,66 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
         params: Type.Object({
           recipeBookId: Type.String({ format: 'uuid' }),
         }),
-        body: Type.Object({
-          emails: Type.Array(Type.String({ format: 'email' })),
-          role: Type.Union([
-            Type.Literal('owner'),
-            Type.Literal('editor'),
-            Type.Literal('viewer'),
-          ]),
-        }),
+        body: inviteMembersToRecipeBookBodySchema,
       },
     },
     async (request) => {
       const { recipeBookId } = request.params;
-      const { emails, role } = request.body;
+      const { emails, userIds, role } = request.body;
 
       if (!request.session?.userId) {
         throw new Error('User not found');
       }
 
+      if (!emails && !userIds) {
+        throw new Error('Must provide emails or userIds');
+      }
+
       const existingUsers = await prisma.user.findMany({
         where: {
-          emailAddress: {
-            in: emails,
-          },
+          OR: [
+            {
+              id: {
+                in: userIds,
+              },
+            },
+            {
+              emailAddress: {
+                in: emails,
+              },
+            },
+          ],
         },
       });
 
-      const emailsWithNoUser = emails.filter(
-        (email) => !existingUsers.some((user) => user.emailAddress === email),
-      );
+      if (emails) {
+        const emailsWithNoUser = emails.filter(
+          (email) => !existingUsers.some((user) => user.emailAddress === email),
+        );
 
-      const signUpUrl =
-        config.NODE_ENV === 'development'
-          ? `http://localhost:3000/sign-up`
-          : `https://hellorecipes.com/sign-up`;
+        const signUpUrl =
+          config.NODE_ENV === 'development'
+            ? `http://localhost:3000/sign-up`
+            : `https://hellorecipes.com/sign-up`;
 
-      for (const email of emailsWithNoUser) {
-        const clerkInvite = await clerkClient.invitations.createInvitation({
-          emailAddress: email,
-          notify: true,
-          ignoreExisting: true,
-          redirectUrl: signUpUrl,
-        });
+        for (const email of emailsWithNoUser) {
+          const clerkInvite = await clerkClient.invitations.createInvitation({
+            emailAddress: email,
+            notify: true,
+            ignoreExisting: true,
+            redirectUrl: signUpUrl,
+          });
 
-        await prisma.recipeBookInvite.create({
-          data: {
-            recipeBookId: recipeBookId,
-            inviteeEmailAddress: email,
-            invitedByUserId: request.session.userId,
-            role: role,
-            clerkInviteId: clerkInvite.id,
-          },
-        });
+          await prisma.recipeBookInvite.create({
+            data: {
+              recipeBookId: recipeBookId,
+              inviteeEmailAddress: email,
+              invitedByUserId: request.session.userId,
+              role: role,
+              clerkInviteId: clerkInvite.id,
+            },
+          });
+        }
       }
 
       for (const user of existingUsers) {

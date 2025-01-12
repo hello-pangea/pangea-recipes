@@ -63,12 +63,14 @@ export function RecipeBookCard({ recipeBookId }: Props) {
           >
             <Stack direction="row" spacing={1} alignItems="center">
               <Typography variant="body1">{recipeBook.name}</Typography>
-              {recipeBook.members.length > 1 && (
+              {(recipeBook.members.length > 1 ||
+                recipeBook.invites.length > 0) && (
                 <Tooltip title="Shared">
                   <GroupRoundedIcon
                     sx={{
                       color: (theme) => theme.palette.text.secondary,
                     }}
+                    fontSize="inherit"
                   />
                 </Tooltip>
               )}

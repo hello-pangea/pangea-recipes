@@ -1,17 +1,28 @@
+import { Type, type Static } from '@sinclair/typebox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
+import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
-interface InviteMembersToRecipeBook {
+type InviteMembersToRecipeBook = Static<
+  typeof inviteMembersToRecipeBookBodySchema
+> & {
   recipeBookId: string;
-  emails: string[];
-  role: 'owner' | 'editor' | 'viewer';
-}
+};
+export const inviteMembersToRecipeBookBodySchema = Type.Object({
+  emails: Type.Optional(Type.Array(Type.String({ format: 'email' }))),
+  userIds: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
+  role: Type.Union([
+    Type.Literal('owner'),
+    Type.Literal('editor'),
+    Type.Literal('viewer'),
+  ]),
+});
 
 function inviteMembersToRecipeBook(data: InviteMembersToRecipeBook) {
   return api.post(`recipe-books/${data.recipeBookId}/members`, {
-    json: { emails: data.emails, role: data.role },
+    json: { emails: data.emails, role: data.role, userIds: data.userIds },
   });
 }
 
@@ -30,6 +41,9 @@ export function useInviteMembersToRecipeBook({ mutationConfig }: Options = {}) {
 
       void queryClient.invalidateQueries({
         queryKey: getRecipeBookQueryOptions(input.recipeBookId).queryKey,
+      });
+      void queryClient.invalidateQueries({
+        queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
       });
 
       onSuccess?.(...args);

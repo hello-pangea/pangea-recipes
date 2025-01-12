@@ -3,6 +3,7 @@ import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { recipeBookSchemaRef } from '@open-zero/features/recipes-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';
+import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.js';
 
 const routeTag = 'Recipe books';
 
@@ -47,23 +48,11 @@ export async function recipeBookRecipeRoutes(fastify: FastifyTypebox) {
             },
           },
         },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
+        include: recipeBookInclude,
       });
 
       return {
-        recipeBook: recipeBook,
+        recipeBook: mapToRecipeBookDto(recipeBook),
       };
     },
   );
@@ -100,23 +89,11 @@ export async function recipeBookRecipeRoutes(fastify: FastifyTypebox) {
             },
           },
         },
-        include: {
-          members: {
-            select: {
-              userId: true,
-              role: true,
-              user: {
-                select: {
-                  name: true,
-                },
-              },
-            },
-          },
-        },
+        include: recipeBookInclude,
       });
 
       return {
-        recipeBook: recipeBook,
+        recipeBook: mapToRecipeBookDto(recipeBook),
       };
     },
   );

@@ -49,7 +49,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
         create: {
           emailAddress: clerkUser.primaryEmailAddress?.emailAddress ?? null,
           phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
-          name: name ?? clerkUser.fullName,
+          name: name ?? clerkUser.fullName ?? 'Guest',
           accessRole: 'user',
           clerkUserId: clerkUserId,
         },
@@ -64,30 +64,36 @@ export async function userRoutes(fastify: FastifyTypebox) {
       });
 
       if (user.emailAddress) {
+        const now = new Date();
+
         const recipeBookInvites = await prisma.recipeBookInvite.findMany({
           where: {
             inviteeEmailAddress: user.emailAddress,
           },
         });
 
-        for (const invite of recipeBookInvites) {
-          await prisma.recipeBookMember.create({
+        await prisma.$transaction(async (prisma) => {
+          if (!user.emailAddress) {
+            return;
+          }
+
+          await prisma.recipeBookInvite.updateMany({
+            where: {
+              inviteeEmailAddress: user.emailAddress,
+            },
             data: {
-              recipeBookId: invite.recipeBookId,
-              userId: user.id,
-              role: invite.role,
+              claimedAt: now,
             },
           });
 
-          await prisma.recipeBookInvite.delete({
-            where: {
-              inviteeEmailAddress_recipeBookId: {
-                inviteeEmailAddress: invite.inviteeEmailAddress,
-                recipeBookId: invite.recipeBookId,
-              },
-            },
+          await prisma.recipeBookMember.createMany({
+            data: recipeBookInvites.map((invite) => ({
+              recipeBookId: invite.recipeBookId,
+              userId: user.id,
+              role: invite.role,
+            })),
           });
-        }
+        });
       }
 
       return { user: user };

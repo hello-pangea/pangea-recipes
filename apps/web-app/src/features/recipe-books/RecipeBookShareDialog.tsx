@@ -1,4 +1,5 @@
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import { LoadingButton } from '@mui/lab';
@@ -8,6 +9,7 @@ import {
   Button,
   Chip,
   CircularProgress,
+  createFilterOptions,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,6 +20,7 @@ import {
   Select,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import {
@@ -25,9 +28,19 @@ import {
   useDeleteRecipeBookMember,
   useInviteMembersToRecipeBook,
   useRecipeBook,
+  useRecipeBooks,
 } from '@open-zero/features/recipes-books';
 import { useEffect, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+
+interface InviteOption {
+  id: string;
+  label: string;
+  userId?: string;
+  email?: string;
+}
+
+const filter = createFilterOptions<InviteOption>();
 
 interface Props {
   recipeBookId: string;
@@ -38,16 +51,62 @@ interface Props {
 export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const userId = useSignedInUserId();
   const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
-  const [inviteEmails, setInviteEmails] = useState<string[]>([]);
+  const [invites, setInvites] = useState<InviteOption[]>([]);
   const [inviteRole, setInviteRole] = useState<'editor' | 'viewer'>('viewer');
   const inviteMembersToRecipeBook = useInviteMembersToRecipeBook();
   const deleteRecipeBookInvite = useDeleteRecipeBookInvite();
   const deleteRecipeBookMember = useDeleteRecipeBookMember();
+  const { data: recipeBooks } = useRecipeBooks({
+    options: {
+      userId: userId,
+    },
+  });
+
+  const invitedEmails = [
+    ...new Set(
+      (
+        recipeBooks?.map((recipeBook) =>
+          recipeBook.invites.map((invite) => invite.inviteeEmailAddress),
+        ) ?? []
+      ).flat(),
+    ),
+  ].filter((email) =>
+    recipeBook?.invites.every((invite) => invite.inviteeEmailAddress !== email),
+  );
+  const knownMembers =
+    recipeBooks
+      ?.map((recipeBook) =>
+        recipeBook.members.map((member) => ({
+          userId: member.userId,
+          name: member.name,
+        })),
+      )
+      .flat()
+      .filter(
+        (member, index, arr) =>
+          arr.findIndex((m) => m.userId === member.userId) === index &&
+          member.userId !== userId &&
+          recipeBook?.members.every(
+            (recipeBookMember) => recipeBookMember.userId !== member.userId,
+          ),
+      ) ?? [];
+  const inviteOptions: InviteOption[] = [
+    ...invitedEmails.map((email) => ({ id: email, label: email, email })),
+    ...knownMembers.map((member) => ({
+      id: member.userId,
+      label: member.name,
+      userId: member.userId,
+    })),
+  ];
 
   useEffect(() => {
-    setInviteEmails([]);
-    setInviteRole('viewer');
+    resetInviteForm();
   }, [open]);
+
+  function resetInviteForm() {
+    setInvites([]);
+    setInviteRole('viewer');
+  }
 
   if (!recipeBook) {
     return <CircularProgress />;
@@ -71,19 +130,29 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           <Autocomplete
             multiple
             fullWidth
-            options={[]}
-            value={inviteEmails}
+            options={inviteOptions}
+            value={invites}
             onChange={(_event, newShareEmails) => {
-              setInviteEmails(newShareEmails);
+              setInvites(
+                newShareEmails.map((invite) =>
+                  typeof invite === 'string'
+                    ? {
+                        label: invite,
+                        id: invite,
+                        email: invite,
+                      }
+                    : invite,
+                ),
+              );
             }}
             freeSolo
-            renderTags={(value: readonly string[], getTagProps) =>
-              value.map((option: string, index: number) => {
+            renderTags={(value: readonly InviteOption[], getTagProps) =>
+              value.map((option: InviteOption, index: number) => {
                 const { key, ...tagProps } = getTagProps({ index });
                 return (
                   <Chip
                     variant="outlined"
-                    label={option}
+                    label={option.label}
                     key={key}
                     {...tagProps}
                   />
@@ -95,12 +164,34 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 {...params}
                 variant="outlined"
                 placeholder={
-                  inviteEmails.length <= 0 ? 'Add people by email' : undefined
+                  invites.length <= 0 ? 'Add by email or name' : undefined
                 }
               />
             )}
+            filterOptions={(options, params) => {
+              const filtered = filter(options, params);
+
+              const { inputValue } = params;
+              // Suggest the creation of a new value
+              const isExisting = options.some(
+                (option) => inputValue === option.email,
+              );
+
+              const isEmail = isMaybeValidEmail(inputValue);
+
+              if (inputValue !== '' && !isExisting && isEmail) {
+                filtered.push({
+                  // inputValue,
+                  label: inputValue,
+                  id: inputValue,
+                  email: inputValue,
+                });
+              }
+
+              return filtered;
+            }}
           />
-          {inviteEmails.length > 0 && (
+          {invites.length > 0 && (
             <FormControl sx={{ minWidth: 100 }}>
               <Select
                 inputProps={{ 'aria-label': 'Permission' }}
@@ -115,7 +206,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             </FormControl>
           )}
         </Stack>
-        {inviteEmails.length <= 0 && (
+        {invites.length <= 0 && (
           <Box sx={{ mt: 4 }}>
             <Typography variant="h3" sx={{ mb: 2 }}>
               Members
@@ -135,7 +226,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 1,
+                      gap: 2,
                     }}
                   >
                     <PersonRoundedIcon />
@@ -176,14 +267,16 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 1,
+                      gap: 2,
                     }}
                   >
-                    <PersonRoundedIcon />
+                    <Tooltip title="We sent an invite to their email">
+                      <EmailRoundedIcon />
+                    </Tooltip>
                     <Box>
                       <Typography>{invitee.inviteeEmailAddress}</Typography>
                       <Typography variant="caption">
-                        Invite pending ({invitee.role})
+                        Invite sent ({invitee.role})
                       </Typography>
                     </Box>
                   </Box>
@@ -203,7 +296,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           </Box>
         )}
       </DialogContent>
-      {!inviteEmails.length ? (
+      {!invites.length ? (
         <DialogActions
           sx={{
             justifyContent: 'space-between',
@@ -232,7 +325,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           <Button
             variant="text"
             onClick={() => {
-              onClose();
+              resetInviteForm();
             }}
             disabled={inviteMembersToRecipeBook.isPending}
           >
@@ -243,7 +336,12 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             onClick={() => {
               inviteMembersToRecipeBook.mutate(
                 {
-                  emails: inviteEmails,
+                  emails: invites
+                    .map((invite) => invite.email)
+                    .filter((email) => email !== undefined),
+                  userIds: invites
+                    .map((invite) => invite.userId)
+                    .filter((userId) => userId !== undefined),
                   recipeBookId,
                   role: inviteRole,
                 },
@@ -262,4 +360,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
       )}
     </Dialog>
   );
+}
+
+function isMaybeValidEmail(email: string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.toLowerCase());
 }

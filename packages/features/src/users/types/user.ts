@@ -13,7 +13,7 @@ export const userSchema = Type.Object(
 
     createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
 
-    name: Nullable(Type.String()),
+    name: Type.String(),
 
     emailAddress: Nullable(Type.String()),
     phoneNumber: Nullable(Type.String()),

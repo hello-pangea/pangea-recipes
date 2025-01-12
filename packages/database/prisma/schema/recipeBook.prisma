@@ -61,6 +61,8 @@ model RecipeBookInvite {
 
   role Role
 
+  claimedAt DateTime? @map("claimed_at")
+
   @@id([inviteeEmailAddress, recipeBookId])
   @@map("recipe_book_invites")
 }

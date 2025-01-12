@@ -77,7 +77,6 @@ export function RecipePage() {
           <TagEditor
             tags={recipe.tags}
             onTagsChange={(newTags) => {
-              console.log('tags changed');
               recipeUpdater.mutate({
                 id: recipe.id,
                 tags: newTags,

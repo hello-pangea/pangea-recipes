@@ -4,7 +4,7 @@ model User {
 
   emailAddress String? @unique @map("email_address")
   phoneNumber  String? @unique @map("phone_number")
-  name         String?
+  name         String
 
   clerkUserId String @unique @map("clerk_user_id")
 

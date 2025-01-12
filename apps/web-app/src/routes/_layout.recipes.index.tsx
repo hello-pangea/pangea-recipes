@@ -4,8 +4,6 @@ import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_layout/recipes/')({
   loader: async ({ context }) => {
-    console.log('loader recipes', context);
-
     if (!context.userId) {
       return;
     }

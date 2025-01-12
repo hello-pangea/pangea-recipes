@@ -20,7 +20,7 @@ export const recipeBookSchema = Type.Object(
     members: Type.Array(
       Type.Object({
         userId: Type.String({ format: 'uuid' }),
-        name: Type.Optional(Type.String()),
+        name: Type.String(),
         role: Type.Union([
           Type.Literal('owner'),
           Type.Literal('editor'),
