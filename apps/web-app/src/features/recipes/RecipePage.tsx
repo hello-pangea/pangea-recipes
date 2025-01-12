@@ -51,7 +51,11 @@ export function RecipePage() {
             <Box>
               <Typography variant="h1">{recipe.name}</Typography>
               {recipe.websiteSource && (
-                <Link href={recipe.websiteSource.url} rel="nofollow">
+                <Link
+                  href={recipe.websiteSource.url}
+                  rel="nofollow"
+                  target="_blank"
+                >
                   {recipe.websiteSource.title}
                 </Link>
               )}
