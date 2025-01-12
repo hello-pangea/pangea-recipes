@@ -12,10 +12,11 @@ model User {
 
   themePreference ThemePreference @default(light) @map("theme_preference")
 
-  recipes           Recipe[]
-  images            Image[]
-  recipeBooks       RecipeBookMember[]
-  recipeBookInvites RecipeBookInvite[]
+  recipes            Recipe[]
+  images             Image[]
+  recipeBooks        RecipeBookMember[]
+  recipeBookInvites  RecipeBookInvite[]
+  recipeBookRequests RecipeBookRequest[]
 
   @@map("users")
 }

@@ -3,6 +3,7 @@ import auth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
+import fastifySensible from '@fastify/sensible';
 import openApi from '@fastify/swagger';
 import { canonicalIngredientSchema } from '@open-zero/features/canonical-ingredients';
 import { recipeSchema } from '@open-zero/features/recipes';
@@ -51,6 +52,8 @@ export async function createServer() {
   void fastify.register(helmet);
 
   void fastify.register(auth);
+
+  void fastify.register(fastifySensible);
 
   void fastify.addSchema(canonicalIngredientSchema);
   void fastify.addSchema(recipeSchema);

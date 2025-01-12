@@ -16,7 +16,7 @@ function listRecipeBooks(options: { userId: string }): Promise<RecipeBook[]> {
 
 export function getListRecipeBooksQueryOptions(options: { userId: string }) {
   return queryOptions({
-    queryKey: ['recipeBooks'],
+    queryKey: ['recipeBooks', options],
     queryFn: () => listRecipeBooks(options),
   });
 }

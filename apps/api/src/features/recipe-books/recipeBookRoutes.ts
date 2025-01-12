@@ -38,7 +38,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       const userId = request.session?.userId;
 
       if (!userId) {
-        throw new Error('User not authenticated');
+        throw fastify.httpErrors.unauthorized();
       }
 
       const recipeBook = await prisma.recipeBook.create({
@@ -125,12 +125,22 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
     async (request) => {
       const { recipeBookId } = request.params;
 
+      const userId = request.session?.userId;
+
+      if (!userId) {
+        throw fastify.httpErrors.unauthorized();
+      }
+
       const recipeBook = await prisma.recipeBook.findUniqueOrThrow({
         where: {
           id: recipeBookId,
         },
         include: recipeBookInclude,
       });
+
+      if (!recipeBook.members.some((member) => member.userId === userId)) {
+        throw fastify.httpErrors.forbidden();
+      }
 
       return {
         recipeBook: mapToRecipeBookDto(recipeBook),

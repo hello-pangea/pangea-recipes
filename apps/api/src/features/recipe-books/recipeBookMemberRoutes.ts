@@ -97,6 +97,83 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
     },
   );
 
+  fastify.get(
+    '/:recipeBookId/requests',
+    {
+      preHandler: fastify.auth([verifySession]),
+      schema: {
+        tags: [routeTag],
+        summary: 'Invite or add new members to a recipe book',
+        params: Type.Object({
+          recipeBookId: Type.String({ format: 'uuid' }),
+        }),
+        querystring: Type.Object({
+          userId: Type.String({ format: 'uuid' }),
+        }),
+        response: {
+          200: {
+            recipeBookRequests: Type.Array(
+              Type.Object({
+                userId: Type.String({ format: 'uuid' }),
+              }),
+            ),
+          },
+        },
+      },
+    },
+    async (request) => {
+      const { recipeBookId } = request.params;
+      const { userId } = request.query;
+
+      if (request.session?.userId !== userId) {
+        throw fastify.httpErrors.forbidden();
+      }
+
+      const recipeBookRequest = await prisma.recipeBookRequest.findFirst({
+        where: {
+          recipeBookId: recipeBookId,
+          userId: userId,
+        },
+      });
+
+      return {
+        recipeBookRequests: recipeBookRequest ? [recipeBookRequest] : [],
+      };
+    },
+  );
+
+  fastify.post(
+    '/:recipeBookId/requests',
+    {
+      preHandler: fastify.auth([verifySession]),
+      schema: {
+        tags: [routeTag],
+        summary: 'Request access to a recipe book',
+        params: Type.Object({
+          recipeBookId: Type.String({ format: 'uuid' }),
+        }),
+      },
+    },
+    async (request) => {
+      const { recipeBookId } = request.params;
+
+      const userId = request.session?.userId;
+
+      if (!userId) {
+        throw fastify.httpErrors.unauthorized();
+      }
+
+      await prisma.recipeBookRequest.create({
+        data: {
+          recipeBookId: recipeBookId,
+          userId: userId,
+        },
+      });
+
+      return null;
+    },
+  );
+
   fastify.delete(
     '/:recipeBookId/members/:userId',
     {

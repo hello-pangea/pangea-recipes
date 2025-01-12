@@ -13,12 +13,15 @@ import {
 import { getSignedInUserQueryOptions } from '@open-zero/features/users';
 import { useQueryClient } from '@tanstack/react-query';
 import {
+  getRouteApi,
   Navigate,
   Outlet,
   useNavigate,
   useRouter,
 } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+
+const route = getRouteApi('/_layout');
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -27,19 +30,22 @@ export function Layout() {
   );
   const { user: clerkUser, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
+  const routeContext = route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      void router.invalidate();
-      void queryClient.invalidateQueries({
-        queryKey: getSignedInUserQueryOptions().queryKey,
-      });
-
       if (!clerkUser.publicMetadata.helloRecipesUserId) {
         void navigate({
           to: '/finish-sign-up',
+        });
+      }
+
+      if (!routeContext.userId) {
+        void router.invalidate();
+        void queryClient.invalidateQueries({
+          queryKey: getSignedInUserQueryOptions().queryKey,
         });
       }
     }
@@ -50,12 +56,17 @@ export function Layout() {
     clerkUser?.publicMetadata.helloRecipesUserId,
     queryClient,
     navigate,
+    routeContext.userId,
   ]);
 
   if (isLoaded && clerkUser && !clerkUser.publicMetadata.helloRecipesUserId) {
     return <Navigate to="/finish-sign-up" />;
   } else if (isLoaded && !clerkUser) {
     return <Navigate to="/sign-in/$" />;
+  }
+
+  if (!routeContext.userId) {
+    return null;
   }
 
   return (

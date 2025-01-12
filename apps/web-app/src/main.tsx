@@ -4,6 +4,7 @@ import '@fontsource-variable/merriweather-sans';
 import { updateApiOptions } from '@open-zero/features';
 import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';
+import { HTTPError } from 'ky';
 import { StrictMode, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
@@ -31,7 +32,19 @@ updateApiOptions({
     ],
   },
 });
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: (failureCount, error) => {
+        if (error instanceof HTTPError && error.response.status === 403) {
+          return false;
+        }
+
+        return failureCount < 3;
+      },
+    },
+  },
+});
 
 export const router = createRouter({
   routeTree,

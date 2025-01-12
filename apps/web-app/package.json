@@ -38,6 +38,7 @@
     "@uppy/progress-bar": "^4.2.1",
     "@uppy/react": "^4.2.1",
     "@uppy/xhr-upload": "^4.3.2",
+    "ky": "^1.7.4",
     "notistack": "^3.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

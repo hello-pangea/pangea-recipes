@@ -5,9 +5,10 @@ model RecipeBook {
   name        String
   description String?
 
-  recipes RecipesOnRecipeBooks[]
-  members RecipeBookMember[]
-  invites RecipeBookInvite[]
+  recipes  RecipesOnRecipeBooks[]
+  members  RecipeBookMember[]
+  invites  RecipeBookInvite[]
+  requests RecipeBookRequest[]
 
   @@map("recipe_books")
 }
@@ -65,4 +66,19 @@ model RecipeBookInvite {
 
   @@id([inviteeEmailAddress, recipeBookId])
   @@map("recipe_book_invites")
+}
+
+model RecipeBookRequest {
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipeBookId String     @map("recipe_book_id") @db.Uuid
+  recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  acceptedAt DateTime? @map("accepted_at")
+
+  @@id([userId, recipeBookId])
+  @@map("recipe_book_requests")
 }

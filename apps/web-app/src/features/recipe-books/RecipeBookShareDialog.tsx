@@ -1,3 +1,4 @@
+import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
@@ -61,6 +62,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
       userId: userId,
     },
   });
+  const [linkCopied, setLinkCopied] = useState(false);
 
   const invitedEmails = [
     ...new Set(
@@ -106,6 +108,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   function resetInviteForm() {
     setInvites([]);
     setInviteRole('viewer');
+    setLinkCopied(false);
   }
 
   if (!recipeBook) {
@@ -305,11 +308,21 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           <Button
             variant="outlined"
             onClick={() => {
-              onClose();
+              void navigator.clipboard
+                .writeText(
+                  `${window.location.origin}/recipe-books/${recipeBookId}`,
+                )
+                .then(() => {
+                  setLinkCopied(true);
+                  setTimeout(() => {
+                    setLinkCopied(false);
+                  }, 3000);
+                });
             }}
-            startIcon={<LinkRoundedIcon />}
+            startIcon={linkCopied ? <CheckRoundedIcon /> : <LinkRoundedIcon />}
+            color={linkCopied ? 'success' : 'primary'}
           >
-            Copy link
+            {linkCopied ? 'Link copied' : 'Copy link'}
           </Button>
           <Button
             variant="contained"

@@ -38,6 +38,12 @@ export const recipeBookSchema = Type.Object(
         ]),
       }),
     ),
+    requests: Type.Array(
+      Type.Object({
+        userId: Type.String({ format: 'uuid' }),
+        name: Type.String(),
+      }),
+    ),
   },
   { $id: recipeBookSchemaId },
 );

@@ -13,6 +13,16 @@ export const recipeBookInclude = {
       },
     },
   },
+  requests: {
+    select: {
+      userId: true,
+      user: {
+        select: {
+          name: true,
+        },
+      },
+    },
+  },
   invites: true,
 } satisfies Prisma.Args<
   typeof prisma.recipeBook,
@@ -29,6 +39,10 @@ export function mapToRecipeBookDto(recipeBookData: RecipeBookData): RecipeBook {
     members: recipeBookData.members.map((member) => ({
       ...member,
       name: member.user.name,
+    })),
+    requests: recipeBookData.requests.map((request) => ({
+      ...request,
+      name: request.user.name,
     })),
   };
 
