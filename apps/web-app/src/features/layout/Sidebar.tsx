@@ -1,6 +1,6 @@
 import { CarrotIcon } from '#src/components/CarrotIcon';
-import { ListItemButtonLink } from '#src/components/ListItemButtonLink';
 import { RouterButton } from '#src/components/RouterButton';
+import { RouterListItemButton } from '#src/components/RouterListItemButton';
 import {
   dropTargetForElements,
   monitorForElements,
@@ -298,7 +298,7 @@ function ListItem({
           )
         }
       >
-        <ListItemButtonLink
+        <RouterListItemButton
           onClick={onClick}
           selected={selected}
           sx={{
@@ -342,7 +342,7 @@ function ListItem({
               },
             }}
           />
-        </ListItemButtonLink>
+        </RouterListItemButton>
       </MuiListItem>
       {children && (
         <Collapse in={open} timeout="auto" unmountOnExit>

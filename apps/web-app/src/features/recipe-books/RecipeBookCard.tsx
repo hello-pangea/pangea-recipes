@@ -1,4 +1,4 @@
-import { CardActionAreaLink } from '#src/components/CardActionAreaLink';
+import { RouterCardActionArea } from '#src/components/RouterCardActionArea';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
@@ -32,7 +32,7 @@ export function RecipeBookCard({ recipeBookId }: Props) {
   return (
     <>
       <Card variant="outlined">
-        <CardActionAreaLink
+        <RouterCardActionArea
           to="/recipe-books/$recipeBookId"
           params={{
             recipeBookId: recipeBookId,
@@ -93,7 +93,7 @@ export function RecipeBookCard({ recipeBookId }: Props) {
               <MoreVertRoundedIcon />
             </IconButton>
           </Box>
-        </CardActionAreaLink>
+        </RouterCardActionArea>
       </Card>
       <RecipeBookMoreMenu
         recipeBookId={recipeBookId}
