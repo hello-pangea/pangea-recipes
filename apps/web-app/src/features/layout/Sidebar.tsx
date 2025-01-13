@@ -138,22 +138,24 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             plainPath="/recipe-books"
             matchExact
           >
-            {recipeBooks?.map((recipeBook) => (
-              <DroppableRecipeBookListItem
-                key={recipeBook.id}
-                icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}
-                label={recipeBook.name}
-                isNested
-                linkProps={{
-                  to: '/recipe-books/$recipeBookId',
-                  params: {
-                    recipeBookId: recipeBook.id,
-                  },
-                }}
-                plainPath={`/recipe-books/${recipeBook.id}`}
-                recipeBookId={recipeBook.id}
-              />
-            ))}
+            {(recipeBooks?.length ?? 0) > 0
+              ? recipeBooks?.map((recipeBook) => (
+                  <DroppableRecipeBookListItem
+                    key={recipeBook.id}
+                    icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}
+                    label={recipeBook.name}
+                    isNested
+                    linkProps={{
+                      to: '/recipe-books/$recipeBookId',
+                      params: {
+                        recipeBookId: recipeBook.id,
+                      },
+                    }}
+                    plainPath={`/recipe-books/${recipeBook.id}`}
+                    recipeBookId={recipeBook.id}
+                  />
+                ))
+              : undefined}
           </ListItem>
           {user?.accessRole === 'admin' && (
             <ListItem

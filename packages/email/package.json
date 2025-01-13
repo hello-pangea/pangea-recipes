@@ -1,0 +1,32 @@
+{
+  "name": "@open-zero/email",
+  "version": "0.0.0",
+  "private": true,
+  "license": "AGPL-3.0-or-later",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
+    "dev": "tsc --watch",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@react-email/components": "^0.0.32",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@open-zero/eslint-config-vite": "workspace:*",
+    "@open-zero/typescript-config": "workspace:*",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.4",
+    "typescript": "~5.7.3"
+  }
+}

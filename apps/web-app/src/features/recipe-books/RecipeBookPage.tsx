@@ -1,11 +1,14 @@
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import {
+  alpha,
   Box,
   Button,
   Grid2,
   IconButton,
+  Stack,
   Tooltip,
   Typography,
 } from '@mui/material';
@@ -82,6 +85,44 @@ export function RecipeBookPage() {
         )}
       </Box>
       <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
+      {recipeBook.requests.length > 0 && (
+        <Stack spacing={2}>
+          {recipeBook.requests.map((request) => (
+            <Box
+              key={request.userId}
+              sx={{
+                borderRadius: 1,
+                overflow: 'hidden',
+                backgroundColor: (theme) =>
+                  alpha(theme.palette.primary.main, 0.1),
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                px: 2,
+                py: 1,
+                maxWidth: 400,
+              }}
+            >
+              <Typography>
+                {request.firstName}
+                {request.lastName ? ` ${request.lastName}` : ''} requested to
+                join
+              </Typography>
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                }}
+              >
+                <Button variant="text">Review</Button>
+                <IconButton sx={{ ml: 1 }} size="small">
+                  <CloseRoundedIcon fontSize="small" />
+                </IconButton>
+              </Box>
+            </Box>
+          ))}
+        </Stack>
+      )}
       <Grid2 container spacing={2}>
         {recipes?.recipes.map((recipe) => (
           <Grid2

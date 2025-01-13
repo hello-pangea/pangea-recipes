@@ -29,6 +29,7 @@
     "@fastify/swagger": "^9.4.1",
     "@fastify/type-provider-typebox": "^5.1.0",
     "@open-zero/database": "workspace:*",
+    "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@scalar/fastify-api-reference": "^1.25.102",
     "@sinclair/typebox": "^0.34.13",
@@ -40,6 +41,7 @@
     "file-type": "^19.6.0",
     "openai": "^4.78.1",
     "playwright-chromium": "^1.49.1",
+    "resend": "^4.0.1",
     "sharp": "^0.33.5"
   },
   "devDependencies": {

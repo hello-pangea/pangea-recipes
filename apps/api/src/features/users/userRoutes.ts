@@ -49,7 +49,8 @@ export async function userRoutes(fastify: FastifyTypebox) {
         create: {
           emailAddress: clerkUser.primaryEmailAddress?.emailAddress ?? null,
           phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
-          name: name ?? clerkUser.fullName ?? 'Guest',
+          firstName: name ?? clerkUser.firstName ?? 'Guest',
+          lastName: clerkUser.lastName ?? null,
           accessRole: 'user',
           clerkUserId: clerkUserId,
         },

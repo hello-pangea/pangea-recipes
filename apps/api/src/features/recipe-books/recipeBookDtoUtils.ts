@@ -8,7 +8,8 @@ export const recipeBookInclude = {
       role: true,
       user: {
         select: {
-          name: true,
+          firstName: true,
+          lastName: true,
         },
       },
     },
@@ -18,7 +19,8 @@ export const recipeBookInclude = {
       userId: true,
       user: {
         select: {
-          name: true,
+          firstName: true,
+          lastName: true,
         },
       },
     },
@@ -38,11 +40,13 @@ export function mapToRecipeBookDto(recipeBookData: RecipeBookData): RecipeBook {
     ...recipeBookData,
     members: recipeBookData.members.map((member) => ({
       ...member,
-      name: member.user.name,
+      firstName: member.user.firstName,
+      lastName: member.user.lastName,
     })),
     requests: recipeBookData.requests.map((request) => ({
       ...request,
-      name: request.user.name,
+      firstName: request.user.firstName,
+      lastName: request.user.lastName,
     })),
   };
 

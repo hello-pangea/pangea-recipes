@@ -80,7 +80,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
       ?.map((recipeBook) =>
         recipeBook.members.map((member) => ({
           userId: member.userId,
-          name: member.name,
+          name: `${member.firstName}${member.lastName ? ` ${member.lastName}` : ''}`,
         })),
       )
       .flat()
@@ -236,7 +236,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     <Box>
                       <Typography>
                         {member.userId === userId ? '(You) ' : ''}
-                        {member.name}
+                        {member.firstName}
+                        {member.lastName ? ` ${member.lastName}` : ''}
                       </Typography>
                       <Typography variant="caption">{member.role}</Typography>
                     </Box>

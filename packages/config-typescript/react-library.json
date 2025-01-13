@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "module": "Node16",
+
+    "isolatedModules": true,
+    "jsx": "react-jsx"
+  },
+  "exclude": ["node_modules"],
+  "extends": ["./node.json"]
+}

@@ -1,8 +1,10 @@
 import { config } from '#src/config/config.js';
 import { prisma } from '#src/lib/prisma.js';
+import { resend } from '#src/lib/resend.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { noContentSchema } from '#src/types/noContent.js';
 import { clerkClient } from '@clerk/fastify';
+import { RequestToJoinRecipeBookEmail } from '@open-zero/email';
 import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipes-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';
@@ -163,12 +165,80 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
         throw fastify.httpErrors.unauthorized();
       }
 
+      const recipeBook = await prisma.recipeBook.findUniqueOrThrow({
+        where: {
+          id: recipeBookId,
+        },
+        include: {
+          requests: true,
+          members: {
+            where: {
+              role: 'owner',
+            },
+            include: {
+              user: {
+                select: {
+                  emailAddress: true,
+                  firstName: true,
+                },
+              },
+            },
+          },
+        },
+      });
+
+      const alreadyRequested = recipeBook.requests.some(
+        (request) => request.userId === userId,
+      );
+
+      if (alreadyRequested) {
+        throw fastify.httpErrors.conflict();
+      }
+
+      const requestingUser = await prisma.user.findUniqueOrThrow({
+        where: {
+          id: userId,
+        },
+        select: {
+          firstName: true,
+          lastName: true,
+        },
+      });
+
       await prisma.recipeBookRequest.create({
         data: {
           recipeBookId: recipeBookId,
           userId: userId,
         },
       });
+
+      const recipeBookOwners = recipeBook.members.filter(
+        (member) => member.role === 'owner',
+      );
+
+      console.log('yay1', recipeBookOwners);
+
+      if (recipeBookOwners.length) {
+        for (const owner of recipeBookOwners) {
+          console.log('yay2', owner);
+          if (!owner.user.emailAddress) {
+            continue;
+          }
+
+          await resend.emails.send({
+            from: 'Hello Recipes <notify@notify.hellorecipes.com>',
+            to: owner.user.emailAddress,
+            subject: `Share request for recipe book`,
+            replyTo: 'hello@hellorecipes.com',
+            react: RequestToJoinRecipeBookEmail({
+              ownerName: owner.user.firstName,
+              requesterName: `${requestingUser.firstName}${requestingUser.lastName ? ` ${requestingUser.lastName}` : ''}`,
+              managerLink: `https://hellorecipes.com/recipe-books/${recipeBookId}`,
+              recipeBookName: recipeBook.name,
+            }),
+          });
+        }
+      }
 
       return null;
     },
