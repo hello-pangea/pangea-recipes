@@ -2,7 +2,7 @@ import { Page } from '#src/components/Page';
 import { RouterButton } from '#src/components/RouterButton';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Grid2, Typography } from '@mui/material';
-import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipes-books';
+import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeBookCard } from './RecipeBookCard';

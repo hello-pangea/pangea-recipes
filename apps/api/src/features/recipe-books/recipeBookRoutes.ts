@@ -4,7 +4,7 @@ import {
   createRecipeBookDtoScema,
   recipeBookSchemaRef,
   updateRecipeBookDtoScema,
-} from '@open-zero/features/recipes-books';
+} from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
 import { ApiError } from '../../lib/ApiError.js';
 import { noContentSchema } from '../../types/noContent.js';

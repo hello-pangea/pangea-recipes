@@ -8,7 +8,7 @@ import { emptyStringToUndefined } from '@open-zero/features';
 import {
   useCreateRecipeBook,
   useUpdateRecipeBook,
-} from '@open-zero/features/recipes-books';
+} from '@open-zero/features/recipe-books';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';

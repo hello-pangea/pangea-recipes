@@ -1,5 +1,5 @@
 import { RecipeBooksPage } from '#src/features/recipe-books/RecipeBooksPage';
-import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipes-books';
+import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_layout/recipe-books/')({

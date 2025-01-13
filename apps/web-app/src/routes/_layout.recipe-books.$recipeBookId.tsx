@@ -1,5 +1,5 @@
 import { RequestAccessToRecipeBookPage } from '#src/features/recipe-books/RequestAccessToRecipeBookPage';
-import { getRecipeBookQueryOptions } from '@open-zero/features/recipes-books';
+import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
 import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
 import { HTTPError } from 'ky';
 import { RecipeBookPage } from '../features/recipe-books/RecipeBookPage';

@@ -1,5 +1,5 @@
 import type { prisma, Prisma } from '@open-zero/database';
-import type { RecipeBook } from '@open-zero/features/recipes-books';
+import type { RecipeBook } from '@open-zero/features/recipe-books';
 
 export const recipeBookInclude = {
   members: {
@@ -15,8 +15,11 @@ export const recipeBookInclude = {
     },
   },
   requests: {
-    select: {
-      userId: true,
+    where: {
+      declinedAt: null,
+      acceptedAt: null,
+    },
+    include: {
       user: {
         select: {
           firstName: true,

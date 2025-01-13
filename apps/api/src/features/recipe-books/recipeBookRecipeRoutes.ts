@@ -1,6 +1,6 @@
 import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { recipeBookSchemaRef } from '@open-zero/features/recipes-books';
+import { recipeBookSchemaRef } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';
 import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.js';

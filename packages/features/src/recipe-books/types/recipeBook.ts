@@ -1,5 +1,6 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { Nullable } from '../../lib/nullable.js';
+import { recipeBookRequestSchemaRef } from '../../recipe-book-requests/index.js';
 
 const recipeBookSchemaId = 'RecipeBook';
 
@@ -39,13 +40,7 @@ export const recipeBookSchema = Type.Object(
         ]),
       }),
     ),
-    requests: Type.Array(
-      Type.Object({
-        userId: Type.String({ format: 'uuid' }),
-        firstName: Type.String(),
-        lastName: Nullable(Type.String()),
-      }),
-    ),
+    requests: Type.Array(recipeBookRequestSchemaRef),
   },
   { $id: recipeBookSchemaId },
 );

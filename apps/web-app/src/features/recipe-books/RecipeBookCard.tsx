@@ -10,7 +10,7 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import { useRecipeBook } from '@open-zero/features/recipes-books';
+import { useRecipeBook } from '@open-zero/features/recipe-books';
 import { useState } from 'react';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 

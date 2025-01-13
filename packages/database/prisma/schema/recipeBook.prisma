@@ -69,6 +69,8 @@ model RecipeBookInvite {
 }
 
 model RecipeBookRequest {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
   createdAt DateTime @default(now()) @map("created_at")
 
   recipeBookId String     @map("recipe_book_id") @db.Uuid
@@ -78,7 +80,7 @@ model RecipeBookRequest {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   acceptedAt DateTime? @map("accepted_at")
+  declinedAt DateTime? @map("declined_at")
 
-  @@id([userId, recipeBookId])
   @@map("recipe_book_requests")
 }
