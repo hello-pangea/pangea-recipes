@@ -4,7 +4,7 @@ import { Box, Container, Typography } from '@mui/material';
 import {
   useRecipeBookRequests,
   useRequestAccessToRecipeBook,
-} from '@open-zero/features/recipe-books';
+} from '@open-zero/features/recipe-book-requests';
 import { getRouteApi } from '@tanstack/react-router';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
