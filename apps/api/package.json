@@ -20,7 +20,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.726.1",
     "@aws-sdk/s3-request-presigner": "^3.726.1",
-    "@clerk/fastify": "^2.1.6",
+    "@clerk/fastify": "^2.1.7",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^10.0.2",
     "@fastify/helmet": "^13.0.1",
@@ -31,7 +31,7 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.25.102",
+    "@scalar/fastify-api-reference": "^1.25.103",
     "@sinclair/typebox": "^0.34.13",
     "chalk": "^5.4.1",
     "close-with-grace": "^2.1.0",
@@ -47,7 +47,7 @@
   "devDependencies": {
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.10.5",
+    "@types/node": "^22.10.6",
     "concurrently": "^9.1.2",
     "pino-pretty": "^13.0.0",
     "tsup": "8.3.0",
