@@ -51,7 +51,11 @@ export function RecipePage() {
             <Box>
               <Typography variant="h1">{recipe.name}</Typography>
               {recipe.websiteSource && (
-                <Link href={recipe.websiteSource.url} rel="nofollow">
+                <Link
+                  href={recipe.websiteSource.url}
+                  rel="nofollow"
+                  target="_blank"
+                >
                   {recipe.websiteSource.title}
                 </Link>
               )}
@@ -77,7 +81,6 @@ export function RecipePage() {
           <TagEditor
             tags={recipe.tags}
             onTagsChange={(newTags) => {
-              console.log('tags changed');
               recipeUpdater.mutate({
                 id: recipe.id,
                 tags: newTags,

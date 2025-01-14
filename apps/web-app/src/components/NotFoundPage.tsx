@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import { Link } from '@tanstack/react-router';
+import { RouterLink } from './RouterLink';
 
 export function NotFoundPage() {
   return (
@@ -26,7 +26,7 @@ export function NotFoundPage() {
         Page not found
       </Typography>
       <Typography>
-        Head <Link to="/">home</Link> and try again
+        Head <RouterLink to="/">home</RouterLink> and try again
       </Typography>
     </Box>
   );

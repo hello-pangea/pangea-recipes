@@ -1,5 +1,5 @@
-import { ButtonLink } from '#src/components/ButtonLink';
 import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Divider, Stack, Typography } from '@mui/material';
 import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
@@ -13,7 +13,7 @@ export function CanonicalIngredientsPage() {
       <Typography variant="h1" sx={{ mb: 2 }}>
         Canonical ingredient
       </Typography>
-      <ButtonLink
+      <RouterButton
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
@@ -21,7 +21,7 @@ export function CanonicalIngredientsPage() {
         size="small"
       >
         New canonical ingredient
-      </ButtonLink>
+      </RouterButton>
       <Stack
         divider={<Divider />}
         alignItems={'stretch'}

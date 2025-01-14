@@ -3,8 +3,11 @@ import auth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import multipart from '@fastify/multipart';
+import fastifySensible from '@fastify/sensible';
 import openApi from '@fastify/swagger';
 import { canonicalIngredientSchema } from '@open-zero/features/canonical-ingredients';
+import { recipeBookRequestSchema } from '@open-zero/features/recipe-book-requests';
+import { recipeBookSchema } from '@open-zero/features/recipe-books';
 import { recipeSchema } from '@open-zero/features/recipes';
 import { userSchema } from '@open-zero/features/users';
 import scalar from '@scalar/fastify-api-reference';
@@ -51,9 +54,13 @@ export async function createServer() {
 
   void fastify.register(auth);
 
+  void fastify.register(fastifySensible);
+
   void fastify.addSchema(canonicalIngredientSchema);
   void fastify.addSchema(recipeSchema);
+  void fastify.addSchema(recipeBookSchema);
   void fastify.addSchema(userSchema);
+  void fastify.addSchema(recipeBookRequestSchema);
 
   void fastify.register(openApi, {
     openapi: {
@@ -72,8 +79,8 @@ export async function createServer() {
           description: 'Recipe related endpoints',
         },
         {
-          name: 'Units',
-          description: 'Unit related endpoints',
+          name: 'Recipe books',
+          description: 'Collections of recipes that you can share with others',
         },
         {
           name: 'Users',

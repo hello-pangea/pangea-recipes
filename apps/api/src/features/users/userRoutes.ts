@@ -49,7 +49,8 @@ export async function userRoutes(fastify: FastifyTypebox) {
         create: {
           emailAddress: clerkUser.primaryEmailAddress?.emailAddress ?? null,
           phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
-          name: name ?? clerkUser.fullName,
+          firstName: name ?? clerkUser.firstName ?? 'Guest',
+          lastName: clerkUser.lastName ?? null,
           accessRole: 'user',
           clerkUserId: clerkUserId,
         },
@@ -62,6 +63,39 @@ export async function userRoutes(fastify: FastifyTypebox) {
           accessRole: user.accessRole,
         },
       });
+
+      if (user.emailAddress) {
+        const now = new Date();
+
+        const recipeBookInvites = await prisma.recipeBookInvite.findMany({
+          where: {
+            inviteeEmailAddress: user.emailAddress,
+          },
+        });
+
+        await prisma.$transaction(async (prisma) => {
+          if (!user.emailAddress) {
+            return;
+          }
+
+          await prisma.recipeBookInvite.updateMany({
+            where: {
+              inviteeEmailAddress: user.emailAddress,
+            },
+            data: {
+              claimedAt: now,
+            },
+          });
+
+          await prisma.recipeBookMember.createMany({
+            data: recipeBookInvites.map((invite) => ({
+              recipeBookId: invite.recipeBookId,
+              userId: user.id,
+              role: invite.role,
+            })),
+          });
+        });
+      }
 
       return { user: user };
     },

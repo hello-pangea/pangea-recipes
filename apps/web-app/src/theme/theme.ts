@@ -13,7 +13,7 @@ export function getThemeForMode(themeMode: User['themePreference']) {
       h1: {
         fontFamily: '"Merriweather Sans Variable", serif',
         fontWeight: 'bold',
-        fontSize: 32,
+        fontSize: 24,
       },
       h2: {
         fontFamily: '"Merriweather Sans Variable", serif',
@@ -82,6 +82,30 @@ export function getThemeForMode(themeMode: User['themePreference']) {
       //     LinkComponent: LinkBehavior,
       //   },
       // },
+      MuiDialog: {
+        styleOverrides: {
+          paper: {
+            borderRadius: 28,
+          },
+        },
+      },
+      MuiDialogTitle: {
+        defaultProps: {
+          variant: 'h1',
+        },
+        styleOverrides: {
+          root: {
+            paddingTop: 24,
+          },
+        },
+      },
+      MuiDialogActions: {
+        styleOverrides: {
+          root: {
+            padding: 24,
+          },
+        },
+      },
       MuiMenu: {
         styleOverrides: {
           paper: {
@@ -108,11 +132,6 @@ export function getThemeForMode(themeMode: User['themePreference']) {
       MuiUseMediaQuery: {
         defaultProps: {
           noSsr: true,
-        },
-      },
-      MuiDialogTitle: {
-        defaultProps: {
-          variant: 'h2',
         },
       },
       MuiPopover: {

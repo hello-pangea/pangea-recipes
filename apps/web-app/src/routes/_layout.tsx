@@ -3,9 +3,6 @@ import { SignedIn, SignedOut } from '@clerk/tanstack-start';
 import { createFileRoute, Navigate } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/_layout')({
-  beforeLoad: () => {
-    console.log('beforeLoad layout', Boolean(window.Clerk?.user));
-  },
   component: () => (
     <>
       <SignedIn>

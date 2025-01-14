@@ -18,13 +18,17 @@ import { Route as LayoutImport } from './routes/_layout'
 import { Route as IndexImport } from './routes/index'
 import { Route as SignUpSplatImport } from './routes/sign-up.$'
 import { Route as SignInSplatImport } from './routes/sign-in.$'
-import { Route as LayoutAccountImport } from './routes/_layout.account'
+import { Route as LayoutSettingsImport } from './routes/_layout.settings'
 import { Route as LayoutRecipesIndexImport } from './routes/_layout.recipes.index'
+import { Route as LayoutRecipeBooksIndexImport } from './routes/_layout.recipe-books.index'
 import { Route as LayoutCanonicalIngredientsIndexImport } from './routes/_layout.canonical-ingredients.index'
 import { Route as LayoutRecipesNewImport } from './routes/_layout.recipes.new'
 import { Route as LayoutRecipesRecipeIdImport } from './routes/_layout.recipes.$recipeId'
+import { Route as LayoutRecipeBooksNewImport } from './routes/_layout.recipe-books.new'
+import { Route as LayoutRecipeBooksRecipeBookIdImport } from './routes/_layout.recipe-books.$recipeBookId'
 import { Route as LayoutCanonicalIngredientsNewImport } from './routes/_layout.canonical-ingredients.new'
 import { Route as LayoutRecipesRecipeIdEditImport } from './routes/_layout.recipes_.$recipeId.edit'
+import { Route as LayoutRecipeBooksRecipeBookIdEditImport } from './routes/_layout.recipe-books_.$recipeBookId.edit'
 import { Route as LayoutCanonicalIngredientsCanonicalIngredientIdEditImport } from './routes/_layout.canonical-ingredients_.$canonicalIngredientId.edit'
 
 // Create/Update Routes
@@ -70,15 +74,21 @@ const SignInSplatRoute = SignInSplatImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const LayoutAccountRoute = LayoutAccountImport.update({
-  id: '/account',
-  path: '/account',
+const LayoutSettingsRoute = LayoutSettingsImport.update({
+  id: '/settings',
+  path: '/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutRecipesIndexRoute = LayoutRecipesIndexImport.update({
   id: '/recipes/',
   path: '/recipes/',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutRecipeBooksIndexRoute = LayoutRecipeBooksIndexImport.update({
+  id: '/recipe-books/',
+  path: '/recipe-books/',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -101,6 +111,19 @@ const LayoutRecipesRecipeIdRoute = LayoutRecipesRecipeIdImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutRecipeBooksNewRoute = LayoutRecipeBooksNewImport.update({
+  id: '/recipe-books/new',
+  path: '/recipe-books/new',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutRecipeBooksRecipeBookIdRoute =
+  LayoutRecipeBooksRecipeBookIdImport.update({
+    id: '/recipe-books/$recipeBookId',
+    path: '/recipe-books/$recipeBookId',
+    getParentRoute: () => LayoutRoute,
+  } as any)
+
 const LayoutCanonicalIngredientsNewRoute =
   LayoutCanonicalIngredientsNewImport.update({
     id: '/canonical-ingredients/new',
@@ -113,6 +136,13 @@ const LayoutRecipesRecipeIdEditRoute = LayoutRecipesRecipeIdEditImport.update({
   path: '/recipes/$recipeId/edit',
   getParentRoute: () => LayoutRoute,
 } as any)
+
+const LayoutRecipeBooksRecipeBookIdEditRoute =
+  LayoutRecipeBooksRecipeBookIdEditImport.update({
+    id: '/recipe-books_/$recipeBookId/edit',
+    path: '/recipe-books/$recipeBookId/edit',
+    getParentRoute: () => LayoutRoute,
+  } as any)
 
 const LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute =
   LayoutCanonicalIngredientsCanonicalIngredientIdEditImport.update({
@@ -160,11 +190,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfServiceImport
       parentRoute: typeof rootRoute
     }
-    '/_layout/account': {
-      id: '/_layout/account'
-      path: '/account'
-      fullPath: '/account'
-      preLoaderRoute: typeof LayoutAccountImport
+    '/_layout/settings': {
+      id: '/_layout/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof LayoutSettingsImport
       parentRoute: typeof LayoutImport
     }
     '/sign-in/$': {
@@ -188,6 +218,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutCanonicalIngredientsNewImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/recipe-books/$recipeBookId': {
+      id: '/_layout/recipe-books/$recipeBookId'
+      path: '/recipe-books/$recipeBookId'
+      fullPath: '/recipe-books/$recipeBookId'
+      preLoaderRoute: typeof LayoutRecipeBooksRecipeBookIdImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/recipe-books/new': {
+      id: '/_layout/recipe-books/new'
+      path: '/recipe-books/new'
+      fullPath: '/recipe-books/new'
+      preLoaderRoute: typeof LayoutRecipeBooksNewImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/recipes/$recipeId': {
       id: '/_layout/recipes/$recipeId'
       path: '/recipes/$recipeId'
@@ -209,6 +253,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutCanonicalIngredientsIndexImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/recipe-books/': {
+      id: '/_layout/recipe-books/'
+      path: '/recipe-books'
+      fullPath: '/recipe-books'
+      preLoaderRoute: typeof LayoutRecipeBooksIndexImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/recipes/': {
       id: '/_layout/recipes/'
       path: '/recipes'
@@ -221,6 +272,13 @@ declare module '@tanstack/react-router' {
       path: '/canonical-ingredients/$canonicalIngredientId/edit'
       fullPath: '/canonical-ingredients/$canonicalIngredientId/edit'
       preLoaderRoute: typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/recipe-books_/$recipeBookId/edit': {
+      id: '/_layout/recipe-books_/$recipeBookId/edit'
+      path: '/recipe-books/$recipeBookId/edit'
+      fullPath: '/recipe-books/$recipeBookId/edit'
+      preLoaderRoute: typeof LayoutRecipeBooksRecipeBookIdEditImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/recipes_/$recipeId/edit': {
@@ -236,25 +294,34 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface LayoutRouteChildren {
-  LayoutAccountRoute: typeof LayoutAccountRoute
+  LayoutSettingsRoute: typeof LayoutSettingsRoute
   LayoutCanonicalIngredientsNewRoute: typeof LayoutCanonicalIngredientsNewRoute
+  LayoutRecipeBooksRecipeBookIdRoute: typeof LayoutRecipeBooksRecipeBookIdRoute
+  LayoutRecipeBooksNewRoute: typeof LayoutRecipeBooksNewRoute
   LayoutRecipesRecipeIdRoute: typeof LayoutRecipesRecipeIdRoute
   LayoutRecipesNewRoute: typeof LayoutRecipesNewRoute
   LayoutCanonicalIngredientsIndexRoute: typeof LayoutCanonicalIngredientsIndexRoute
+  LayoutRecipeBooksIndexRoute: typeof LayoutRecipeBooksIndexRoute
   LayoutRecipesIndexRoute: typeof LayoutRecipesIndexRoute
   LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute: typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
+  LayoutRecipeBooksRecipeBookIdEditRoute: typeof LayoutRecipeBooksRecipeBookIdEditRoute
   LayoutRecipesRecipeIdEditRoute: typeof LayoutRecipesRecipeIdEditRoute
 }
 
 const LayoutRouteChildren: LayoutRouteChildren = {
-  LayoutAccountRoute: LayoutAccountRoute,
+  LayoutSettingsRoute: LayoutSettingsRoute,
   LayoutCanonicalIngredientsNewRoute: LayoutCanonicalIngredientsNewRoute,
+  LayoutRecipeBooksRecipeBookIdRoute: LayoutRecipeBooksRecipeBookIdRoute,
+  LayoutRecipeBooksNewRoute: LayoutRecipeBooksNewRoute,
   LayoutRecipesRecipeIdRoute: LayoutRecipesRecipeIdRoute,
   LayoutRecipesNewRoute: LayoutRecipesNewRoute,
   LayoutCanonicalIngredientsIndexRoute: LayoutCanonicalIngredientsIndexRoute,
+  LayoutRecipeBooksIndexRoute: LayoutRecipeBooksIndexRoute,
   LayoutRecipesIndexRoute: LayoutRecipesIndexRoute,
   LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute:
     LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute,
+  LayoutRecipeBooksRecipeBookIdEditRoute:
+    LayoutRecipeBooksRecipeBookIdEditRoute,
   LayoutRecipesRecipeIdEditRoute: LayoutRecipesRecipeIdEditRoute,
 }
 
@@ -267,15 +334,19 @@ export interface FileRoutesByFullPath {
   '/finish-sign-up': typeof FinishSignUpRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/account': typeof LayoutAccountRoute
+  '/settings': typeof LayoutSettingsRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
+  '/recipe-books/$recipeBookId': typeof LayoutRecipeBooksRecipeBookIdRoute
+  '/recipe-books/new': typeof LayoutRecipeBooksNewRoute
   '/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/recipes/new': typeof LayoutRecipesNewRoute
   '/canonical-ingredients': typeof LayoutCanonicalIngredientsIndexRoute
+  '/recipe-books': typeof LayoutRecipeBooksIndexRoute
   '/recipes': typeof LayoutRecipesIndexRoute
   '/canonical-ingredients/$canonicalIngredientId/edit': typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
+  '/recipe-books/$recipeBookId/edit': typeof LayoutRecipeBooksRecipeBookIdEditRoute
   '/recipes/$recipeId/edit': typeof LayoutRecipesRecipeIdEditRoute
 }
 
@@ -285,15 +356,19 @@ export interface FileRoutesByTo {
   '/finish-sign-up': typeof FinishSignUpRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/account': typeof LayoutAccountRoute
+  '/settings': typeof LayoutSettingsRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
+  '/recipe-books/$recipeBookId': typeof LayoutRecipeBooksRecipeBookIdRoute
+  '/recipe-books/new': typeof LayoutRecipeBooksNewRoute
   '/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/recipes/new': typeof LayoutRecipesNewRoute
   '/canonical-ingredients': typeof LayoutCanonicalIngredientsIndexRoute
+  '/recipe-books': typeof LayoutRecipeBooksIndexRoute
   '/recipes': typeof LayoutRecipesIndexRoute
   '/canonical-ingredients/$canonicalIngredientId/edit': typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
+  '/recipe-books/$recipeBookId/edit': typeof LayoutRecipeBooksRecipeBookIdEditRoute
   '/recipes/$recipeId/edit': typeof LayoutRecipesRecipeIdEditRoute
 }
 
@@ -304,15 +379,19 @@ export interface FileRoutesById {
   '/finish-sign-up': typeof FinishSignUpRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/_layout/account': typeof LayoutAccountRoute
+  '/_layout/settings': typeof LayoutSettingsRoute
   '/sign-in/$': typeof SignInSplatRoute
   '/sign-up/$': typeof SignUpSplatRoute
   '/_layout/canonical-ingredients/new': typeof LayoutCanonicalIngredientsNewRoute
+  '/_layout/recipe-books/$recipeBookId': typeof LayoutRecipeBooksRecipeBookIdRoute
+  '/_layout/recipe-books/new': typeof LayoutRecipeBooksNewRoute
   '/_layout/recipes/$recipeId': typeof LayoutRecipesRecipeIdRoute
   '/_layout/recipes/new': typeof LayoutRecipesNewRoute
   '/_layout/canonical-ingredients/': typeof LayoutCanonicalIngredientsIndexRoute
+  '/_layout/recipe-books/': typeof LayoutRecipeBooksIndexRoute
   '/_layout/recipes/': typeof LayoutRecipesIndexRoute
   '/_layout/canonical-ingredients_/$canonicalIngredientId/edit': typeof LayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
+  '/_layout/recipe-books_/$recipeBookId/edit': typeof LayoutRecipeBooksRecipeBookIdEditRoute
   '/_layout/recipes_/$recipeId/edit': typeof LayoutRecipesRecipeIdEditRoute
 }
 
@@ -324,15 +403,19 @@ export interface FileRouteTypes {
     | '/finish-sign-up'
     | '/privacy-policy'
     | '/terms-of-service'
-    | '/account'
+    | '/settings'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/canonical-ingredients/new'
+    | '/recipe-books/$recipeBookId'
+    | '/recipe-books/new'
     | '/recipes/$recipeId'
     | '/recipes/new'
     | '/canonical-ingredients'
+    | '/recipe-books'
     | '/recipes'
     | '/canonical-ingredients/$canonicalIngredientId/edit'
+    | '/recipe-books/$recipeBookId/edit'
     | '/recipes/$recipeId/edit'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -341,15 +424,19 @@ export interface FileRouteTypes {
     | '/finish-sign-up'
     | '/privacy-policy'
     | '/terms-of-service'
-    | '/account'
+    | '/settings'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/canonical-ingredients/new'
+    | '/recipe-books/$recipeBookId'
+    | '/recipe-books/new'
     | '/recipes/$recipeId'
     | '/recipes/new'
     | '/canonical-ingredients'
+    | '/recipe-books'
     | '/recipes'
     | '/canonical-ingredients/$canonicalIngredientId/edit'
+    | '/recipe-books/$recipeBookId/edit'
     | '/recipes/$recipeId/edit'
   id:
     | '__root__'
@@ -358,15 +445,19 @@ export interface FileRouteTypes {
     | '/finish-sign-up'
     | '/privacy-policy'
     | '/terms-of-service'
-    | '/_layout/account'
+    | '/_layout/settings'
     | '/sign-in/$'
     | '/sign-up/$'
     | '/_layout/canonical-ingredients/new'
+    | '/_layout/recipe-books/$recipeBookId'
+    | '/_layout/recipe-books/new'
     | '/_layout/recipes/$recipeId'
     | '/_layout/recipes/new'
     | '/_layout/canonical-ingredients/'
+    | '/_layout/recipe-books/'
     | '/_layout/recipes/'
     | '/_layout/canonical-ingredients_/$canonicalIngredientId/edit'
+    | '/_layout/recipe-books_/$recipeBookId/edit'
     | '/_layout/recipes_/$recipeId/edit'
   fileRoutesById: FileRoutesById
 }
@@ -416,13 +507,17 @@ export const routeTree = rootRoute
     "/_layout": {
       "filePath": "_layout.tsx",
       "children": [
-        "/_layout/account",
+        "/_layout/settings",
         "/_layout/canonical-ingredients/new",
+        "/_layout/recipe-books/$recipeBookId",
+        "/_layout/recipe-books/new",
         "/_layout/recipes/$recipeId",
         "/_layout/recipes/new",
         "/_layout/canonical-ingredients/",
+        "/_layout/recipe-books/",
         "/_layout/recipes/",
         "/_layout/canonical-ingredients_/$canonicalIngredientId/edit",
+        "/_layout/recipe-books_/$recipeBookId/edit",
         "/_layout/recipes_/$recipeId/edit"
       ]
     },
@@ -435,8 +530,8 @@ export const routeTree = rootRoute
     "/terms-of-service": {
       "filePath": "terms-of-service.tsx"
     },
-    "/_layout/account": {
-      "filePath": "_layout.account.tsx",
+    "/_layout/settings": {
+      "filePath": "_layout.settings.tsx",
       "parent": "/_layout"
     },
     "/sign-in/$": {
@@ -447,6 +542,14 @@ export const routeTree = rootRoute
     },
     "/_layout/canonical-ingredients/new": {
       "filePath": "_layout.canonical-ingredients.new.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/recipe-books/$recipeBookId": {
+      "filePath": "_layout.recipe-books.$recipeBookId.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/recipe-books/new": {
+      "filePath": "_layout.recipe-books.new.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes/$recipeId": {
@@ -461,12 +564,20 @@ export const routeTree = rootRoute
       "filePath": "_layout.canonical-ingredients.index.tsx",
       "parent": "/_layout"
     },
+    "/_layout/recipe-books/": {
+      "filePath": "_layout.recipe-books.index.tsx",
+      "parent": "/_layout"
+    },
     "/_layout/recipes/": {
       "filePath": "_layout.recipes.index.tsx",
       "parent": "/_layout"
     },
     "/_layout/canonical-ingredients_/$canonicalIngredientId/edit": {
       "filePath": "_layout.canonical-ingredients_.$canonicalIngredientId.edit.tsx",
+      "parent": "/_layout"
+    },
+    "/_layout/recipe-books_/$recipeBookId/edit": {
+      "filePath": "_layout.recipe-books_.$recipeBookId.edit.tsx",
       "parent": "/_layout"
     },
     "/_layout/recipes_/$recipeId/edit": {

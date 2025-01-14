@@ -1,7 +1,9 @@
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import {
   CircularProgress,
+  Divider,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -15,6 +17,7 @@ interface Props {
   anchorEl: HTMLElement | null;
   onClose: () => void;
   onDelete?: () => void;
+  onRemoveFromRecipeBook?: () => void;
 }
 
 export function RecipeMoreMenu({
@@ -22,6 +25,7 @@ export function RecipeMoreMenu({
   anchorEl,
   onClose,
   onDelete,
+  onRemoveFromRecipeBook,
 }: Props) {
   const recipeQuery = useRecipe({ recipeId: recipeId });
   const recipe = recipeQuery.data?.recipe;
@@ -50,18 +54,41 @@ export function RecipeMoreMenu({
         horizontal: 'left',
       }}
     >
-      <Link
-        to="/recipes/$recipeId/edit"
-        params={{ recipeId: recipe.id }}
-        style={{ textDecoration: 'none', color: 'inherit' }}
-      >
-        <MenuItem>
+      <MenuItem sx={{ p: 0 }}>
+        <Link
+          to="/recipes/$recipeId/edit"
+          params={{ recipeId: recipe.id }}
+          style={{
+            textDecoration: 'none',
+            color: 'inherit',
+            padding: '6px 16px',
+            display: 'flex',
+            alignItems: 'center',
+            width: '100%',
+          }}
+        >
           <ListItemIcon>
             <EditRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>Edit</ListItemText>
+        </Link>
+      </MenuItem>
+      <Divider />
+      {onRemoveFromRecipeBook && (
+        <MenuItem
+          onClick={() => {
+            onRemoveFromRecipeBook();
+
+            onClose();
+          }}
+        >
+          <ListItemIcon>
+            <RemoveCircleRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Remove from recipe book</ListItemText>
         </MenuItem>
-      </Link>
+      )}
+      {onRemoveFromRecipeBook && <Divider />}
       <MenuItem
         onClick={() => {
           deleteRecipe.mutate({ recipeId: recipe.id });
@@ -74,11 +101,9 @@ export function RecipeMoreMenu({
         }}
       >
         <ListItemIcon>
-          <DeleteRoundedIcon color="error" fontSize="small" />
+          <DeleteRoundedIcon fontSize="small" />
         </ListItemIcon>
-        <ListItemText sx={{ color: (theme) => theme.palette.error.main }}>
-          Delete
-        </ListItemText>
+        <ListItemText>Delete</ListItemText>
       </MenuItem>
     </Menu>
   );

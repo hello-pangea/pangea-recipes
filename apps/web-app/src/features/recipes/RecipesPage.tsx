@@ -1,6 +1,7 @@
-import { ButtonLink } from '#src/components/ButtonLink';
+import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Box, Grid2, Typography } from '@mui/material';
+import { Grid2, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -13,11 +14,11 @@ export function RecipesPage() {
   );
 
   return (
-    <Box sx={{ px: 3, py: 2 }}>
+    <Page>
       <Typography variant="h1" sx={{ mb: 2 }}>
         Recipes
       </Typography>
-      <ButtonLink
+      <RouterButton
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
@@ -25,7 +26,7 @@ export function RecipesPage() {
         size="small"
       >
         New recipe
-      </ButtonLink>
+      </RouterButton>
       <Grid2 container spacing={2}>
         {recipesQuery.data.recipes.map((recipe) => (
           <Grid2
@@ -40,6 +41,6 @@ export function RecipesPage() {
           </Grid2>
         ))}
       </Grid2>
-    </Box>
+    </Page>
   );
 }

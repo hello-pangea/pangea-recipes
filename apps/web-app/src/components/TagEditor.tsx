@@ -1,3 +1,4 @@
+import { isSxArray } from '#src/lib/isSxArray';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -34,13 +35,15 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
 
   return (
     <Box
-      sx={{
-        display: 'flex',
-        rowGap: 2,
-        columnGap: 1,
-        flexWrap: 'wrap',
-        ...sx,
-      }}
+      sx={[
+        {
+          display: 'flex',
+          rowGap: 2,
+          columnGap: 1,
+          flexWrap: 'wrap',
+        },
+        ...(isSxArray(sx) ? sx : [sx]),
+      ]}
     >
       {tags.map((tag) => (
         <Chip

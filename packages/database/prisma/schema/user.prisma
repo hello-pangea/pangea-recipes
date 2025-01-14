@@ -4,7 +4,8 @@ model User {
 
   emailAddress String? @unique @map("email_address")
   phoneNumber  String? @unique @map("phone_number")
-  name         String?
+  firstName    String  @map("first_name")
+  lastName     String? @map("last_name")
 
   clerkUserId String @unique @map("clerk_user_id")
 
@@ -12,8 +13,11 @@ model User {
 
   themePreference ThemePreference @default(light) @map("theme_preference")
 
-  recipes Recipe[]
-  images  Image[]
+  recipes            Recipe[]
+  images             Image[]
+  recipeBooks        RecipeBookMember[]
+  recipeBookInvites  RecipeBookInvite[]
+  recipeBookRequests RecipeBookRequest[]
 
   @@map("users")
 }

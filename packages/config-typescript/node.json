@@ -10,7 +10,9 @@
 
     "verbatimModuleSyntax": true,
 
-    "exactOptionalPropertyTypes": false
+    "exactOptionalPropertyTypes": false,
+
+    "jsx": "react-jsx"
   },
   "exclude": ["node_modules", "dist"],
   "extends": ["./bases/node22.json", "./bases/strictest.json"]

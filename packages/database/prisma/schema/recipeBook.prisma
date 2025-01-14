@@ -1,0 +1,86 @@
+model RecipeBook {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  name        String
+  description String?
+
+  recipes  RecipesOnRecipeBooks[]
+  members  RecipeBookMember[]
+  invites  RecipeBookInvite[]
+  requests RecipeBookRequest[]
+
+  @@map("recipe_books")
+}
+
+model RecipesOnRecipeBooks {
+  recipeId     String @map("recipe_id") @db.Uuid
+  recipeBookId String @map("recipe_book_id") @db.Uuid
+
+  recipe     Recipe     @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+  recipeBook RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([recipeId, recipeBookId])
+  @@map("recipes_on_recipe_books")
+}
+
+enum Role {
+  owner
+  editor
+  viewer
+}
+
+model RecipeBookMember {
+  createdAt DateTime @default(now()) @map("created_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  recipeBookId String     @map("recipe_book_id") @db.Uuid
+  recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  role Role
+
+  @@id([userId, recipeBookId])
+  @@map("recipe_book_members")
+}
+
+model RecipeBookInvite {
+  createdAt DateTime @default(now()) @map("created_at")
+
+  inviteeEmailAddress String @map("invitee_email_address")
+
+  recipeBookId String     @map("recipe_book_id") @db.Uuid
+  recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  invitedByUserId String @map("invited_by_user_id") @db.Uuid
+  invitedByUser   User   @relation(fields: [invitedByUserId], references: [id], onDelete: Cascade)
+
+  clerkInviteId String? @map("clerk_invite_id")
+
+  role Role
+
+  claimedAt DateTime? @map("claimed_at")
+
+  @@id([inviteeEmailAddress, recipeBookId])
+  @@map("recipe_book_invites")
+}
+
+model RecipeBookRequest {
+  id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipeBookId String     @map("recipe_book_id") @db.Uuid
+  recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  acceptedAt DateTime? @map("accepted_at")
+  declinedAt DateTime? @map("declined_at")
+
+  @@map("recipe_book_requests")
+}
