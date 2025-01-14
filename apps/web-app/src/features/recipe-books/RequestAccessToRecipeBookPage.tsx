@@ -1,6 +1,5 @@
 import { useUser } from '@clerk/tanstack-start';
-import { LoadingButton } from '@mui/lab';
-import { Box, Container, Typography } from '@mui/material';
+import { Box, Button, Container, Typography } from '@mui/material';
 import {
   useRecipeBookRequests,
   useRequestAccessToRecipeBook,
@@ -53,7 +52,7 @@ export function RequestAccessToRecipeBookPage() {
             <Typography variant="h1" sx={{ mb: 2 }}>
               You need access
             </Typography>
-            <LoadingButton
+            <Button
               variant="contained"
               sx={{ mb: 2 }}
               onClick={() => {
@@ -62,7 +61,7 @@ export function RequestAccessToRecipeBookPage() {
               loading={requestAccessToRecipeBook.isPending}
             >
               Request access
-            </LoadingButton>
+            </Button>
           </>
         )}
         <Typography variant="caption">

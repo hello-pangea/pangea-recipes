@@ -3,7 +3,6 @@ import { config } from '#src/config/config';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import { LoadingButton } from '@mui/lab';
 import {
   Box,
   Button,
@@ -244,7 +243,7 @@ export function CreateCanonicalIngredientPage({
             </Stack>
           </Box>
         </Stack>
-        <LoadingButton
+        <Button
           variant="contained"
           startIcon={<SaveRoundedIcon />}
           fullWidth
@@ -252,7 +251,7 @@ export function CreateCanonicalIngredientPage({
           loading={canonicalIngredientCreator.isPending}
         >
           Save
-        </LoadingButton>
+        </Button>
       </form>
     </Page>
   );

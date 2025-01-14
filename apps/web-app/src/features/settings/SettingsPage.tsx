@@ -1,7 +1,6 @@
 import { Page } from '#src/components/Page';
 import { useAuth } from '@clerk/tanstack-start';
-import { LoadingButton } from '@mui/lab';
-import { Grid2, Typography } from '@mui/material';
+import { Button, Grid2, Typography } from '@mui/material';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
 import { ThemeCard } from './ThemeCard';
@@ -81,7 +80,7 @@ export function SettingsPage() {
           <ThemeCard themeName="Ocean" themeMode="ocean" />
         </Grid2>
       </Grid2>
-      <LoadingButton
+      <Button
         loading={isLoading}
         color="error"
         onClick={() => {
@@ -94,7 +93,7 @@ export function SettingsPage() {
         sx={{ mt: 8 }}
       >
         Sign out
-      </LoadingButton>
+      </Button>
     </Page>
   );
 }

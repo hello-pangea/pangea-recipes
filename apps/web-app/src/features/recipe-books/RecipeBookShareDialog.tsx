@@ -4,7 +4,6 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { LoadingButton } from '@mui/lab';
 import {
   alpha,
   Autocomplete,
@@ -396,7 +395,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             >
               Cancel
             </Button>
-            <LoadingButton
+            <Button
               variant="contained"
               onClick={() => {
                 inviteMembersToRecipeBook.mutate(
@@ -420,7 +419,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               loading={inviteMembersToRecipeBook.isPending}
             >
               Send
-            </LoadingButton>
+            </Button>
           </DialogActions>
         )}
       </Dialog>
@@ -480,7 +479,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           </FormControl>
         </DialogContent>
         <DialogActions>
-          <LoadingButton
+          <Button
             variant="outlined"
             onClick={() => {
               if (!reviewRequestId) {
@@ -497,8 +496,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             loading={declineRecipeBookRequest.isPending}
           >
             Decline
-          </LoadingButton>
-          <LoadingButton
+          </Button>
+          <Button
             variant="contained"
             onClick={() => {
               if (!reviewRequestId) {
@@ -518,7 +517,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             loading={acceptRecipeBookRequest.isPending}
           >
             Share
-          </LoadingButton>
+          </Button>
         </DialogActions>
       </Dialog>
     </>

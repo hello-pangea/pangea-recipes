@@ -7,7 +7,6 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import { LoadingButton } from '@mui/lab';
 import {
   Autocomplete,
   Box,
@@ -395,7 +394,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               maxWidth: 300,
             }}
           />
-          <LoadingButton
+          <Button
             variant="contained"
             startIcon={<SaveRoundedIcon />}
             type="submit"
@@ -405,7 +404,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             }}
           >
             Save
-          </LoadingButton>
+          </Button>
         </form>
       </FormProvider>
       <ImportRecipeDialog

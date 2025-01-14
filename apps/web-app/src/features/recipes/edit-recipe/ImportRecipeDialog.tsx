@@ -1,5 +1,4 @@
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import { LoadingButton } from '@mui/lab';
 import {
   Button,
   Dialog,
@@ -57,7 +56,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
         <Button disabled={isImporting} onClick={onClose}>
           Cancel
         </Button>
-        <LoadingButton
+        <Button
           loading={isImporting}
           variant="contained"
           startIcon={<DownloadRoundedIcon />}
@@ -72,7 +71,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
           }}
         >
           Import
-        </LoadingButton>
+        </Button>
       </DialogActions>
     </Dialog>
   );

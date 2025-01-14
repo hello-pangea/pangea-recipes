@@ -2,8 +2,7 @@ import { Page } from '#src/components/Page';
 import { RouterButton } from '#src/components/RouterButton';
 import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import { LoadingButton } from '@mui/lab';
-import { Box, Stack, Typography } from '@mui/material';
+import { Box, Button, Stack, Typography } from '@mui/material';
 import { emptyStringToUndefined } from '@open-zero/features';
 import {
   useCreateRecipeBook,
@@ -114,7 +113,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
               minRows={2}
             />
           </Stack>
-          <LoadingButton
+          <Button
             variant="contained"
             startIcon={<SaveRoundedIcon />}
             type="submit"
@@ -124,7 +123,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
             }}
           >
             Save
-          </LoadingButton>
+          </Button>
         </form>
       </FormProvider>
     </Page>
