@@ -5,6 +5,7 @@
 !apps/api
 !packages/database
 !packages/features
+!packages/email
 !packages/config-typescript
 !packages/config-eslint-node
 !turbo.json
