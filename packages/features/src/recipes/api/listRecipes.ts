@@ -3,7 +3,10 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { RecipeProjected } from '../types/recipeProjected.js';
 
-function listRecipes(options: { userId?: string; recipeBookId?: string }) {
+function listRecipes(options: {
+  userId?: string;
+  recipeBookId?: string;
+}): Promise<RecipeProjected[]> {
   return api
     .get(`recipes`, {
       searchParams: {
@@ -11,7 +14,8 @@ function listRecipes(options: { userId?: string; recipeBookId?: string }) {
         ...(options.recipeBookId && { recipeBookId: options.recipeBookId }),
       },
     })
-    .then((res) => res.json<{ recipes: RecipeProjected[] }>());
+    .json<{ recipes: RecipeProjected[] }>()
+    .then((res) => res.recipes);
 }
 
 export function getListRecipesQueryOptions(options: {
