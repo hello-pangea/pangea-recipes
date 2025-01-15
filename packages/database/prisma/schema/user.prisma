@@ -11,7 +11,7 @@ model User {
 
   accessRole AccessRole @map("access_role")
 
-  themePreference ThemePreference @default(light) @map("theme_preference")
+  themePreference ThemePreference @default(system) @map("theme_preference")
 
   recipes            Recipe[]
   images             Image[]
@@ -31,8 +31,4 @@ enum ThemePreference {
   light
   dark
   system
-  autumn
-  mint
-  lavendar
-  ocean
 }

@@ -7,10 +7,14 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  useColorScheme,
   useMediaQuery,
   type Theme,
 } from '@mui/material';
-import { getSignedInUserQueryOptions } from '@open-zero/features/users';
+import {
+  getSignedInUserQueryOptions,
+  useSignedInUser,
+} from '@open-zero/features/users';
 import { useQueryClient } from '@tanstack/react-query';
 import {
   getRouteApi,
@@ -33,6 +37,14 @@ export function Layout() {
   const routeContext = route.useRouteContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { data: user } = useSignedInUser();
+  const { setMode } = useColorScheme();
+
+  useEffect(() => {
+    if (user?.themePreference) {
+      setMode(user.themePreference);
+    }
+  }, [user?.themePreference, setMode]);
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
@@ -90,7 +102,11 @@ export function Layout() {
               color: (theme) => theme.palette.text.primary,
             }}
           >
-            <Toolbar>
+            <Toolbar
+              sx={{
+                minHeight: 38,
+              }}
+            >
               <IconButton
                 color="inherit"
                 aria-label="open sidebar"
@@ -102,11 +118,11 @@ export function Layout() {
               >
                 <MenuRoundedIcon />
               </IconButton>
-              <Box sx={{ display: 'flex', alignItems: 'center', m: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', mx: 2 }}>
                 <img src="/assets/lil-guy.svg" width={24} height={24} />
                 <Typography
                   variant="h1"
-                  sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
+                  sx={{ fontSize: 18, lineHeight: 1, ml: 1.5, pt: '0.3rem' }}
                 >
                   Hello Recipes
                 </Typography>

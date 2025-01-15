@@ -18,7 +18,6 @@ import {
   alpha,
   Box,
   Collapse,
-  Divider,
   Drawer,
   IconButton,
   List,
@@ -171,7 +170,6 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
         </List>
       </Box>
       <Box sx={{ pb: 1 }}>
-        <Divider sx={{ mb: 1 }} />
         <MuiListItem disablePadding>
           <ListItemButton
             onClick={() => {
@@ -240,7 +238,12 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
       open
       anchor="left"
       sx={{
-        '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+        '& .MuiDrawer-paper': {
+          boxSizing: 'border-box',
+          width: drawerWidth,
+          backgroundColor: 'transparent',
+          borderRight: 0,
+        },
         width: drawerWidth,
       }}
     >
@@ -336,7 +339,6 @@ function ListItem({
             slotProps={{
               primary: {
                 sx: {
-                  fontWeight: selected ? 'bold' : 'normal',
                   color: (theme) =>
                     selected ? theme.palette.primary.main : undefined,
                   fontSize: small ? 14 : 16,

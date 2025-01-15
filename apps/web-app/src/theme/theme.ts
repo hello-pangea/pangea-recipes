@@ -1,160 +1,170 @@
-import { createTheme } from '@mui/material/styles';
-import type { User } from '@open-zero/features/users';
-import { themeMap } from './themeModes';
+import { createTheme, type Shadows } from '@mui/material/styles';
+import { colorSchemes } from './themePrimitives';
 
-export function getThemeForMode(themeMode: User['themePreference']) {
-  const partialColorPalette = themeMap[themeMode];
+const defaultTheme = createTheme();
 
-  return createTheme({
-    palette: partialColorPalette,
-    typography: {
-      fontFamily: '"Inter Variable", sans-serif',
+export const theme = createTheme({
+  colorSchemes: colorSchemes,
+  cssVariables: {
+    colorSchemeSelector: 'class',
+  },
+  typography: {
+    fontFamily: '"Inter Variable", sans-serif',
+    fontSize: 16,
+    h1: {
+      fontFamily: '"Lora Variable", serif',
+      fontWeight: 'bold',
+      fontSize: 36,
+      color: 'var(--mui-palette-text-heading)',
+    },
+    h2: {
+      fontFamily: '"Lora Variable", serif',
+      fontWeight: 'bold',
+      fontSize: 24,
+      color: 'var(--mui-palette-text-heading)',
+    },
+    h3: {
+      fontFamily: '"Lora Variable", serif',
+      fontWeight: 'bold',
+      fontSize: 18,
+      color: 'var(--mui-palette-text-heading)',
+    },
+    h6: {
+      fontFamily: '"Lora Variable", serif',
+      fontWeight: 'bold',
       fontSize: 16,
-      h1: {
-        fontFamily: '"Merriweather Sans Variable", serif',
-        fontWeight: 'bold',
-        fontSize: 24,
+      lineHeight: 1.5,
+      color: 'var(--mui-palette-text-heading)',
+    },
+    body1: {
+      fontSize: 16,
+    },
+    body2: {
+      fontSize: 13,
+    },
+    caption: {
+      fontSize: 12,
+      lineHeight: 1,
+      color: 'var(--mui-palette-text-secondary)',
+      textTransform: 'none',
+      display: 'block',
+    },
+    button: {
+      textTransform: 'none',
+      fontSize: 16,
+      fontWeight: 'bold',
+    },
+  },
+  shadows: [
+    'none',
+    '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+    ...defaultTheme.shadows.slice(2),
+  ] as Shadows,
+  shape: {
+    borderRadius: 12,
+  },
+  components: {
+    MuiButton: {
+      defaultProps: {
+        disableElevation: true,
       },
-      h2: {
-        fontFamily: '"Merriweather Sans Variable", serif',
-        fontWeight: 'bold',
-        fontSize: 22,
-      },
-      h3: {
-        fontFamily: '"Merriweather Sans Variable", serif',
-        fontWeight: 'bold',
-        fontSize: 16,
-      },
-      h6: {
-        fontFamily: '"Merriweather Sans Variable", serif',
-        fontWeight: 'bold',
-        fontSize: 16,
-        lineHeight: 1.5,
-      },
-      body1: {
-        fontSize: 16,
-      },
-      body2: {
-        fontSize: 13,
-      },
-      caption: {
-        fontSize: 12,
-        lineHeight: 1,
-        color: partialColorPalette.text?.secondary,
-        textTransform: 'none',
-        display: 'block',
-      },
-      button: {
-        textTransform: 'none',
-        fontSize: 16,
-        fontWeight: 'bold',
+      styleOverrides: {
+        root: {
+          borderRadius: '100vmax',
+        },
+        sizeSmall: {
+          fontSize: '0.8rem',
+        },
       },
     },
-    shape: {
-      borderRadius: 12,
+    MuiCard: {
+      defaultProps: {
+        variant: 'outlined',
+      },
     },
-    components: {
-      MuiButton: {
-        defaultProps: {
-          disableElevation: true,
+    MuiDialog: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 28,
         },
-        styleOverrides: {
-          root: {
-            borderRadius: '100vmax',
+      },
+    },
+    MuiDialogTitle: {
+      defaultProps: {
+        variant: 'h1',
+      },
+      styleOverrides: {
+        root: {
+          paddingTop: 24,
+        },
+      },
+    },
+    MuiLink: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.vars.palette.text.heading,
+          textDecorationColor: theme.vars.palette.primary.main,
+          ':hover': {
+            textDecorationThickness: 2,
           },
-          sizeSmall: {
-            fontSize: '0.8rem',
-          },
+        }),
+      },
+    },
+    MuiDialogActions: {
+      styleOverrides: {
+        root: {
+          padding: 24,
         },
       },
-      MuiCard: {
-        defaultProps: {
-          variant: 'outlined',
+    },
+    MuiMenu: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 4,
         },
       },
-      // MuiLink: {
-      //   defaultProps: {
-      //     component: LinkBehavior,
-      //   } as LinkProps,
-      // },
-      // MuiButtonBase: {
-      //   defaultProps: {
-      //     LinkComponent: LinkBehavior,
-      //   },
-      // },
-      MuiDialog: {
-        styleOverrides: {
-          paper: {
-            borderRadius: 28,
-          },
-        },
-      },
-      MuiDialogTitle: {
-        defaultProps: {
-          variant: 'h1',
-        },
-        styleOverrides: {
-          root: {
-            paddingTop: 24,
-          },
-        },
-      },
-      MuiDialogActions: {
-        styleOverrides: {
-          root: {
-            padding: 24,
-          },
-        },
-      },
-      MuiMenu: {
-        styleOverrides: {
-          paper: {
-            borderRadius: 4,
-          },
-        },
-      },
-      MuiIconButton: {
-        styleOverrides: {
-          sizeMedium: {
-            '& .MuiSvgIcon-root': {
-              fontSize: 22,
-            },
-          },
-        },
-      },
-      MuiChip: {
-        styleOverrides: {
-          root: {
-            borderRadius: 8,
-          },
-        },
-      },
-      MuiUseMediaQuery: {
-        defaultProps: {
-          noSsr: true,
-        },
-      },
-      MuiPopover: {
-        styleOverrides: {
-          paper: {
-            borderRadius: 4,
-          },
-        },
-      },
-      MuiTooltip: {
-        styleOverrides: {
-          tooltip: {
-            borderRadius: 4,
-          },
-        },
-      },
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: {
-            borderRadius: 4,
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        sizeMedium: {
+          '& .MuiSvgIcon-root': {
+            fontSize: 22,
           },
         },
       },
     },
-  });
-}
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+      },
+    },
+    MuiUseMediaQuery: {
+      defaultProps: {
+        noSsr: true,
+      },
+    },
+    MuiPopover: {
+      styleOverrides: {
+        paper: {
+          borderRadius: 4,
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          borderRadius: 4,
+        },
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+        },
+      },
+    },
+  },
+});

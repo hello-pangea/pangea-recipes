@@ -15,8 +15,11 @@ export function RecipesPage() {
 
   return (
     <Page>
-      <Typography variant="h1" sx={{ mb: 2 }}>
-        Recipes
+      <Typography
+        variant="h1"
+        sx={{ mb: 4, textAlign: 'center', mt: { xs: 0, sm: 4 } }}
+      >
+        My Recipes
       </Typography>
       <RouterButton
         startIcon={<AddRoundedIcon />}

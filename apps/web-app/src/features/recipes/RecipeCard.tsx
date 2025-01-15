@@ -77,7 +77,16 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
 
   return (
     <>
-      <Card variant="outlined" ref={ref}>
+      <Card
+        variant="outlined"
+        ref={ref}
+        sx={{
+          '&:hover': {
+            boxShadow:
+              '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+          },
+        }}
+      >
         {recipe.images?.length ? (
           <Link
             to="/recipes/$recipeId"
@@ -104,22 +113,13 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
             draggable={false}
             tabIndex={-1}
           >
-            <Box
-              sx={{
-                height: 200,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}
-            >
-              <img
-                src={'/assets/lil-guy.svg'}
-                height={100}
-                width={'100%'}
-                style={{ objectFit: 'contain', display: 'block' }}
-                draggable={false}
-              />
-            </Box>
+            <img
+              src={'/assets/recipe.jpg'}
+              height={200}
+              width={'100%'}
+              style={{ objectFit: 'cover', display: 'block' }}
+              draggable={false}
+            />
           </Link>
         )}
         <Box
@@ -138,7 +138,6 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               }}
               draggable={false}
               sx={{
-                color: 'text.primary',
                 textDecoration: 'none',
                 '&:hover': {
                   textDecoration: 'underline',

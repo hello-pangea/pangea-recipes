@@ -1,4 +1,4 @@
-import { RouterCardActionArea } from '#src/components/RouterCardActionArea';
+import { RouterLink } from '#src/components/RouterLink';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
@@ -8,9 +8,9 @@ import {
   IconButton,
   Stack,
   Tooltip,
-  Typography,
 } from '@mui/material';
 import { useRecipeBook } from '@open-zero/features/recipe-books';
+import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 
@@ -31,69 +31,85 @@ export function RecipeBookCard({ recipeBookId }: Props) {
 
   return (
     <>
-      <Card variant="outlined">
-        <RouterCardActionArea
+      <Card
+        variant="outlined"
+        sx={{
+          '&:hover': {
+            boxShadow:
+              '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+          },
+        }}
+      >
+        <Link
           to="/recipe-books/$recipeBookId"
           params={{
             recipeBookId: recipeBookId,
           }}
+          draggable={false}
+          tabIndex={-1}
         >
-          <Box
-            sx={{
-              height: 200,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <img
-              src={'/assets/lil-guy.svg'}
-              height={100}
-              width={'100%'}
-              style={{ objectFit: 'contain', display: 'block' }}
-            />
-          </Box>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              p: 1,
-            }}
-          >
-            <Stack direction="row" spacing={1} alignItems="center">
-              <Typography variant="body1">{recipeBook.name}</Typography>
-              {(recipeBook.members.length > 1 ||
-                recipeBook.invites.length > 0) && (
-                <Tooltip title="Shared">
-                  <GroupRoundedIcon
-                    sx={{
-                      color: (theme) => theme.palette.text.secondary,
-                    }}
-                    fontSize="inherit"
-                  />
-                </Tooltip>
-              )}
-            </Stack>
-            <IconButton
-              id="more-button"
-              aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={moreMenuOpen ? 'true' : undefined}
-              onClick={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                setMoreMenuAnchorEl(event.currentTarget);
+          <img
+            src={'/assets/recipe-book.jpg'}
+            height={200}
+            width={'100%'}
+            style={{ objectFit: 'cover', display: 'block' }}
+            draggable={false}
+          />
+        </Link>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            p: 1,
+          }}
+        >
+          <Stack direction="row" spacing={1} alignItems="center">
+            <RouterLink
+              to="/recipe-books/$recipeBookId"
+              params={{
+                recipeBookId: recipeBookId,
               }}
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
+              draggable={false}
+              sx={{
+                textDecoration: 'none',
+                '&:hover': {
+                  textDecoration: 'underline',
+                },
               }}
             >
-              <MoreVertRoundedIcon />
-            </IconButton>
-          </Box>
-        </RouterCardActionArea>
+              {recipeBook.name}
+            </RouterLink>
+            {(recipeBook.members.length > 1 ||
+              recipeBook.invites.length > 0) && (
+              <Tooltip title="Shared">
+                <GroupRoundedIcon
+                  sx={{
+                    color: (theme) => theme.palette.text.secondary,
+                  }}
+                  fontSize="inherit"
+                />
+              </Tooltip>
+            )}
+          </Stack>
+          <IconButton
+            id="more-button"
+            aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={moreMenuOpen ? 'true' : undefined}
+            onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+              setMoreMenuAnchorEl(event.currentTarget);
+            }}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+            }}
+          >
+            <MoreVertRoundedIcon />
+          </IconButton>
+        </Box>
       </Card>
       <RecipeBookMoreMenu
         recipeBookId={recipeBookId}

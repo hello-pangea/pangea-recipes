@@ -1,6 +1,6 @@
 import '#src/theme/theme.css';
 import '@fontsource-variable/inter';
-import '@fontsource-variable/merriweather-sans';
+import '@fontsource-variable/lora';
 import { updateApiOptions } from '@open-zero/features';
 import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';

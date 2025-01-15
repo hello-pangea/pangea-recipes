@@ -144,7 +144,7 @@ importers:
       '@fontsource-variable/inter':
         specifier: ^5.1.1
         version: 5.1.1
-      '@fontsource-variable/merriweather-sans':
+      '@fontsource-variable/lora':
         specifier: ^5.1.1
         version: 5.1.1
       '@mui/icons-material':
@@ -1277,8 +1277,8 @@ packages:
   '@fontsource-variable/inter@5.1.1':
     resolution: {integrity: sha512-OpXFTmiH6tHkYijMvQTycFKBLK4X+SRV6tet1m4YOUH7SzIIlMqDja+ocDtiCA72UthBH/vF+3ZtlMr2rN/wIw==}
 
-  '@fontsource-variable/merriweather-sans@5.1.1':
-    resolution: {integrity: sha512-nX5LijPOlAxYQZQBT5GT+tvSKFAdplm8YbidLUy5IKK0EaJapMiZHWzDexwCMkTjzI15ywvYNpR97JO7XkQ6vw==}
+  '@fontsource-variable/lora@5.1.1':
+    resolution: {integrity: sha512-renGhPji2o39E9CIdj1vAGwrV66IS7uz1AU/8DWC/zE2QdC2dA7mbaM/Q8gAfmVhow0Jyt4NPP25XrO5NQa8qg==}
 
   '@humanfs/core@0.19.1':
     resolution: {integrity: sha512-5DyQ4+1JEUzejeK1JGICcideyfUbGixgS9jNgex5nqkW+cY7WZhxBigmieN5Qnw9ZosSNVC9KQKyb+GUaGyKUA==}
@@ -7059,7 +7059,7 @@ snapshots:
 
   '@fontsource-variable/inter@5.1.1': {}
 
-  '@fontsource-variable/merriweather-sans@5.1.1': {}
+  '@fontsource-variable/lora@5.1.1': {}
 
   '@humanfs/core@0.19.1': {}
 

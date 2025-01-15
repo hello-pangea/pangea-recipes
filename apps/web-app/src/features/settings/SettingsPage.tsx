@@ -1,11 +1,26 @@
 import { Page } from '#src/components/Page';
 import { useAuth } from '@clerk/tanstack-start';
-import { Button, Grid2, Typography } from '@mui/material';
+import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
+import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
+import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
+import {
+  Box,
+  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material';
+import {
+  useSignedInUser,
+  useUpdateUser,
+  type User,
+} from '@open-zero/features/users';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
-import { ThemeCard } from './ThemeCard';
 
 export function SettingsPage() {
+  const { data: user } = useSignedInUser();
+  const updateUser = useUpdateUser();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { signOut } = useAuth();
@@ -18,82 +33,47 @@ export function SettingsPage() {
       <Typography variant="h2" sx={{ mb: 2 }}>
         Theme preferences
       </Typography>
-      <Grid2 container spacing={2}>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 4,
-          }}
-        >
-          <ThemeCard themeName="Light" themeMode="light" />
-        </Grid2>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 4,
-          }}
-        >
-          <ThemeCard themeName="Dark" themeMode="dark" />
-        </Grid2>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 4,
-          }}
-        >
-          <ThemeCard
-            themeName="Auto"
-            themeMode="system"
-            subtext="Matches your device settings"
-          />
-        </Grid2>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 6,
-          }}
-        >
-          <ThemeCard themeName="Autumn" themeMode="autumn" />
-        </Grid2>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 6,
-          }}
-        >
-          <ThemeCard themeName="Mint" themeMode="mint" />
-        </Grid2>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 6,
-          }}
-        >
-          <ThemeCard themeName="Lavendar" themeMode="lavendar" />
-        </Grid2>
-        <Grid2
-          size={{
-            xs: 12,
-            sm: 6,
-          }}
-        >
-          <ThemeCard themeName="Ocean" themeMode="ocean" />
-        </Grid2>
-      </Grid2>
-      <Button
-        loading={isLoading}
-        color="error"
-        onClick={() => {
-          setIsLoading(true);
-
-          void signOut().then(() => {
-            void router.invalidate();
+      <ToggleButtonGroup
+        color="primary"
+        value={user?.themePreference ?? 'light'}
+        exclusive
+        onChange={(_event, newValue: User['themePreference']) => {
+          updateUser.mutate({
+            themePreference: newValue,
+            id: user?.id ?? '',
           });
         }}
-        sx={{ mt: 8 }}
+        aria-label="Theme mode"
       >
-        Sign out
-      </Button>
+        <ToggleButton value="light">
+          <LightModeRoundedIcon sx={{ mr: 1 }} />
+          Light
+        </ToggleButton>
+        <ToggleButton value="system">
+          <SettingsBrightnessRoundedIcon sx={{ mr: 1 }} />
+          System
+        </ToggleButton>
+        <ToggleButton value="dark">
+          <DarkModeRoundedIcon sx={{ mr: 1 }} />
+          Dark
+        </ToggleButton>
+      </ToggleButtonGroup>
+      <Box>
+        <Button
+          loading={isLoading}
+          color="error"
+          onClick={() => {
+            setIsLoading(true);
+
+            void signOut().then(() => {
+              void router.invalidate();
+            });
+          }}
+          sx={{ mt: 8 }}
+        >
+          Sign out
+        </Button>
+      </Box>
     </Page>
   );
 }
