@@ -102,11 +102,7 @@ export function Layout() {
               color: (theme) => theme.palette.text.primary,
             }}
           >
-            <Toolbar
-              sx={{
-                minHeight: 38,
-              }}
-            >
+            <Toolbar>
               <IconButton
                 color="inherit"
                 aria-label="open sidebar"

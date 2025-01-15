@@ -85,7 +85,7 @@ export function RecipeBookPage() {
         <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
       )}
       <Grid2 container spacing={2}>
-        {recipes?.recipes.map((recipe) => (
+        {recipes?.map((recipe) => (
           <Grid2
             key={recipe.id}
             size={{

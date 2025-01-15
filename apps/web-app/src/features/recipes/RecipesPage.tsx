@@ -35,7 +35,9 @@ export function RecipesPage() {
       >
         My Recipes
       </Typography>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <Box
+        sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
+      >
         <Box
           sx={[
             {

@@ -114,7 +114,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     name: 'ingredientGroups',
   });
 
-  const recipesQuery = useRecipes({
+  const { data: recipes } = useRecipes({
     options: {
       userId: userId,
     },
@@ -376,7 +376,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           )}
           <Autocomplete
             options={
-              recipesQuery.data?.recipes.map((r) => {
+              recipes?.map((r) => {
                 return { label: r.name, id: r.id };
               }) ?? []
             }
