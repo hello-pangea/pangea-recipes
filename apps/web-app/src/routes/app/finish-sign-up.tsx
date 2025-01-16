@@ -1,6 +1,6 @@
-import { FinishSignUpPage } from '#src/features/auth/FinishSignUpPage'
-import { SignedIn } from '@clerk/tanstack-start'
-import { createFileRoute } from '@tanstack/react-router'
+import { FinishSignUpPage } from '#src/features/auth/FinishSignUpPage';
+import { SignedIn } from '@clerk/tanstack-start';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/finish-sign-up')({
   component: () => (
@@ -8,4 +8,4 @@ export const Route = createFileRoute('/app/finish-sign-up')({
       <FinishSignUpPage />
     </SignedIn>
   ),
-})
+});

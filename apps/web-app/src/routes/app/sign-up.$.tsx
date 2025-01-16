@@ -1,16 +1,16 @@
-import { SignUpPage } from '#src/features/auth/SignUpPage'
-import { Type } from '@sinclair/typebox'
-import { Value } from '@sinclair/typebox/value'
-import { createFileRoute } from '@tanstack/react-router'
+import { SignUpPage } from '#src/features/auth/SignUpPage';
+import { Type } from '@sinclair/typebox';
+import { Value } from '@sinclair/typebox/value';
+import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/sign-up/$')({
   validateSearch: (search) => {
     const res = Value.Parse(
       Type.Object({ redirect: Type.Optional(Type.String()) }),
       search,
-    )
+    );
 
-    return res
+    return res;
   },
   component: SignUpPage,
-})
+});
