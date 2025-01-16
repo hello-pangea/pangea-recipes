@@ -9,16 +9,9 @@ import { StrictMode, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
 import { config } from './config/config';
+import { getSessionToken } from './lib/clerk';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
-
-async function getSessionToken() {
-  if (!window.Clerk?.session) {
-    return null;
-  }
-
-  return (await window.Clerk.session.getToken()) ?? null;
-}
 
 updateApiOptions({
   prefixUrl: config.VITE_API_URL,
