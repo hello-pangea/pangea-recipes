@@ -54,7 +54,7 @@
     "@open-zero/eslint-config-node": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@prisma/client": "^6.2.1",
-    "@types/node": "^22.10.6",
+    "@types/node": "^22.10.7",
     "typescript": "~5.7.3"
   }
 }
