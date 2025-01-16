@@ -1,5 +1,4 @@
 import { CarrotIcon } from '#src/components/CarrotIcon';
-import { RouterButton } from '#src/components/RouterButton';
 import { RouterListItemButton } from '#src/components/RouterListItemButton';
 import {
   dropTargetForElements,
@@ -17,6 +16,7 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import {
   alpha,
   Box,
+  Button,
   Collapse,
   Drawer,
   IconButton,
@@ -24,6 +24,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Menu,
+  MenuItem,
   ListItem as MuiListItem,
   Typography,
 } from '@mui/material';
@@ -32,7 +34,7 @@ import {
   useRecipeBooks,
 } from '@open-zero/features/recipe-books';
 import { useSignedInUser } from '@open-zero/features/users';
-import { useRouterState, type LinkProps } from '@tanstack/react-router';
+import { Link, useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
@@ -52,6 +54,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const { openUserProfile } = useClerk();
+  const [newMenuAnchorEl, setNewMenuAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
 
   useEffect(() => {
     return monitorForElements({
@@ -104,13 +109,67 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
         </Typography>
       </Box>
       <Box sx={{ p: 1 }}>
-        <RouterButton
-          to="/app/recipes/new"
+        <Button
           variant="contained"
           startIcon={<AddRoundedIcon />}
+          onClick={(event) => {
+            setNewMenuAnchorEl(event.currentTarget);
+          }}
         >
           New
-        </RouterButton>
+        </Button>
+        <Menu
+          anchorEl={newMenuAnchorEl}
+          open={Boolean(newMenuAnchorEl)}
+          onClose={() => {
+            setNewMenuAnchorEl(null);
+          }}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+        >
+          <MenuItem sx={{ p: 0 }}>
+            <Link
+              to="/app/recipes/new"
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                padding: '6px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              <ListItemIcon>
+                <RestaurantMenuRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Recipe</ListItemText>
+            </Link>
+          </MenuItem>
+          <MenuItem sx={{ p: 0 }}>
+            <Link
+              to="/app/recipe-books/new"
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                padding: '6px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+              }}
+            >
+              <ListItemIcon>
+                <MenuBookRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Recipe book</ListItemText>
+            </Link>
+          </MenuItem>
+        </Menu>
       </Box>
       {/* Navigation */}
       <Box

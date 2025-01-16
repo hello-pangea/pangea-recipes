@@ -1,6 +1,4 @@
 import { Page } from '#src/components/Page';
-import { RouterButton } from '#src/components/RouterButton';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { Box, Grid2, InputBase, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
@@ -82,15 +80,6 @@ export function RecipesPage() {
           />
         </Box>
       </Box>
-      <RouterButton
-        startIcon={<AddRoundedIcon />}
-        variant="contained"
-        sx={{ mb: 2 }}
-        to="/app/recipes/new"
-        size="small"
-      >
-        New recipe
-      </RouterButton>
       <Grid2 container spacing={2}>
         {filteredRecipes.map((recipe) => (
           <Grid2
