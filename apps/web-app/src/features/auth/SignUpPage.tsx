@@ -36,9 +36,7 @@ export function SignUpPage() {
           }
         />
       </Box>
-      <Box>
-        <Copyright />
-      </Box>
+      <Copyright />
     </Container>
   );
 }

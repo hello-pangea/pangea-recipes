@@ -38,9 +38,7 @@ export function SignInPage() {
           routing="hash"
         />
       </Box>
-      <Box>
-        <Copyright />
-      </Box>
+      <Copyright />
     </Container>
   );
 }

@@ -1,7 +1,7 @@
 import { useUser } from '@clerk/tanstack-start';
 import { CircularProgress, Container } from '@mui/material';
 import { useSetupUser, useSignedInUser } from '@open-zero/features/users';
-import { useNavigate } from '@tanstack/react-router';
+import { Navigate, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 export function FinishSignUpPage() {
@@ -37,6 +37,10 @@ export function FinishSignUpPage() {
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (user && clerkUser?.publicMetadata.helloRecipesUserId) {
+    return <Navigate to="/app/recipes" />;
+  }
 
   return (
     <Container

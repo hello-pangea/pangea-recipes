@@ -1,17 +1,31 @@
-import { Link, Typography } from '@mui/material';
+import { Box, Stack, Typography } from '@mui/material';
+import { RouterLink } from './RouterLink';
 
 export function Copyright() {
   return (
-    <>
-      <Typography variant="body2" color="text.secondary" align="center">
+    <Box>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        sx={{ mb: 1 }}
+      >
         {'Copyright © Reece Carolan '}
         {new Date().getFullYear()}
       </Typography>
-      <Typography variant="body2" color="text.secondary" align="center">
+      <Stack direction="row" spacing={1} justifyContent="center">
+        <RouterLink variant="caption" to="/terms-of-service">
+          Terms of service
+        </RouterLink>
+        <RouterLink variant="caption" to="/privacy-policy">
+          Privacy policy
+        </RouterLink>
+      </Stack>
+      {/* <Typography variant="body2" color="text.secondary" align="center">
         <Link href="https://github.com/open-zero/hello-recipes" target="_blank">
           ❤️ Open Source
         </Link>
-      </Typography>
-    </>
+      </Typography> */}
+    </Box>
   );
 }
