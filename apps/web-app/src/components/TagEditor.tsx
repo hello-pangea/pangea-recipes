@@ -50,6 +50,7 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
           key={tag.id}
           label={tag.name}
           variant="outlined"
+          size="small"
           deleteIcon={<ClearRoundedIcon />}
           onDelete={() => {
             onTagsChange(tags.filter((t) => t.id !== tag.id));
@@ -60,6 +61,7 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
         label="Add Tag"
         color="primary"
         variant="outlined"
+        size="small"
         icon={<AddRoundedIcon />}
         onClick={(event) => {
           setAnchorEl(event.currentTarget);

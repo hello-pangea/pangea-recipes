@@ -1,6 +1,14 @@
 import { TagEditor } from '#src/components/TagEditor';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import { Box, Grid2, IconButton, Link, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Card,
+  Grid2,
+  IconButton,
+  Link,
+  Stack,
+  Typography,
+} from '@mui/material';
 import {
   getRecipeQueryOptions,
   useUpdateRecipe,
@@ -30,67 +38,66 @@ export function RecipePage() {
   const hasCoverImage = (recipe.images?.length ?? 0) > 0;
 
   return (
-    <Box sx={{ p: 3, mt: 2 }}>
-      <Grid2 container spacing={2} sx={{ mb: 2 }}>
+    <Box sx={{ p: { xs: 2, sm: 3 }, mt: { xs: 0, sm: 2 } }}>
+      <Grid2 container spacing={2} sx={{ mb: 4 }}>
         <Grid2
           size={{
             xs: hasCoverImage ? 6 : 12,
           }}
-          sx={{
-            pb: 4,
-          }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              mb: 2,
-            }}
-          >
-            <Box>
-              <Typography variant="h1">{recipe.name}</Typography>
-              {recipe.websiteSource && (
-                <Link
-                  href={recipe.websiteSource.url}
-                  rel="nofollow"
-                  target="_blank"
-                >
-                  {recipe.websiteSource.title}
-                </Link>
-              )}
-            </Box>
-            <IconButton
-              id="more-button"
-              aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-              aria-haspopup="true"
-              aria-expanded={moreMenuOpen ? 'true' : undefined}
-              onClick={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
-                setMoreMenuAnchorEl(event.currentTarget);
-              }}
-              onMouseDown={(event) => {
-                event.stopPropagation();
-                event.preventDefault();
+          <Card sx={{ p: { xs: 2, sm: 4 }, border: 0, mx: { xs: -1, sm: 0 } }}>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                mb: 2,
               }}
             >
-              <MoreVertRoundedIcon />
-            </IconButton>
-          </Box>
-          <TagEditor
-            tags={recipe.tags}
-            onTagsChange={(newTags) => {
-              recipeUpdater.mutate({
-                id: recipe.id,
-                tags: newTags,
-              });
-            }}
-            sx={{
-              mb: 2,
-            }}
-          />
-          <Typography sx={{ maxWidth: 500 }}>{recipe.description}</Typography>
+              <Box>
+                <Typography variant="h1">{recipe.name}</Typography>
+                {recipe.websiteSource && (
+                  <Link
+                    href={recipe.websiteSource.url}
+                    rel="nofollow"
+                    target="_blank"
+                  >
+                    {recipe.websiteSource.title}
+                  </Link>
+                )}
+              </Box>
+              <IconButton
+                id="more-button"
+                aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={moreMenuOpen ? 'true' : undefined}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  setMoreMenuAnchorEl(event.currentTarget);
+                }}
+                onMouseDown={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                }}
+              >
+                <MoreVertRoundedIcon />
+              </IconButton>
+            </Box>
+            <TagEditor
+              tags={recipe.tags}
+              onTagsChange={(newTags) => {
+                recipeUpdater.mutate({
+                  id: recipe.id,
+                  tags: newTags,
+                });
+              }}
+              sx={{
+                mb: 2,
+              }}
+            />
+            <Typography sx={{ maxWidth: 500 }}>{recipe.description}</Typography>
+          </Card>
         </Grid2>
         {hasCoverImage && (
           <Grid2
@@ -100,14 +107,12 @@ export function RecipePage() {
           >
             <Box
               sx={{
-                boxShadow:
-                  'rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;',
                 borderRadius: 1,
               }}
             >
               <img
                 src={recipe.images?.at(0)?.url}
-                height={300}
+                height={'100%'}
                 width={'100%'}
                 style={{
                   objectFit: 'cover',
@@ -164,28 +169,25 @@ export function RecipePage() {
                       {instructionGroup.name}
                     </Typography>
                   )}
-                <Stack component={'ol'} spacing={2} sx={{ maxWidth: '500px' }}>
+                <Stack component={'ol'} spacing={1} sx={{ maxWidth: '500px' }}>
                   {instructionGroup.instructions.map((instruction, index) => (
-                    <Box
-                      component={'li'}
-                      key={instruction.id}
-                      sx={{ display: 'flex' }}
-                    >
-                      <Typography
-                        variant="h1"
-                        component="p"
-                        sx={{
-                          minWidth: 45,
-                          color: (theme) => theme.palette.text.secondary,
-                        }}
-                      >
-                        {index + 1}.
-                      </Typography>
+                    <Box component={'li'} key={instruction.id}>
                       <Typography
                         sx={{
                           whiteSpace: 'pre-wrap',
                         }}
                       >
+                        <Typography
+                          sx={{
+                            color: (theme) => theme.palette.primary.main,
+                            fontWeight: 'bold',
+                            fontFamily: '"Lora Variable", serif',
+                            fontSize: 22,
+                          }}
+                          component={'span'}
+                        >
+                          {index + 1}.{' '}
+                        </Typography>
                         {instruction.text}
                       </Typography>
                     </Box>

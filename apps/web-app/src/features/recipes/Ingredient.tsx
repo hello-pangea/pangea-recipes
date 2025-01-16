@@ -41,9 +41,17 @@ export function Ingredient({ ingredient }: Props) {
           opacity: checked ? 0.5 : 1,
         }}
       >
-        {ingredient.amount !== null && (
-          <b>{numberToFraction(ingredient.amount)}</b>
-        )}{' '}
+        <Typography
+          component={'span'}
+          sx={{
+            color: (theme) => theme.palette.text.heading,
+            fontWeight: 'bold',
+          }}
+        >
+          {ingredient.amount !== null && (
+            <b>{numberToFraction(ingredient.amount)}</b>
+          )}
+        </Typography>{' '}
         {ingredient.unit && unitRecord[ingredient.unit].name} {ingredient.name}
         {ingredient.notes && (
           <Typography
