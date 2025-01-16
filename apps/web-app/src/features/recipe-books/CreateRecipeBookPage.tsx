@@ -36,7 +36,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
     mutationConfig: {
       onSuccess: (createdRecipeBook) => {
         void navigate({
-          to: `/recipe-books/$recipeBookId`,
+          to: `/app/recipe-books/$recipeBookId`,
           params: {
             recipeBookId: createdRecipeBook.id,
           },
@@ -51,7 +51,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
         enqueueSnackbar('Recipe book updated', { variant: 'success' });
 
         void navigate({
-          to: `/recipe-books/$recipeBookId`,
+          to: `/app/recipe-books/$recipeBookId`,
           params: {
             recipeBookId: updatedRecipeBook.id,
           },
@@ -81,7 +81,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
         size="small"
         startIcon={<ChevronLeftRoundedIcon />}
         color="inherit"
-        to="/recipe-books"
+        to="/app/recipe-books"
       >
         Back
       </RouterButton>

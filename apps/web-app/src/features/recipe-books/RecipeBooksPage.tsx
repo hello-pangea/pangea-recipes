@@ -25,7 +25,7 @@ export function RecipeBooksPage() {
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        to="/recipe-books/new"
+        to="/app/recipe-books/new"
         size="small"
       >
         New recipe book

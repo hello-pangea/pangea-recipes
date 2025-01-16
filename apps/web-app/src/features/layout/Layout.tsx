@@ -25,7 +25,7 @@ import {
 } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 
-const route = getRouteApi('/_layout');
+const route = getRouteApi('/app/_layout');
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -50,7 +50,7 @@ export function Layout() {
     if (isLoaded && isSignedIn) {
       if (!clerkUser.publicMetadata.helloRecipesUserId) {
         void navigate({
-          to: '/finish-sign-up',
+          to: '/app/finish-sign-up',
         });
       }
 
@@ -72,9 +72,9 @@ export function Layout() {
   ]);
 
   if (isLoaded && clerkUser && !clerkUser.publicMetadata.helloRecipesUserId) {
-    return <Navigate to="/finish-sign-up" />;
+    return <Navigate to="/app/finish-sign-up" />;
   } else if (isLoaded && !clerkUser) {
-    return <Navigate to="/sign-in/$" />;
+    return <Navigate to="/app/sign-in/$" />;
   }
 
   if (!routeContext.userId) {

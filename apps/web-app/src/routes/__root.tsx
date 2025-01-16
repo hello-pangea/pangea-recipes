@@ -36,11 +36,11 @@ function RootComponent() {
   return (
     <ClerkProvider
       publishableKey={config.VITE_CLERK_PUBLISHABLE_KEY}
-      afterSignOutUrl="/sign-in"
-      signUpUrl="/sign-up"
-      signInUrl="/sign-in"
-      signInFallbackRedirectUrl={'/recipes'}
-      signUpForceRedirectUrl={'/finish-sign-up'}
+      afterSignOutUrl="/app/sign-in"
+      signUpUrl="/app/sign-up"
+      signInUrl="/app/sign-in"
+      signInFallbackRedirectUrl={'/app/recipes'}
+      signUpForceRedirectUrl={'/app/finish-sign-up'}
     >
       <ClerkLoaded>
         <Outlet />

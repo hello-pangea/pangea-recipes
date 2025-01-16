@@ -17,7 +17,7 @@ export function CanonicalIngredientsPage() {
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        to="/canonical-ingredients/new"
+        to="/app/canonical-ingredients/new"
         size="small"
       >
         New canonical ingredient

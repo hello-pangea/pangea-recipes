@@ -91,7 +91,7 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
         }}
       >
         <Link
-          to="/canonical-ingredients/$canonicalIngredientId/edit"
+          to="/app/canonical-ingredients/$canonicalIngredientId/edit"
           params={{ canonicalIngredientId: canonicalIngredient.id }}
           style={{ textDecoration: 'none', color: 'inherit' }}
         >

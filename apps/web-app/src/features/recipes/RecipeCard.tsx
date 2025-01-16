@@ -89,7 +89,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       >
         {recipe.images?.length ? (
           <Link
-            to="/recipes/$recipeId"
+            to="/app/recipes/$recipeId"
             params={{
               recipeId: recipeId,
             }}
@@ -106,7 +106,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
           </Link>
         ) : (
           <Link
-            to="/recipes/$recipeId"
+            to="/app/recipes/$recipeId"
             params={{
               recipeId: recipeId,
             }}
@@ -132,7 +132,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
         >
           <Box>
             <RouterLink
-              to="/recipes/$recipeId"
+              to="/app/recipes/$recipeId"
               params={{
                 recipeId: recipeId,
               }}

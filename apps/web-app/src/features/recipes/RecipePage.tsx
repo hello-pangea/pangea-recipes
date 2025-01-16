@@ -11,7 +11,7 @@ import { useState } from 'react';
 import { Ingredient } from './Ingredient';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
-const route = getRouteApi('/_layout/recipes/$recipeId');
+const route = getRouteApi('/app/_layout/recipes/$recipeId');
 
 export function RecipePage() {
   const { recipeId } = route.useParams();
@@ -203,7 +203,7 @@ export function RecipePage() {
           setMoreMenuAnchorEl(null);
         }}
         onDelete={() => {
-          void navigate({ to: '/recipes' });
+          void navigate({ to: '/app/recipes' });
         }}
       />
     </Box>

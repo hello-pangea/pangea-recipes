@@ -3,7 +3,7 @@ import { SignIn } from '@clerk/tanstack-start';
 import { Box, Container } from '@mui/material';
 import { getRouteApi } from '@tanstack/react-router';
 
-const route = getRouteApi('/sign-in/$');
+const route = getRouteApi('/app/sign-in/$');
 
 export function SignInPage() {
   const { redirect } = route.useSearch();
@@ -31,8 +31,10 @@ export function SignInPage() {
         }}
       >
         <SignIn
-          forceRedirectUrl={redirect ?? '/recipes'}
-          signUpUrl={redirect ? `/sign-up?redirect=${redirect}` : '/sign-up'}
+          forceRedirectUrl={redirect ?? '/app/recipes'}
+          signUpUrl={
+            redirect ? `/app/sign-up?redirect=${redirect}` : '/app/sign-up'
+          }
           routing="hash"
         />
       </Box>

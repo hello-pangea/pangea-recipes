@@ -105,7 +105,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
       </Box>
       <Box sx={{ p: 1 }}>
         <RouterButton
-          to="/recipes/new"
+          to="/app/recipes/new"
           variant="contained"
           startIcon={<AddRoundedIcon />}
         >
@@ -124,17 +124,17 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
             label="Recipes"
             onClick={onClose}
             linkProps={{
-              to: '/recipes',
+              to: '/app/recipes',
             }}
-            plainPath="/recipes"
+            plainPath="/app/recipes"
           />
           <ListItem
             icon={<MenuBookRoundedIcon />}
             label="Recipe books"
             linkProps={{
-              to: '/recipe-books',
+              to: '/app/recipe-books',
             }}
-            plainPath="/recipe-books"
+            plainPath="/app/recipe-books"
             matchExact
           >
             {(recipeBooks?.length ?? 0) > 0
@@ -145,12 +145,12 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
                     label={recipeBook.name}
                     isNested
                     linkProps={{
-                      to: '/recipe-books/$recipeBookId',
+                      to: '/app/recipe-books/$recipeBookId',
                       params: {
                         recipeBookId: recipeBook.id,
                       },
                     }}
-                    plainPath={`/recipe-books/${recipeBook.id}`}
+                    plainPath={`/app/recipe-books/${recipeBook.id}`}
                     recipeBookId={recipeBook.id}
                   />
                 ))
@@ -162,9 +162,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
               label="Canonical ingredients"
               onClick={onClose}
               linkProps={{
-                to: '/canonical-ingredients',
+                to: '/app/canonical-ingredients',
               }}
-              plainPath="/canonical-ingredients"
+              plainPath="/app/canonical-ingredients"
             />
           )}
         </List>
@@ -206,9 +206,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
           label="Settings"
           onClick={onClose}
           linkProps={{
-            to: '/settings',
+            to: '/app/settings',
           }}
-          plainPath="/settings"
+          plainPath="/app/settings"
         />
       </Box>
     </>

@@ -17,7 +17,7 @@ export function FinishSignUpPage() {
 
     if (user && clerkUser?.publicMetadata.helloRecipesUserId) {
       void naviate({
-        to: '/recipes',
+        to: '/app/recipes',
       });
 
       return;
@@ -30,7 +30,7 @@ export function FinishSignUpPage() {
           await clerkUser?.reload();
 
           void naviate({
-            to: '/recipes',
+            to: '/app/recipes',
           });
         },
       },

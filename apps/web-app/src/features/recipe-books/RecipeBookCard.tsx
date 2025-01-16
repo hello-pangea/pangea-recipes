@@ -41,7 +41,7 @@ export function RecipeBookCard({ recipeBookId }: Props) {
         }}
       >
         <Link
-          to="/recipe-books/$recipeBookId"
+          to="/app/recipe-books/$recipeBookId"
           params={{
             recipeBookId: recipeBookId,
           }}
@@ -66,7 +66,7 @@ export function RecipeBookCard({ recipeBookId }: Props) {
         >
           <Stack direction="row" spacing={1} alignItems="center">
             <RouterLink
-              to="/recipe-books/$recipeBookId"
+              to="/app/recipe-books/$recipeBookId"
               params={{
                 recipeBookId: recipeBookId,
               }}

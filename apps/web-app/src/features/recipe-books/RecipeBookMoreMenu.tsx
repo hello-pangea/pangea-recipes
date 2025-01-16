@@ -102,7 +102,7 @@ export function RecipeBookMoreMenu({
       >
         <MenuItem sx={{ p: 0 }}>
           <Link
-            to="/recipe-books/$recipeBookId/edit"
+            to="/app/recipe-books/$recipeBookId/edit"
             params={{ recipeBookId: recipeBookId }}
             style={{
               textDecoration: 'none',

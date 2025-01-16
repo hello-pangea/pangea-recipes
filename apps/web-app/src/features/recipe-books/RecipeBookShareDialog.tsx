@@ -359,7 +359,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               onClick={() => {
                 void navigator.clipboard
                   .writeText(
-                    `${window.location.origin}/recipe-books/${recipeBookId}`,
+                    `${window.location.origin}/app/recipe-books/${recipeBookId}`,
                   )
                   .then(() => {
                     setLinkCopied(true);

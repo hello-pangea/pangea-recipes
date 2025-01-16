@@ -21,7 +21,7 @@ import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareDialog } from './RecipeBookShareDialog';
 
-const route = getRouteApi('/_layout/recipe-books/$recipeBookId');
+const route = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
 
 export function RecipeBookPage() {
   const { recipeBookId } = route.useParams();

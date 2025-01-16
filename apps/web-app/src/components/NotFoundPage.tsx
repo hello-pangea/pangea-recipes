@@ -26,7 +26,7 @@ export function NotFoundPage() {
         Page not found
       </Typography>
       <Typography>
-        Head <RouterLink to="/">home</RouterLink> and try again
+        Head <RouterLink to="/app/recipes">home</RouterLink> and try again
       </Typography>
     </Box>
   );

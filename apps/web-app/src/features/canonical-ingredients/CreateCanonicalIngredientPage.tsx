@@ -128,7 +128,7 @@ export function CreateCanonicalIngredientPage({
         enqueueSnackbar('Canonical ingredient updated', { variant: 'success' });
 
         void navigate({
-          to: `/canonical-ingredients`,
+          to: `/app/canonical-ingredients`,
         });
       },
     },

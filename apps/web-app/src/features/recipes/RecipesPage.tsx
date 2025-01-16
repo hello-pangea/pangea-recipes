@@ -81,7 +81,7 @@ export function RecipesPage() {
         startIcon={<AddRoundedIcon />}
         variant="contained"
         sx={{ mb: 2 }}
-        to="/recipes/new"
+        to="/app/recipes/new"
         size="small"
       >
         New recipe

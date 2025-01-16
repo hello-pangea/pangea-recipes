@@ -124,7 +124,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     mutationConfig: {
       onSuccess: (data) => {
         void navigate({
-          to: `/recipes/$recipeId`,
+          to: `/app/recipes/$recipeId`,
           params: {
             recipeId: data.recipe.id,
           },
@@ -139,7 +139,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         enqueueSnackbar('Recipe updated', { variant: 'success' });
 
         void navigate({
-          to: `/recipes/$recipeId`,
+          to: `/app/recipes/$recipeId`,
           params: {
             recipeId: data.recipe.id,
           },
@@ -197,7 +197,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         size="small"
         startIcon={<ChevronLeftRoundedIcon />}
         color="inherit"
-        to="/recipes"
+        to="/app/recipes"
       >
         Back
       </RouterButton>

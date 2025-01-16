@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipeBookPage } from './CreateRecipeBookPage';
 
-const route = getRouteApi('/_layout/recipe-books_/$recipeBookId/edit');
+const route = getRouteApi('/app/_layout/recipe-books_/$recipeBookId/edit');
 
 export function EditRecipeBookPage() {
   const { recipeBookId } = route.useParams();
