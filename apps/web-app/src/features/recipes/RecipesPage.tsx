@@ -43,7 +43,10 @@ export function RecipesPage() {
             {
               maxWidth: 800,
               borderRadius: 99,
-              backgroundColor: (theme) => theme.palette.grey[200],
+              backgroundColor: (theme) =>
+                searchFocused
+                  ? theme.palette.background.paper
+                  : theme.palette.grey[200],
               display: 'flex',
               alignItems: 'center',
               width: '100%',
@@ -56,7 +59,9 @@ export function RecipesPage() {
             },
             (theme) =>
               theme.applyStyles('dark', {
-                backgroundColor: theme.palette.grey[900],
+                backgroundColor: searchFocused
+                  ? theme.palette.background.paper
+                  : theme.palette.grey[900],
               }),
           ]}
         >
