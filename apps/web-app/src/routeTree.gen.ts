@@ -16,6 +16,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TermsOfServiceImport } from './routes/terms-of-service'
 import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as IndexImport } from './routes/index'
+import { Route as AppIndexImport } from './routes/app/index'
 import { Route as AppFinishSignUpImport } from './routes/app/finish-sign-up'
 import { Route as AppLayoutImport } from './routes/app/_layout'
 import { Route as AppSignUpSplatImport } from './routes/app/sign-up.$'
@@ -61,6 +62,12 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
+} as any)
+
+const AppIndexRoute = AppIndexImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AppRoute,
 } as any)
 
 const AppFinishSignUpRoute = AppFinishSignUpImport.update({
@@ -210,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppFinishSignUpImport
       parentRoute: typeof AppImport
     }
+    '/app/': {
+      id: '/app/'
+      path: '/'
+      fullPath: '/app/'
+      preLoaderRoute: typeof AppIndexImport
+      parentRoute: typeof AppImport
+    }
     '/app/_layout/settings': {
       id: '/app/_layout/settings'
       path: '/settings'
@@ -353,6 +367,7 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 interface AppRouteChildren {
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
   AppFinishSignUpRoute: typeof AppFinishSignUpRoute
+  AppIndexRoute: typeof AppIndexRoute
   AppSignInSplatRoute: typeof AppSignInSplatRoute
   AppSignUpSplatRoute: typeof AppSignUpSplatRoute
 }
@@ -360,6 +375,7 @@ interface AppRouteChildren {
 const AppRouteChildren: AppRouteChildren = {
   AppLayoutRoute: AppLayoutRouteWithChildren,
   AppFinishSignUpRoute: AppFinishSignUpRoute,
+  AppIndexRoute: AppIndexRoute,
   AppSignInSplatRoute: AppSignInSplatRoute,
   AppSignUpSplatRoute: AppSignUpSplatRoute,
 }
@@ -372,6 +388,7 @@ export interface FileRoutesByFullPath {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppLayoutRouteWithChildren
   '/app/finish-sign-up': typeof AppFinishSignUpRoute
+  '/app/': typeof AppIndexRoute
   '/app/settings': typeof AppLayoutSettingsRoute
   '/app/sign-in/$': typeof AppSignInSplatRoute
   '/app/sign-up/$': typeof AppSignUpSplatRoute
@@ -392,7 +409,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/app': typeof AppLayoutRouteWithChildren
+  '/app': typeof AppIndexRoute
   '/app/finish-sign-up': typeof AppFinishSignUpRoute
   '/app/settings': typeof AppLayoutSettingsRoute
   '/app/sign-in/$': typeof AppSignInSplatRoute
@@ -418,6 +435,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/app/_layout': typeof AppLayoutRouteWithChildren
   '/app/finish-sign-up': typeof AppFinishSignUpRoute
+  '/app/': typeof AppIndexRoute
   '/app/_layout/settings': typeof AppLayoutSettingsRoute
   '/app/sign-in/$': typeof AppSignInSplatRoute
   '/app/sign-up/$': typeof AppSignUpSplatRoute
@@ -442,6 +460,7 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/app'
     | '/app/finish-sign-up'
+    | '/app/'
     | '/app/settings'
     | '/app/sign-in/$'
     | '/app/sign-up/$'
@@ -485,6 +504,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/_layout'
     | '/app/finish-sign-up'
+    | '/app/'
     | '/app/_layout/settings'
     | '/app/sign-in/$'
     | '/app/sign-up/$'
@@ -546,6 +566,7 @@ export const routeTree = rootRoute
       "children": [
         "/app/_layout",
         "/app/finish-sign-up",
+        "/app/",
         "/app/sign-in/$",
         "/app/sign-up/$"
       ]
@@ -570,6 +591,10 @@ export const routeTree = rootRoute
     },
     "/app/finish-sign-up": {
       "filePath": "app/finish-sign-up.tsx",
+      "parent": "/app"
+    },
+    "/app/": {
+      "filePath": "app/index.tsx",
       "parent": "/app"
     },
     "/app/_layout/settings": {
