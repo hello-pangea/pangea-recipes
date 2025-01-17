@@ -244,6 +244,10 @@ export function NewIngredient({
               }}
               rules={{
                 validate: (value: number | string | null) => {
+                  if (value === null || value === '') {
+                    return true;
+                  }
+
                   const parsedValue = getNumberFromInput(value);
 
                   if (parsedValue === null || isNaN(parsedValue)) {

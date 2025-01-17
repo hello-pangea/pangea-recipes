@@ -154,6 +154,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         id: defaultRecipe.id,
         name: data.name,
         description: emptyStringToUndefined(data.description),
+        prepTime: data.prepTime
+          ? Math.round(parseInt(data.prepTime) * 60)
+          : undefined,
+        cookTime: data.cookTime
+          ? Math.round(parseInt(data.cookTime) * 60)
+          : undefined,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,
@@ -173,8 +179,12 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         name: data.name,
         description: emptyStringToUndefined(data.description),
         websitePageId: data.websitePageId,
-        cookTime: data.cookTime ? parseInt(data.cookTime) : undefined,
-        prepTime: data.prepTime ? parseInt(data.prepTime) : undefined,
+        prepTime: data.cookTime
+          ? Math.round(parseInt(data.prepTime) * 60)
+          : undefined,
+        cookTime: data.prepTime
+          ? Math.round(parseInt(data.cookTime) * 60)
+          : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           name: ig.name,

@@ -144,6 +144,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
                 alignItems: 'center',
                 width: '100%',
               }}
+              onClick={() => {
+                setNewMenuAnchorEl(null);
+              }}
             >
               <ListItemIcon>
                 <RestaurantMenuRoundedIcon fontSize="small" />
@@ -161,6 +164,9 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
                 display: 'flex',
                 alignItems: 'center',
                 width: '100%',
+              }}
+              onClick={() => {
+                setNewMenuAnchorEl(null);
               }}
             >
               <ListItemIcon>
