@@ -46,7 +46,7 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.34.13",
+    "@sinclair/typebox": "^0.34.14",
     "@tanstack/react-query": "^5.64.1",
     "ky": "^1.7.4"
   },
