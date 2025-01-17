@@ -3,7 +3,12 @@ import { prisma } from '@open-zero/database';
 import { unitSchema } from '@open-zero/features/units';
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
-import playwright from 'playwright-chromium';
+import playwright, { type Page } from 'playwright-chromium';
+import TurndownService from 'turndown';
+
+const turndownService = new TurndownService();
+turndownService.remove('script');
+turndownService.remove('style');
 
 async function processWebsite(data: {
   urlString: string;
@@ -52,10 +57,42 @@ async function processWebsite(data: {
   });
 }
 
+async function getRecipeHtml(page: Page) {
+  const tastyRecipesLocator = page.locator('.tasty-recipes');
+  const isTastyRecipes = await tastyRecipesLocator.isVisible();
+
+  if (isTastyRecipes) {
+    return await tastyRecipesLocator.innerHTML();
+  }
+
+  const wprmLocator = page.locator('.wprm-recipe-container');
+  const isWprm = await wprmLocator.isVisible();
+
+  if (isWprm) {
+    return await wprmLocator.innerHTML();
+  }
+
+  const wpDeliciousLocator = page.locator('.dr-summary-holder');
+  const isWpDelicious = await wpDeliciousLocator.isVisible();
+
+  if (isWpDelicious) {
+    return await wpDeliciousLocator.innerHTML();
+  }
+
+  // By default we send the whole page
+  return page.innerHTML('body');
+}
+
+async function getRecipeMarkdown(page: Page) {
+  const recipeHtml = await getRecipeHtml(page);
+
+  const recipeMarkdown = turndownService.turndown(recipeHtml);
+
+  return recipeMarkdown;
+}
+
 export async function getLlmImportRecipe(urlString: string) {
-  const browser = await playwright.chromium.launch({
-    args: ['--disable-gl-drawing-for-tests'],
-  });
+  const browser = await playwright.chromium.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
 
@@ -83,7 +120,7 @@ export async function getLlmImportRecipe(urlString: string) {
 
   await page.goto(urlString);
 
-  const pageText = await page.innerText('body');
+  const recipeMarkdown = await getRecipeMarkdown(page);
 
   await browser.close();
 
@@ -96,7 +133,7 @@ export async function getLlmImportRecipe(urlString: string) {
       },
       {
         role: 'user',
-        content: pageText,
+        content: recipeMarkdown,
       },
     ],
     model: 'gpt-4o-mini-2024-07-18',
