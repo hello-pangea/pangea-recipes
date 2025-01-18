@@ -32,8 +32,8 @@ import {
 } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
-import { CreateIngredientGroup } from './CreateIngredientGroup';
-import { CreateInstructionGroup } from './CreateInstructionGroup';
+import { EditIngredientGroup } from './EditIngredientGroup';
+import { EditInstructionGroup } from './EditInstructionGroup';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
@@ -278,7 +278,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
           >
             {ingredientGroups.map((ingredientGroup, ingredientGroupIndex) => (
-              <CreateIngredientGroup
+              <EditIngredientGroup
                 key={ingredientGroup.id}
                 index={ingredientGroupIndex}
                 minimal={ingredientGroups.length <= 1}
@@ -320,7 +320,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           >
             {instructionGroups.map(
               (instructionGroup, instructionGroupIndex) => (
-                <CreateInstructionGroup
+                <EditInstructionGroup
                   key={instructionGroup.id}
                   index={instructionGroupIndex}
                   minimal={instructionGroups.length <= 1}

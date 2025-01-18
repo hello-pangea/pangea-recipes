@@ -14,7 +14,7 @@ interface Props {
   onRemove: () => void;
 }
 
-export function CreateInstructionGroup({
+export function EditInstructionGroup({
   index: instructionGroupIndex,
   minimal,
   onRemove,

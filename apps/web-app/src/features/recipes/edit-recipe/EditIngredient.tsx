@@ -44,7 +44,7 @@ interface Props {
   removeIngredient: UseFieldArrayRemove;
 }
 
-export function NewIngredient({
+export function EditIngredient({
   index,
   ingredientGroupIndex,
   removeIngredient,

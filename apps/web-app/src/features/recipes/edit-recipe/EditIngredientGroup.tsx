@@ -22,14 +22,15 @@ import {
   useFormContext,
 } from 'react-hook-form-mui';
 import type { RecipeFormInputs } from './CreateRecipePage';
-import { NewIngredient } from './NewIngredient';
+import { EditIngredient } from './EditIngredient';
+
 interface Props {
   index: number;
   minimal?: boolean;
   onRemove: () => void;
 }
 
-export function CreateIngredientGroup({
+export function EditIngredientGroup({
   index: ingredientGroupIndex,
   minimal,
   onRemove,
@@ -181,7 +182,7 @@ export function CreateIngredientGroup({
         sx={{ mb: 2, maxWidth: '750px' }}
       >
         {ingredients.map((ingredient, ingredientIndex) => (
-          <NewIngredient
+          <EditIngredient
             ingredientGroupIndex={ingredientGroupIndex}
             index={ingredientIndex}
             key={ingredient.id}
