@@ -1,10 +1,8 @@
 import { Page } from '#src/components/Page';
-import { RouterButton } from '#src/components/RouterButton';
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { focusNextInput } from '#src/lib/focusNextInput';
 import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import {
@@ -203,14 +201,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   return (
     <Page>
-      <RouterButton
-        size="small"
-        startIcon={<ChevronLeftRoundedIcon />}
-        color="inherit"
-        to="/app/recipes"
-      >
-        Back
-      </RouterButton>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
           {defaultRecipe ? 'Edit recipe' : 'New recipe'}

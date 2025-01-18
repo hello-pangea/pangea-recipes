@@ -1,6 +1,4 @@
 import { Page } from '#src/components/Page';
-import { RouterButton } from '#src/components/RouterButton';
-import ChevronLeftRoundedIcon from '@mui/icons-material/ChevronLeftRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
 import { Box, Button, Stack, Typography } from '@mui/material';
 import { emptyStringToUndefined } from '@open-zero/features';
@@ -77,14 +75,6 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
 
   return (
     <Page>
-      <RouterButton
-        size="small"
-        startIcon={<ChevronLeftRoundedIcon />}
-        color="inherit"
-        to="/app/recipe-books"
-      >
-        Back
-      </RouterButton>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
           {defaultRecipeBook ? 'Edit recipe book' : 'New recipe book'}
