@@ -18,8 +18,8 @@
     "start": "node dist/index.js"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.731.0",
-    "@aws-sdk/s3-request-presigner": "^3.731.0",
+    "@aws-sdk/client-s3": "^3.731.1",
+    "@aws-sdk/s3-request-presigner": "^3.731.1",
     "@clerk/fastify": "^2.1.11",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^10.0.2",
