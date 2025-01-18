@@ -12,9 +12,9 @@ turndownService.remove('style');
 
 async function processWebsite(data: {
   urlString: string;
-  page: playwright.Page;
+  browserContext: playwright.BrowserContext;
 }) {
-  const { urlString, page } = data;
+  const { urlString, browserContext } = data;
 
   const url = new URL(urlString);
 
@@ -32,18 +32,21 @@ async function processWebsite(data: {
 
   const urlOrigin = url.origin;
 
-  await page.goto(urlOrigin);
+  const websitePage = await browserContext.newPage();
+  await websitePage.goto(urlOrigin, {
+    waitUntil: 'domcontentloaded',
+  });
 
-  const title = await page.title().catch(() => null);
-  const openGraphSiteName = await page
+  const title = await websitePage.title().catch(() => null);
+  const openGraphSiteName = await websitePage
     .locator('meta[property="og:site_name"]')
     .getAttribute('content')
     .catch(() => null);
-  const openGraphTitle = await page
+  const openGraphTitle = await websitePage
     .locator('meta[property="og:title"]')
     .getAttribute('content')
     .catch(() => null);
-  const description = await page
+  const description = await websitePage
     .locator('meta[name="description"]')
     .getAttribute('content')
     .catch(() => null);
@@ -93,10 +96,9 @@ async function getRecipeMarkdown(page: Page) {
 
 export async function getLlmImportRecipe(urlString: string) {
   const browser = await playwright.chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
+  const browserContext = await browser.newContext();
 
-  const website = await processWebsite({ urlString, page });
+  const website = await processWebsite({ urlString, browserContext });
 
   const url = new URL(urlString);
 
@@ -118,9 +120,10 @@ export async function getLlmImportRecipe(urlString: string) {
     },
   });
 
-  await page.goto(urlString);
+  const recipePage = await browserContext.newPage();
+  await recipePage.goto(urlString);
 
-  const recipeMarkdown = await getRecipeMarkdown(page);
+  const recipeMarkdown = await getRecipeMarkdown(recipePage);
 
   await browser.close();
 
