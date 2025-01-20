@@ -1,9 +1,19 @@
-import { Box, Stack, Typography } from '@mui/material';
+import {
+  Box,
+  Stack,
+  Typography,
+  type SxProps,
+  type Theme,
+} from '@mui/material';
 import { RouterLink } from './RouterLink';
 
-export function Copyright() {
+interface Props {
+  sx?: SxProps<Theme>;
+}
+
+export function Copyright({ sx = [] }: Props) {
   return (
-    <Box>
+    <Box sx={sx}>
       <Typography
         variant="body2"
         color="text.secondary"
