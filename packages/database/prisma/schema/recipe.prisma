@@ -46,42 +46,6 @@ model RecipeImage {
   @@map("recipe_images")
 }
 
-enum Unit {
-  // Metric weight
-  milligram
-  gram
-  kilogram
-  // Imperial weight
-  ounce
-  pound
-  // Metric volume
-  mililiter
-  centiliter
-  deciliter
-  liter
-  // Imperial volume
-  teaspoon
-  tablespoon
-  cup
-  fluidOunce @map("fluid_ounce")
-  pint
-  quart
-  gallon
-  // Misc
-  clove
-  whole
-  slice
-  drop
-  dash
-  stick
-  piece
-  bottle
-  can
-  packet
-  pinch
-  bunch
-}
-
 model IngredientGroup {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
@@ -106,7 +70,7 @@ model Ingredient {
 
   amount Decimal?
 
-  unit Unit?
+  unit String?
 
   name String
 

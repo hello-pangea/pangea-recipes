@@ -1,7 +1,6 @@
 import { Box, Checkbox, Typography } from '@mui/material';
 import { numberToFraction } from '@open-zero/features';
 import { type Recipe } from '@open-zero/features/recipes';
-import { unitRecord } from '@open-zero/features/units';
 import { useState } from 'react';
 
 interface Props {
@@ -41,18 +40,20 @@ export function Ingredient({ ingredient }: Props) {
           opacity: checked ? 0.5 : 1,
         }}
       >
-        <Typography
-          component={'span'}
-          sx={{
-            color: (theme) => theme.palette.text.heading,
-            fontWeight: 'bold',
-          }}
-        >
-          {ingredient.amount !== null && (
-            <b>{numberToFraction(ingredient.amount)}</b>
-          )}
-        </Typography>{' '}
-        {ingredient.unit && unitRecord[ingredient.unit].name} {ingredient.name}
+        {ingredient.amount !== null && (
+          <Typography
+            component={'span'}
+            sx={{
+              color: (theme) => theme.palette.text.heading,
+              fontWeight: 'bold',
+            }}
+          >
+            {numberToFraction(ingredient.amount)}
+          </Typography>
+        )}{' '}
+        {ingredient.unit
+          ? `${ingredient.unit} ${ingredient.name}`
+          : ingredient.name}
         {ingredient.notes && (
           <Typography
             component={'span'}

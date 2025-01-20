@@ -1,6 +1,5 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { Nullable } from '../../lib/nullable.js';
-import { unitSchema } from '../../units/index.js';
 
 const importedIngredientSchemaId = 'ImportedIngredient';
 
@@ -8,7 +7,7 @@ export type ImportedIngredient = Static<typeof importedIngredientSchema>;
 export const importedIngredientSchema = Type.Object(
   {
     name: Type.String(),
-    unit: unitSchema,
+    unit: Nullable(Type.String()),
     amount: Nullable(Type.Number()),
     notes: Nullable(Type.String()),
   },

@@ -1,6 +1,5 @@
 import { openAi } from '#src/lib/openAi.js';
 import { prisma } from '@open-zero/database';
-import { unitSchema } from '@open-zero/features/units';
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
 import playwright, { type Page } from 'playwright-chromium';
@@ -139,7 +138,7 @@ export async function getLlmImportRecipe(urlString: string) {
         content: recipeMarkdown,
       },
     ],
-    model: 'gpt-4o-mini-2024-07-18',
+    model: 'gpt-4o-2024-11-20',
     response_format: {
       type: 'json_schema',
       json_schema: {
@@ -156,12 +155,13 @@ export async function getLlmImportRecipe(urlString: string) {
 
   (llmContent as Static<typeof llmRecipeSchema>).ingredientGroups?.map((ig) =>
     ig.ingredients.map((i) => {
-      // @ts-expect-error The llm can mess up and return "null" as a string
-      if (i.unit === 'null') {
+      if (i.unit === '' || i.unit === 'null') {
         i.unit = null;
+      } else if (typeof i.unit === 'string') {
+        i.unit = i.unit.toLowerCase();
       }
 
-      if (i.notes === '') {
+      if (i.notes === '' || i.notes === 'null') {
         i.notes = null;
       }
     }),
@@ -209,7 +209,7 @@ const llmRecipeSchema = Type.Object(
               Type.Object(
                 {
                   name: Type.String(),
-                  unit: unitSchema,
+                  unit: Nullable(Type.String()),
                   amount: Nullable(Type.Number()),
                   notes: Nullable(Type.String()),
                 },

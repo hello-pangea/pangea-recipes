@@ -20,7 +20,6 @@ import {
   useRecipes,
   useUpdateRecipe,
 } from '@open-zero/features/recipes';
-import type { Unit } from '@open-zero/features/units';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -51,7 +50,7 @@ export interface RecipeFormInputs {
     name: string | null;
     ingredients: {
       name: string;
-      unit: Unit | null;
+      unit: string | null;
       amount: number | null;
       notes: string | null;
     }[];
@@ -80,7 +79,32 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       prepTime: '',
       cookTime: '',
       image: null,
-      ingredientGroups: [],
+      ingredientGroups: [
+        {
+          id: null,
+          name: null,
+          ingredients: [
+            {
+              name: '',
+              unit: null,
+              amount: null,
+              notes: null,
+            },
+            {
+              name: '',
+              unit: null,
+              amount: null,
+              notes: null,
+            },
+            {
+              name: '',
+              unit: null,
+              amount: null,
+              notes: null,
+            },
+          ],
+        },
+      ],
       usesRecipes: [],
       instructionGroups: [],
     },

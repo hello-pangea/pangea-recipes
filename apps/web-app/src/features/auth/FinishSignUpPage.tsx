@@ -7,14 +7,10 @@ import { useEffect } from 'react';
 export function FinishSignUpPage() {
   const naviate = useNavigate();
   const setupUser = useSetupUser();
-  const { data: user, isPending } = useSignedInUser();
+  const { data: user } = useSignedInUser();
   const { user: clerkUser } = useUser();
 
   useEffect(() => {
-    if (isPending) {
-      return;
-    }
-
     if (user && clerkUser?.publicMetadata.helloRecipesUserId) {
       void naviate({
         to: '/app/recipes',
@@ -38,7 +34,7 @@ export function FinishSignUpPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (user && clerkUser?.publicMetadata.helloRecipesUserId) {
+  if (clerkUser?.publicMetadata.helloRecipesUserId) {
     return <Navigate to="/app/recipes" />;
   }
 

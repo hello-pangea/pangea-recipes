@@ -25,12 +25,11 @@ import {
   TextField,
 } from '@mui/material';
 import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
-import { unitRecord, units } from '@open-zero/features/units';
+import { defaultUnitOptions } from '@open-zero/features/units';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Controller, type UseFieldArrayRemove } from 'react-hook-form';
 import {
-  AutocompleteElement,
   TextFieldElement,
   useFormContext,
   useWatch,
@@ -234,7 +233,7 @@ export function EditIngredient({
               size="small"
               fullWidth
               sx={{
-                width: { xs: undefined, sm: 115 },
+                width: { xs: undefined, sm: 95 },
               }}
               onKeyDown={(event) => {
                 focusNextInput(
@@ -265,47 +264,66 @@ export function EditIngredient({
               sm: 'auto',
             }}
           >
-            <AutocompleteElement
-              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit`}
-              options={units}
+            <Controller
               control={control}
-              matchId
-              autocompleteProps={{
-                fullWidth: true,
-                size: 'small',
-                autoHighlight: true,
-                disableClearable: true,
-                openOnFocus: true,
-                sx: {
-                  width: { xs: undefined, sm: 115 },
-                },
-                filterOptions: createFilterOptions({
-                  stringify: (option) =>
-                    option
-                      ? `${unitRecord[option].name} ${unitRecord[option].pluralName} ${unitRecord[option].abbreviation}`
-                      : '',
-                }),
-                getOptionLabel: (option) =>
-                  option
-                    ? (unitRecord[option].displayName ??
-                      unitRecord[option].abbreviation ??
-                      unitRecord[option].name)
-                    : '',
-                renderOption: (props, option) => {
-                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                  const { key, ...optionProps } = props;
+              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit`}
+              render={({
+                field: { onChange, value, ref, onBlur, disabled },
+              }) => (
+                <Autocomplete
+                  freeSolo
+                  autoSelect
+                  selectOnFocus
+                  handleHomeEndKeys
+                  fullWidth
+                  // disableClearable
+                  value={value}
+                  size="small"
+                  options={defaultUnitOptions}
+                  getOptionLabel={(option) => {
+                    if (typeof option === 'string') {
+                      return option;
+                    }
 
-                  return (
+                    return option.name;
+                  }}
+                  onChange={(_event, newValue) => {
+                    onChange(newValue);
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                    }
+                  }}
+                  filterOptions={createFilterOptions({
+                    stringify: (option) =>
+                      `${option.name} ${option.pluralName} ${option.abbreviation}`,
+                  })}
+                  renderInput={(params) => (
+                    <TextField {...params} placeholder="Unit" inputRef={ref} />
+                  )}
+                  renderOption={(props, option) => {
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                    <li key={key} {...optionProps}>
-                      {option ? unitRecord[option].name : ''}
-                    </li>
-                  );
-                },
-              }}
-              textFieldProps={{
-                placeholder: 'Unit',
-              }}
+                    const { key, ...optionProps } = props;
+
+                    const unitOption = defaultUnitOptions.find(
+                      (u) => u.name === option.name,
+                    );
+
+                    return (
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                      <li key={key} {...optionProps}>
+                        {unitOption?.name}
+                      </li>
+                    );
+                  }}
+                  sx={{
+                    width: { xs: undefined, sm: 150 },
+                  }}
+                  onBlur={onBlur}
+                  disabled={disabled}
+                />
+              )}
             />
           </Grid2>
           <Grid2

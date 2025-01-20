@@ -1,7 +1,6 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { createTagDtoSchema } from '../../common/tag.js';
 import { Nullable } from '../../lib/nullable.js';
-import { unitSchema } from '../../units/index.js';
 
 export type CreateRecipeDto = Static<typeof createRecipeDtoScema>;
 export const createRecipeDtoScema = Type.Object({
@@ -16,7 +15,7 @@ export const createRecipeDtoScema = Type.Object({
       ingredients: Type.Array(
         Type.Object({
           name: Type.String({ minLength: 1 }),
-          unit: Type.Optional(Type.Union([unitSchema, Type.Null()])),
+          unit: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
           amount: Type.Optional(Nullable(Type.Number())),
           notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
         }),
