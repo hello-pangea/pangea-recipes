@@ -54,7 +54,7 @@ export function EditInstructionGroup({
           </IconButton>
         </Stack>
       )}
-      <Stack direction={'column'} spacing={2} sx={{ mb: 2, maxWidth: '750px' }}>
+      <Stack direction={'column'} spacing={4} sx={{ mb: 2, maxWidth: '750px' }}>
         {instructions.map((instruction, instructionIndex) => (
           <Stack
             direction={'row'}
@@ -68,7 +68,6 @@ export function EditInstructionGroup({
               label={`Step ${instructionIndex + 1}`}
               required
               control={control}
-              size="small"
               fullWidth
               multiline
               minRows={2}

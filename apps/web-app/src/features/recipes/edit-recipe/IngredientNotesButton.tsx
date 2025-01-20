@@ -57,6 +57,7 @@ export function IngredientNotesButton({
           onClick={(event) => {
             setAnchorEl(event.currentTarget);
           }}
+          color={ingredient.notes ? 'primary' : 'default'}
         >
           {ingredient.notes === null ? (
             <SpeakerNotesOutlinedIcon />
@@ -78,12 +79,12 @@ export function IngredientNotesButton({
           },
         }}
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: 'left',
         }}
       >
         <TextFieldElement
