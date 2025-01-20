@@ -26,6 +26,7 @@ import {
 } from '@mui/material';
 import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
 import { defaultUnitOptions } from '@open-zero/features/units';
+import { useSignedInUser } from '@open-zero/features/users';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Controller, type UseFieldArrayRemove } from 'react-hook-form';
@@ -56,6 +57,7 @@ export function EditIngredient({
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
     null,
   );
+  const { data: user } = useSignedInUser();
   const ingredient = useWatch({
     control,
     name: `ingredientGroups.${ingredientGroupIndex}.ingredients.${index}`,
@@ -276,10 +278,11 @@ export function EditIngredient({
                   selectOnFocus
                   handleHomeEndKeys
                   fullWidth
-                  // disableClearable
                   value={value}
                   size="small"
-                  options={defaultUnitOptions}
+                  options={defaultUnitOptions.filter(
+                    (option) => option.system === user?.unitsPreference,
+                  )}
                   getOptionLabel={(option) => {
                     if (typeof option === 'string') {
                       return option;
@@ -374,7 +377,7 @@ export function EditIngredient({
                     <TextField
                       {...params}
                       required
-                      placeholder="Food *"
+                      placeholder="Ingredient *"
                       inputRef={ref}
                     />
                   )}

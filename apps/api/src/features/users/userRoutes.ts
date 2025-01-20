@@ -185,7 +185,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { themePreference } = request.body;
+      const { themePreference, unitsPreference } = request.body;
       const { userId } = request.params;
 
       if (userId !== request.session?.userId) {
@@ -202,6 +202,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
         },
         data: {
           themePreference: themePreference,
+          unitsPreference: unitsPreference,
         },
       });
 

@@ -13,6 +13,8 @@ model User {
 
   themePreference ThemePreference @default(system) @map("theme_preference")
 
+  unitsPreference UnitsPreference @default(imperial) @map("units_preference")
+
   recipes            Recipe[]
   images             Image[]
   recipeBooks        RecipeBookMember[]
@@ -31,4 +33,9 @@ enum ThemePreference {
   light
   dark
   system
+}
+
+enum UnitsPreference {
+  imperial
+  metric
 }

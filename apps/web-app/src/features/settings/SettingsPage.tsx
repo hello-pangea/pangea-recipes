@@ -6,6 +6,7 @@ import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnes
 import {
   Box,
   Button,
+  Stack,
   ToggleButton,
   ToggleButtonGroup,
   Typography,
@@ -25,40 +26,66 @@ export function SettingsPage() {
   const router = useRouter();
   const { signOut } = useAuth();
 
+  if (!user) {
+    return null;
+  }
+
   return (
     <Page>
-      <Typography variant="h1" sx={{ mb: 2 }}>
+      <Typography variant="h1" sx={{ mb: 4 }}>
         Settings
       </Typography>
-      <Typography variant="h2" sx={{ mb: 2 }}>
-        Theme preferences
-      </Typography>
-      <ToggleButtonGroup
-        color="primary"
-        value={user?.themePreference ?? 'light'}
-        exclusive
-        onChange={(_event, newValue: User['themePreference']) => {
-          updateUser.mutate({
-            themePreference: newValue,
-            id: user?.id ?? '',
-          });
-        }}
-        aria-label="Theme mode"
-      >
-        <ToggleButton value="light">
-          <LightModeRoundedIcon sx={{ mr: 1 }} />
-          Light
-        </ToggleButton>
-        <ToggleButton value="system">
-          <SettingsBrightnessRoundedIcon sx={{ mr: 1 }} />
-          System
-        </ToggleButton>
-        <ToggleButton value="dark">
-          <DarkModeRoundedIcon sx={{ mr: 1 }} />
-          Dark
-        </ToggleButton>
-      </ToggleButtonGroup>
-      <Box>
+      <Stack spacing={6}>
+        <Box>
+          <Typography variant="h2" sx={{ mb: 2 }}>
+            Theme preferences
+          </Typography>
+          <ToggleButtonGroup
+            color="primary"
+            value={user.themePreference}
+            exclusive
+            onChange={(_event, newValue: User['themePreference']) => {
+              updateUser.mutate({
+                themePreference: newValue,
+                id: user.id,
+              });
+            }}
+            aria-label="Theme mode"
+          >
+            <ToggleButton value="light">
+              <LightModeRoundedIcon sx={{ mr: 1 }} />
+              Light
+            </ToggleButton>
+            <ToggleButton value="system">
+              <SettingsBrightnessRoundedIcon sx={{ mr: 1 }} />
+              System
+            </ToggleButton>
+            <ToggleButton value="dark">
+              <DarkModeRoundedIcon sx={{ mr: 1 }} />
+              Dark
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
+        <Box>
+          <Typography variant="h2" sx={{ mb: 2 }}>
+            Units preferences
+          </Typography>
+          <ToggleButtonGroup
+            color="primary"
+            value={user.unitsPreference}
+            exclusive
+            onChange={(_event, newValue: User['unitsPreference']) => {
+              updateUser.mutate({
+                unitsPreference: newValue,
+                id: user.id,
+              });
+            }}
+            aria-label="Theme mode"
+          >
+            <ToggleButton value="imperial">Imperial</ToggleButton>
+            <ToggleButton value="metric">Metric</ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
         <Button
           loading={isLoading}
           color="error"
@@ -69,11 +96,11 @@ export function SettingsPage() {
               void router.invalidate();
             });
           }}
-          sx={{ mt: 8 }}
+          sx={{ alignSelf: 'flex-start' }}
         >
           Sign out
         </Button>
-      </Box>
+      </Stack>
     </Page>
   );
 }

@@ -26,6 +26,11 @@ export const userSchema = Type.Object(
       Type.Literal('dark'),
       Type.Literal('system'),
     ]),
+
+    unitsPreference: Type.Union([
+      Type.Literal('imperial'),
+      Type.Literal('metric'),
+    ]),
   },
   { $id: userSchemaId },
 );

@@ -106,7 +106,23 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         },
       ],
       usesRecipes: [],
-      instructionGroups: [],
+      instructionGroups: [
+        {
+          id: null,
+          name: null,
+          instructions: [
+            {
+              text: '',
+            },
+            {
+              text: '',
+            },
+            {
+              text: '',
+            },
+          ],
+        },
+      ],
     },
   });
   const userId = useSignedInUserId();
