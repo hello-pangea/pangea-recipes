@@ -30,7 +30,6 @@ export function SignUpPage() {
         }}
       >
         <SignUp
-          routing="hash"
           signInUrl={
             redirect ? `/app/sign-in?redirect=${redirect}` : '/app/sign-in'
           }

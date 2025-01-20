@@ -1,21 +1,16 @@
 import { useUser } from '@clerk/tanstack-start';
 import { CircularProgress, Container } from '@mui/material';
-import { useSetupUser, useSignedInUser } from '@open-zero/features/users';
+import { useSetupUser } from '@open-zero/features/users';
 import { Navigate, useNavigate } from '@tanstack/react-router';
 import { useEffect } from 'react';
 
 export function FinishSignUpPage() {
   const naviate = useNavigate();
   const setupUser = useSetupUser();
-  const { data: user } = useSignedInUser();
   const { user: clerkUser } = useUser();
 
   useEffect(() => {
-    if (user && clerkUser?.publicMetadata.helloRecipesUserId) {
-      void naviate({
-        to: '/app/recipes',
-      });
-
+    if (setupUser.isPending) {
       return;
     }
 

@@ -1,13 +1,20 @@
 import { Copyright } from '#src/components/Copyright';
 import { RouterButton } from '#src/components/RouterButton';
+import { useUser } from '@clerk/tanstack-start';
 import { Box, Container, Typography } from '@mui/material';
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Navigate } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
   component: HomePage,
 });
 
 function HomePage() {
+  const { isSignedIn } = useUser();
+
+  if (isSignedIn) {
+    return <Navigate to="/app/recipes" />;
+  }
+
   return (
     <Box
       sx={{
