@@ -5,11 +5,12 @@ import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { EmptyRecipes } from './EmptyRecipes';
 import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {
   const userId = useSignedInUserId();
-  const { data: recipes } = useSuspenseQuery(
+  const { data: recipes, isError } = useSuspenseQuery(
     getListRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
@@ -94,6 +95,7 @@ export function RecipesPage() {
           </Grid2>
         ))}
       </Grid2>
+      {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
     </Page>
   );
 }
