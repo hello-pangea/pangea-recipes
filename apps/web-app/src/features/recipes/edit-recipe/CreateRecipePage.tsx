@@ -222,10 +222,10 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         name: data.name,
         description: emptyStringToUndefined(data.description),
         websitePageId: data.websitePageId,
-        prepTime: data.cookTime
+        prepTime: data.prepTime
           ? Math.round(parseInt(data.prepTime) * 60)
           : undefined,
-        cookTime: data.prepTime
+        cookTime: data.cookTime
           ? Math.round(parseInt(data.cookTime) * 60)
           : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
@@ -308,7 +308,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 fullWidth
                 size="small"
                 onKeyDown={(event) => {
-                  event.preventDefault();
+                  if (event.key === 'Enter') {
+                    event.preventDefault();
+                  }
                 }}
               />
             </Stack>
