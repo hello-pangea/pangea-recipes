@@ -20,7 +20,7 @@ import {
   useRecipes,
   useUpdateRecipe,
 } from '@open-zero/features/recipes';
-import { useNavigate } from '@tanstack/react-router';
+import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import {
@@ -64,12 +64,17 @@ export interface RecipeFormInputs {
   websitePageId?: string;
 }
 
+const route = getRouteApi('/app/_layout/recipes/new');
+
 interface Props {
   defaultRecipe?: RecipeFormInputs & { id: string };
 }
 
 export function CreateRecipePage({ defaultRecipe }: Props) {
-  const [importDialogOpen, setImportDialogOpen] = useState(false);
+  const { importFromUrl } = route.useSearch();
+  const [importDialogOpen, setImportDialogOpen] = useState(
+    importFromUrl ?? false,
+  );
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const form = useForm<RecipeFormInputs>({

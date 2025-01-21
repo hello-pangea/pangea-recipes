@@ -12,7 +12,7 @@ import {
   useImportedRecipe,
   type ImportedRecipe,
 } from '@open-zero/features/imported-recipes';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface Props {
   open: boolean;
@@ -22,10 +22,29 @@ interface Props {
 
 export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
   const [url, setUrl] = useState('');
-  const { isLoading: isImporting, refetch: importRecipe } = useImportedRecipe({
+  const { isFetching: isImporting, refetch: importRecipe } = useImportedRecipe({
     url,
     queryConfig: { enabled: false },
   });
+  const textFieldRef = useRef<null | HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (open) {
+      setTimeout(() => {
+        textFieldRef.current?.focus();
+      }, 100);
+    }
+  }, [open]);
+
+  function handleImportRecipe() {
+    void importRecipe().then((res) => {
+      if (!res.data) {
+        return;
+      }
+
+      onImport(res.data.importedRecipe, res.data.websitePageId);
+    });
+  }
 
   return (
     <Dialog
@@ -50,6 +69,13 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
           onChange={(event) => {
             setUrl(event.target.value);
           }}
+          inputRef={textFieldRef}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              handleImportRecipe();
+            }
+          }}
+          disabled={isImporting}
         />
       </DialogContent>
       <DialogActions>
@@ -61,13 +87,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
           variant="contained"
           startIcon={<DownloadRoundedIcon />}
           onClick={() => {
-            void importRecipe().then((res) => {
-              if (!res.data) {
-                return;
-              }
-
-              onImport(res.data.importedRecipe, res.data.websitePageId);
-            });
+            handleImportRecipe();
           }}
         >
           Import

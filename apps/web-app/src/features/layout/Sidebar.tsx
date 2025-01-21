@@ -9,6 +9,7 @@ import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
@@ -153,6 +154,31 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
                 <RestaurantMenuRoundedIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText>Recipe</ListItemText>
+            </Link>
+          </MenuItem>
+          <MenuItem sx={{ p: 0 }}>
+            <Link
+              to="/app/recipes/new"
+              search={{
+                importFromUrl: true,
+              }}
+              style={{
+                textDecoration: 'none',
+                color: 'inherit',
+                padding: '6px 16px',
+                display: 'flex',
+                alignItems: 'center',
+                width: '100%',
+              }}
+              onClick={() => {
+                setNewMenuAnchorEl(null);
+                onClose();
+              }}
+            >
+              <ListItemIcon>
+                <LinkRoundedIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Recipe from url</ListItemText>
             </Link>
           </MenuItem>
           <MenuItem sx={{ p: 0 }}>
