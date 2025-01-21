@@ -20,7 +20,7 @@ import {
   useRecipes,
   useUpdateRecipe,
 } from '@open-zero/features/recipes';
-import { getRouteApi, useNavigate } from '@tanstack/react-router';
+import { getRouteApi } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import {
@@ -76,7 +76,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     importFromUrl ?? false,
   );
   const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate();
+  const navigate = route.useNavigate();
   const form = useForm<RecipeFormInputs>({
     defaultValues: defaultRecipe ?? {
       name: '',
@@ -163,7 +163,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     },
   });
 
-  const recipeCreator = useCreateRecipe({
+  const createRecipe = useCreateRecipe({
     mutationConfig: {
       onSuccess: (data) => {
         void navigate({
@@ -176,7 +176,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     },
   });
 
-  const recipeUpdater = useUpdateRecipe({
+  const updateRecipe = useUpdateRecipe({
     mutationConfig: {
       onSuccess: (data) => {
         enqueueSnackbar('Recipe updated', { variant: 'success' });
@@ -193,7 +193,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   const onSubmit: SubmitHandler<RecipeFormInputs> = (data) => {
     if (defaultRecipe) {
-      recipeUpdater.mutate({
+      updateRecipe.mutate({
         id: defaultRecipe.id,
         name: data.name,
         description: emptyStringToUndefined(data.description),
@@ -218,7 +218,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         })),
       });
     } else {
-      recipeCreator.mutate({
+      createRecipe.mutate({
         name: data.name,
         description: emptyStringToUndefined(data.description),
         websitePageId: data.websitePageId,
@@ -445,7 +445,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             variant="contained"
             startIcon={<SaveRoundedIcon />}
             type="submit"
-            loading={recipeCreator.isPending || recipeUpdater.isPending}
+            loading={createRecipe.isPending || updateRecipe.isPending}
             sx={{
               display: 'flex',
             }}
@@ -458,9 +458,21 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         open={importDialogOpen}
         onClose={() => {
           setImportDialogOpen(false);
+
+          void navigate({
+            search: {
+              importFromUrl: undefined,
+            },
+          });
         }}
         onImport={(importedRecipe, websitePageId) => {
           setImportDialogOpen(false);
+
+          void navigate({
+            search: {
+              importFromUrl: undefined,
+            },
+          });
 
           reset({
             name: importedRecipe.name ?? undefined,
