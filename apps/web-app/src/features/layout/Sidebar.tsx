@@ -146,6 +146,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
               }}
               onClick={() => {
                 setNewMenuAnchorEl(null);
+                onClose();
               }}
             >
               <ListItemIcon>
@@ -167,6 +168,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
               }}
               onClick={() => {
                 setNewMenuAnchorEl(null);
+                onClose();
               }}
             >
               <ListItemIcon>
