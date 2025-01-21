@@ -20,7 +20,7 @@
   "dependencies": {
     "@aws-sdk/client-s3": "^3.731.1",
     "@aws-sdk/s3-request-presigner": "^3.731.1",
-    "@clerk/fastify": "^2.1.11",
+    "@clerk/fastify": "^2.1.12",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^10.0.2",
     "@fastify/helmet": "^13.0.1",
@@ -31,7 +31,7 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.25.105",
+    "@scalar/fastify-api-reference": "^1.25.106",
     "@sinclair/typebox": "^0.34.14",
     "chalk": "^5.4.1",
     "close-with-grace": "^2.2.0",
