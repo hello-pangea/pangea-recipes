@@ -27,8 +27,7 @@ export function RecipeMoreMenu({
   onDelete,
   onRemoveFromRecipeBook,
 }: Props) {
-  const recipeQuery = useRecipe({ recipeId: recipeId });
-  const recipe = recipeQuery.data?.recipe;
+  const { data: recipe } = useRecipe({ recipeId: recipeId });
   const deleteRecipe = useDeleteRecipe();
   const open = Boolean(anchorEl);
 

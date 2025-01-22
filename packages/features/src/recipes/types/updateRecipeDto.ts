@@ -10,6 +10,7 @@ export const updateRecipeDtoScema = Type.Partial(
       'description',
       'prepTime',
       'cookTime',
+      'servings',
       'usesRecipes',
       'tags',
     ]),

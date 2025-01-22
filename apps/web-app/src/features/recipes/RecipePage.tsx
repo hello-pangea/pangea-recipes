@@ -1,4 +1,7 @@
 import { TagEditor } from '#src/components/TagEditor';
+import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
+import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
+import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
@@ -31,87 +34,147 @@ export function RecipePage() {
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
-  const recipeQuery = useSuspenseQuery(getRecipeQueryOptions(recipeId));
-
-  const recipe = recipeQuery.data.recipe;
+  const { data: recipe } = useSuspenseQuery(getRecipeQueryOptions(recipeId));
 
   const hasCoverImage = (recipe.images?.length ?? 0) > 0;
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, mt: { xs: 0, sm: 2 } }}>
-      <Grid2 container spacing={2} sx={{ mb: 4 }}>
+      <Grid2 container spacing={4} sx={{ mb: 4 }}>
         <Grid2
           size={{
             xs: 12,
             md: hasCoverImage ? 6 : 12,
           }}
         >
-          <Card
-            sx={{
-              p: { xs: 2, sm: 4 },
-              border: 0,
-              mx: { xs: -1, sm: 0 },
-              borderRadius: 2,
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-            }}
-          >
-            <Box
+          <Stack spacing={4}>
+            <Card
               sx={{
+                p: { xs: 2, sm: 4 },
+                border: 0,
+                mx: { xs: -1, sm: 0 },
+                borderRadius: 2,
                 display: 'flex',
-                alignItems: 'flex-start',
-                justifyContent: 'space-between',
-                mb: 2,
+                flexDirection: 'column',
+                justifyContent: 'center',
               }}
             >
-              <Box>
-                <Typography variant="h1">{recipe.name}</Typography>
-                {recipe.websiteSource && (
-                  <Link
-                    href={recipe.websiteSource.url}
-                    rel="nofollow"
-                    target="_blank"
-                    sx={{
-                      color: (theme) => theme.palette.text.secondary,
-                    }}
-                  >
-                    {recipe.websiteSource.title}
-                  </Link>
-                )}
-              </Box>
-              <IconButton
-                id="more-button"
-                aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-                aria-haspopup="true"
-                aria-expanded={moreMenuOpen ? 'true' : undefined}
-                onClick={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
-                  setMoreMenuAnchorEl(event.currentTarget);
-                }}
-                onMouseDown={(event) => {
-                  event.stopPropagation();
-                  event.preventDefault();
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  mb: 2,
                 }}
               >
-                <MoreVertRoundedIcon />
-              </IconButton>
-            </Box>
-            <TagEditor
-              tags={recipe.tags}
-              onTagsChange={(newTags) => {
-                recipeUpdater.mutate({
-                  id: recipe.id,
-                  tags: newTags,
-                });
-              }}
-              sx={{
-                mb: 2,
-              }}
-            />
-            <Typography sx={{ maxWidth: 500 }}>{recipe.description}</Typography>
-          </Card>
+                <Box>
+                  <Typography variant="h1">{recipe.name}</Typography>
+                  {recipe.websiteSource && (
+                    <Link
+                      href={recipe.websiteSource.url}
+                      rel="nofollow"
+                      target="_blank"
+                      sx={{
+                        color: (theme) => theme.palette.text.secondary,
+                      }}
+                    >
+                      {recipe.websiteSource.title}
+                    </Link>
+                  )}
+                </Box>
+                <IconButton
+                  id="more-button"
+                  aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={moreMenuOpen ? 'true' : undefined}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                    setMoreMenuAnchorEl(event.currentTarget);
+                  }}
+                  onMouseDown={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                  }}
+                >
+                  <MoreVertRoundedIcon />
+                </IconButton>
+              </Box>
+              <TagEditor
+                tags={recipe.tags}
+                onTagsChange={(newTags) => {
+                  recipeUpdater.mutate({
+                    id: recipe.id,
+                    tags: newTags,
+                  });
+                }}
+                sx={{
+                  mb: 2,
+                }}
+              />
+              <Typography sx={{ maxWidth: 500 }}>
+                {recipe.description}
+              </Typography>
+              {(recipe.prepTime || recipe.cookTime || recipe.servings) && (
+                <Grid2 container spacing={2} sx={{ mt: 4 }}>
+                  {recipe.servings && (
+                    <Grid2
+                      size={{
+                        xs: 12,
+                        sm: 4,
+                        md: 6,
+                        lg: 4,
+                      }}
+                    >
+                      <Stack spacing={2}>
+                        <Typography variant="h3">Servings</Typography>
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <GroupsRoundedIcon />
+                          <Typography>{recipe.servings}</Typography>
+                        </Stack>
+                      </Stack>
+                    </Grid2>
+                  )}
+                  {recipe.prepTime && (
+                    <Grid2
+                      size={{
+                        xs: 12,
+                        sm: 4,
+                        md: 6,
+                        lg: 4,
+                      }}
+                    >
+                      <Stack spacing={2}>
+                        <Typography variant="h3">Prep Time</Typography>
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <LocalFireDepartmentRoundedIcon />
+                          <Typography>{recipe.prepTime}</Typography>
+                        </Stack>
+                      </Stack>
+                    </Grid2>
+                  )}
+                  {recipe.cookTime && (
+                    <Grid2
+                      size={{
+                        xs: 12,
+                        sm: 4,
+                        md: 6,
+                        lg: 4,
+                      }}
+                    >
+                      <Stack spacing={2}>
+                        <Typography variant="h3">Cook Time</Typography>
+                        <Stack spacing={1} direction="row" alignItems="center">
+                          <BlenderRoundedIcon />
+                          <Typography>{recipe.cookTime}</Typography>
+                        </Stack>
+                      </Stack>
+                    </Grid2>
+                  )}
+                </Grid2>
+              )}
+            </Card>
+          </Stack>
         </Grid2>
         {hasCoverImage && (
           <Grid2

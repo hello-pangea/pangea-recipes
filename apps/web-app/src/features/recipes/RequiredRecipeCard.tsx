@@ -14,10 +14,9 @@ interface Props {
 }
 
 export function RequiredRecipeCard({ recipeId, onRemove }: Props) {
-  const recipeQuery = useRecipe({
+  const { data: recipe } = useRecipe({
     recipeId: recipeId,
   });
-  const recipe = recipeQuery.data?.recipe;
 
   if (!recipe) {
     return <CircularProgress />;

@@ -3,10 +3,11 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { Recipe } from '../types/recipe.js';
 
-function getRecipe(recipeId: string) {
+function getRecipe(recipeId: string): Promise<Recipe> {
   return api
     .get(`recipes/${recipeId}`)
-    .then((res) => res.json<{ recipe: Recipe }>());
+    .json<{ recipe: Recipe }>()
+    .then((res) => res.recipe);
 }
 
 export function getRecipeQueryOptions(recipeId: string) {

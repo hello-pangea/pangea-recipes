@@ -35,6 +35,7 @@ export default tseslint.config(
       ],
       '@typescript-eslint/only-throw-error': 'off',
       '@typescript-eslint/no-misused-promises': 'off',
+      '@typescript-eslint/prefer-nullish-coalescing': 'off',
       '@typescript-eslint/restrict-template-expressions': [
         'error',
         {

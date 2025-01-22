@@ -200,6 +200,8 @@ const llmRecipeSchema = Type.Object(
     /** Minutes */
     totalTime: Nullable(Type.Number({ description: 'Total time in minutes' })),
 
+    servings: Nullable(Type.Number()),
+
     ingredientGroups: Nullable(
       Type.Array(
         Type.Object(

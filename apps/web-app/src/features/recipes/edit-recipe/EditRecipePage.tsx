@@ -8,48 +8,51 @@ const route = getRouteApi('/app/_layout/recipes_/$recipeId/edit');
 export function EditRecipePage() {
   const { recipeId } = route.useParams();
 
-  const recipeQuery = useSuspenseQuery(getRecipeQueryOptions(recipeId));
+  const { data: recipe } = useSuspenseQuery(getRecipeQueryOptions(recipeId));
 
   return (
     <CreateRecipePage
       defaultRecipe={{
-        id: recipeQuery.data.recipe.id,
-        name: recipeQuery.data.recipe.name,
-        description: recipeQuery.data.recipe.description,
+        id: recipe.id,
+        name: recipe.name,
+        description: recipe.description,
         usesRecipes:
-          recipeQuery.data.recipe.usesRecipes?.map((recipeId) => ({
+          recipe.usesRecipes?.map((recipeId) => ({
             recipeId: recipeId,
           })) ?? [],
-        cookTime: '',
-        prepTime: '',
-        image: recipeQuery.data.recipe.images?.at(0)
+        cookTime:
+          recipe.cookTime === null
+            ? ''
+            : String(Math.round(recipe.cookTime / 60)),
+        prepTime:
+          recipe.prepTime === null
+            ? ''
+            : String(Math.round(recipe.prepTime / 60)),
+        servings: recipe.servings ? String(recipe.servings) : '',
+        image: recipe.images?.at(0)
           ? {
               // @ts-expect-error Wait for typescript 5.5
-              url: recipeQuery.data.recipe.images.at(0).url,
+              url: recipe.images.at(0).url,
               // @ts-expect-error Wait for typescript 5.5
-              id: recipeQuery.data.recipe.images.at(0).id,
+              id: recipe.images.at(0).id,
             }
           : null,
-        ingredientGroups: recipeQuery.data.recipe.ingredientGroups.map(
-          (ingredientGroup) => ({
-            id: ingredientGroup.id,
-            name: ingredientGroup.name,
-            ingredients: ingredientGroup.ingredients.map((ingredient) => ({
-              id: ingredient.id,
-              name: ingredient.name,
-              amount: ingredient.amount as unknown as number,
-              unit: ingredient.unit,
-              notes: ingredient.notes,
-            })),
-          }),
-        ),
-        instructionGroups: recipeQuery.data.recipe.instructionGroups.map(
-          (instructionGroup) => ({
-            id: instructionGroup.id,
-            name: instructionGroup.name,
-            instructions: instructionGroup.instructions,
-          }),
-        ),
+        ingredientGroups: recipe.ingredientGroups.map((ingredientGroup) => ({
+          id: ingredientGroup.id,
+          name: ingredientGroup.name,
+          ingredients: ingredientGroup.ingredients.map((ingredient) => ({
+            id: ingredient.id,
+            name: ingredient.name,
+            amount: ingredient.amount as unknown as number,
+            unit: ingredient.unit,
+            notes: ingredient.notes,
+          })),
+        })),
+        instructionGroups: recipe.instructionGroups.map((instructionGroup) => ({
+          id: instructionGroup.id,
+          name: instructionGroup.name,
+          instructions: instructionGroup.instructions,
+        })),
       }}
     />
   );

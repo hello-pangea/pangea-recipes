@@ -41,6 +41,7 @@ export interface RecipeFormInputs {
   description: string | null;
   prepTime: string;
   cookTime: string;
+  servings: string;
   image: {
     id: string;
     url: string;
@@ -81,6 +82,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       description: '',
       prepTime: '',
       cookTime: '',
+      servings: '',
       image: null,
       ingredientGroups: [
         {
@@ -201,6 +203,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         cookTime: data.cookTime
           ? Math.round(parseInt(data.cookTime) * 60)
           : undefined,
+        servings: data.servings ? parseInt(data.servings) : undefined,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,
@@ -227,6 +230,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         cookTime: data.cookTime
           ? Math.round(parseInt(data.cookTime) * 60)
           : undefined,
+        servings: data.servings ? parseInt(data.servings) : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           name: ig.name,
@@ -284,10 +288,21 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               multiline
               minRows={2}
               onKeyDown={(event) => {
-                focusNextInput(event, 'input[name="prepTime"]');
+                focusNextInput(event, 'input[name="servings"]');
               }}
             />
             <Stack direction={'row'} spacing={2}>
+              <TextFieldElement
+                label="Servings"
+                name="servings"
+                control={control}
+                type="number"
+                fullWidth
+                size="small"
+                onKeyDown={(event) => {
+                  focusNextInput(event, 'input[name="prepTime"]');
+                }}
+              />
               <TextFieldElement
                 label="Prep time (m)"
                 name="prepTime"
@@ -478,6 +493,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             description: importedRecipe.description,
             cookTime: importedRecipe.cookTime?.toString(),
             prepTime: importedRecipe.prepTime?.toString(),
+            servings: importedRecipe.servings?.toString(),
             instructionGroups: importedRecipe.instructionGroups?.map((ig) => ({
               name: ig.title,
               instructions: ig.instructions.map((i) => ({ text: i })),

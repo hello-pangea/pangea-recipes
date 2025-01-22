@@ -24,12 +24,11 @@ interface Props {
 }
 
 export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
-  const recipeQuery = useRecipe({ recipeId: recipeId });
+  const { data: recipe } = useRecipe({ recipeId: recipeId });
   const ref = useRef<null | HTMLDivElement>(null);
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
     null,
   );
-  const recipe = recipeQuery.data?.recipe;
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );

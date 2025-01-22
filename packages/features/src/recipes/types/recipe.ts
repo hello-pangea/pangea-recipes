@@ -22,6 +22,8 @@ export const recipeSchema = Type.Object(
     prepTime: Nullable(Type.Number()),
     cookTime: Nullable(Type.Number()),
 
+    servings: Nullable(Type.Number()),
+
     websiteSource: Nullable(
       Type.Object({
         title: Nullable(Type.String()),

@@ -41,6 +41,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         description,
         cookTime,
         prepTime,
+        servings,
         imageIds,
         ingredientGroups,
         instructionGroups,
@@ -100,6 +101,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           description: description ?? null,
           prepTime: prepTime,
           cookTime: cookTime,
+          servings: servings,
           images: imageIds
             ? {
                 create: imageIds.map((id) => ({
@@ -334,6 +336,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         description,
         cookTime,
         prepTime,
+        servings,
         ingredientGroups,
         instructionGroups,
         usesRecipes,
@@ -444,6 +447,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           description: description,
           prepTime: prepTime,
           cookTime: cookTime,
+          servings: servings,
           usesRecipes: !usesRecipes
             ? undefined
             : {

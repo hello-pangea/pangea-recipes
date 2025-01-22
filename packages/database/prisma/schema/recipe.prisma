@@ -13,6 +13,8 @@ model Recipe {
   /// Amount in seconds
   prepTime Int? @map("prep_time")
 
+  servings Int?
+
   sourceWebsitePageId String?      @map("source_website_page_id") @db.Uuid
   sourceWebsitePage   WebsitePage? @relation(fields: [sourceWebsitePageId], references: [id])
 

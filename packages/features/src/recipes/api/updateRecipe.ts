@@ -30,7 +30,7 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
       });
       queryClient.setQueryData(
         getRecipeQueryOptions(data.recipe.id).queryKey,
-        data,
+        data.recipe,
       );
 
       onSuccess?.(...args);
