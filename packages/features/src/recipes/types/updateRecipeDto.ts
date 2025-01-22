@@ -14,6 +14,9 @@ export const updateRecipeDtoScema = Type.Partial(
       'tags',
     ]),
     Type.Object({
+      imageIds: Type.Optional(
+        Nullable(Type.Array(Type.String({ format: 'uuid' }))),
+      ),
       ingredientGroups: Type.Array(
         Type.Object({
           id: Type.Optional(Type.String({ format: 'uuid' })),

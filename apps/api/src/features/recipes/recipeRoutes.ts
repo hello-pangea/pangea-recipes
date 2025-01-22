@@ -338,6 +338,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         instructionGroups,
         usesRecipes,
         tags,
+        imageIds,
       } = request.body;
       const { recipeId } = request.params;
 
@@ -451,6 +452,31 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                 })),
               },
           tags: tagsUpdate,
+          images:
+            imageIds === undefined
+              ? undefined
+              : imageIds === null
+                ? {
+                    deleteMany: {},
+                  }
+                : {
+                    deleteMany: {
+                      imageId: {
+                        notIn: imageIds,
+                      },
+                    },
+                    connectOrCreate: imageIds.map((id) => ({
+                      where: {
+                        recipeId_imageId: {
+                          recipeId: recipeId,
+                          imageId: id,
+                        },
+                      },
+                      create: {
+                        imageId: id,
+                      },
+                    })),
+                  },
         };
 
         const recipe = await prisma.recipe.update({

@@ -20,7 +20,7 @@ import {
   useRecipes,
   useUpdateRecipe,
 } from '@open-zero/features/recipes';
-import { getRouteApi } from '@tanstack/react-router';
+import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import {
@@ -64,19 +64,17 @@ export interface RecipeFormInputs {
   websitePageId?: string;
 }
 
-const route = getRouteApi('/app/_layout/recipes/new');
-
 interface Props {
   defaultRecipe?: RecipeFormInputs & { id: string };
 }
 
 export function CreateRecipePage({ defaultRecipe }: Props) {
-  const { importFromUrl } = route.useSearch();
+  const { importFromUrl } = useSearch({ strict: false });
   const [importDialogOpen, setImportDialogOpen] = useState(
     importFromUrl ?? false,
   );
   const { enqueueSnackbar } = useSnackbar();
-  const navigate = route.useNavigate();
+  const navigate = useNavigate({ from: '/' });
   const form = useForm<RecipeFormInputs>({
     defaultValues: defaultRecipe ?? {
       name: '',
@@ -216,6 +214,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           name: ig.name,
           instructions: ig.instructions,
         })),
+        imageIds: data.image ? [data.image.id] : null,
       });
     } else {
       createRecipe.mutate({

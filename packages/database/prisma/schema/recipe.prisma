@@ -43,6 +43,7 @@ model RecipeImage {
 
   favorite Boolean?
 
+  @@unique([recipeId, imageId])
   @@map("recipe_images")
 }
 
