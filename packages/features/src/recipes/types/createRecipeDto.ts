@@ -17,7 +17,7 @@ export const createRecipeDtoScema = Type.Object({
         Type.Object({
           name: Type.String({ minLength: 1 }),
           unit: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-          amount: Type.Optional(Nullable(Type.Number())),
+          quantity: Type.Optional(Nullable(Type.Number())),
           notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
         }),
       ),

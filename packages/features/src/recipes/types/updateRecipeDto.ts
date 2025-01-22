@@ -27,7 +27,7 @@ export const updateRecipeDtoScema = Type.Partial(
               id: Type.Optional(Type.String({ format: 'uuid' })),
               name: Type.String({ minLength: 1 }),
               unit: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-              amount: Type.Optional(Nullable(Type.Number())),
+              quantity: Type.Optional(Nullable(Type.Number())),
               notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
             }),
           ),

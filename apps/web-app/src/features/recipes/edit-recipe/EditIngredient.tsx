@@ -228,8 +228,8 @@ export function EditIngredient({
           >
             <TextFieldElement
               placeholder="Amount"
-              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.amount`}
-              id={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.amount`}
+              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.quantity`}
+              id={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.quantity`}
               inputMode="decimal"
               control={control}
               size="small"

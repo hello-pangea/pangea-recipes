@@ -8,7 +8,7 @@ export const importedIngredientSchema = Type.Object(
   {
     name: Type.String(),
     unit: Nullable(Type.String()),
-    amount: Nullable(Type.Number()),
+    quantity: Nullable(Type.Number()),
     notes: Nullable(Type.String()),
   },
   { $id: importedIngredientSchemaId },

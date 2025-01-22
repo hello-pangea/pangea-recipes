@@ -212,7 +212,7 @@ const llmRecipeSchema = Type.Object(
                 {
                   name: Type.String(),
                   unit: Nullable(Type.String()),
-                  amount: Nullable(Type.Number()),
+                  quantity: Nullable(Type.Number()),
                   notes: Nullable(Type.String()),
                 },
                 { additionalProperties: false },

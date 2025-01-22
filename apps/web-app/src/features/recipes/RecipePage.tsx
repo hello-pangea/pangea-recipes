@@ -147,7 +147,7 @@ export function RecipePage() {
                       <Stack spacing={2}>
                         <Typography variant="h3">Prep Time</Typography>
                         <Stack spacing={1} direction="row" alignItems="center">
-                          <LocalFireDepartmentRoundedIcon />
+                          <BlenderRoundedIcon />
                           <Typography>{recipe.prepTime}</Typography>
                         </Stack>
                       </Stack>
@@ -165,7 +165,7 @@ export function RecipePage() {
                       <Stack spacing={2}>
                         <Typography variant="h3">Cook Time</Typography>
                         <Stack spacing={1} direction="row" alignItems="center">
-                          <BlenderRoundedIcon />
+                          <LocalFireDepartmentRoundedIcon />
                           <Typography>{recipe.cookTime}</Typography>
                         </Stack>
                       </Stack>

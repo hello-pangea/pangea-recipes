@@ -43,7 +43,7 @@ export function EditRecipePage() {
           ingredients: ingredientGroup.ingredients.map((ingredient) => ({
             id: ingredient.id,
             name: ingredient.name,
-            amount: ingredient.amount as unknown as number,
+            quantity: ingredient.quantity as unknown as number,
             unit: ingredient.unit,
             notes: ingredient.notes,
           })),

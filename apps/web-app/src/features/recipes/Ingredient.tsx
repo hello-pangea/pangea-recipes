@@ -40,7 +40,7 @@ export function Ingredient({ ingredient }: Props) {
           opacity: checked ? 0.5 : 1,
         }}
       >
-        {ingredient.amount !== null && (
+        {ingredient.quantity !== null && (
           <Typography
             component={'span'}
             sx={{
@@ -48,7 +48,7 @@ export function Ingredient({ ingredient }: Props) {
               fontWeight: 'bold',
             }}
           >
-            {numberToFraction(ingredient.amount)}
+            {numberToFraction(ingredient.quantity)}
           </Typography>
         )}{' '}
         {ingredient.unit

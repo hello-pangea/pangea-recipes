@@ -52,7 +52,7 @@ export interface RecipeFormInputs {
     ingredients: {
       name: string;
       unit: string | null;
-      amount: number | null;
+      quantity: number | null;
       notes: string | null;
     }[];
   }[];
@@ -92,19 +92,19 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             {
               name: '',
               unit: null,
-              amount: null,
+              quantity: null,
               notes: null,
             },
             {
               name: '',
               unit: null,
-              amount: null,
+              quantity: null,
               notes: null,
             },
             {
               name: '',
               unit: null,
-              amount: null,
+              quantity: null,
               notes: null,
             },
           ],
@@ -209,7 +209,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           name: ig.name,
           ingredients: ig.ingredients.map((i) => ({
             ...i,
-            amount: i.amount ? getNumberFromInput(i.amount) : null,
+            quantity: i.quantity ? getNumberFromInput(i.quantity) : null,
           })),
         })),
         instructionGroups: data.instructionGroups.map((ig) => ({
@@ -236,7 +236,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           name: ig.name,
           ingredients: ig.ingredients.map((i) => ({
             ...i,
-            amount: i.amount ? getNumberFromInput(i.amount) : null,
+            quantity: i.quantity ? getNumberFromInput(i.quantity) : null,
           })),
         })),
         instructionGroups: data.instructionGroups.map((ig) => ({
@@ -361,7 +361,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   {
                     name: '',
                     unit: null,
-                    amount: null,
+                    quantity: null,
                     notes: null,
                   },
                 ],
@@ -504,7 +504,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               ingredients: ig.ingredients.map((ingredient) => ({
                 name: ingredient.name,
                 unit: ingredient.unit ?? null,
-                amount: ingredient.amount ?? null,
+                quantity: ingredient.quantity ?? null,
                 notes: ingredient.notes ?? null,
               })),
             })),

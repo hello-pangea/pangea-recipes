@@ -49,7 +49,7 @@ export const recipeSchema = Type.Object(
           Type.Object({
             id: Type.String(),
             name: Type.String(),
-            amount: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
+            quantity: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
             unit: Nullable(Type.String()),
             notes: Nullable(Type.String()),
             icon_url: Nullable(Type.String()),

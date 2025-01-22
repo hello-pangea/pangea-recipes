@@ -8,9 +8,9 @@ model Recipe {
   name        String
   description String?
 
-  /// Amount in seconds
+  /// Time in seconds
   cookTime Int? @map("cook_time")
-  /// Amount in seconds
+  /// Time in seconds
   prepTime Int? @map("prep_time")
 
   servings Int?
@@ -71,7 +71,7 @@ model Ingredient {
   ingredientGroup   IngredientGroup @relation(fields: [ingredientGroupId], references: [id], onDelete: Cascade)
   ingredientGroupId String          @map("ingredient_group_id") @db.Uuid
 
-  amount Decimal?
+  quantity Decimal?
 
   unit String?
 

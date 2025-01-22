@@ -203,7 +203,7 @@ export function EditIngredientGroup({
           appendIngredient({
             name: '',
             unit: null,
-            amount: null,
+            quantity: null,
             notes: null,
           });
         }}
