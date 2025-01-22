@@ -5,10 +5,13 @@ import type { CanonicalIngredient } from '../types/canonicalIngredient.js';
 import type { CreateCanonicalIngredientDto } from '../types/createCanonicalIngredientDto.js';
 import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
-function createCanonicalIngredient(data: CreateCanonicalIngredientDto) {
+function createCanonicalIngredient(
+  data: CreateCanonicalIngredientDto,
+): Promise<CanonicalIngredient> {
   return api
     .post(`canonical-ingredients`, { json: data })
-    .then((res) => res.json<{ canonicalIngredient: CanonicalIngredient }>());
+    .json<{ canonicalIngredient: CanonicalIngredient }>()
+    .then((res) => res.canonicalIngredient);
 }
 
 interface Options {

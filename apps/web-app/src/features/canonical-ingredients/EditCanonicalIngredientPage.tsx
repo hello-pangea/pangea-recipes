@@ -10,11 +10,9 @@ const route = getRouteApi(
 export function EditCanonicalIngredientPage() {
   const { canonicalIngredientId } = route.useParams();
 
-  const canonicalIngredientQuery = useSuspenseQuery(
+  const { data: canonicalIngredient } = useSuspenseQuery(
     getCanonicalIngredientQueryOptions(canonicalIngredientId),
   );
-
-  const canonicalIngredient = canonicalIngredientQuery.data.canonicalIngredient;
 
   return (
     <CreateCanonicalIngredientPage

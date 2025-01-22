@@ -165,11 +165,11 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
 
   const createRecipe = useCreateRecipe({
     mutationConfig: {
-      onSuccess: (data) => {
+      onSuccess: (newRecipe) => {
         void navigate({
           to: `/app/recipes/$recipeId`,
           params: {
-            recipeId: data.recipe.id,
+            recipeId: newRecipe.id,
           },
         });
       },

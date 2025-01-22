@@ -7,10 +7,11 @@ import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredie
 
 function updateCanonicalIngredient(
   data: UpdateCanonicalIngredientDto & { id: string },
-) {
+): Promise<CanonicalIngredient> {
   return api
     .patch(`canonical-ingredients/${data.id}`, { json: data })
-    .then((res) => res.json<{ canonicalIngredient: CanonicalIngredient }>());
+    .json<{ canonicalIngredient: CanonicalIngredient }>()
+    .then((res) => res.canonicalIngredient);
 }
 
 interface Options {

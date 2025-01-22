@@ -3,10 +3,13 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { CanonicalIngredient } from '../types/canonicalIngredient.js';
 
-function getCanonicalIngredient(canonicalIngredientId: string) {
+function getCanonicalIngredient(
+  canonicalIngredientId: string,
+): Promise<CanonicalIngredient> {
   return api
     .get(`canonical-ingredients/${canonicalIngredientId}`)
-    .then((res) => res.json<{ canonicalIngredient: CanonicalIngredient }>());
+    .json<{ canonicalIngredient: CanonicalIngredient }>()
+    .then((res) => res.canonicalIngredient);
 }
 
 export function getCanonicalIngredientQueryOptions(

@@ -6,7 +6,7 @@ import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredien
 import { CanonicalIngredientCell } from './CanonicalIngredientCell';
 
 export function CanonicalIngredientsPage() {
-  const canonicalIngredientsQuery = useCanonicalIngredients();
+  const { data: canonicalIngredients } = useCanonicalIngredients();
 
   return (
     <Page>
@@ -28,14 +28,12 @@ export function CanonicalIngredientsPage() {
         justifyContent={'stretch'}
         sx={{ width: '100%' }}
       >
-        {canonicalIngredientsQuery.data?.canonicalIngredients.map(
-          (canonicalIngredient) => (
-            <CanonicalIngredientCell
-              key={canonicalIngredient.id}
-              canonicalIngredient={canonicalIngredient}
-            />
-          ),
-        )}
+        {canonicalIngredients?.map((canonicalIngredient) => (
+          <CanonicalIngredientCell
+            key={canonicalIngredient.id}
+            canonicalIngredient={canonicalIngredient}
+          />
+        ))}
       </Stack>
     </Page>
   );

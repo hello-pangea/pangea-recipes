@@ -62,7 +62,7 @@ export function EditIngredient({
     control,
     name: `ingredientGroups.${ingredientGroupIndex}.ingredients.${index}`,
   });
-  const canonicalIngredientsQuery = useCanonicalIngredients();
+  const { data: canonicalIngredients } = useCanonicalIngredients();
 
   useEffect(() => {
     const element = ref.current;
@@ -353,16 +353,11 @@ export function EditIngredient({
                   value={value}
                   disableClearable
                   size="small"
-                  options={
-                    canonicalIngredientsQuery.data?.canonicalIngredients.map(
-                      (ci) => ci.name,
-                    ) ?? []
-                  }
+                  options={canonicalIngredients?.map((ci) => ci.name) ?? []}
                   getOptionLabel={(option) => {
                     return (
-                      canonicalIngredientsQuery.data?.canonicalIngredients.find(
-                        (ci) => ci.name === option,
-                      )?.name ?? option
+                      canonicalIngredients?.find((ci) => ci.name === option)
+                        ?.name ?? option
                     );
                   }}
                   onChange={(_event, newValue) => {
@@ -385,10 +380,9 @@ export function EditIngredient({
                     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const { key, ...optionProps } = props;
 
-                    const canonicalIngredient =
-                      canonicalIngredientsQuery.data?.canonicalIngredients.find(
-                        (ci) => ci.name === option,
-                      );
+                    const canonicalIngredient = canonicalIngredients?.find(
+                      (ci) => ci.name === option,
+                    );
 
                     return (
                       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

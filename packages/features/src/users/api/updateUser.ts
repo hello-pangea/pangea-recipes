@@ -5,10 +5,11 @@ import type { UpdateUserDto } from '../types/updateUserDto.js';
 import type { User } from '../types/user.js';
 import { getSignedInUserQueryOptions } from './getSignedInUser.js';
 
-function updateUser(data: UpdateUserDto & { id: string }) {
+function updateUser(data: UpdateUserDto & { id: string }): Promise<User> {
   return api
     .patch(`users/${data.id}`, { json: data })
-    .then((res) => res.json<{ user: User }>());
+    .json<{ user: User }>()
+    .then((res) => res.user);
 }
 
 interface Options {
