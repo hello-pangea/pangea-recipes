@@ -42,14 +42,25 @@ export function RecipePage() {
       <Grid2 container spacing={2} sx={{ mb: 4 }}>
         <Grid2
           size={{
-            xs: hasCoverImage ? 6 : 12,
+            xs: 12,
+            md: hasCoverImage ? 6 : 12,
           }}
         >
-          <Card sx={{ p: { xs: 2, sm: 4 }, border: 0, mx: { xs: -1, sm: 0 } }}>
+          <Card
+            sx={{
+              p: { xs: 2, sm: 4 },
+              border: 0,
+              mx: { xs: -1, sm: 0 },
+              borderRadius: 2,
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
             <Box
               sx={{
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'flex-start',
                 justifyContent: 'space-between',
                 mb: 2,
               }}
@@ -61,6 +72,9 @@ export function RecipePage() {
                     href={recipe.websiteSource.url}
                     rel="nofollow"
                     target="_blank"
+                    sx={{
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
                   >
                     {recipe.websiteSource.title}
                   </Link>
@@ -102,22 +116,28 @@ export function RecipePage() {
         {hasCoverImage && (
           <Grid2
             size={{
-              xs: 6,
+              xs: 12,
+              md: 6,
             }}
           >
             <Box
               sx={{
-                borderRadius: 1,
+                borderRadius: 2,
+                position: 'relative',
+                width: '100%',
+                overflow: 'hidden',
+                height: 400,
+                boxShadow:
+                  '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
               }}
             >
               <img
                 src={recipe.images?.at(0)?.url}
-                height={'100%'}
-                width={'100%'}
                 style={{
                   objectFit: 'cover',
-                  display: 'block',
-                  borderRadius: 12,
+                  width: '100%',
+                  height: '100%',
+                  objectPosition: 'center',
                 }}
               />
             </Box>

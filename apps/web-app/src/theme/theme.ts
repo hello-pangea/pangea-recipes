@@ -103,10 +103,13 @@ export const theme = createTheme({
       styleOverrides: {
         root: ({ theme }) => ({
           color: theme.vars.palette.text.heading,
-          textDecorationColor: theme.vars.palette.primary.main,
+          textDecorationColor: '#a5b4fc',
           ':hover': {
             textDecorationThickness: 2,
           },
+          ...theme.applyStyles('dark', {
+            textDecorationColor: '#818cf8',
+          }),
         }),
       },
     },
