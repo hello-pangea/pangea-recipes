@@ -1,7 +1,5 @@
-import { createTheme, type Shadows } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 import { colorSchemes } from './themePrimitives';
-
-const defaultTheme = createTheme();
 
 export const theme = createTheme({
   colorSchemes: colorSchemes,
@@ -55,11 +53,6 @@ export const theme = createTheme({
       fontWeight: 'bold',
     },
   },
-  shadows: [
-    'none',
-    '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
-    ...defaultTheme.shadows.slice(2),
-  ] as Shadows,
   shape: {
     borderRadius: 12,
   },

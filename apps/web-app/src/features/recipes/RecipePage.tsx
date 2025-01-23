@@ -1,4 +1,5 @@
 import { TagEditor } from '#src/components/TagEditor';
+import { useWakeLock } from '#src/hooks/useWakeLock';
 import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
@@ -6,10 +7,13 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Card,
+  FormControlLabel,
+  FormGroup,
   Grid2,
   IconButton,
   Link,
   Stack,
+  Switch,
   Typography,
 } from '@mui/material';
 import {
@@ -18,6 +22,7 @@ import {
 } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { Ingredient } from './Ingredient';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
@@ -31,6 +36,17 @@ export function RecipePage() {
     null,
   );
   const recipeUpdater = useUpdateRecipe();
+  const { enqueueSnackbar } = useSnackbar();
+  const {
+    isSupported: isWakeLockSupported,
+    released: isWakeLockReleased,
+    request: requestWakeLock,
+    release: releaseWakeLock,
+  } = useWakeLock({
+    onError: () => {
+      enqueueSnackbar('Failed to keep screen awake', { variant: 'error' });
+    },
+  });
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -176,6 +192,25 @@ export function RecipePage() {
                     </Grid2>
                   )}
                 </Grid2>
+              )}
+              {isWakeLockSupported && (
+                <FormGroup sx={{ mt: 2 }}>
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={isWakeLockReleased === false}
+                        onChange={() => {
+                          if (isWakeLockReleased === false) {
+                            void releaseWakeLock();
+                          } else {
+                            void requestWakeLock('screen');
+                          }
+                        }}
+                      />
+                    }
+                    label="Keep screen awake"
+                  />
+                </FormGroup>
               )}
             </Card>
           </Stack>
