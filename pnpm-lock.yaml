@@ -141,6 +141,9 @@ importers:
       '@clerk/tanstack-start':
         specifier: ^0.8.14
         version: 0.8.14(@tanstack/react-router@1.97.14(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@tanstack/start@1.95.1(@types/node@22.10.8)(db0@0.2.1)(ioredis@5.4.2)(jiti@2.4.2)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3)(vite@6.0.11(@types/node@22.10.8)(jiti@2.4.2)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0))(webpack@5.97.1)(yaml@2.7.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      '@clerk/themes':
+        specifier: ^2.2.10
+        version: 2.2.10
       '@emotion/react':
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.0.7)(react@19.0.0)
@@ -683,6 +686,10 @@ packages:
       '@tanstack/start': '>=1.81.9'
       react: ^18.0.0 || ^19.0.0 || ^19.0.0-0
       react-dom: ^18.0.0 || ^19.0.0 || ^19.0.0-0
+
+  '@clerk/themes@2.2.10':
+    resolution: {integrity: sha512-p6P/msypeSHgYVTjEOjKc+c8HUkSNZ6pQgLwkTTpPr8dttyiy1str5BkxSKQeI2mO6IAH3Lt6vFY4Ti/U+TKEQ==}
+    engines: {node: '>=18.17.0'}
 
   '@clerk/types@4.42.0':
     resolution: {integrity: sha512-SPBRHdP+ZggeudncbSj8KLOZ5PdVmtgZhL+tXremVJrETi9WHpf1UOYgnIHl+clp6GZC2IQM4tq57RSrHf0Oew==}
@@ -6580,6 +6587,11 @@ snapshots:
       react-dom: 19.0.0(react@19.0.0)
       tslib: 2.4.1
 
+  '@clerk/themes@2.2.10':
+    dependencies:
+      '@clerk/types': 4.42.0
+      tslib: 2.4.1
+
   '@clerk/types@4.42.0':
     dependencies:
       csstype: 3.1.1
@@ -9288,7 +9300,7 @@ snapshots:
   dot-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   dot-prop@9.0.0:
     dependencies:
@@ -10383,7 +10395,7 @@ snapshots:
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   lru-cache@10.4.3: {}
 
@@ -10627,7 +10639,7 @@ snapshots:
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   node-addon-api@7.1.1: {}
 
@@ -11404,7 +11416,7 @@ snapshots:
   snake-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.4.1
+      tslib: 2.8.1
 
   snakecase-keys@8.0.1:
     dependencies:

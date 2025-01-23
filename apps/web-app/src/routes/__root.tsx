@@ -1,6 +1,8 @@
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { config } from '#src/config/config';
 import { ClerkLoaded, ClerkProvider } from '@clerk/tanstack-start';
+import { dark } from '@clerk/themes';
+import { useColorScheme } from '@mui/material';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router';
@@ -33,6 +35,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
 });
 
 function RootComponent() {
+  const { colorScheme } = useColorScheme();
+
   return (
     <ClerkProvider
       publishableKey={config.VITE_CLERK_PUBLISHABLE_KEY}
@@ -41,6 +45,9 @@ function RootComponent() {
       signInUrl="/app/sign-in"
       signInFallbackRedirectUrl={'/app/recipes'}
       signUpForceRedirectUrl={'/app/finish-sign-up'}
+      appearance={{
+        baseTheme: colorScheme === 'dark' ? dark : undefined,
+      }}
     >
       <ClerkLoaded>
         <Outlet />

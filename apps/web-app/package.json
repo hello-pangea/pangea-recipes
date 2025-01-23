@@ -17,6 +17,7 @@
     "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "^2.1.0",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.0.3",
     "@clerk/tanstack-start": "^0.8.14",
+    "@clerk/themes": "^2.2.10",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@fontsource-variable/inter": "^5.1.1",
