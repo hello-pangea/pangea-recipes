@@ -13,7 +13,8 @@ export function SignUpPage() {
       component="main"
       maxWidth="sm"
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
+        py: 2,
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',

@@ -13,12 +13,12 @@ export function SignInPage() {
       component="main"
       maxWidth="sm"
       sx={{
-        height: '100vh',
+        minHeight: '100vh',
+        py: 2,
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        py: 2,
       }}
     >
       <Box
