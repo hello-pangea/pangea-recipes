@@ -148,7 +148,9 @@ export function RecipePage() {
                         <Typography variant="h3">Prep Time</Typography>
                         <Stack spacing={1} direction="row" alignItems="center">
                           <BlenderRoundedIcon />
-                          <Typography>{recipe.prepTime}</Typography>
+                          <Typography>
+                            {Math.round(recipe.prepTime / 60)}m
+                          </Typography>
                         </Stack>
                       </Stack>
                     </Grid2>
@@ -166,7 +168,9 @@ export function RecipePage() {
                         <Typography variant="h3">Cook Time</Typography>
                         <Stack spacing={1} direction="row" alignItems="center">
                           <LocalFireDepartmentRoundedIcon />
-                          <Typography>{recipe.cookTime}</Typography>
+                          <Typography>
+                            {Math.round(recipe.cookTime / 60)}m
+                          </Typography>
                         </Stack>
                       </Stack>
                     </Grid2>
