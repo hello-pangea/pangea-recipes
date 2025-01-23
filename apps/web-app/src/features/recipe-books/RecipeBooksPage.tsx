@@ -87,7 +87,7 @@ export function RecipeBooksPage() {
             key={recipeBook.id}
             size={{
               xs: 12,
-              md: 6,
+              sm: 6,
               lg: 4,
             }}
           >
