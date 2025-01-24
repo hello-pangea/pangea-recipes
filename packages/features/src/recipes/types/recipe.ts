@@ -1,5 +1,5 @@
-import type { Prisma } from '@prisma/client';
 import { Type, type Static } from '@sinclair/typebox';
+import type { Decimal } from 'decimal.js';
 import { tagSchema } from '../../common/tag.js';
 import { Nullable } from '../../lib/nullable.js';
 
@@ -49,7 +49,7 @@ export const recipeSchema = Type.Object(
           Type.Object({
             id: Type.String(),
             name: Type.String(),
-            quantity: Nullable(Type.Unsafe<Prisma.Decimal>(Type.Number())),
+            quantity: Nullable(Type.Unsafe<Decimal>(Type.Number())),
             unit: Nullable(Type.String()),
             notes: Nullable(Type.String()),
             icon_url: Nullable(Type.String()),

@@ -1,11 +1,9 @@
-import type { Prisma } from '@prisma/client';
+import type { Decimal } from 'decimal.js';
 
 /**
  * Converts a non-integer number to a fraction with a denominator between 1 and 16.
  */
-export function numberToFraction(
-  value: number | string | Prisma.Decimal,
-): string {
+export function numberToFraction(value: number | string | Decimal): string {
   const valueNumber = Number(value);
 
   if (Number.isInteger(valueNumber)) {
