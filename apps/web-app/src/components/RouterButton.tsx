@@ -8,6 +8,7 @@ const MUILinkComponent = React.forwardRef<
 >((props, ref) => {
   return <Button component={'a'} ref={ref} {...props} />;
 });
+MUILinkComponent.displayName = 'MUILinkComponent';
 
 const CreatedLinkComponent = createLink(MUILinkComponent);
 

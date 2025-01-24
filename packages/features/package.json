@@ -51,7 +51,7 @@
     "ky": "^1.7.4"
   },
   "devDependencies": {
-    "@open-zero/eslint-config-node": "workspace:*",
+    "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@prisma/client": "^6.2.1",
     "@types/node": "^22.10.10",

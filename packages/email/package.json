@@ -23,7 +23,7 @@
     "react-dom": "^19.0.0"
   },
   "devDependencies": {
-    "@open-zero/eslint-config-vite": "workspace:*",
+    "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^22.10.10",
     "@types/react": "^19.0.8",

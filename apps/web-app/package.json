@@ -46,7 +46,7 @@
     "react-hook-form-mui": "^7.5.0"
   },
   "devDependencies": {
-    "@open-zero/eslint-config-vite": "workspace:*",
+    "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@tanstack/router-plugin": "^1.97.14",
     "@types/react": "^19.0.8",

@@ -46,7 +46,7 @@
     "turndown": "^7.2.0"
   },
   "devDependencies": {
-    "@open-zero/eslint-config-node": "workspace:*",
+    "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^22.10.10",
     "@types/turndown": "^5.0.5",

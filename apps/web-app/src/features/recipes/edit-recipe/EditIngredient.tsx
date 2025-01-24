@@ -306,7 +306,7 @@ export function EditIngredient({
                     <TextField {...params} placeholder="Unit" inputRef={ref} />
                   )}
                   renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
                     const { key, ...optionProps } = props;
 
                     const unitOption = defaultUnitOptions.find(
@@ -377,7 +377,7 @@ export function EditIngredient({
                     />
                   )}
                   renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
                     const { key, ...optionProps } = props;
 
                     const canonicalIngredient = canonicalIngredients?.find(

@@ -1,16 +1,22 @@
 {
-  "name": "@open-zero/eslint-config-vite",
+  "name": "@open-zero/eslint-config",
   "version": "0.0.0",
   "private": true,
+  "license": "AGPL-3.0-or-later",
   "type": "module",
-  "exports": "./index.js",
+  "exports": {
+    "./node": "./node.js",
+    "./vite": "./vite.js"
+  },
   "dependencies": {
     "@eslint/js": "^9.18.0",
-    "eslint": "^9.18.0",
     "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
     "eslint-plugin-react-refresh": "^0.4.18",
+    "eslint-plugin-turbo": "^2.3.4",
     "globals": "^15.14.0",
+    "typescript": "~5.7.3",
     "typescript-eslint": "^8.21.0"
   }
 }
