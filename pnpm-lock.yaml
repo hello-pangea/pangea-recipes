@@ -127,7 +127,7 @@ importers:
         specifier: ~5.7.3
         version: 5.7.3
 
-  apps/web-app:
+  apps/web:
     dependencies:
       '@atlaskit/pragmatic-drag-and-drop':
         specifier: ^1.4.0

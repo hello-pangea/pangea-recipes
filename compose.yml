@@ -28,7 +28,7 @@ services:
     container_name: web
     build:
       context: .
-      dockerfile: ./apps/web-app/Dockerfile
+      dockerfile: ./apps/web/Dockerfile
     restart: always
     ports:
       - '3000:3000'

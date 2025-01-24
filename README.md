@@ -32,6 +32,6 @@ Save, savor, and share your recipes. A modern and intuitive recipe manager.
 
 REST-ish api made with Fastify
 
-### [web-app](/apps/web-app/)
+### [web](/apps/web/)
 
 Primary web app made with Vite, React, and MUI
