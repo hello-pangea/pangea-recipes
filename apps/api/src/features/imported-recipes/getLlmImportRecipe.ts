@@ -67,14 +67,14 @@ async function getRecipeHtml(page: Page) {
     return await tastyRecipesLocator.innerHTML();
   }
 
-  const wprmLocator = page.locator('.wprm-recipe-container');
+  const wprmLocator = page.locator('.wprm-recipe-container').first();
   const isWprm = await wprmLocator.isVisible();
 
   if (isWprm) {
     return await wprmLocator.innerHTML();
   }
 
-  const wpDeliciousLocator = page.locator('.dr-summary-holder');
+  const wpDeliciousLocator = page.locator('.dr-summary-holder').first();
   const isWpDelicious = await wpDeliciousLocator.isVisible();
 
   if (isWpDelicious) {
