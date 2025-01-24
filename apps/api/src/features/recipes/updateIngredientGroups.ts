@@ -1,4 +1,4 @@
-import { type Prisma } from '#src/lib/prisma.js';
+import { type Prisma } from '@open-zero/database';
 import { type UpdateRecipeDto } from '@open-zero/features/recipes';
 
 export async function updateIngredientGroups(data: {

@@ -1,5 +1,5 @@
-import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import { prisma } from '@open-zero/database';
 import { recipeBookSchemaRef } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';

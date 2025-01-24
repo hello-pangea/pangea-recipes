@@ -1,8 +1,8 @@
 import { config } from '#src/config/config.js';
-import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { noContentSchema } from '#src/types/noContent.js';
 import { clerkClient } from '@clerk/fastify';
+import { prisma } from '@open-zero/database';
 import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.js';

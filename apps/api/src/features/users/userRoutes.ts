@@ -1,6 +1,6 @@
-import { prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { clerkClient, getAuth } from '@clerk/fastify';
+import { prisma } from '@open-zero/database';
 import {
   setupUserDtoSchema,
   updateUserDtoSchema,

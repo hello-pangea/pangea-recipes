@@ -5,21 +5,27 @@
     "build": {
       "outputs": ["dist/**"]
     },
-    "db-migrate": {
+    "db:migrate": {
       "cache": false,
-      "dependsOn": ["db-up"],
-      "inputs": ["./prisma/schema/**/*.prisma", "./prisma/migrations/**/*.sql"]
+      "persistent": true
     },
-    "db-seed": {
-      "cache": false,
-      "dependsOn": ["db-migrate"]
+    "db:seed": {
+      "cache": false
     },
-    "db-up": {
+    "db:generate": {
+      "cache": false
+    },
+    "db:nuke": {
+      "cache": false
+    },
+    "db:up": {
+      "cache": false
+    },
+    "db:deploy": {
       "cache": false
     },
     "dx": {
-      "cache": false,
-      "dependsOn": ["db-migrate"]
+      "cache": false
     }
   }
 }

@@ -1,5 +1,5 @@
-import { prisma } from '#src/lib/prisma.js';
 import { getFileUrl, uploadFile } from '#src/lib/s3.js';
+import { prisma } from '@open-zero/database';
 import { fileTypeFromBuffer } from 'file-type';
 import sharp from 'sharp';
 

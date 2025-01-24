@@ -1,7 +1,7 @@
-import { prisma } from '#src/lib/prisma.js';
 import { resend } from '#src/lib/resend.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import { noContentSchema } from '#src/types/noContent.js';
+import { prisma } from '@open-zero/database';
 import { RequestToJoinRecipeBookEmail } from '@open-zero/email';
 import { recipeBookRequestSchemaRef } from '@open-zero/features/recipe-book-requests';
 import { Type } from '@sinclair/typebox';

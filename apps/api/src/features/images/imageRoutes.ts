@@ -1,7 +1,7 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
 import multipart, { type MultipartFile } from '@fastify/multipart';
+import { prisma } from '@open-zero/database';
 import { Type } from '@sinclair/typebox';
-import { prisma } from '../../lib/prisma.js';
 import { getFileUrl, uploadFile } from '../../lib/s3.js';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
 import { verifySession } from '../auth/verifySession.js';

@@ -1,5 +1,5 @@
-import { prisma, type Prisma } from '#src/lib/prisma.js';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import { prisma, type Prisma } from '@open-zero/database';
 import { type CreateTagDto } from '@open-zero/features';
 import {
   createRecipeDtoScema,
