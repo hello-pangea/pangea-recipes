@@ -1,9 +1,16 @@
 import { Copyright } from '#src/components/Copyright';
 import { RouterButton } from '#src/components/RouterButton';
 import { useUser } from '@clerk/tanstack-start';
-import { Box, Container, Typography, useMediaQuery } from '@mui/material';
+import {
+  Box,
+  Container,
+  Grid2,
+  Typography,
+  useMediaQuery,
+} from '@mui/material';
 import { Navigate } from '@tanstack/react-router';
 import { Header } from './Header';
+import { ShareDialogDemo } from './ShareDialogDemo';
 
 export function HomePage() {
   const { isSignedIn } = useUser();
@@ -52,7 +59,48 @@ export function HomePage() {
           Start saving recipes
         </RouterButton>
       </Container>
-      <Copyright sx={{ pb: 2 }} />
+      <Container maxWidth="lg">
+        <Grid2
+          container
+          spacing={{
+            xs: 4,
+            md: 8,
+          }}
+          direction={{
+            xs: 'column-reverse',
+            sm: 'row',
+          }}
+        >
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 6,
+            }}
+          >
+            <ShareDialogDemo />
+          </Grid2>
+          <Grid2
+            size={{
+              xs: 12,
+              sm: 6,
+            }}
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography variant="h2" sx={{ mb: 2, maxWidth: 400 }}>
+              Share recipes with friends and family
+            </Typography>
+            <Typography sx={{ maxWidth: 400 }}>
+              Save, share, and organize your favorite recipes with friends and
+              family in <b>recipe books</b>.
+            </Typography>
+          </Grid2>
+        </Grid2>
+      </Container>
+      <Copyright sx={{ py: 2 }} />
     </Box>
   );
 }
