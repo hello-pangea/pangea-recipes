@@ -1,4 +1,5 @@
 import { RouterButton } from '#src/components/RouterButton';
+import { RouterLink } from '#src/components/RouterLink';
 import { Box, Container, Typography, useMediaQuery } from '@mui/material';
 
 export function Header() {
@@ -30,7 +31,9 @@ export function Header() {
           }}
           component={'p'}
         >
-          Hello Recipes
+          <RouterLink to="/" color="inherit" underline="none">
+            Hello Recipes
+          </RouterLink>
         </Typography>
       </Box>
       <Box
