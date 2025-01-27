@@ -16,7 +16,7 @@ export function EditRecipeBookPage() {
     <CreateRecipeBookPage
       defaultRecipeBook={{
         id: recipeBook.id,
-        name: recipeBook.name,
+        recipeBookName: recipeBook.name,
         description: recipeBook.description,
       }}
     />
