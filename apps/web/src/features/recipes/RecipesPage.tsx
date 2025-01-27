@@ -30,7 +30,14 @@ export function RecipesPage() {
     <Page>
       <Typography
         variant="h1"
-        sx={{ mb: 4, textAlign: 'center', mt: { xs: 0, sm: 4 } }}
+        sx={{
+          mb: {
+            xs: 2,
+            sm: 4,
+          },
+          textAlign: 'center',
+          mt: { xs: 0, sm: 4 },
+        }}
       >
         My Recipes
       </Typography>

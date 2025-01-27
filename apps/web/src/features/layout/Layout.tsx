@@ -1,4 +1,5 @@
-import Sidebar from '#src/features/layout/Sidebar';
+import { RouterLink } from '#src/components/RouterLink';
+import { Sidebar } from '#src/features/layout/Sidebar';
 import { useUser } from '@clerk/tanstack-start';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
@@ -24,6 +25,7 @@ import {
   useRouter,
 } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+import { NewButton } from './NewButton';
 
 const route = getRouteApi('/app/_layout');
 
@@ -97,32 +99,58 @@ export function Layout() {
             elevation={0}
             sx={{
               backgroundColor: (theme) => theme.palette.background.default,
-              borderBottom: 1,
-              borderColor: 'divider',
               color: (theme) => theme.palette.text.primary,
             }}
           >
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="open sidebar"
-                edge="start"
-                onClick={() => {
-                  setSidebarOpen(!sidebarOpen);
+            <Toolbar
+              sx={{
+                backgroundColor: (theme) => theme.palette.background.default,
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                sx={{ mr: 1 }}
               >
-                <MenuRoundedIcon />
-              </IconButton>
-              <Box sx={{ display: 'flex', alignItems: 'center', mx: 2 }}>
-                <img src="/assets/lil-guy.svg" width={24} height={24} />
-                <Typography
-                  variant="h1"
-                  sx={{ fontSize: 18, lineHeight: 1, ml: 1.5, pt: '0.3rem' }}
+                <IconButton
+                  color="inherit"
+                  aria-label="open sidebar"
+                  edge="start"
+                  onClick={() => {
+                    setSidebarOpen(!sidebarOpen);
+                  }}
+                  sx={{ mr: 1 }}
                 >
-                  Hello Recipes
-                </Typography>
+                  <MenuRoundedIcon />
+                </IconButton>
+                <RouterLink
+                  to="/app/recipes"
+                  sx={{
+                    textDecoration: 'none',
+                    color: 'inherit',
+                  }}
+                >
+                  <Box sx={{ display: 'flex', alignItems: 'center', mx: 2 }}>
+                    <img src="/assets/lil-guy.svg" width={24} height={24} />
+                    <Typography
+                      variant="h1"
+                      sx={{
+                        fontSize: 18,
+                        lineHeight: 1,
+                        ml: 1.5,
+                        pt: '0.3rem',
+                      }}
+                    >
+                      Hello Recipes
+                    </Typography>
+                  </Box>
+                </RouterLink>
               </Box>
+              <NewButton />
             </Toolbar>
           </AppBar>
         )}

@@ -1,15 +1,14 @@
 import { CarrotIcon } from '#src/components/CarrotIcon';
+import { RouterLink } from '#src/components/RouterLink';
 import { RouterListItemButton } from '#src/components/RouterListItemButton';
 import {
   dropTargetForElements,
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { useClerk } from '@clerk/tanstack-start';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
-import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
@@ -17,7 +16,6 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import {
   alpha,
   Box,
-  Button,
   Collapse,
   Drawer,
   IconButton,
@@ -25,8 +23,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Menu,
-  MenuItem,
   ListItem as MuiListItem,
   Typography,
 } from '@mui/material';
@@ -35,9 +31,10 @@ import {
   useRecipeBooks,
 } from '@open-zero/features/recipe-books';
 import { useSignedInUser } from '@open-zero/features/users';
-import { Link, useRouterState, type LinkProps } from '@tanstack/react-router';
+import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { NewButton } from './NewButton';
 
 const drawerWidth = 240;
 
@@ -47,7 +44,7 @@ interface Props {
   onClose: () => void;
 }
 
-export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
+export function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const { data: user } = useSignedInUser();
   const userId = useSignedInUserId();
   const { data: recipeBooks } = useRecipeBooks({
@@ -55,9 +52,6 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const { openUserProfile } = useClerk();
-  const [newMenuAnchorEl, setNewMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
 
   useEffect(() => {
     return monitorForElements({
@@ -95,115 +89,34 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const sidebarContent = (
     <>
       {/* Header */}
-      <Box sx={{ display: 'flex', alignItems: 'center', m: 2 }}>
-        <img src="/assets/lil-guy.svg" width={32} height={32} />
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: 18,
-            lineHeight: 1,
-            ml: 1.5,
-            pt: '0.3rem',
-          }}
-        >
-          Hello Recipes
-        </Typography>
-      </Box>
+      <RouterLink
+        to="/app/recipes"
+        sx={{
+          textDecoration: 'none',
+          color: 'inherit',
+        }}
+      >
+        <Box sx={{ display: 'flex', alignItems: 'center', m: 2 }}>
+          <img src="/assets/lil-guy.svg" width={32} height={32} />
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: 18,
+              lineHeight: 1,
+              ml: 1.5,
+              pt: '0.3rem',
+            }}
+          >
+            Hello Recipes
+          </Typography>
+        </Box>
+      </RouterLink>
       <Box sx={{ p: 1 }}>
-        <Button
-          variant="contained"
-          startIcon={<AddRoundedIcon />}
-          onClick={(event) => {
-            setNewMenuAnchorEl(event.currentTarget);
+        <NewButton
+          onOptionClicked={() => {
+            onClose();
           }}
-        >
-          New
-        </Button>
-        <Menu
-          anchorEl={newMenuAnchorEl}
-          open={Boolean(newMenuAnchorEl)}
-          onClose={() => {
-            setNewMenuAnchorEl(null);
-          }}
-          anchorOrigin={{
-            vertical: 'bottom',
-            horizontal: 'left',
-          }}
-          transformOrigin={{
-            vertical: 'top',
-            horizontal: 'left',
-          }}
-        >
-          <MenuItem sx={{ p: 0 }}>
-            <Link
-              to="/app/recipes/new"
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                padding: '6px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-              }}
-              onClick={() => {
-                setNewMenuAnchorEl(null);
-                onClose();
-              }}
-            >
-              <ListItemIcon>
-                <RestaurantMenuRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Recipe</ListItemText>
-            </Link>
-          </MenuItem>
-          <MenuItem sx={{ p: 0 }}>
-            <Link
-              to="/app/recipes/new"
-              search={{
-                importFromUrl: true,
-              }}
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                padding: '6px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-              }}
-              onClick={() => {
-                setNewMenuAnchorEl(null);
-                onClose();
-              }}
-            >
-              <ListItemIcon>
-                <LinkRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Recipe from url</ListItemText>
-            </Link>
-          </MenuItem>
-          <MenuItem sx={{ p: 0 }}>
-            <Link
-              to="/app/recipe-books/new"
-              style={{
-                textDecoration: 'none',
-                color: 'inherit',
-                padding: '6px 16px',
-                display: 'flex',
-                alignItems: 'center',
-                width: '100%',
-              }}
-              onClick={() => {
-                setNewMenuAnchorEl(null);
-                onClose();
-              }}
-            >
-              <ListItemIcon>
-                <MenuBookRoundedIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText>Recipe book</ListItemText>
-            </Link>
-          </MenuItem>
-        </Menu>
+        />
       </Box>
       {/* Navigation */}
       <Box
@@ -224,6 +137,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
           <ListItem
             icon={<MenuBookRoundedIcon />}
             label="Recipe books"
+            onClick={onClose}
             linkProps={{
               to: '/app/recipe-books',
             }}
@@ -236,6 +150,7 @@ export default function Sidebar({ open, onClose, isSmallScreen }: Props) {
                     key={recipeBook.id}
                     icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}
                     label={recipeBook.name}
+                    onClick={onClose}
                     isNested
                     linkProps={{
                       to: '/app/recipe-books/$recipeBookId',
