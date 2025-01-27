@@ -17,12 +17,20 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import DragIndicatorRoundedIcon from '@mui/icons-material/DragIndicatorRounded';
 import {
+  alpha,
   Autocomplete,
   Box,
+  Button,
+  CardActionArea,
   createFilterOptions,
+  Dialog,
+  DialogActions,
+  DialogContent,
   Grid2,
   IconButton,
   TextField,
+  Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
 import { defaultUnitOptions } from '@open-zero/features/units';
@@ -57,12 +65,12 @@ export function EditIngredient({
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
     null,
   );
-  const { data: user } = useSignedInUser();
   const ingredient = useWatch({
     control,
     name: `ingredientGroups.${ingredientGroupIndex}.ingredients.${index}`,
   });
-  const { data: canonicalIngredients } = useCanonicalIngredients();
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const element = ref.current;
@@ -205,235 +213,68 @@ export function EditIngredient({
           position: 'relative',
         }}
       >
-        <Grid2
-          container
-          spacing={1}
+        <Box
           sx={{
             opacity: dragging ? 0.4 : 1,
+            display: 'flex',
+            alignItems: 'center',
+            gap: isSmall ? 0 : 1,
           }}
         >
-          <Grid2 size="auto" display="flex" alignItems="center">
-            <IconButton
-              color="default"
-              ref={dragHandleRef}
-              onClick={(event) => {
-                event.stopPropagation();
-              }}
-              sx={{
-                cursor: 'grab',
-              }}
-              size="small"
-            >
-              <DragIndicatorRoundedIcon fontSize="small" />
-            </IconButton>
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 6,
-              sm: 'auto',
+          <IconButton
+            color="default"
+            ref={dragHandleRef}
+            onClick={(event) => {
+              event.stopPropagation();
             }}
-          >
-            <TextFieldElement
-              placeholder="Amount"
-              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.quantity`}
-              id={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.quantity`}
-              inputMode="decimal"
-              control={control}
-              size="small"
-              fullWidth
-              sx={{
-                width: { xs: undefined, sm: 95 },
-              }}
-              onKeyDown={(event) => {
-                focusNextInput(
-                  event,
-                  `input[name="ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit"]`,
-                );
-              }}
-              rules={{
-                validate: (value: number | string | null) => {
-                  if (value === null || value === '') {
-                    return true;
-                  }
-
-                  const parsedValue = getNumberFromInput(value);
-
-                  if (parsedValue === null || isNaN(parsedValue)) {
-                    return 'Invalid number';
-                  }
-
-                  return true;
-                },
-              }}
-            />
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 6,
-              sm: 'auto',
+            sx={{
+              cursor: 'grab',
             }}
+            size="small"
           >
-            <Controller
-              control={control}
-              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit`}
-              render={({
-                field: { onChange, value, ref, onBlur, disabled },
-              }) => (
-                <Autocomplete
-                  freeSolo
-                  autoSelect
-                  selectOnFocus
-                  handleHomeEndKeys
-                  fullWidth
-                  value={value}
-                  size="small"
-                  options={defaultUnitOptions.filter(
-                    (option) => option.system === user?.unitsPreference,
-                  )}
-                  getOptionLabel={(option) => {
-                    if (typeof option === 'string') {
-                      return option;
-                    }
-
-                    return option.name;
-                  }}
-                  onChange={(_event, newValue) => {
-                    onChange(newValue);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                    }
-                  }}
-                  filterOptions={createFilterOptions({
-                    stringify: (option) =>
-                      `${option.name} ${option.pluralName} ${option.abbreviation}`,
-                  })}
-                  renderInput={(params) => (
-                    <TextField {...params} placeholder="Unit" inputRef={ref} />
-                  )}
-                  renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
-                    const { key, ...optionProps } = props;
-
-                    const unitOption = defaultUnitOptions.find(
-                      (u) => u.name === option.name,
-                    );
-
-                    return (
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                      <li key={key} {...optionProps}>
-                        {unitOption?.name}
-                      </li>
-                    );
-                  }}
-                  sx={{
-                    width: { xs: undefined, sm: 150 },
-                  }}
-                  onBlur={onBlur}
-                  disabled={disabled}
-                />
-              )}
-            />
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 'grow',
-            }}
-          >
-            <Controller
-              control={control}
-              name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.name`}
-              rules={{
-                required: 'Required',
-              }}
-              render={({
-                field: { onChange, value, ref, onBlur, disabled },
-              }) => (
-                <Autocomplete
-                  freeSolo
-                  autoSelect
-                  autoHighlight
-                  selectOnFocus
-                  handleHomeEndKeys
-                  fullWidth
-                  value={value}
-                  disableClearable
-                  size="small"
-                  options={canonicalIngredients?.map((ci) => ci.name) ?? []}
-                  getOptionLabel={(option) => {
-                    return (
-                      canonicalIngredients?.find((ci) => ci.name === option)
-                        ?.name ?? option
-                    );
-                  }}
-                  onChange={(_event, newValue) => {
-                    onChange(newValue);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter') {
-                      e.preventDefault();
-                    }
-                  }}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      required
-                      placeholder="Ingredient *"
-                      inputRef={ref}
-                    />
-                  )}
-                  renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
-                    const { key, ...optionProps } = props;
-
-                    const canonicalIngredient = canonicalIngredients?.find(
-                      (ci) => ci.name === option,
-                    );
-
-                    return (
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-                      <li key={key} {...optionProps}>
-                        {canonicalIngredient?.icon ? (
-                          <img
-                            width={16}
-                            height={16}
-                            src={canonicalIngredient.icon.url}
-                            style={{ marginRight: 8 }}
-                          />
-                        ) : (
-                          <Box sx={{ width: 16, mr: 1 }} />
-                        )}
-                        {canonicalIngredient?.name}
-                      </li>
-                    );
-                  }}
-                  onBlur={onBlur}
-                  disabled={disabled}
-                />
-              )}
-            />
-          </Grid2>
-          <Grid2
-            size={{
-              xs: 'auto',
-            }}
-            display="flex"
-            alignItems="center"
-          >
-            <IngredientNotesButton
-              ingredientGroupIndex={ingredientGroupIndex}
-              ingredientIndex={index}
-            />
-            <IconButton
+            <DragIndicatorRoundedIcon fontSize="small" />
+          </IconButton>
+          {isSmall ? (
+            <CardActionArea
               onClick={() => {
-                removeIngredient(index);
+                setDialogOpen(true);
+              }}
+              sx={{
+                flex: 1,
               }}
             >
-              <DeleteRoundedIcon />
-            </IconButton>
-          </Grid2>
-        </Grid2>
+              <Box
+                sx={{
+                  borderRadius: 1,
+                  border: 1,
+                  borderColor: (theme) =>
+                    alpha(theme.palette.text.primary, 0.23),
+                  px: '14px',
+                  py: '8.5px',
+                }}
+              >
+                <Typography
+                  sx={{
+                    color: (theme) =>
+                      ingredient.name
+                        ? theme.palette.text.primary
+                        : theme.palette.text.secondary,
+                  }}
+                >
+                  {ingredient.name
+                    ? `${ingredient.quantity ?? ''}${ingredient.unit ? ` ${ingredient.unit} ` : ''}${ingredient.name}`
+                    : 'Ingredient'}
+                </Typography>
+              </Box>
+            </CardActionArea>
+          ) : (
+            <EditIngredientContent
+              index={index}
+              ingredientGroupIndex={ingredientGroupIndex}
+              removeIngredient={removeIngredient}
+            />
+          )}
+        </Box>
         {closestEdge && <DropIndicator edge={closestEdge} gap="16px" />}
       </div>
       {previewContainer
@@ -442,6 +283,292 @@ export function EditIngredient({
             previewContainer,
           )
         : null}
+      {isSmall && (
+        <Dialog
+          open={dialogOpen}
+          onClose={() => {
+            setDialogOpen(false);
+          }}
+        >
+          <DialogContent>
+            <EditIngredientContent
+              index={index}
+              ingredientGroupIndex={ingredientGroupIndex}
+              removeIngredient={removeIngredient}
+            />
+          </DialogContent>
+          <DialogActions
+            sx={{
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              startIcon={<DeleteRoundedIcon />}
+              onClick={() => {
+                removeIngredient(index);
+              }}
+              color="error"
+            >
+              Delete
+            </Button>
+            <Button
+              onClick={() => {
+                removeIngredient(index);
+              }}
+              variant="contained"
+            >
+              Done
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </>
+  );
+}
+
+export function EditIngredientContent({
+  index,
+  ingredientGroupIndex,
+  removeIngredient,
+}: Props) {
+  const { control } = useFormContext<RecipeFormInputs>();
+  const { data: user } = useSignedInUser();
+  const { data: canonicalIngredients } = useCanonicalIngredients();
+  const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+
+  return (
+    <Grid2
+      container
+      spacing={{
+        xs: 3,
+        sm: 1,
+      }}
+      flex={1}
+    >
+      <Grid2
+        size={{
+          xs: 12,
+          sm: 'auto',
+        }}
+      >
+        <TextFieldElement
+          label={isSmall ? 'Amount' : undefined}
+          placeholder="Amount"
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.quantity`}
+          id={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.quantity`}
+          inputMode="decimal"
+          control={control}
+          size={isSmall ? undefined : 'small'}
+          fullWidth
+          sx={{
+            width: { xs: undefined, sm: 95 },
+          }}
+          onKeyDown={(event) => {
+            focusNextInput(
+              event,
+              `input[name="ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit"]`,
+            );
+          }}
+          rules={{
+            validate: (value: number | string | null) => {
+              if (value === null || value === '') {
+                return true;
+              }
+
+              const parsedValue = getNumberFromInput(value);
+
+              if (parsedValue === null || isNaN(parsedValue)) {
+                return 'Invalid number';
+              }
+
+              return true;
+            },
+          }}
+        />
+      </Grid2>
+      <Grid2
+        size={{
+          xs: 12,
+          sm: 'auto',
+        }}
+      >
+        <Controller
+          control={control}
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit`}
+          render={({ field: { onChange, value, ref, onBlur, disabled } }) => (
+            <Autocomplete
+              freeSolo
+              autoSelect
+              selectOnFocus
+              handleHomeEndKeys
+              fullWidth
+              value={value}
+              size={isSmall ? undefined : 'small'}
+              options={defaultUnitOptions.filter(
+                (option) => option.system === user?.unitsPreference,
+              )}
+              getOptionLabel={(option) => {
+                if (typeof option === 'string') {
+                  return option;
+                }
+
+                return option.name;
+              }}
+              onChange={(_event, newValue) => {
+                onChange(newValue);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                }
+              }}
+              filterOptions={createFilterOptions({
+                stringify: (option) =>
+                  `${option.name} ${option.pluralName} ${option.abbreviation}`,
+              })}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Unit"
+                  label={isSmall ? 'Unit' : undefined}
+                  inputRef={ref}
+                />
+              )}
+              renderOption={(props, option) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
+                const { key, ...optionProps } = props;
+
+                const unitOption = defaultUnitOptions.find(
+                  (u) => u.name === option.name,
+                );
+
+                return (
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  <li key={key} {...optionProps}>
+                    {unitOption?.name}
+                  </li>
+                );
+              }}
+              sx={{
+                width: { xs: undefined, sm: 150 },
+              }}
+              onBlur={onBlur}
+              disabled={disabled}
+            />
+          )}
+        />
+      </Grid2>
+      <Grid2
+        size={{
+          xs: 12,
+          sm: 'grow',
+        }}
+      >
+        <Controller
+          control={control}
+          name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.name`}
+          rules={{
+            required: 'Required',
+          }}
+          render={({ field: { onChange, value, ref, onBlur, disabled } }) => (
+            <Autocomplete
+              freeSolo
+              autoSelect
+              autoHighlight
+              selectOnFocus
+              handleHomeEndKeys
+              fullWidth
+              value={value}
+              disableClearable
+              size={isSmall ? undefined : 'small'}
+              options={canonicalIngredients?.map((ci) => ci.name) ?? []}
+              getOptionLabel={(option) => {
+                return (
+                  canonicalIngredients?.find((ci) => ci.name === option)
+                    ?.name ?? option
+                );
+              }}
+              onChange={(_event, newValue) => {
+                onChange(newValue);
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.preventDefault();
+                }
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  required
+                  placeholder="Ingredient *"
+                  label={isSmall ? 'Ingredient' : undefined}
+                  inputRef={ref}
+                />
+              )}
+              renderOption={(props, option) => {
+                // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
+                const { key, ...optionProps } = props;
+
+                const canonicalIngredient = canonicalIngredients?.find(
+                  (ci) => ci.name === option,
+                );
+
+                return (
+                  // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+                  <li key={key} {...optionProps}>
+                    {canonicalIngredient?.icon ? (
+                      <img
+                        width={16}
+                        height={16}
+                        src={canonicalIngredient.icon.url}
+                        style={{ marginRight: 8 }}
+                      />
+                    ) : (
+                      <Box sx={{ width: 16, mr: 1 }} />
+                    )}
+                    {canonicalIngredient?.name}
+                  </li>
+                );
+              }}
+              onBlur={onBlur}
+              disabled={disabled}
+            />
+          )}
+        />
+      </Grid2>
+      {isSmall && (
+        <Grid2 size={12}>
+          <TextFieldElement
+            label={'Notes'}
+            name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.notes`}
+            id={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.notes`}
+            control={control}
+            fullWidth
+            multiline
+          />
+        </Grid2>
+      )}
+      {!isSmall && (
+        <Grid2
+          size={{
+            xs: 'auto',
+          }}
+          display="flex"
+          alignItems="center"
+        >
+          <IngredientNotesButton
+            ingredientGroupIndex={ingredientGroupIndex}
+            ingredientIndex={index}
+          />
+          <IconButton
+            onClick={() => {
+              removeIngredient(index);
+            }}
+          >
+            <DeleteRoundedIcon />
+          </IconButton>
+        </Grid2>
+      )}
+    </Grid2>
   );
 }
