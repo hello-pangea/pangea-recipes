@@ -1,6 +1,7 @@
 import { Page } from '#src/components/Page';
+import { focusNextInput } from '#src/lib/focusNextInput';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import { Box, Button, Stack, Typography } from '@mui/material';
+import { Box, Button, Grid2, Typography } from '@mui/material';
 import { emptyStringToUndefined } from '@open-zero/features';
 import {
   useCreateRecipeBook,
@@ -10,8 +11,9 @@ import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { FormProvider, useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
+
 export interface RecipeBookFormInputs {
-  name: string;
+  recipeBookName: string;
   description: string | null;
 }
 
@@ -24,7 +26,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
   const navigate = useNavigate();
   const form = useForm<RecipeBookFormInputs>({
     defaultValues: defaultRecipeBook ?? {
-      name: '',
+      recipeBookName: '',
       description: '',
     },
   });
@@ -62,12 +64,12 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
     if (defaultRecipeBook) {
       recipeBookUpdater.mutate({
         id: defaultRecipeBook.id,
-        name: data.name,
+        name: data.recipeBookName,
         description: emptyStringToUndefined(data.description),
       });
     } else {
       recipeBookCreator.mutate({
-        name: data.name,
+        name: data.recipeBookName,
         description: emptyStringToUndefined(data.description),
       });
     }
@@ -82,27 +84,38 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
       </Box>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack
-            direction={'column'}
-            spacing={2}
-            sx={{ mb: 4, maxWidth: '750px', display: 'block' }}
+          <Grid2
+            container
+            spacing={3}
+            sx={{
+              mb: 4,
+              maxWidth: '750px',
+            }}
           >
-            <TextFieldElement
-              label="Recipe book name"
-              name="name"
-              required
-              control={control}
-              fullWidth
-            />
-            <TextFieldElement
-              label="Description"
-              name="description"
-              control={control}
-              fullWidth
-              multiline
-              minRows={2}
-            />
-          </Stack>
+            <Grid2 size={12}>
+              <TextFieldElement
+                label="Recipe book name"
+                id="recipeBookName"
+                name="recipeBookName"
+                control={control}
+                fullWidth
+                multiline
+                onKeyDown={(event) => {
+                  focusNextInput(event, 'textarea[name="description"]');
+                }}
+              />
+            </Grid2>
+            <Grid2 size={{ xs: 12 }}>
+              <TextFieldElement
+                label="Description"
+                id="description"
+                name="description"
+                control={control}
+                multiline
+                fullWidth
+              />
+            </Grid2>
+          </Grid2>
           <Button
             variant="contained"
             startIcon={<SaveRoundedIcon />}

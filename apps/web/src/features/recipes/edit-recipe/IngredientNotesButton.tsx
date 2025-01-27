@@ -88,7 +88,7 @@ export function IngredientNotesButton({
         }}
       >
         <TextFieldElement
-          label="Notes"
+          placeholder="Notes"
           name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${ingredientIndex}.notes`}
           control={control}
           size="small"

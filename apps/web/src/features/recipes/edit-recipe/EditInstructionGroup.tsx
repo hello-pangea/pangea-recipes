@@ -1,6 +1,6 @@
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import { Button, Card, IconButton, Stack } from '@mui/material';
+import { Box, Button, Card, FormLabel, IconButton, Stack } from '@mui/material';
 import {
   TextFieldElement,
   useFieldArray,
@@ -54,31 +54,54 @@ export function EditInstructionGroup({
           </IconButton>
         </Stack>
       )}
-      <Stack direction={'column'} spacing={4} sx={{ mb: 2, maxWidth: '750px' }}>
+      <Stack direction={'column'} spacing={3} sx={{ mb: 2, maxWidth: '750px' }}>
         {instructions.map((instruction, instructionIndex) => (
           <Stack
             direction={'row'}
             alignItems={'flex-start'}
-            spacing={2}
+            spacing={1}
             key={instruction.id}
           >
-            <TextFieldElement
-              name={`instructionGroups.${instructionGroupIndex}.instructions.${instructionIndex}.text`}
-              placeholder="Add the secret ingredient!"
-              label={`Step ${instructionIndex + 1}`}
-              required
-              control={control}
-              fullWidth
-              multiline
-              minRows={2}
-            />
-            <IconButton
-              onClick={() => {
-                removeInstruction(instructionIndex);
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                width: '100%',
               }}
             >
-              <DeleteRoundedIcon />
-            </IconButton>
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  mb: 0.5,
+                }}
+              >
+                <FormLabel
+                  htmlFor={`instructionGroups.${instructionGroupIndex}.instructions.${instructionIndex}.text`}
+                >
+                  Step {instructionIndex + 1}
+                </FormLabel>
+                <IconButton
+                  onClick={() => {
+                    removeInstruction(instructionIndex);
+                  }}
+                  size="small"
+                >
+                  <DeleteRoundedIcon fontSize="inherit" />
+                </IconButton>
+              </Box>
+              <TextFieldElement
+                id={`instructionGroups.${instructionGroupIndex}.instructions.${instructionIndex}.text`}
+                name={`instructionGroups.${instructionGroupIndex}.instructions.${instructionIndex}.text`}
+                control={control}
+                multiline
+                required
+                fullWidth
+                minRows={2}
+              />
+            </Box>
           </Stack>
         ))}
       </Stack>

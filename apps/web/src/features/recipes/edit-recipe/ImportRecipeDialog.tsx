@@ -55,13 +55,13 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
         }
       }}
     >
-      <DialogTitle>Import recipe from url</DialogTitle>
+      <DialogTitle>Import recipe</DialogTitle>
       <DialogContent>
         <Typography sx={{ mb: 2 }}>
           Paste the url of the recipe you want to import
         </Typography>
         <TextField
-          label="Recipe url"
+          placeholder="Recipe url"
           fullWidth
           autoFocus
           type="url"

@@ -10,6 +10,7 @@ import {
   Box,
   Button,
   Grid2,
+  InputAdornment,
   Stack,
   TextField,
   Typography,
@@ -37,7 +38,7 @@ import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
 export interface RecipeFormInputs {
-  name: string;
+  recipeName: string;
   description: string | null;
   prepTime: string;
   cookTime: string;
@@ -78,7 +79,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   const navigate = useNavigate({ from: '/' });
   const form = useForm<RecipeFormInputs>({
     defaultValues: defaultRecipe ?? {
-      name: '',
+      recipeName: '',
       description: '',
       prepTime: '',
       cookTime: '',
@@ -195,7 +196,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     if (defaultRecipe) {
       updateRecipe.mutate({
         id: defaultRecipe.id,
-        name: data.name,
+        name: data.recipeName,
         description: emptyStringToUndefined(data.description),
         prepTime: data.prepTime
           ? Math.round(parseInt(data.prepTime) * 60)
@@ -221,7 +222,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       });
     } else {
       createRecipe.mutate({
-        name: data.name,
+        name: data.recipeName,
         description: emptyStringToUndefined(data.description),
         websitePageId: data.websitePageId,
         prepTime: data.prepTime
@@ -265,33 +266,37 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       </Box>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack
-            direction={'column'}
-            spacing={2}
-            sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
+          <Grid2
+            container
+            spacing={3}
+            sx={{
+              mb: 2,
+              maxWidth: '750px',
+            }}
           >
-            <TextFieldElement
-              label="Recipe name"
-              name="name"
-              required
-              control={control}
-              fullWidth
-              onKeyDown={(event) => {
-                focusNextInput(event, 'textarea[name="description"]');
-              }}
-            />
-            <TextFieldElement
-              label="Description"
-              name="description"
-              control={control}
-              fullWidth
-              multiline
-              minRows={2}
-              onKeyDown={(event) => {
-                focusNextInput(event, 'input[name="servings"]');
-              }}
-            />
-            <Stack direction={'row'} spacing={2}>
+            <Grid2 size={{ xs: 12 }}>
+              <TextFieldElement
+                label="Recipe name"
+                name="recipeName"
+                control={control}
+                fullWidth
+                multiline
+                required
+                onKeyDown={(event) => {
+                  focusNextInput(event, 'textarea[name="description"]');
+                }}
+              />
+            </Grid2>
+            <Grid2 size={{ xs: 12 }}>
+              <TextFieldElement
+                label="Description"
+                name="description"
+                control={control}
+                multiline
+                fullWidth
+              />
+            </Grid2>
+            <Grid2 size={{ xs: 6, sm: 4 }}>
               <TextFieldElement
                 label="Servings"
                 name="servings"
@@ -303,8 +308,10 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   focusNextInput(event, 'input[name="prepTime"]');
                 }}
               />
+            </Grid2>
+            <Grid2 size={{ xs: 6, sm: 4 }}>
               <TextFieldElement
-                label="Prep time (m)"
+                label="Prep time"
                 name="prepTime"
                 control={control}
                 type="number"
@@ -313,9 +320,18 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 onKeyDown={(event) => {
                   focusNextInput(event, 'input[name="cookTime"]');
                 }}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">minutes</InputAdornment>
+                    ),
+                  },
+                }}
               />
+            </Grid2>
+            <Grid2 size={{ xs: 6, sm: 4 }}>
               <TextFieldElement
-                label="Cook time (m)"
+                label="Cook time"
                 name="cookTime"
                 control={control}
                 type="number"
@@ -326,9 +342,16 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                     event.preventDefault();
                   }
                 }}
+                slotProps={{
+                  input: {
+                    endAdornment: (
+                      <InputAdornment position="end">minutes</InputAdornment>
+                    ),
+                  },
+                }}
               />
-            </Stack>
-          </Stack>
+            </Grid2>
+          </Grid2>
           <UploadRecipeImage sx={{ mb: 6 }} />
           <Typography variant="h2" sx={{ mb: 2 }}>
             Ingredients
@@ -489,7 +512,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           });
 
           reset({
-            name: importedRecipe.name ?? undefined,
+            recipeName: importedRecipe.name ?? undefined,
             description: importedRecipe.description,
             cookTime: importedRecipe.cookTime?.toString(),
             prepTime: importedRecipe.prepTime?.toString(),

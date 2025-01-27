@@ -153,6 +153,13 @@ export function EditIngredient({
           setClosestEdge(closestEdge);
         },
         onDragEnter({ self, source }) {
+          const isSource =
+            source.element === element || source.element === dragHandle;
+          if (isSource) {
+            setClosestEdge(null);
+            return;
+          }
+
           const closestEdge = extractClosestEdge(self.data);
 
           const sourceIndex = source.data['index'];
@@ -205,7 +212,7 @@ export function EditIngredient({
             opacity: dragging ? 0.4 : 1,
           }}
         >
-          <Grid2 size="auto">
+          <Grid2 size="auto" display="flex" alignItems="center">
             <IconButton
               color="default"
               ref={dragHandleRef}

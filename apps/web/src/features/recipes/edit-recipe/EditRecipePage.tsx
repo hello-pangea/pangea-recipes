@@ -14,7 +14,7 @@ export function EditRecipePage() {
     <CreateRecipePage
       defaultRecipe={{
         id: recipe.id,
-        name: recipe.name,
+        recipeName: recipe.name,
         description: recipe.description,
         usesRecipes:
           recipe.usesRecipes?.map((recipeId) => ({
