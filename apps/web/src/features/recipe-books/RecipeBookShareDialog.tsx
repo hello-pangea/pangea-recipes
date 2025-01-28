@@ -260,7 +260,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           {invites.length <= 0 && (
             <Box sx={{ mt: 4 }}>
               <Typography variant="h3" sx={{ mb: 2 }}>
-                Members
+                People with access
               </Typography>
               <Stack spacing={2}>
                 {recipeBook.members.map((member) => (

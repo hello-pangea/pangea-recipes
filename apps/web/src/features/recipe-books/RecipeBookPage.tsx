@@ -53,6 +53,9 @@ export function RecipeBookPage() {
           endIcon={<ArrowDropDownRoundedIcon />}
           sx={{
             color: 'inherit',
+            '& .MuiSvgIcon-fontSizeMedium': {
+              fontSize: 28,
+            },
           }}
           onClick={(event) => {
             setMoreMenuAnchorEl(event.currentTarget);
