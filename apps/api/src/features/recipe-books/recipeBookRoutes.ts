@@ -33,7 +33,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { name, description } = request.body;
+      const { name, description, access } = request.body;
 
       const userId = request.session?.userId;
 
@@ -45,6 +45,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
         data: {
           name: name,
           description: description ?? null,
+          access: access ?? 'public',
           members: {
             create: {
               userId: userId,
@@ -138,7 +139,10 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
         include: recipeBookInclude,
       });
 
-      if (!recipeBook.members.some((member) => member.userId === userId)) {
+      if (
+        recipeBook.access !== 'public' &&
+        !recipeBook.members.some((member) => member.userId === userId)
+      ) {
         throw fastify.httpErrors.forbidden();
       }
 
@@ -166,7 +170,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { name, description } = request.body;
+      const { name, description, access } = request.body;
       const { recipeBookId } = request.params;
 
       const recipeBook = await prisma.recipeBook.update({
@@ -176,6 +180,7 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
         data: {
           name: name,
           description: description,
+          access: access,
         },
         include: recipeBookInclude,
       });

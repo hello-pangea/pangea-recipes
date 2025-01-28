@@ -81,7 +81,8 @@ export function RecipeBookCard({ recipeBookId }: Props) {
               {recipeBook.name}
             </RouterLink>
             {(recipeBook.members.length > 1 ||
-              recipeBook.invites.length > 0) && (
+              recipeBook.invites.length > 0 ||
+              recipeBook.access === 'public') && (
               <Tooltip title="Shared">
                 <GroupRoundedIcon
                   sx={{

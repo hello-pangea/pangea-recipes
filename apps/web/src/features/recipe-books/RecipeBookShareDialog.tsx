@@ -1,12 +1,16 @@
 import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import {
   alpha,
   Autocomplete,
+  Avatar,
   Box,
   Button,
   Chip,
@@ -18,6 +22,9 @@ import {
   DialogTitle,
   FormControl,
   IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
   MenuItem,
   Select,
   Stack,
@@ -35,6 +42,7 @@ import {
   useInviteMembersToRecipeBook,
   useRecipeBook,
   useRecipeBooks,
+  useUpdateRecipeBook,
 } from '@open-zero/features/recipe-books';
 import { useEffect, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -64,6 +72,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const deleteRecipeBookMember = useDeleteRecipeBookMember();
   const acceptRecipeBookRequest = useAcceptRecipeBookRequest();
   const declineRecipeBookRequest = useDeclineRecipeBookRequest();
+  const updateRecipeBook = useUpdateRecipeBook();
   const { data: recipeBooks } = useRecipeBooks({
     options: {
       userId: userId,
@@ -71,6 +80,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   });
   const [linkCopied, setLinkCopied] = useState(false);
   const [reviewRequestId, setReviewRequestId] = useState<string | null>(null);
+  const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
 
   const invitedEmails = [
     ...new Set(
@@ -280,7 +291,15 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         gap: 2,
                       }}
                     >
-                      <PersonRoundedIcon />
+                      <Avatar
+                        sx={{
+                          backgroundColor: (theme) =>
+                            alpha(theme.palette.text.primary, 0.1),
+                          color: (theme) => theme.palette.text.primary,
+                        }}
+                      >
+                        <PersonRoundedIcon />
+                      </Avatar>
                       <Box>
                         <Typography>
                           {member.userId === userId ? '(You) ' : ''}
@@ -323,7 +342,15 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       }}
                     >
                       <Tooltip title="We sent an invite to their email">
-                        <EmailRoundedIcon />
+                        <Avatar
+                          sx={{
+                            backgroundColor: (theme) =>
+                              alpha(theme.palette.text.primary, 0.1),
+                            color: (theme) => theme.palette.text.primary,
+                          }}
+                        >
+                          <EmailRoundedIcon />
+                        </Avatar>
                       </Tooltip>
                       <Box>
                         <Typography>{invitee.inviteeEmailAddress}</Typography>
@@ -347,6 +374,56 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               </Stack>
             </Box>
           )}
+          <Box sx={{ mt: 4 }}>
+            <Typography variant="h3" sx={{ mb: 2 }}>
+              General access
+            </Typography>
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 2,
+              }}
+            >
+              <Avatar
+                sx={{
+                  backgroundColor: (theme) =>
+                    recipeBook.access === 'public'
+                      ? alpha(theme.palette.success.main, 0.1)
+                      : alpha(theme.palette.text.primary, 0.1),
+                  color: (theme) =>
+                    recipeBook.access === 'public'
+                      ? theme.palette.success.main
+                      : theme.palette.text.primary,
+                }}
+              >
+                {recipeBook.access === 'public' ? (
+                  <PublicRoundedIcon />
+                ) : (
+                  <LockOutlinedIcon />
+                )}
+              </Avatar>
+              <Box>
+                <Button
+                  color="inherit"
+                  endIcon={<ArrowDropDownRoundedIcon />}
+                  sx={{ ml: -1, mb: 0.5 }}
+                  onClick={(event) => {
+                    setGeneralAccessMenuAnchorEl(event.currentTarget);
+                  }}
+                >
+                  {recipeBook.access === 'public'
+                    ? 'Anyone with the link'
+                    : 'Restricted'}
+                </Button>
+                <Typography variant="caption">
+                  {recipeBook.access === 'public'
+                    ? 'Anyone on the internet with the link can view'
+                    : 'Only people with access can open with the link'}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
         </DialogContent>
         {!invites.length ? (
           <DialogActions
@@ -520,6 +597,54 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           </Button>
         </DialogActions>
       </Dialog>
+      <Menu
+        anchorEl={generalAccessMenuAnchorEl}
+        open={Boolean(generalAccessMenuAnchorEl)}
+        onClose={() => {
+          setGeneralAccessMenuAnchorEl(null);
+        }}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'left',
+        }}
+      >
+        <MenuItem
+          selected={recipeBook.access === 'private'}
+          onClick={() => {
+            updateRecipeBook.mutate({
+              id: recipeBookId,
+              access: 'private',
+            });
+
+            setGeneralAccessMenuAnchorEl(null);
+          }}
+        >
+          <ListItemIcon>
+            <LockOutlinedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Restricted</ListItemText>
+        </MenuItem>
+        <MenuItem
+          selected={recipeBook.access === 'public'}
+          onClick={() => {
+            updateRecipeBook.mutate({
+              id: recipeBookId,
+              access: 'public',
+            });
+
+            setGeneralAccessMenuAnchorEl(null);
+          }}
+        >
+          <ListItemIcon>
+            <PublicRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Anyone with the link</ListItemText>
+        </MenuItem>
+      </Menu>
     </>
   );
 }

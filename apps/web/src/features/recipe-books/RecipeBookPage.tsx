@@ -50,12 +50,16 @@ export function RecipeBookPage() {
         <MenuBookRoundedIcon sx={{ mr: 2 }} />
         <Button
           variant="text"
-          endIcon={<ArrowDropDownRoundedIcon />}
+          endIcon={
+            <ArrowDropDownRoundedIcon
+              sx={{
+                width: 28,
+                height: 28,
+              }}
+            />
+          }
           sx={{
             color: 'inherit',
-            '& .MuiSvgIcon-fontSizeMedium': {
-              fontSize: 28,
-            },
           }}
           onClick={(event) => {
             setMoreMenuAnchorEl(event.currentTarget);
@@ -67,7 +71,9 @@ export function RecipeBookPage() {
         >
           <Typography variant="h1">{recipeBook.name}</Typography>
         </Button>
-        {(recipeBook.members.length > 1 || recipeBook.invites.length > 0) && (
+        {(recipeBook.members.length > 1 ||
+          recipeBook.invites.length > 0 ||
+          recipeBook.access === 'public') && (
           <Tooltip title="Shared">
             <IconButton
               onClick={() => {

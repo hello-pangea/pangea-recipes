@@ -1,9 +1,22 @@
+enum Role {
+  owner
+  editor
+  viewer
+}
+
+enum RecipeBookAccess {
+  private
+  public
+}
+
 model RecipeBook {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
 
   name        String
   description String?
+
+  access RecipeBookAccess @default(public)
 
   recipes  RecipesOnRecipeBooks[]
   members  RecipeBookMember[]
@@ -24,12 +37,6 @@ model RecipesOnRecipeBooks {
 
   @@id([recipeId, recipeBookId])
   @@map("recipes_on_recipe_books")
-}
-
-enum Role {
-  owner
-  editor
-  viewer
 }
 
 model RecipeBookMember {

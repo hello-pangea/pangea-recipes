@@ -18,6 +18,8 @@ export const recipeBookSchema = Type.Object(
 
     description: Nullable(Type.String()),
 
+    access: Type.Union([Type.Literal('public'), Type.Literal('private')]),
+
     members: Type.Array(
       Type.Object({
         userId: Type.String({ format: 'uuid' }),
