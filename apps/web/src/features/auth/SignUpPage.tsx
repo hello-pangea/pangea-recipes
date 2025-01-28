@@ -34,6 +34,7 @@ export function SignUpPage() {
           signInUrl={
             redirect ? `/app/sign-in?redirect=${redirect}` : '/app/sign-in'
           }
+          routing="hash"
         />
       </Box>
       <Copyright />
