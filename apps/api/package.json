@@ -31,7 +31,7 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@scalar/fastify-api-reference": "^1.25.109",
+    "@scalar/fastify-api-reference": "^1.25.111",
     "@sinclair/typebox": "^0.34.14",
     "chalk": "^5.4.1",
     "close-with-grace": "^2.2.0",
