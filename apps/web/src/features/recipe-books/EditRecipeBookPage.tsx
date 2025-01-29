@@ -18,6 +18,7 @@ export function EditRecipeBookPage() {
         id: recipeBook.id,
         recipeBookName: recipeBook.name,
         description: recipeBook.description,
+        access: recipeBook.access,
       }}
     />
   );
