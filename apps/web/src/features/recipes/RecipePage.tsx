@@ -75,7 +75,7 @@ export function RecipePage() {
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, mt: { xs: 0, sm: 2 } }}>
-      <Grid2 container spacing={4} sx={{ mb: 4 }}>
+      <Grid2 container spacing={4} sx={{ mb: 2 }}>
         <Grid2
           size={{
             xs: 12,
@@ -294,25 +294,6 @@ export function RecipePage() {
                   </Grid2>
                 )}
               </Grid2>
-              {isWakeLockSupported && (
-                <FormGroup sx={{ mt: 2 }}>
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={isWakeLockReleased === false}
-                        onChange={() => {
-                          if (isWakeLockReleased === false) {
-                            void releaseWakeLock();
-                          } else {
-                            void requestWakeLock('screen');
-                          }
-                        }}
-                      />
-                    }
-                    label="Keep screen awake"
-                  />
-                </FormGroup>
-              )}
             </Card>
           </Stack>
         </Grid2>
@@ -347,6 +328,25 @@ export function RecipePage() {
           </Grid2>
         )}
       </Grid2>
+      {isWakeLockSupported && (
+        <FormGroup sx={{ mb: 2 }}>
+          <FormControlLabel
+            control={
+              <Switch
+                checked={isWakeLockReleased === false}
+                onChange={() => {
+                  if (isWakeLockReleased === false) {
+                    void releaseWakeLock();
+                  } else {
+                    void requestWakeLock('screen');
+                  }
+                }}
+              />
+            }
+            label="Keep screen awake"
+          />
+        </FormGroup>
+      )}
       <Grid2 container spacing={2}>
         <Grid2
           size={{

@@ -15,7 +15,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { emptyStringToUndefined } from '@open-zero/features';
+import { emptyStringToNull, emptyStringToUndefined } from '@open-zero/features';
 import {
   useCreateRecipe,
   useRecipes,
@@ -197,14 +197,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       updateRecipe.mutate({
         id: defaultRecipe.id,
         name: data.recipeName,
-        description: emptyStringToUndefined(data.description),
+        description: emptyStringToNull(data.description),
         prepTime: data.prepTime
           ? Math.round(parseInt(data.prepTime) * 60)
-          : undefined,
+          : null,
         cookTime: data.cookTime
           ? Math.round(parseInt(data.cookTime) * 60)
-          : undefined,
-        servings: data.servings ? parseInt(data.servings) : undefined,
+          : null,
+        servings: data.servings ? parseInt(data.servings) : null,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,

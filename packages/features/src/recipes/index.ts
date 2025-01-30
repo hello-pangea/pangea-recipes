@@ -1,8 +1,6 @@
 // Types
-export * from './types/createRecipeDto.js';
 export * from './types/recipe.js';
 export * from './types/recipeProjected.js';
-export * from './types/updateRecipeDto.js';
 
 // Api
 export * from './api/createRecipe.js';
