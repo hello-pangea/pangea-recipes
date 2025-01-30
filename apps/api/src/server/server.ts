@@ -2,18 +2,14 @@ import { clerkPlugin, getAuth } from '@clerk/fastify';
 import auth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
-import multipart from '@fastify/multipart';
 import fastifySensible from '@fastify/sensible';
 import openApi from '@fastify/swagger';
-import { canonicalIngredientSchema } from '@open-zero/features/canonical-ingredients';
-import { recipeBookRequestSchema } from '@open-zero/features/recipe-book-requests';
-import { recipeBookSchema } from '@open-zero/features/recipe-books';
-import { recipeSchema } from '@open-zero/features/recipes';
-import { userSchema } from '@open-zero/features/users';
+import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import scalar from '@scalar/fastify-api-reference';
 import Fastify from 'fastify';
-import { enablePrettyLogs } from '../config/config.js';
+import { config, enablePrettyLogs } from '../config/config.js';
 import { routes } from './routes.js';
+import schemaPlugin from './schemaPlugin.js';
 
 export async function createServer() {
   console.log('\n🛠️ Setup: fastify server');
@@ -30,11 +26,7 @@ export async function createServer() {
           },
         }
       : false,
-    ajv: {
-      // Adds the file plugin to help @fastify/swagger schema generation
-      plugins: [multipart.ajvFilePlugin],
-    },
-  });
+  }).withTypeProvider<TypeBoxTypeProvider>();
 
   // -
   // Fastify plugins
@@ -56,11 +48,16 @@ export async function createServer() {
 
   void fastify.register(fastifySensible);
 
-  void fastify.addSchema(canonicalIngredientSchema);
-  void fastify.addSchema(recipeSchema);
-  void fastify.addSchema(recipeBookSchema);
-  void fastify.addSchema(userSchema);
-  void fastify.addSchema(recipeBookRequestSchema);
+  const openApiServers = [
+    {
+      url: 'https://api.hellorecipes.com',
+      description: 'Production',
+    },
+    {
+      url: 'http://localhost:3001',
+      description: 'Local',
+    },
+  ];
 
   void fastify.register(openApi, {
     openapi: {
@@ -91,22 +88,35 @@ export async function createServer() {
           description: 'Import recipes from other websites',
         },
       ],
-      servers: [
-        {
-          url: 'https://api.hellorecipes.com',
-          description: 'Production',
-        },
-        {
-          url: 'http://localhost:3001',
-          description: 'Local',
-        },
-      ],
+      servers:
+        config.NODE_ENV === 'development'
+          ? openApiServers.reverse()
+          : openApiServers,
+    },
+    // https://stackoverflow.com/a/77501891
+    refResolver: {
+      buildLocalReference(json, _baseUri, _fragment, i) {
+        // This mirrors the default behaviour
+        // see: https://github.com/fastify/fastify-swagger/blob/1b53e376b4b752481643cf5a5655c284684383c3/lib/mode/dynamic.js#L17
+        if (!json['title'] && json['$id']) {
+          json['title'] = json['$id'];
+        }
+        // Fallback if no $id is present
+        if (!json['$id']) {
+          return `def-${String(i)}`;
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-base-to-string
+        return String(json['$id']);
+      },
     },
   });
 
   // -
   // Custom plugins
   // -
+
+  void fastify.register(schemaPlugin);
 
   await fastify.register(clerkPlugin, {
     hookName: 'onRequest',
