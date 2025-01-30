@@ -5,9 +5,10 @@ import { useState } from 'react';
 
 interface Props {
   ingredient: Recipe['ingredientGroups'][0]['ingredients'][0];
+  multiplier?: number;
 }
 
-export function Ingredient({ ingredient }: Props) {
+export function Ingredient({ ingredient, multiplier }: Props) {
   const [checked, setChecked] = useState(false);
 
   return (
@@ -48,7 +49,7 @@ export function Ingredient({ ingredient }: Props) {
               fontWeight: 'bold',
             }}
           >
-            {numberToFraction(ingredient.quantity)}
+            {numberToFraction(Number(ingredient.quantity) * (multiplier ?? 1))}
           </Typography>
         )}{' '}
         {ingredient.unit

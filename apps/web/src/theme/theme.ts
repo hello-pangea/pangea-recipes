@@ -115,9 +115,19 @@ export const theme = createTheme({
     },
     MuiMenu: {
       styleOverrides: {
-        paper: {
-          borderRadius: 4,
-        },
+        paper: ({ theme }) => ({
+          // borderRadius: 4,
+          marginTop: '4px',
+          // borderRadius: theme.vars.shape.borderRadius,
+          border: `1px solid ${theme.vars.palette.grey[200]}`,
+          boxShadow:
+            'hsla(220, 30%, 5%, 0.07) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.07) 0px 8px 16px -5px',
+          ...theme.applyStyles('dark', {
+            border: `1px solid ${theme.vars.palette.grey[800]}`,
+            boxShadow:
+              'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px',
+          }),
+        }),
       },
     },
     MuiIconButton: {
@@ -143,9 +153,19 @@ export const theme = createTheme({
     },
     MuiPopover: {
       styleOverrides: {
-        paper: {
-          borderRadius: 4,
-        },
+        paper: ({ theme }) => ({
+          // borderRadius: 4,
+          marginTop: '4px',
+          // borderRadius: theme.vars.shape.borderRadius,
+          border: `1px solid ${theme.vars.palette.grey[200]}`,
+          boxShadow:
+            'hsla(220, 30%, 5%, 0.07) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.07) 0px 8px 16px -5px',
+          ...theme.applyStyles('dark', {
+            border: `1px solid ${theme.vars.palette.grey[800]}`,
+            boxShadow:
+              'hsla(220, 30%, 5%, 0.7) 0px 4px 16px 0px, hsla(220, 25%, 10%, 0.8) 0px 8px 16px -5px',
+          }),
+        }),
       },
     },
     MuiTooltip: {
@@ -153,6 +173,11 @@ export const theme = createTheme({
         tooltip: {
           borderRadius: 4,
         },
+      },
+    },
+    MuiStack: {
+      defaultProps: {
+        useFlexGap: true,
       },
     },
   },

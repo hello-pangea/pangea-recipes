@@ -1,21 +1,29 @@
 import { TagEditor } from '#src/components/TagEditor';
 import { useWakeLock } from '#src/hooks/useWakeLock';
+import { getNumberFromInput } from '#src/lib/getNumberFromInput';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
+import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import {
   Box,
+  ButtonBase,
   Card,
   FormControlLabel,
   FormGroup,
   Grid2,
   IconButton,
   Link,
+  Popover,
   Stack,
   Switch,
+  TextField,
   Typography,
 } from '@mui/material';
+import { stepDownSnapped, stepUpSnapped } from '@open-zero/features';
 import {
   getRecipeQueryOptions,
   useUpdateRecipe,
@@ -31,6 +39,7 @@ const route = getRouteApi('/app/_layout/recipes/$recipeId');
 
 export function RecipePage() {
   const { recipeId } = route.useParams();
+  const { data: recipe } = useSuspenseQuery(getRecipeQueryOptions(recipeId));
   const navigate = useNavigate();
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
@@ -47,10 +56,20 @@ export function RecipePage() {
       enqueueSnackbar('Failed to keep screen awake', { variant: 'error' });
     },
   });
+  const [servingsModifier, setServingsModifier] = useState(
+    String(recipe.servings ?? 1),
+  );
+  const [servingsAnchorEl, setServingsAnchorEl] =
+    useState<HTMLButtonElement | null>(null);
+  const servingsMultiplier = recipe.servings
+    ? (getNumberFromInput(servingsModifier) ?? 1) / recipe.servings
+    : (getNumberFromInput(servingsModifier) ?? 1);
+
+  console.log(recipe.servings);
+  console.log(servingsModifier);
+  console.log(servingsMultiplier);
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
-
-  const { data: recipe } = useSuspenseQuery(getRecipeQueryOptions(recipeId));
 
   const hasCoverImage = (recipe.images?.length ?? 0) > 0;
 
@@ -131,68 +150,150 @@ export function RecipePage() {
               <Typography sx={{ maxWidth: 500 }}>
                 {recipe.description}
               </Typography>
-              {(recipe.prepTime || recipe.cookTime || recipe.servings) && (
-                <Grid2 container spacing={2} sx={{ mt: 4 }}>
-                  {recipe.servings && (
-                    <Grid2
-                      size={{
-                        xs: 12,
-                        sm: 4,
-                        md: 6,
-                        lg: 4,
+              <Grid2 container spacing={2} sx={{ mt: 4 }}>
+                <Grid2
+                  size={{
+                    xs: 12,
+                    sm: 4,
+                    md: 6,
+                    lg: 4,
+                  }}
+                >
+                  <Stack spacing={2} alignItems={'flex-start'}>
+                    <Typography variant="h3">Servings</Typography>
+                    <ButtonBase
+                      sx={{
+                        px: 1,
+                        ml: -1,
+                        borderRadius: 10,
+                      }}
+                      onClick={(event) => {
+                        setServingsAnchorEl(event.currentTarget);
                       }}
                     >
-                      <Stack spacing={2}>
-                        <Typography variant="h3">Servings</Typography>
-                        <Stack spacing={1} direction="row" alignItems="center">
-                          <GroupsRoundedIcon />
-                          <Typography>{recipe.servings}</Typography>
-                        </Stack>
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        <GroupsRoundedIcon />
+                        <Typography>
+                          {recipe.servings === null
+                            ? `Adjust (${servingsMultiplier}x)`
+                            : recipe.servings * servingsMultiplier}
+                        </Typography>
+                        <ArrowDropDownRoundedIcon />
                       </Stack>
-                    </Grid2>
-                  )}
-                  {recipe.prepTime && (
-                    <Grid2
-                      size={{
-                        xs: 12,
-                        sm: 4,
-                        md: 6,
-                        lg: 4,
+                    </ButtonBase>
+                    <Popover
+                      open={Boolean(servingsAnchorEl)}
+                      anchorEl={servingsAnchorEl}
+                      onClose={() => {
+                        setServingsAnchorEl(null);
+                      }}
+                      anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left',
+                      }}
+                      transformOrigin={{
+                        vertical: 'top',
+                        horizontal: 'left',
+                      }}
+                      slotProps={{
+                        paper: {
+                          sx: {
+                            p: 1,
+                          },
+                        },
                       }}
                     >
-                      <Stack spacing={2}>
-                        <Typography variant="h3">Prep Time</Typography>
-                        <Stack spacing={1} direction="row" alignItems="center">
-                          <BlenderRoundedIcon />
-                          <Typography>
-                            {Math.round(recipe.prepTime / 60)}m
-                          </Typography>
-                        </Stack>
+                      <Stack
+                        spacing={1}
+                        direction={'row'}
+                        alignItems={'center'}
+                      >
+                        <TextField
+                          size="small"
+                          value={servingsModifier}
+                          onChange={(event) => {
+                            setServingsModifier(event.target.value);
+                          }}
+                        />
+                        <IconButton
+                          onClick={() => {
+                            const value = getNumberFromInput(servingsModifier);
+
+                            if (value !== null && !isNaN(value)) {
+                              setServingsModifier(
+                                stepDownSnapped({
+                                  value: value,
+                                  steps: [0.125, 0.25, 0.5, 0.75, 1, 1.5, 2],
+                                  stepDownBy: 1,
+                                }).toString(),
+                              );
+                            }
+                          }}
+                        >
+                          <RemoveRoundedIcon />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => {
+                            const value = getNumberFromInput(servingsModifier);
+
+                            if (value !== null && !isNaN(value)) {
+                              setServingsModifier(
+                                stepUpSnapped({
+                                  value: value,
+                                  steps: [0.125, 0.25, 0.5, 0.75, 1, 1.5, 2],
+                                  stepUpBy: 1,
+                                }).toString(),
+                              );
+                            }
+                          }}
+                        >
+                          <AddRoundedIcon />
+                        </IconButton>
                       </Stack>
-                    </Grid2>
-                  )}
-                  {recipe.cookTime && (
-                    <Grid2
-                      size={{
-                        xs: 12,
-                        sm: 4,
-                        md: 6,
-                        lg: 4,
-                      }}
-                    >
-                      <Stack spacing={2}>
-                        <Typography variant="h3">Cook Time</Typography>
-                        <Stack spacing={1} direction="row" alignItems="center">
-                          <LocalFireDepartmentRoundedIcon />
-                          <Typography>
-                            {Math.round(recipe.cookTime / 60)}m
-                          </Typography>
-                        </Stack>
-                      </Stack>
-                    </Grid2>
-                  )}
+                    </Popover>
+                  </Stack>
                 </Grid2>
-              )}
+                {recipe.prepTime && (
+                  <Grid2
+                    size={{
+                      xs: 12,
+                      sm: 4,
+                      md: 6,
+                      lg: 4,
+                    }}
+                  >
+                    <Stack spacing={2}>
+                      <Typography variant="h3">Prep Time</Typography>
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        <BlenderRoundedIcon />
+                        <Typography>
+                          {Math.round(recipe.prepTime / 60)}m
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Grid2>
+                )}
+                {recipe.cookTime && (
+                  <Grid2
+                    size={{
+                      xs: 12,
+                      sm: 4,
+                      md: 6,
+                      lg: 4,
+                    }}
+                  >
+                    <Stack spacing={2}>
+                      <Typography variant="h3">Cook Time</Typography>
+                      <Stack spacing={1} direction="row" alignItems="center">
+                        <LocalFireDepartmentRoundedIcon />
+                        <Typography>
+                          {Math.round(recipe.cookTime / 60)}m
+                        </Typography>
+                      </Stack>
+                    </Stack>
+                  </Grid2>
+                )}
+              </Grid2>
               {isWakeLockSupported && (
                 <FormGroup sx={{ mt: 2 }}>
                   <FormControlLabel
@@ -266,7 +367,11 @@ export function RecipePage() {
                 )}
                 <Stack component={'ul'}>
                   {ingredientGroup.ingredients.map((ingredient) => (
-                    <Ingredient ingredient={ingredient} key={ingredient.id} />
+                    <Ingredient
+                      ingredient={ingredient}
+                      key={ingredient.id}
+                      multiplier={servingsMultiplier}
+                    />
                   ))}
                 </Stack>
               </Box>
