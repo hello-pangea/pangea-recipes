@@ -16,9 +16,11 @@ import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import {
   alpha,
   Box,
+  Card,
   Collapse,
   Drawer,
   IconButton,
+  Link,
   List,
   ListItemButton,
   ListItemIcon,
@@ -178,6 +180,28 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         </List>
       </Box>
       <Box sx={{ pb: 1 }}>
+        <Card
+          sx={{
+            p: 1,
+            mx: 1,
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
+              Email the developer :)
+            </Typography>
+            <Typography variant="caption">Beta 0.1.0</Typography>
+          </Box>
+          <Link href="mailto:hello@hellorecipes.com">
+            <Typography variant="body2">hello@hellorecipes.com</Typography>
+          </Link>
+        </Card>
         <MuiListItem disablePadding>
           <ListItemButton
             onClick={() => {
