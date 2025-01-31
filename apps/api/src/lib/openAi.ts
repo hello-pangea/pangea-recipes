@@ -1,4 +1,4 @@
-import { config } from '#src/config/config.js';
+import { config } from '#src/config/config.ts';
 import OpenAI from 'openai';
 
 export const openAi = new OpenAI({

@@ -1,11 +1,11 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import multipart, { type MultipartFile } from '@fastify/multipart';
 import { prisma } from '@open-zero/database';
 import { Type } from '@sinclair/typebox';
-import { getFileUrl, uploadFile } from '../../lib/s3.js';
-import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
-import { verifySession } from '../auth/verifySession.js';
-import { processAndUploadImage } from './processAndUploadImage.js';
+import { getFileUrl, uploadFile } from '../../lib/s3.ts';
+import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
+import { verifySession } from '../auth/verifySession.ts';
+import { processAndUploadImage } from './processAndUploadImage.ts';
 
 const routeTag = 'Images';
 

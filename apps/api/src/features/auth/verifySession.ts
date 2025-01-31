@@ -1,5 +1,5 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { ApiError } from '../../lib/ApiError.js';
+import { ApiError } from '../../lib/ApiError.ts';
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function verifySession(

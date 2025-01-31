@@ -1,5 +1,5 @@
 import { Type, type Static } from '@sinclair/typebox';
-import { NumericString, parseEnv } from './configUtils.js';
+import { NumericString, parseEnv } from './configUtils.ts';
 
 export type Env = Static<typeof envSchema>;
 const envSchema = Type.Object({
@@ -19,6 +19,7 @@ const envSchema = Type.Object({
   CLERK_PUBLISHABLE_KEY: Type.String(),
   CLERK_SECRET_KEY: Type.String(),
   RESEND_SECRET_KEY: Type.String(),
+  SENTRY_DSN: Type.String(),
 });
 
 export const config = parseEnv(envSchema, process.env);

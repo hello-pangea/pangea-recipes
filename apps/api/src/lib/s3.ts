@@ -5,7 +5,7 @@ import {
   type PutObjectCommandInput,
 } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
-import { config } from '../config/config.js';
+import { config } from '../config/config.ts';
 
 export const s3Client = new S3Client({
   region: 'auto',

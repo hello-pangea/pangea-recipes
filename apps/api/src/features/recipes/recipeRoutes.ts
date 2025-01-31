@@ -1,4 +1,4 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma, type Prisma } from '@open-zero/database';
 import { type CreateTagDto } from '@open-zero/features';
 import {
@@ -8,13 +8,13 @@ import {
   updateRecipeDtoScema,
 } from '@open-zero/features/recipes';
 import { Type } from '@sinclair/typebox';
-import { ApiError } from '../../lib/ApiError.js';
-import { getFileUrl } from '../../lib/s3.js';
-import { noContentSchema } from '../../types/noContent.js';
-import { verifySession } from '../auth/verifySession.js';
-import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.js';
-import { updateIngredientGroups } from './updateIngredientGroups.js';
-import { updateInstructionGroups } from './updateInstructionGroups.js';
+import { ApiError } from '../../lib/ApiError.ts';
+import { getFileUrl } from '../../lib/s3.ts';
+import { noContentSchema } from '../../types/noContent.ts';
+import { verifySession } from '../auth/verifySession.ts';
+import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.ts';
+import { updateIngredientGroups } from './updateIngredientGroups.ts';
+import { updateInstructionGroups } from './updateInstructionGroups.ts';
 
 const routeTag = 'Recipes';
 

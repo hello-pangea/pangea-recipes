@@ -1,4 +1,4 @@
-import { getFileUrl, uploadFile } from '#src/lib/s3.js';
+import { getFileUrl, uploadFile } from '#src/lib/s3.ts';
 import { prisma } from '@open-zero/database';
 import { fileTypeFromBuffer } from 'file-type';
 import sharp from 'sharp';

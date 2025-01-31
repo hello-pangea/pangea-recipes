@@ -8,7 +8,7 @@ import ajvModule from 'ajv';
 import ajvFormatsModule from 'ajv-formats';
 import { fastUri } from 'fast-uri';
 import fastifyPlugin from 'fastify-plugin';
-import type { FastifyTypebox } from './fastifyTypebox.js';
+import type { FastifyTypebox } from './fastifyTypebox.ts';
 
 const addAjvFormats = ajvFormatsModule.default;
 const Ajv = ajvModule.default;

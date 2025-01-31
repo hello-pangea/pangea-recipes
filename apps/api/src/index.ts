@@ -1,6 +1,6 @@
-import { createServer } from '#src/server/server.js';
+import { createServer } from '#src/server/server.ts';
 import closeWithGrace from 'close-with-grace';
-import { config } from './config/config.js';
+import { config } from './config/config.ts';
 
 const server = await createServer();
 

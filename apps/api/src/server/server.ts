@@ -6,10 +6,11 @@ import fastifySensible from '@fastify/sensible';
 import openApi from '@fastify/swagger';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import scalar from '@scalar/fastify-api-reference';
+import * as Sentry from '@sentry/node';
 import Fastify from 'fastify';
-import { config, enablePrettyLogs } from '../config/config.js';
-import { routes } from './routes.js';
-import schemaPlugin from './schemaPlugin.js';
+import { config, enablePrettyLogs } from '../config/config.ts';
+import { routes } from './routes.ts';
+import schemaPlugin from './schemaPlugin.ts';
 
 export async function createServer() {
   console.log('\n🛠️ Setup: fastify server');
@@ -27,6 +28,8 @@ export async function createServer() {
         }
       : false,
   }).withTypeProvider<TypeBoxTypeProvider>();
+
+  Sentry.setupFastifyErrorHandler(fastify);
 
   // -
   // Fastify plugins

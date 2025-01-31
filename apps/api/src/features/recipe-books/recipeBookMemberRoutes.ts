@@ -1,11 +1,11 @@
-import { config } from '#src/config/config.js';
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
-import { noContentSchema } from '#src/types/noContent.js';
+import { config } from '#src/config/config.ts';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
+import { noContentSchema } from '#src/types/noContent.ts';
 import { clerkClient } from '@clerk/fastify';
 import { prisma } from '@open-zero/database';
 import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
-import { verifySession } from '../auth/verifySession.js';
+import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe books';
 

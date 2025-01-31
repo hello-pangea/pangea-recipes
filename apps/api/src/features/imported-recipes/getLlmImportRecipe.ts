@@ -1,4 +1,4 @@
-import { openAi } from '#src/lib/openAi.js';
+import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@open-zero/database';
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
