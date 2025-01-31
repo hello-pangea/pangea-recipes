@@ -68,4 +68,4 @@ COPY --from=installer --chown=node:node /app .
 
 EXPOSE 8080
 
-CMD ["node --experimental-strip-types --import apps/api/src/instrument.ts", "apps/api/src/index.ts"]
+CMD ["node --experimental-strip-types --import ./apps/api/src/instrument.ts", "apps/api/src/index.ts"]
