@@ -52,6 +52,7 @@ export function IngredientNotesButton({
     <Box sx={sx}>
       <Tooltip
         title={ingredient.notes ? `Notes: ${ingredient.notes}` : 'Add notes'}
+        disableInteractive
       >
         <IconButton
           onClick={(event) => {
