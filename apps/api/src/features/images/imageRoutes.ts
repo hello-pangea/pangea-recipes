@@ -88,6 +88,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       const image = await prisma.image.create({
         data: {
           key: imageKey,
+          public: true,
         },
       });
 
