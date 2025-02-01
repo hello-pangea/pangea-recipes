@@ -1,14 +1,6 @@
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
-import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import {
-  Box,
-  Button,
-  Grid2,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Grid2, Typography } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
   useRemoveRecipeFromRecipeBook,
@@ -19,7 +11,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
-import { RecipeBookShareDialog } from './RecipeBookShareDialog';
+import { RecipeBookShareButton } from './RecipeBookShareButton';
 
 const route = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
 
@@ -30,7 +22,6 @@ export function RecipeBookPage() {
   );
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useRecipes({ options: { recipeBookId } });
-  const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -45,50 +36,41 @@ export function RecipeBookPage() {
           display: 'flex',
           alignItems: 'center',
           mb: 2,
+          justifyContent: 'space-between',
         }}
       >
-        <MenuBookRoundedIcon sx={{ mr: 2 }} />
-        <Button
-          variant="text"
-          endIcon={
-            <ArrowDropDownRoundedIcon
-              sx={{
-                width: 28,
-                height: 28,
-              }}
-            />
-          }
+        <Box
           sx={{
-            color: 'inherit',
+            display: 'flex',
+            alignItems: 'center',
           }}
-          onClick={(event) => {
-            setMoreMenuAnchorEl(event.currentTarget);
-          }}
-          id="more-button"
-          aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-          aria-haspopup="true"
-          aria-expanded={moreMenuOpen ? 'true' : undefined}
         >
-          <Typography variant="h1">{recipeBook.name}</Typography>
-        </Button>
-        {(recipeBook.members.length > 1 ||
-          recipeBook.invites.length > 0 ||
-          recipeBook.access === 'public') && (
-          <Tooltip title="Shared">
-            <IconButton
-              onClick={() => {
-                setShareDialogOpen(true);
-              }}
-              sx={{ ml: 1 }}
-            >
-              <GroupRoundedIcon
+          <MenuBookRoundedIcon sx={{ mr: 2 }} />
+          <Button
+            variant="text"
+            endIcon={
+              <ArrowDropDownRoundedIcon
                 sx={{
-                  color: (theme) => theme.palette.text.secondary,
+                  width: 28,
+                  height: 28,
                 }}
               />
-            </IconButton>
-          </Tooltip>
-        )}
+            }
+            sx={{
+              color: 'inherit',
+            }}
+            onClick={(event) => {
+              setMoreMenuAnchorEl(event.currentTarget);
+            }}
+            id="more-button"
+            aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+            aria-haspopup="true"
+            aria-expanded={moreMenuOpen ? 'true' : undefined}
+          >
+            <Typography variant="h1">{recipeBook.name}</Typography>
+          </Button>
+        </Box>
+        <RecipeBookShareButton recipeBookId={recipeBookId} />
       </Box>
       {recipeBook.description && (
         <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
@@ -120,13 +102,6 @@ export function RecipeBookPage() {
         anchorEl={moreMenuAnchorEl}
         onClose={() => {
           setMoreMenuAnchorEl(null);
-        }}
-      />
-      <RecipeBookShareDialog
-        recipeBookId={recipeBookId}
-        open={shareDialogOpen}
-        onClose={() => {
-          setShareDialogOpen(false);
         }}
       />
     </Box>
