@@ -2,7 +2,6 @@ import { TagEditor } from '#src/components/TagEditor';
 import { useWakeLock } from '#src/hooks/useWakeLock';
 import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
 import LocalFireDepartmentRoundedIcon from '@mui/icons-material/LocalFireDepartmentRounded';
@@ -10,7 +9,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
 import {
   Box,
-  ButtonBase,
+  Button,
   Card,
   FormControlLabel,
   FormGroup,
@@ -160,45 +159,59 @@ export function RecipePage() {
                   }}
                 >
                   <Stack spacing={2} alignItems={'flex-start'}>
-                    <Typography variant="h3">Servings</Typography>
-                    <ButtonBase
-                      sx={{
-                        px: 1,
-                        ml: -1,
-                        borderRadius: 10,
-                      }}
-                      onClick={(event) => {
-                        setServingsAnchorEl(event.currentTarget);
-                      }}
-                    >
-                      <Stack spacing={1} direction="row" alignItems="center">
-                        <GroupsRoundedIcon />
-                        <Typography>
-                          {recipe.servings === null
-                            ? `Adjust (${servingsMultiplier}x)`
-                            : recipe.servings * servingsMultiplier}
-                        </Typography>
-                        <ArrowDropDownRoundedIcon />
-                      </Stack>
-                    </ButtonBase>
+                    <Stack spacing={1} direction="row" alignItems="center">
+                      <Typography variant="h3">Servings</Typography>
+                      <Button
+                        size="small"
+                        onClick={(event) => {
+                          setServingsAnchorEl(event.currentTarget);
+                        }}
+                        aria-describedby="servings-popover"
+                      >
+                        Scale
+                      </Button>
+                    </Stack>
+                    <Stack spacing={2} direction="row" alignItems="center">
+                      <GroupsRoundedIcon />
+                      <Typography>
+                        {recipe.servings === null ? (
+                          servingsMultiplier === 1 ? (
+                            '--'
+                          ) : (
+                            <b>({servingsMultiplier}x)</b>
+                          )
+                        ) : (
+                          <>
+                            {recipe.servings * servingsMultiplier}
+                            {servingsMultiplier !== 1 ? (
+                              <b> ({Number(servingsMultiplier.toFixed(3))}x)</b>
+                            ) : (
+                              ''
+                            )}
+                          </>
+                        )}
+                      </Typography>
+                    </Stack>
                     <Popover
+                      id="servings-popover"
                       open={Boolean(servingsAnchorEl)}
                       anchorEl={servingsAnchorEl}
                       onClose={() => {
                         setServingsAnchorEl(null);
                       }}
                       anchorOrigin={{
-                        vertical: 'bottom',
+                        vertical: 'top',
                         horizontal: 'left',
                       }}
                       transformOrigin={{
-                        vertical: 'top',
+                        vertical: 'bottom',
                         horizontal: 'left',
                       }}
                       slotProps={{
                         paper: {
                           sx: {
                             p: 1,
+                            mt: '-4px',
                           },
                         },
                       }}
@@ -264,7 +277,7 @@ export function RecipePage() {
                   >
                     <Stack spacing={2}>
                       <Typography variant="h3">Prep Time</Typography>
-                      <Stack spacing={1} direction="row" alignItems="center">
+                      <Stack spacing={2} direction="row" alignItems="center">
                         <BlenderRoundedIcon />
                         <Typography>
                           {Math.round(recipe.prepTime / 60)}m
@@ -284,7 +297,7 @@ export function RecipePage() {
                   >
                     <Stack spacing={2}>
                       <Typography variant="h3">Cook Time</Typography>
-                      <Stack spacing={1} direction="row" alignItems="center">
+                      <Stack spacing={2} direction="row" alignItems="center">
                         <LocalFireDepartmentRoundedIcon />
                         <Typography>
                           {Math.round(recipe.cookTime / 60)}m
