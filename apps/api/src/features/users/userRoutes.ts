@@ -1,4 +1,4 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { clerkClient, getAuth } from '@clerk/fastify';
 import { prisma } from '@open-zero/database';
 import {
@@ -7,8 +7,8 @@ import {
   userSchemaRef,
 } from '@open-zero/features/users';
 import { Type } from '@sinclair/typebox';
-import { ApiError } from '../../lib/ApiError.js';
-import { verifySession } from '../auth/verifySession.js';
+import { ApiError } from '../../lib/ApiError.ts';
+import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Users';
 

@@ -1,9 +1,9 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
 import { recipeBookSchemaRef } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
-import { verifySession } from '../auth/verifySession.js';
-import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.js';
+import { verifySession } from '../auth/verifySession.ts';
+import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.ts';
 
 const routeTag = 'Recipe books';
 

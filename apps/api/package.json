@@ -5,17 +5,16 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "imports": {
-    "#src/*.js": "./dist/*.js"
+    "#src/*.ts": "./src/*.ts"
   },
-  "exports": "./dist/index.js",
+  "exports": "./src/index.ts",
   "scripts": {
-    "build": "tsup",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "tsup --watch './src/**' --watch '../../packages/features/dist' --onSuccess \"node --env-file=.env dist/index.js\"",
+    "dev": "node --watch --env-file=.env --experimental-strip-types --import ./src/instrument.ts src/index.ts",
     "lint": "concurrently --raw pnpm:lint:*",
     "lint:eslint": "eslint src/",
     "lint:type-check": "tsc --noEmit",
-    "start": "node dist/index.js"
+    "start": "node --env-file=.env --experimental-strip-types --import ./src/instrument.ts src/index.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.738.0",
@@ -31,7 +30,10 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
+    "@prisma/instrumentation": "^6.3.0",
     "@scalar/fastify-api-reference": "^1.25.111",
+    "@sentry/node": "^8.52.1",
+    "@sentry/profiling-node": "^8.52.1",
     "@sinclair/typebox": "^0.34.14",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
@@ -55,7 +57,6 @@
     "@types/turndown": "^5.0.5",
     "concurrently": "^9.1.2",
     "pino-pretty": "^13.0.0",
-    "tsup": "8.3.0",
     "typescript": "~5.7.3"
   }
 }

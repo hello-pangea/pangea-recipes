@@ -1,6 +1,6 @@
 import type { FastifyReply, FastifyRequest } from 'fastify';
-import { ApiError } from '../../lib/ApiError.js';
-import { verifySession } from './verifySession.js';
+import { ApiError } from '../../lib/ApiError.ts';
+import { verifySession } from './verifySession.ts';
 
 export async function verifyIsAdmin(
   request: FastifyRequest,

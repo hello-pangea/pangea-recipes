@@ -1,4 +1,4 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
 import {
   createRecipeBookDtoScema,
@@ -6,12 +6,12 @@ import {
   updateRecipeBookDtoScema,
 } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
-import { ApiError } from '../../lib/ApiError.js';
-import { noContentSchema } from '../../types/noContent.js';
-import { verifySession } from '../auth/verifySession.js';
-import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.js';
-import { recipeBookMemberRoutes } from './recipeBookMemberRoutes.js';
-import { recipeBookRecipeRoutes } from './recipeBookRecipeRoutes.js';
+import { ApiError } from '../../lib/ApiError.ts';
+import { noContentSchema } from '../../types/noContent.ts';
+import { verifySession } from '../auth/verifySession.ts';
+import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.ts';
+import { recipeBookMemberRoutes } from './recipeBookMemberRoutes.ts';
+import { recipeBookRecipeRoutes } from './recipeBookRecipeRoutes.ts';
 
 const routeTag = 'Recipe books';
 

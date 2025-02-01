@@ -1,4 +1,4 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
 import {
   canonicalIngredientSchemaRef,
@@ -7,10 +7,10 @@ import {
   type CanonicalIngredient,
 } from '@open-zero/features/canonical-ingredients';
 import { Type } from '@sinclair/typebox';
-import { getFileUrl } from '../../lib/s3.js';
-import { noContentSchema } from '../../types/noContent.js';
-import { verifyIsAdmin } from '../auth/verifyIsAdmin.js';
-import { verifySession } from '../auth/verifySession.js';
+import { getFileUrl } from '../../lib/s3.ts';
+import { noContentSchema } from '../../types/noContent.ts';
+import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
+import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Canonical ingredients';
 

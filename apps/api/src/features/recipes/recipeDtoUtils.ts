@@ -1,4 +1,4 @@
-import { getFileUrl } from '#src/lib/s3.js';
+import { getFileUrl } from '#src/lib/s3.ts';
 import type { prisma, Prisma } from '@open-zero/database';
 import type { Recipe } from '@open-zero/features/recipes';
 

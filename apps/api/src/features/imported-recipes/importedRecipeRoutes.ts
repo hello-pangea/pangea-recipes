@@ -1,10 +1,10 @@
-import { ApiError } from '#src/lib/ApiError.js';
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.js';
+import { ApiError } from '#src/lib/ApiError.ts';
+import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { importedRecipeSchema } from '@open-zero/features/imported-recipes';
 import { Type } from '@sinclair/typebox';
-import { verifySession } from '../auth/verifySession.js';
-import { getLlmImportRecipe } from './getLlmImportRecipe.js';
-import { isValidHttpUrl } from './isValidHttpUrl.js';
+import { verifySession } from '../auth/verifySession.ts';
+import { getLlmImportRecipe } from './getLlmImportRecipe.ts';
+import { isValidHttpUrl } from './isValidHttpUrl.ts';
 
 const routeTag = 'Imported recipes';
 
