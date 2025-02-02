@@ -1,6 +1,6 @@
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import { Box, Button, Grid2, Typography } from '@mui/material';
+import { Box, Button, Grid2, Typography, useMediaQuery } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
   useRemoveRecipeFromRecipeBook,
@@ -22,6 +22,7 @@ export function RecipeBookPage() {
   );
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useRecipes({ options: { recipeBookId } });
+  const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -45,7 +46,10 @@ export function RecipeBookPage() {
             alignItems: 'center',
           }}
         >
-          <MenuBookRoundedIcon sx={{ mr: 2 }} />
+          <MenuBookRoundedIcon
+            fontSize={isSmall ? 'small' : undefined}
+            sx={{ mr: 2 }}
+          />
           <Button
             variant="text"
             endIcon={

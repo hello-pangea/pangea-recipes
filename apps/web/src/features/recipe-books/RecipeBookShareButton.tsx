@@ -2,15 +2,18 @@ import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonAddRoundedIcon from '@mui/icons-material/PersonAddRounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
 import {
   Button,
   ButtonGroup,
+  IconButton,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
   Tooltip,
+  useMediaQuery,
 } from '@mui/material';
 import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
@@ -27,6 +30,7 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const menuOpen = Boolean(menuAnchorEl);
+  const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   const { data: recipeBook } = useSuspenseQuery(
     getRecipeBookQueryOptions(recipeBookId),
@@ -44,54 +48,75 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
 
   return (
     <>
-      <ButtonGroup
-        variant="contained"
-        aria-label="share button"
-        disableElevation
-      >
-        <Tooltip
-          placement="bottom"
-          title={
-            !isShared
-              ? 'Private only to me'
-              : isPublic
-                ? 'Anyone on the internet with the link can view'
-                : `Shared with ${sharedWithNumber} ${sharedWithNumber === 1 ? 'person' : 'people'}`
-          }
-        >
-          <Button
+      {isSmall ? (
+        <Tooltip placement="bottom" title="Share">
+          <IconButton
             onClick={() => {
               setShareDialogOpen(true);
             }}
-            startIcon={
-              !isShared ? (
-                <LockOutlinedIcon />
-              ) : isPublic ? (
-                <PublicRoundedIcon />
-              ) : (
-                <GroupRoundedIcon />
-              )
-            }
-          >
-            Share
-          </Button>
-        </Tooltip>
-        <Tooltip placement="bottom" title={'Quick sharing actions'}>
-          <Button
-            id="quick-sharing-actions-button"
-            size="small"
-            aria-controls={menuOpen ? 'quick-sharing-actions-menu' : undefined}
-            aria-expanded={menuOpen ? 'true' : undefined}
-            aria-label="quick sharing actions"
-            aria-haspopup="menu"
-            onClick={(event) => {
-              setMenuAnchorEl(event.currentTarget);
+            sx={{
+              color: (theme) => theme.palette.primary.contrastText,
+              backgroundColor: (theme) => theme.palette.primary.main,
+              '&:hover': {
+                backgroundColor: (theme) => theme.palette.primary.dark,
+              },
             }}
           >
-            <ArrowDropDownRoundedIcon />
-          </Button>
+            <PersonAddRoundedIcon />
+          </IconButton>
         </Tooltip>
-      </ButtonGroup>
+      ) : (
+        <ButtonGroup
+          variant="contained"
+          aria-label="share button"
+          disableElevation
+        >
+          <Tooltip
+            placement="bottom"
+            title={
+              !isShared
+                ? 'Private only to me'
+                : isPublic
+                  ? 'Anyone on the internet with the link can view'
+                  : `Shared with ${sharedWithNumber} ${sharedWithNumber === 1 ? 'person' : 'people'}`
+            }
+          >
+            <Button
+              onClick={() => {
+                setShareDialogOpen(true);
+              }}
+              startIcon={
+                !isShared ? (
+                  <LockOutlinedIcon />
+                ) : isPublic ? (
+                  <PublicRoundedIcon />
+                ) : (
+                  <GroupRoundedIcon />
+                )
+              }
+            >
+              Share
+            </Button>
+          </Tooltip>
+          <Tooltip placement="bottom" title={'Quick sharing actions'}>
+            <Button
+              id="quick-sharing-actions-button"
+              size="small"
+              aria-controls={
+                menuOpen ? 'quick-sharing-actions-menu' : undefined
+              }
+              aria-expanded={menuOpen ? 'true' : undefined}
+              aria-label="quick sharing actions"
+              aria-haspopup="menu"
+              onClick={(event) => {
+                setMenuAnchorEl(event.currentTarget);
+              }}
+            >
+              <ArrowDropDownRoundedIcon />
+            </Button>
+          </Tooltip>
+        </ButtonGroup>
+      )}
       <Menu
         id="quick-sharing-actions-menu"
         anchorEl={menuAnchorEl}

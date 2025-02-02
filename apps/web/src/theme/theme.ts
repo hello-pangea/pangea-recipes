@@ -1,6 +1,8 @@
 import { createTheme } from '@mui/material/styles';
 import { colorSchemes } from './themePrimitives';
 
+const defaultTheme = createTheme();
+
 export const theme = createTheme({
   colorSchemes: colorSchemes,
   cssVariables: {
@@ -12,14 +14,20 @@ export const theme = createTheme({
     h1: {
       fontFamily: '"Lora Variable", serif',
       fontWeight: 'bold',
-      fontSize: 36,
       color: 'var(--mui-palette-text-heading)',
+      fontSize: 36,
+      [defaultTheme.breakpoints.down('sm')]: {
+        fontSize: 24,
+      },
     },
     h2: {
       fontFamily: '"Lora Variable", serif',
       fontWeight: 'bold',
       fontSize: 24,
       color: 'var(--mui-palette-text-heading)',
+      [defaultTheme.breakpoints.down('sm')]: {
+        fontSize: 20,
+      },
     },
     h3: {
       fontFamily: '"Lora Variable", serif',
