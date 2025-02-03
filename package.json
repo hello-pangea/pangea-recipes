@@ -29,7 +29,7 @@
     "tsx": "^4.19.2",
     "turbo": "^2.4.0"
   },
-  "packageManager": "pnpm@9.15.4",
+  "packageManager": "pnpm@9.15.5",
   "engines": {
     "node": ">=22.11.0"
   },
