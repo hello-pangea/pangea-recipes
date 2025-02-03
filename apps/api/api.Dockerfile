@@ -13,7 +13,7 @@ ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
 # Enable corepack and install turbo globally
-RUN corepack enable && pnpm install turbo --global
+RUN corepack enable && npm install -g corepack@latest && pnpm install turbo --global
 
 RUN pnpm dlx playwright-chromium install chromium --with-deps && rm -rf /var/lib/apt/lists/*
 
