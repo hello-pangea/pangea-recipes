@@ -100,8 +100,8 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
             subject: `Share request for recipe book`,
             replyTo: 'hello@hellorecipes.com',
             react: RequestToJoinRecipeBookEmail({
-              ownerName: owner.user.firstName,
-              requesterName: `${requestingUser.firstName}${requestingUser.lastName ? ` ${requestingUser.lastName}` : ''}`,
+              ownerName: owner.user.firstName ?? undefined,
+              requesterName: `${requestingUser.firstName ?? 'Guest'}${requestingUser.lastName ? ` ${requestingUser.lastName}` : ''}`,
               managerLink: `https://hellorecipes.com/recipe-books/${recipeBookId}`,
               recipeBookName: recipeBook.name,
             }),

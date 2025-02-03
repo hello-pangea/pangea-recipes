@@ -14,18 +14,15 @@ export function FinishSignUpPage() {
       return;
     }
 
-    setupUser.mutate(
-      {},
-      {
-        onSuccess: async () => {
-          await clerkUser?.reload();
+    setupUser.mutate(undefined, {
+      onSuccess: async () => {
+        await clerkUser?.reload();
 
-          void naviate({
-            to: '/app/recipes',
-          });
-        },
+        void naviate({
+          to: '/app/recipes',
+        });
       },
-    );
+    });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

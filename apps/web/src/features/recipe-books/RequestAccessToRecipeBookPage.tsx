@@ -1,10 +1,13 @@
+import { AddNameDialog } from '#src/components/AddNameDialog';
 import { useUser } from '@clerk/tanstack-start';
 import { Box, Button, Container, Typography } from '@mui/material';
 import {
   useRecipeBookRequests,
   useRequestAccessToRecipeBook,
 } from '@open-zero/features/recipe-book-requests';
+import { useSignedInUser } from '@open-zero/features/users';
 import { getRouteApi } from '@tanstack/react-router';
+import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
 const routeApi = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
@@ -12,11 +15,13 @@ const routeApi = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
 export function RequestAccessToRecipeBookPage() {
   const { user: clerkUser } = useUser();
   const userId = useSignedInUserId();
+  const { data: user } = useSignedInUser();
   const requestAccessToRecipeBook = useRequestAccessToRecipeBook();
   const { recipeBookId } = routeApi.useParams();
   const { data: requests } = useRecipeBookRequests({
     options: { userId, recipeBookId },
   });
+  const [addNameDialogOpen, setAddNameDialogOpen] = useState(false);
 
   const signedInAs =
     clerkUser?.primaryEmailAddress?.emailAddress ??
@@ -26,16 +31,16 @@ export function RequestAccessToRecipeBookPage() {
   return (
     <Box sx={{ p: 3, mt: 8 }}>
       <Container maxWidth="md">
-        <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
-          <img src="/assets/lil-guy.svg" width={32} height={32} />
+        <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+          <img src="/assets/lil-guy.svg" width={28} height={28} />
           <Typography
             variant="h1"
+            component={'p'}
             sx={{
-              fontSize: 18,
+              fontSize: 16,
               lineHeight: 1,
-              ml: 2,
+              ml: 1,
               pt: '0.4rem',
-              color: 'text.secondary',
             }}
           >
             Hello Recipes
@@ -43,19 +48,24 @@ export function RequestAccessToRecipeBookPage() {
         </Box>
         {requests && requests.length > 0 ? (
           <>
-            <Typography variant="h1" sx={{ mb: 2 }}>
+            <Typography variant="h1" sx={{ mb: 4 }}>
               Request sent
             </Typography>
           </>
         ) : (
           <>
-            <Typography variant="h1" sx={{ mb: 2 }}>
+            <Typography variant="h1" sx={{ mb: 4 }}>
               You need access
             </Typography>
             <Button
               variant="contained"
               sx={{ mb: 2 }}
               onClick={() => {
+                if (!user?.firstName) {
+                  setAddNameDialogOpen(true);
+                  return;
+                }
+
                 requestAccessToRecipeBook.mutate(recipeBookId);
               }}
               loading={requestAccessToRecipeBook.isPending}
@@ -68,6 +78,14 @@ export function RequestAccessToRecipeBookPage() {
           You're signed in as {signedInAs}
         </Typography>
       </Container>
+      <AddNameDialog
+        open={addNameDialogOpen}
+        onClose={() => {
+          setAddNameDialogOpen(false);
+
+          requestAccessToRecipeBook.mutate(recipeBookId);
+        }}
+      />
     </Box>
   );
 }

@@ -1,4 +1,3 @@
-export * from './types/setupUserDto.js';
 export * from './types/updateUserDto.js';
 export * from './types/user.js';
 

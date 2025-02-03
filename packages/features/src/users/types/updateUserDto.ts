@@ -3,5 +3,10 @@ import { userSchema } from './user.js';
 
 export type UpdateUserDto = Static<typeof updateUserDtoSchema>;
 export const updateUserDtoSchema = Type.Partial(
-  Type.Pick(userSchema, ['themePreference', 'unitsPreference']),
+  Type.Pick(userSchema, [
+    'themePreference',
+    'unitsPreference',
+    'firstName',
+    'lastName',
+  ]),
 );

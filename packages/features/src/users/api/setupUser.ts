@@ -1,13 +1,12 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import { type MutationConfig } from '../../lib/tanstackQuery.js';
-import type { SetupUserDto } from '../types/setupUserDto.js';
 import type { User } from '../types/user.js';
 import { getSignedInUserQueryOptions } from './getSignedInUser.js';
 
-export function setupUser(data: SetupUserDto) {
+export function setupUser() {
   return api
-    .post(`users/setup`, { json: data, credentials: 'include' })
+    .post(`users/setup`)
     .json<{ user: User }>()
     .then((res) => res.user);
 }

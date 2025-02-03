@@ -17,7 +17,7 @@ import { type ReactNode } from 'react';
 interface EmailProps {
   recipeBookName: string;
   requesterName: string;
-  ownerName: string;
+  ownerName?: string;
   managerLink: string;
 }
 
@@ -49,7 +49,7 @@ export function RequestToJoinRecipeBookEmail({
               Share a recipe book?
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello {ownerName},
+              Hello{ownerName ? ` ${ownerName}` : ''},
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
               {requesterName} is <strong>requesting access</strong> to "

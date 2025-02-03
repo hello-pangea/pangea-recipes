@@ -1,11 +1,7 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { clerkClient, getAuth } from '@clerk/fastify';
 import { prisma } from '@open-zero/database';
-import {
-  setupUserDtoSchema,
-  updateUserDtoSchema,
-  userSchemaRef,
-} from '@open-zero/features/users';
+import { updateUserDtoSchema, userSchemaRef } from '@open-zero/features/users';
 import { Type } from '@sinclair/typebox';
 import { ApiError } from '../../lib/ApiError.ts';
 import { verifySession } from '../auth/verifySession.ts';
@@ -20,7 +16,6 @@ export async function userRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Setup a new user after Clerk auth',
-        body: setupUserDtoSchema,
         response: {
           200: Type.Object({
             user: userSchemaRef,
@@ -29,7 +24,6 @@ export async function userRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { name } = request.body;
       const { userId: clerkUserId } = getAuth(request);
 
       if (!clerkUserId) {
@@ -49,7 +43,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
         create: {
           emailAddress: clerkUser.primaryEmailAddress?.emailAddress ?? null,
           phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
-          firstName: name ?? clerkUser.firstName ?? 'Guest',
+          firstName: clerkUser.firstName ?? null,
           lastName: clerkUser.lastName ?? null,
           accessRole: 'user',
           clerkUserId: clerkUserId,
@@ -104,6 +98,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '/:userId',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get a user',
@@ -120,6 +115,10 @@ export async function userRoutes(fastify: FastifyTypebox) {
     async (request) => {
       const { userId } = request.params;
 
+      if (userId !== request.session?.userId) {
+        throw fastify.httpErrors.forbidden();
+      }
+
       const user = await prisma.user.findUniqueOrThrow({
         where: {
           id: userId,
@@ -135,6 +134,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '/signed-in-user',
     {
+      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get currently signed in user',
@@ -185,15 +185,12 @@ export async function userRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { themePreference, unitsPreference } = request.body;
+      const { themePreference, unitsPreference, firstName, lastName } =
+        request.body;
       const { userId } = request.params;
 
       if (userId !== request.session?.userId) {
-        throw new ApiError({
-          statusCode: 403,
-          message: 'Forbidden',
-          name: 'AuthError',
-        });
+        throw fastify.httpErrors.forbidden();
       }
 
       const user = await prisma.user.update({
@@ -203,6 +200,8 @@ export async function userRoutes(fastify: FastifyTypebox) {
         data: {
           themePreference: themePreference,
           unitsPreference: unitsPreference,
+          firstName: firstName,
+          lastName: lastName,
         },
       });
 

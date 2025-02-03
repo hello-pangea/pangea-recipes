@@ -97,10 +97,12 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const knownMembers =
     recipeBooks
       ?.map((recipeBook) =>
-        recipeBook.members.map((member) => ({
-          userId: member.userId,
-          name: `${member.firstName}${member.lastName ? ` ${member.lastName}` : ''}`,
-        })),
+        recipeBook.members
+          .filter((member) => member.firstName)
+          .map((member) => ({
+            userId: member.userId,
+            name: `${member.firstName}${member.lastName ? ` ${member.lastName}` : ''}`,
+          })),
       )
       .flat()
       .filter(
