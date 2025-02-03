@@ -2,14 +2,14 @@
  * Input can be a string representing a number or a fraction in the form of '1/2'.
  */
 export function getNumberFromInput(
-  input: string | number | null,
+  input: string | number | null | undefined,
 ): number | null {
   if (input === null) {
     return null;
   }
 
-  if (typeof input === 'number') {
-    return input;
+  if (typeof input === 'number' || input === undefined) {
+    return input ?? null;
   }
 
   const inputWithNoWhitespace = input.replace(/\s/g, '');

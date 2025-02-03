@@ -1,5 +1,6 @@
 import { Type, type Static } from '@sinclair/typebox';
 import { Nullable } from '../../lib/nullable.js';
+import { nutritionSchemaRef } from '../../recipes/types/nutrition.js';
 import { importedIngredientSchema } from './importedIngredient.js';
 
 const importedRecipeSchemaId = 'ImportedRecipe';
@@ -37,6 +38,8 @@ export const importedRecipeSchema = Type.Object(
         }),
       ),
     ),
+
+    nutrition: Nullable(nutritionSchemaRef),
   },
   { $id: importedRecipeSchemaId },
 );

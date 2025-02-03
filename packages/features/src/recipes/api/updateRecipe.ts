@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import { Nullable } from '../../lib/nullable.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
+import { nutritionSchema } from '../types/nutrition.js';
 import { recipeSchema, type Recipe } from '../types/recipe.js';
 import { createRecipeDtoScema } from './createRecipe.js';
 import { getRecipeQueryOptions } from './getRecipe.js';
@@ -50,6 +51,7 @@ export const updateRecipeDtoScema = Type.Partial(
           ),
         }),
       ),
+      nutrition: Type.Optional(Type.Partial(nutritionSchema)),
     }),
   ]),
 );

@@ -206,7 +206,7 @@ const llmRecipeSchema = Type.Object(
       Type.Array(
         Type.Object(
           {
-            title: Nullable(Type.String()),
+            title: Type.String(),
             ingredients: Type.Array(
               Type.Object(
                 {
@@ -233,6 +233,33 @@ const llmRecipeSchema = Type.Object(
           },
           { additionalProperties: false },
         ),
+      ),
+    ),
+
+    nutrition: Nullable(
+      Type.Object(
+        {
+          calories: Nullable(Type.Number()),
+
+          totalFatG: Nullable(Type.Number()),
+          unsaturatedFatG: Nullable(Type.Number()),
+          saturatedFatG: Nullable(Type.Number()),
+          transFatG: Nullable(Type.Number()),
+
+          carbsG: Nullable(Type.Number()),
+          proteinG: Nullable(Type.Number()),
+          fiberG: Nullable(Type.Number()),
+          sugarG: Nullable(Type.Number()),
+
+          sodiumMg: Nullable(Type.Number()),
+          ironMg: Nullable(Type.Number()),
+          calciumMg: Nullable(Type.Number()),
+          potassiumMg: Nullable(Type.Number()),
+          cholesterolMg: Nullable(Type.Number()),
+        },
+        {
+          additionalProperties: false,
+        },
       ),
     ),
   },

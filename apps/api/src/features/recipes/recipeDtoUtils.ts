@@ -36,6 +36,7 @@ export const recipeInclude = {
       tag: true,
     },
   },
+  nutrition: true,
   sourceWebsitePage: {
     include: {
       website: true,
@@ -97,6 +98,28 @@ export async function mapToRecipeDto(recipeData: RecipeData): Promise<Recipe> {
           url: `https://${recipeData.sourceWebsitePage.website.host}${recipeData.sourceWebsitePage.path}`,
         }
       : null,
+    nutrition: recipeData.nutrition
+      ? {
+          calories: recipeData.nutrition.calories,
+
+          totalFatG: recipeData.nutrition.totalFatG?.toNumber() ?? null,
+          unsaturatedFatG:
+            recipeData.nutrition.unsaturatedFatG?.toNumber() ?? null,
+          saturatedFatG: recipeData.nutrition.saturatedFatG?.toNumber() ?? null,
+          transFatG: recipeData.nutrition.transFatG?.toNumber() ?? null,
+
+          carbsG: recipeData.nutrition.carbsG?.toNumber() ?? null,
+          proteinG: recipeData.nutrition.proteinG?.toNumber() ?? null,
+          fiberG: recipeData.nutrition.fiberG?.toNumber() ?? null,
+          sugarG: recipeData.nutrition.sugarG?.toNumber() ?? null,
+
+          sodiumMg: recipeData.nutrition.sodiumMg?.toNumber() ?? null,
+          ironMg: recipeData.nutrition.ironMg?.toNumber() ?? null,
+          calciumMg: recipeData.nutrition.calciumMg?.toNumber() ?? null,
+          potassiumMg: recipeData.nutrition.potassiumMg?.toNumber() ?? null,
+          cholesterolMg: recipeData.nutrition.cholesterolMg?.toNumber() ?? null,
+        }
+      : undefined,
   };
 
   return recipeDto;

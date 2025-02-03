@@ -32,6 +32,7 @@ import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { Ingredient } from './Ingredient';
+import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
 const route = getRouteApi('/app/_layout/recipes/$recipeId');
@@ -438,6 +439,13 @@ export function RecipePage() {
           </Stack>
         </Grid2>
       </Grid2>
+      {recipe.nutrition && (
+        <Nutrition
+          nutrition={recipe.nutrition}
+          sx={{ mt: 6 }}
+          showApproximateWarning={Boolean(recipe.websiteSource)}
+        />
+      )}
       <RecipeMoreMenu
         recipeId={recipe.id}
         anchorEl={moreMenuAnchorEl}

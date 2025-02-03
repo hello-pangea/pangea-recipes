@@ -1,7 +1,7 @@
 import { getRecipeQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { CreateRecipePage } from './CreateRecipePage';
+import { CreateRecipePage, type RecipeFormInputs } from './CreateRecipePage';
 
 const route = getRouteApi('/app/_layout/recipes_/$recipeId/edit');
 
@@ -53,6 +53,7 @@ export function EditRecipePage() {
           name: instructionGroup.name,
           instructions: instructionGroup.instructions,
         })),
+        nutrition: recipe.nutrition as RecipeFormInputs['nutrition'],
       }}
     />
   );

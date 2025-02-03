@@ -2,6 +2,7 @@ import { Type, type Static } from '@sinclair/typebox';
 import type { Decimal } from 'decimal.js';
 import { tagSchema } from '../../common/tag.js';
 import { Nullable } from '../../lib/nullable.js';
+import { nutritionSchemaRef } from './nutrition.js';
 
 const recipeSchemaId = 'Recipe';
 
@@ -72,6 +73,8 @@ export const recipeSchema = Type.Object(
     ),
 
     tags: Type.Array(tagSchema),
+
+    nutrition: Type.Optional(nutritionSchemaRef),
 
     usesRecipes: Type.Optional(Type.Array(Type.String())),
   },

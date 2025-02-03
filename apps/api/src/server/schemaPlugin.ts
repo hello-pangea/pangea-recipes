@@ -2,7 +2,7 @@ import multipart from '@fastify/multipart';
 import { canonicalIngredientSchema } from '@open-zero/features/canonical-ingredients';
 import { recipeBookRequestSchema } from '@open-zero/features/recipe-book-requests';
 import { recipeBookSchema } from '@open-zero/features/recipe-books';
-import { recipeSchema } from '@open-zero/features/recipes';
+import { nutritionSchema, recipeSchema } from '@open-zero/features/recipes';
 import { userSchema } from '@open-zero/features/users';
 import ajvModule from 'ajv';
 import ajvFormatsModule from 'ajv-formats';
@@ -73,6 +73,7 @@ function schemaPlugin(fastify: FastifyTypebox) {
   addSchema(recipeBookSchema);
   addSchema(userSchema);
   addSchema(recipeBookRequestSchema);
+  addSchema(nutritionSchema);
 }
 
 export default fastifyPlugin(schemaPlugin);

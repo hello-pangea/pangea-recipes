@@ -30,6 +30,8 @@ model Recipe {
 
   recipeBooks RecipesOnRecipeBooks[]
 
+  nutrition RecipeNutrition?
+
   @@map("recipes")
 }
 
@@ -137,4 +139,33 @@ model RecipeTag {
 
   @@id([recipeId, tagId])
   @@map("recipe_tags")
+}
+
+model RecipeNutrition {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  recipeId String @unique @map("recipe_id") @db.Uuid
+  recipe   Recipe @relation(fields: [recipeId], references: [id], onDelete: Cascade)
+
+  /// kilocalories (kcal)
+  calories Int?
+
+  totalFatG       Decimal? @map("total_fat_g")
+  unsaturatedFatG Decimal? @map("unsaturated_fat_g")
+  saturatedFatG   Decimal? @map("saturated_fat_g")
+  transFatG       Decimal? @map("trans_fat_g")
+
+  carbsG   Decimal? @map("carbs_g")
+  proteinG Decimal? @map("protein_g")
+  fiberG   Decimal? @map("fiber_g")
+  sugarG   Decimal? @map("sugar_g")
+
+  sodiumMg      Decimal? @map("sodium_mg")
+  ironMg        Decimal? @map("iron_mg")
+  calciumMg     Decimal? @map("calcium_mg")
+  potassiumMg   Decimal? @map("potassium_mg")
+  cholesterolMg Decimal? @map("cholesterol_mg")
+
+  @@map("recipe_nutrition")
 }

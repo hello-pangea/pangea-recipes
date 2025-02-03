@@ -1,4 +1,5 @@
 // Types
+export * from './types/nutrition.js';
 export * from './types/recipe.js';
 export * from './types/recipeProjected.js';
 

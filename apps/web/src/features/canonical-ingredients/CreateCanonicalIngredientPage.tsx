@@ -167,7 +167,7 @@ export function CreateCanonicalIngredientPage({
         <Stack
           direction={'column'}
           spacing={2}
-          sx={{ mb: 4, maxWidth: '550px', display: 'block' }}
+          sx={{ mb: 4, maxWidth: '550px' }}
         >
           <Controller
             name="name"

@@ -48,6 +48,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         usesRecipes,
         tags,
         websitePageId,
+        nutrition,
       } = request.body;
 
       const userId = request.session?.userId;
@@ -181,6 +182,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                 connect: {
                   id: websitePageId,
                 },
+              }
+            : undefined,
+          nutrition: nutrition
+            ? {
+                create: nutrition,
               }
             : undefined,
         },
@@ -342,6 +348,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         usesRecipes,
         tags,
         imageIds,
+        nutrition,
       } = request.body;
       const { recipeId } = request.params;
 
@@ -481,6 +488,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                       },
                     })),
                   },
+          nutrition: nutrition
+            ? {
+                upsert: {
+                  create: nutrition,
+                  update: nutrition,
+                },
+              }
+            : undefined,
         };
 
         const recipe = await prisma.recipe.update({

@@ -34,6 +34,7 @@ import { TextFieldElement } from 'react-hook-form-mui';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { EditIngredientGroup } from './EditIngredientGroup';
 import { EditInstructionGroup } from './EditInstructionGroup';
+import { EditNutrition } from './EditNutrition';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
@@ -64,6 +65,25 @@ export interface RecipeFormInputs {
     instructions: { text: string }[];
   }[];
   websitePageId?: string;
+  nutrition?: {
+    calories: string | null;
+
+    totalFatG: string | null;
+    unsaturatedFatG: string | null;
+    saturatedFatG: string | null;
+    transFatG: string | null;
+
+    carbsG: string | null;
+    proteinG: string | null;
+    fiberG: string | null;
+    sugarG: string | null;
+
+    sodiumMg: string | null;
+    ironMg: string | null;
+    calciumMg: string | null;
+    potassiumMg: string | null;
+    cholesterolMg: string | null;
+  };
 }
 
 interface Props {
@@ -219,6 +239,29 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           instructions: ig.instructions,
         })),
         imageIds: data.image ? [data.image.id] : null,
+        nutrition: data.nutrition
+          ? {
+              calories: getNumberFromInput(data.nutrition.calories),
+
+              totalFatG: getNumberFromInput(data.nutrition.totalFatG),
+              unsaturatedFatG: getNumberFromInput(
+                data.nutrition.unsaturatedFatG,
+              ),
+              saturatedFatG: getNumberFromInput(data.nutrition.saturatedFatG),
+              transFatG: getNumberFromInput(data.nutrition.transFatG),
+
+              carbsG: getNumberFromInput(data.nutrition.carbsG),
+              proteinG: getNumberFromInput(data.nutrition.proteinG),
+              fiberG: getNumberFromInput(data.nutrition.fiberG),
+              sugarG: getNumberFromInput(data.nutrition.sugarG),
+
+              sodiumMg: getNumberFromInput(data.nutrition.sodiumMg),
+              ironMg: getNumberFromInput(data.nutrition.ironMg),
+              calciumMg: getNumberFromInput(data.nutrition.calciumMg),
+              potassiumMg: getNumberFromInput(data.nutrition.potassiumMg),
+              cholesterolMg: getNumberFromInput(data.nutrition.cholesterolMg),
+            }
+          : undefined,
       });
     } else {
       createRecipe.mutate({
@@ -244,6 +287,29 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           name: ig.name,
           instructions: ig.instructions,
         })),
+        nutrition: data.nutrition
+          ? {
+              calories: getNumberFromInput(data.nutrition.calories),
+
+              totalFatG: getNumberFromInput(data.nutrition.totalFatG),
+              unsaturatedFatG: getNumberFromInput(
+                data.nutrition.unsaturatedFatG,
+              ),
+              saturatedFatG: getNumberFromInput(data.nutrition.saturatedFatG),
+              transFatG: getNumberFromInput(data.nutrition.transFatG),
+
+              carbsG: getNumberFromInput(data.nutrition.carbsG),
+              proteinG: getNumberFromInput(data.nutrition.proteinG),
+              fiberG: getNumberFromInput(data.nutrition.fiberG),
+              sugarG: getNumberFromInput(data.nutrition.sugarG),
+
+              sodiumMg: getNumberFromInput(data.nutrition.sodiumMg),
+              ironMg: getNumberFromInput(data.nutrition.ironMg),
+              calciumMg: getNumberFromInput(data.nutrition.calciumMg),
+              potassiumMg: getNumberFromInput(data.nutrition.potassiumMg),
+              cholesterolMg: getNumberFromInput(data.nutrition.cholesterolMg),
+            }
+          : undefined,
       });
     }
   };
@@ -359,7 +425,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           <Stack
             direction={'column'}
             spacing={2}
-            sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
+            sx={{ mb: 2, maxWidth: '750px' }}
           >
             {ingredientGroups.map((ingredientGroup, ingredientGroupIndex) => (
               <EditIngredientGroup
@@ -400,7 +466,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           <Stack
             direction={'column'}
             spacing={2}
-            sx={{ mb: 2, maxWidth: '750px', display: 'block' }}
+            sx={{ mb: 2, maxWidth: '750px' }}
           >
             {instructionGroups.map(
               (instructionGroup, instructionGroupIndex) => (
@@ -434,6 +500,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           >
             Add instruction group
           </Button>
+          <EditNutrition sx={{ mb: 6, maxWidth: 750 }} />
           <Typography variant="h2" sx={{ mb: 2 }}>
             Required recipes
           </Typography>
@@ -531,6 +598,27 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 notes: ingredient.notes ?? null,
               })),
             })),
+            nutrition: importedRecipe.nutrition
+              ? {
+                  calories: importedRecipe.nutrition.calories?.toString(),
+                  totalFatG: importedRecipe.nutrition.totalFatG?.toString(),
+                  unsaturatedFatG:
+                    importedRecipe.nutrition.unsaturatedFatG?.toString(),
+                  saturatedFatG:
+                    importedRecipe.nutrition.saturatedFatG?.toString(),
+                  transFatG: importedRecipe.nutrition.transFatG?.toString(),
+                  carbsG: importedRecipe.nutrition.carbsG?.toString(),
+                  proteinG: importedRecipe.nutrition.proteinG?.toString(),
+                  fiberG: importedRecipe.nutrition.fiberG?.toString(),
+                  sugarG: importedRecipe.nutrition.sugarG?.toString(),
+                  sodiumMg: importedRecipe.nutrition.sodiumMg?.toString(),
+                  ironMg: importedRecipe.nutrition.ironMg?.toString(),
+                  calciumMg: importedRecipe.nutrition.calciumMg?.toString(),
+                  potassiumMg: importedRecipe.nutrition.potassiumMg?.toString(),
+                  cholesterolMg:
+                    importedRecipe.nutrition.cholesterolMg?.toString(),
+                }
+              : undefined,
           });
         }}
       />

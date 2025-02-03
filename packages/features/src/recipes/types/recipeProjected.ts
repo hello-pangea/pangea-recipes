@@ -5,4 +5,5 @@ export type RecipeProjected = Static<typeof recipeProjectedSchema>;
 export const recipeProjectedSchema = Type.Omit(recipeSchema, [
   'ingredientGroups',
   'instructionGroups',
+  'nutrition',
 ]);
