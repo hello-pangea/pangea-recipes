@@ -27,7 +27,6 @@ export function Header() {
             fontSize: isSmall ? 16 : 22,
             lineHeight: 1,
             ml: isSmall ? 1 : 2,
-            pt: isSmall ? '0.3rem' : '0.4rem',
           }}
           component={'p'}
         >

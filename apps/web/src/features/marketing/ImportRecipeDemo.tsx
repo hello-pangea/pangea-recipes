@@ -1,5 +1,6 @@
+import { RouterButton } from '#src/components/RouterButton';
 import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
-import { Box, Button, TextField, Typography } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 
 export function ImportRecipeDemo() {
   return (
@@ -31,9 +32,13 @@ export function ImportRecipeDemo() {
           mt: 3,
         }}
       >
-        <Button variant="contained" startIcon={<DownloadRoundedIcon />}>
+        <RouterButton
+          to="/app/sign-up/$"
+          variant="contained"
+          startIcon={<DownloadRoundedIcon />}
+        >
           Import
-        </Button>
+        </RouterButton>
       </Box>
     </Box>
   );
