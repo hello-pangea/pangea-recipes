@@ -48,7 +48,7 @@ export function mapToRecipeBookDto(recipeBookData: RecipeBookData): RecipeBook {
     })),
     requests: recipeBookData.requests.map((request) => ({
       ...request,
-      firstName: request.user.firstName ?? "Guest",
+      firstName: request.user.firstName ?? 'Guest',
       lastName: request.user.lastName,
     })),
   };
