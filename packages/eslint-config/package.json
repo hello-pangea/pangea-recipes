@@ -9,14 +9,14 @@
     "./vite": "./vite.js"
   },
   "dependencies": {
-    "@eslint/js": "^9.19.0",
+    "@eslint/js": "^9.20.0",
     "eslint-config-prettier": "^10.0.1",
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.18",
-    "eslint-plugin-turbo": "^2.4.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "eslint-plugin-turbo": "^2.4.1",
     "globals": "^15.14.0",
     "typescript": "~5.7.3",
-    "typescript-eslint": "^8.22.0"
+    "typescript-eslint": "^8.24.0"
   }
 }
