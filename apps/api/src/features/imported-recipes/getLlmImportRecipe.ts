@@ -1,8 +1,13 @@
+import {
+  browser,
+  browserContext,
+  initializeBrowser,
+} from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@open-zero/database';
 import { Type, type Static, type TSchema } from '@sinclair/typebox';
 import { Value } from '@sinclair/typebox/value';
-import playwright, { type Page } from 'playwright-chromium';
+import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 
 const turndownService = new TurndownService();
@@ -11,7 +16,7 @@ turndownService.remove('style');
 
 async function processWebsite(data: {
   urlString: string;
-  browserContext: playwright.BrowserContext;
+  browserContext: BrowserContext;
 }) {
   const { urlString, browserContext } = data;
 
@@ -94,8 +99,13 @@ async function getRecipeMarkdown(page: Page) {
 }
 
 export async function getLlmImportRecipe(urlString: string) {
-  const browser = await playwright.chromium.launch();
-  const browserContext = await browser.newContext();
+  if (!browser || !browserContext) {
+    await initializeBrowser();
+
+    if (!browser || !browserContext) {
+      throw new Error('Failed to initialize browser');
+    }
+  }
 
   const website = await processWebsite({ urlString, browserContext });
 
