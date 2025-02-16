@@ -134,8 +134,6 @@ export async function getLlmImportRecipe(urlString: string) {
 
   const recipeMarkdown = await getRecipeMarkdown(recipePage);
 
-  await browser.close();
-
   const openAiRes = await openAi.chat.completions.create({
     messages: [
       {
