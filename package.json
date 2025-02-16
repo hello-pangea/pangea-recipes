@@ -24,10 +24,10 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "prettier": "^3.5.0",
+    "prettier": "^3.5.1",
     "sort-package-json": "^2.14.0",
     "tsx": "^4.19.2",
-    "turbo": "^2.4.1"
+    "turbo": "^2.4.2"
   },
   "packageManager": "pnpm@9.15.5",
   "engines": {
