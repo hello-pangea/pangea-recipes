@@ -34,7 +34,7 @@
     "@scalar/fastify-api-reference": "^1.25.118",
     "@sentry/node": "^9.1.0",
     "@sentry/profiling-node": "^9.1.0",
-    "@sinclair/typebox": "^0.34.24",
+    "@sinclair/typebox": "^0.34.25",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "chalk": "^5.4.1",
@@ -50,7 +50,7 @@
     "sharp": "^0.33.5",
     "timekeeper": "^2.3.1",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.451"
+    "user-agents": "^1.1.452"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
