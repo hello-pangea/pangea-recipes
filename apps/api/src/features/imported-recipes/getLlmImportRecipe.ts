@@ -37,31 +37,40 @@ async function processWebsite(data: {
   const urlOrigin = url.origin;
 
   const websitePage = await browserContext.newPage();
-  await websitePage.goto(urlOrigin, {
-    waitUntil: 'domcontentloaded',
-  });
 
-  const title = await websitePage.title().catch(() => null);
-  const openGraphSiteName = await websitePage
-    .locator('meta[property="og:site_name"]')
-    .getAttribute('content')
-    .catch(() => null);
-  const openGraphTitle = await websitePage
-    .locator('meta[property="og:title"]')
-    .getAttribute('content')
-    .catch(() => null);
-  const description = await websitePage
-    .locator('meta[name="description"]')
-    .getAttribute('content')
-    .catch(() => null);
+  try {
+    await websitePage.goto(urlOrigin, {
+      waitUntil: 'domcontentloaded',
+    });
 
-  return prisma.website.create({
-    data: {
-      host: urlHost,
-      title: openGraphSiteName ?? openGraphTitle ?? title,
-      description: description,
-    },
-  });
+    const title = await websitePage.title().catch(() => null);
+    const openGraphSiteName = await websitePage
+      .locator('meta[property="og:site_name"]')
+      .getAttribute('content')
+      .catch(() => null);
+    const openGraphTitle = await websitePage
+      .locator('meta[property="og:title"]')
+      .getAttribute('content')
+      .catch(() => null);
+    const description = await websitePage
+      .locator('meta[name="description"]')
+      .getAttribute('content')
+      .catch(() => null);
+
+    await websitePage.close();
+
+    return await prisma.website.create({
+      data: {
+        host: urlHost,
+        title: openGraphSiteName ?? openGraphTitle ?? title,
+        description: description,
+      },
+    });
+  } catch (error) {
+    await websitePage.close();
+
+    throw error;
+  }
 }
 
 async function getRecipeHtml(page: Page) {
@@ -132,7 +141,17 @@ export async function getLlmImportRecipe(urlString: string) {
   const recipePage = await browserContext.newPage();
   await recipePage.goto(urlString);
 
-  const recipeMarkdown = await getRecipeMarkdown(recipePage);
+  const recipeMarkdown = await getRecipeMarkdown(recipePage)
+    .then(async (res) => {
+      await recipePage.close();
+
+      return res;
+    })
+    .catch(async (error: unknown) => {
+      await recipePage.close();
+
+      throw error;
+    });
 
   const openAiRes = await openAi.chat.completions.create({
     messages: [
