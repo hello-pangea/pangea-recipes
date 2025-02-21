@@ -1,5 +1,6 @@
+import { config } from '#src/config/config';
 import { createAuthClient } from 'better-auth/react';
 
 export const authClient = createAuthClient({
-  baseURL: 'http://localhost:3001/auth',
+  baseURL: `${config.VITE_API_URL}/auth`,
 });

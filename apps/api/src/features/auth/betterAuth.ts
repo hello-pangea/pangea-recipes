@@ -13,8 +13,11 @@ export const auth = betterAuth({
   },
   plugins: [openAPI()],
   basePath: '/auth',
-  baseURL: 'http://localhost:3001',
-  trustedOrigins: ['http://localhost:3000'],
+  baseURL:
+    config.NODE_ENV === 'production'
+      ? 'https://hello-recipes-staging.up.railway.app'
+      : 'http://localhost:3001',
+  trustedOrigins: ['http://localhost:3000', 'https://hellorecipes.com'],
   logger: {
     disabled: false,
     level: 'debug',
