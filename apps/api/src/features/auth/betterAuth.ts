@@ -17,13 +17,32 @@ export const auth = betterAuth({
     config.NODE_ENV === 'production'
       ? 'https://hello-recipes-staging.up.railway.app'
       : 'http://localhost:3001',
-  trustedOrigins: ['http://localhost:3000', 'https://hellorecipes.com'],
+  trustedOrigins: [
+    'http://localhost:3000',
+    'https://hellorecipes.com',
+    'https://api.hellorecipes.com',
+  ],
   logger: {
     disabled: false,
     level: 'debug',
   },
   advanced: {
     generateId: false,
+    crossSubDomainCookies: {
+      enabled: true,
+      domain: '.hellorecipes.com',
+    },
+    defaultCookieAttributes: {
+      secure: true,
+      httpOnly: true,
+      sameSite: 'none',
+    },
+  },
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
+    },
   },
   socialProviders: {
     google: {
