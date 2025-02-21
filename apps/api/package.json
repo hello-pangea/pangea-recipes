@@ -17,9 +17,9 @@
     "start": "node --env-file=.env --experimental-strip-types --import ./src/instrument.ts src/index.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.749.0",
-    "@aws-sdk/s3-request-presigner": "^3.749.0",
-    "@clerk/fastify": "^2.1.21",
+    "@aws-sdk/client-s3": "^3.750.0",
+    "@aws-sdk/s3-request-presigner": "^3.750.0",
+    "@clerk/fastify": "^2.1.22",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^10.0.2",
     "@fastify/helmet": "^13.0.1",
@@ -30,11 +30,11 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@prisma/instrumentation": "^6.3.1",
-    "@scalar/fastify-api-reference": "^1.25.118",
+    "@prisma/instrumentation": "^6.4.1",
+    "@scalar/fastify-api-reference": "^1.25.122",
     "@sentry/node": "^9.1.0",
     "@sentry/profiling-node": "^9.1.0",
-    "@sinclair/typebox": "^0.34.25",
+    "@sinclair/typebox": "^0.34.27",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "chalk": "^5.4.1",
@@ -44,13 +44,13 @@
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",
     "file-type": "^20.1.0",
-    "openai": "^4.85.1",
+    "openai": "^4.85.3",
     "playwright-chromium": "^1.50.1",
     "resend": "^4.1.2",
     "sharp": "^0.33.5",
     "timekeeper": "^2.3.1",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.452"
+    "user-agents": "^1.1.457"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
