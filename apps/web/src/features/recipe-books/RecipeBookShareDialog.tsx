@@ -98,10 +98,10 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
     recipeBooks
       ?.map((recipeBook) =>
         recipeBook.members
-          .filter((member) => member.firstName)
+          .filter((member) => member.name)
           .map((member) => ({
             userId: member.userId,
-            name: `${member.firstName}${member.lastName ? ` ${member.lastName}` : ''}`,
+            name: member.name,
           })),
       )
       .flat()
@@ -167,11 +167,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     py: 0.5,
                   }}
                 >
-                  <Typography>
-                    {request.firstName}
-                    {request.lastName ? ` ${request.lastName}` : ''} requested
-                    to join
-                  </Typography>
+                  <Typography>{request.name} requested to join</Typography>
                   <Button
                     variant="text"
                     onClick={() => {
@@ -305,8 +301,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       <Box>
                         <Typography>
                           {member.userId === userId ? '(You) ' : ''}
-                          {member.firstName}
-                          {member.lastName ? ` ${member.lastName}` : ''}
+                          {member.name}
                         </Typography>
                         <Typography variant="caption">{member.role}</Typography>
                       </Box>
@@ -535,13 +530,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             {
               recipeBook.requests.find(
                 (request) => request.id === reviewRequestId,
-              )?.firstName
-            }
-            {recipeBook.requests.find(
-              (request) => request.id === reviewRequestId,
-            )?.lastName
-              ? ` ${recipeBook.requests.find((request) => request.id === reviewRequestId)?.lastName}`
-              : ''}{' '}
+              )?.name
+            }{' '}
             requested to join {recipeBook.name}.
           </Typography>
           <FormControl sx={{ minWidth: 100 }}>

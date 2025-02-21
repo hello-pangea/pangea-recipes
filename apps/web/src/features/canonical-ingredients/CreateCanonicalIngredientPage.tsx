@@ -1,6 +1,5 @@
 import { Page } from '#src/components/Page';
 import { config } from '#src/config/config';
-import { getSessionToken } from '#src/lib/clerk';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
@@ -87,13 +86,13 @@ export function CreateCanonicalIngredientPage({
     })
       .use(XHR, {
         endpoint: `${config.VITE_API_URL}/images/food-icon`,
-        onBeforeRequest: async (request) => {
-          const token = await getSessionToken();
+        // onBeforeRequest: async (request) => {
+        //   const token = await getSessionToken();
 
-          if (token) {
-            request.setRequestHeader('Authorization', `Bearer ${token}`);
-          }
-        },
+        //   if (token) {
+        //     request.setRequestHeader('Authorization', `Bearer ${token}`);
+        //   }
+        // },
       })
       .on('complete', (res) => {
         const uploadRes = res.successful?.at(0);

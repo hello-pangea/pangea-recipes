@@ -1,5 +1,4 @@
 import { AddNameDialog } from '#src/components/AddNameDialog';
-import { useUser } from '@clerk/tanstack-start';
 import { Box, Button, Container, Typography } from '@mui/material';
 import {
   useRecipeBookRequests,
@@ -13,7 +12,7 @@ import { useSignedInUserId } from '../auth/useSignedInUserId';
 const routeApi = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
 
 export function RequestAccessToRecipeBookPage() {
-  const { user: clerkUser } = useUser();
+  // const { user: clerkUser } = useUser();
   const userId = useSignedInUserId();
   const { data: user } = useSignedInUser();
   const requestAccessToRecipeBook = useRequestAccessToRecipeBook();
@@ -23,10 +22,10 @@ export function RequestAccessToRecipeBookPage() {
   });
   const [addNameDialogOpen, setAddNameDialogOpen] = useState(false);
 
-  const signedInAs =
-    clerkUser?.primaryEmailAddress?.emailAddress ??
-    clerkUser?.fullName ??
-    'Guest';
+  // const signedInAs =
+  //   clerkUser?.primaryEmailAddress?.emailAddress ??
+  //   clerkUser?.fullName ??
+  //   'Guest';
 
   return (
     <Box sx={{ p: 3, mt: 8 }}>
@@ -61,7 +60,7 @@ export function RequestAccessToRecipeBookPage() {
               variant="contained"
               sx={{ mb: 2 }}
               onClick={() => {
-                if (!user?.firstName) {
+                if (!user?.name) {
                   setAddNameDialogOpen(true);
                   return;
                 }
@@ -74,9 +73,9 @@ export function RequestAccessToRecipeBookPage() {
             </Button>
           </>
         )}
-        <Typography variant="caption">
+        {/* <Typography variant="caption">
           You're signed in as {signedInAs}
-        </Typography>
+        </Typography> */}
       </Container>
       <AddNameDialog
         open={addNameDialogOpen}

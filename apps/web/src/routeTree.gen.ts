@@ -17,7 +17,6 @@ import { Route as TermsOfServiceImport } from './routes/terms-of-service'
 import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppIndexImport } from './routes/app/index'
-import { Route as AppFinishSignUpImport } from './routes/app/finish-sign-up'
 import { Route as AppLayoutImport } from './routes/app/_layout'
 import { Route as AppSignUpSplatImport } from './routes/app/sign-up.$'
 import { Route as AppSignInSplatImport } from './routes/app/sign-in.$'
@@ -67,12 +66,6 @@ const IndexRoute = IndexImport.update({
 const AppIndexRoute = AppIndexImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppFinishSignUpRoute = AppFinishSignUpImport.update({
-  id: '/finish-sign-up',
-  path: '/finish-sign-up',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -209,13 +202,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/app'
       preLoaderRoute: typeof AppLayoutImport
       parentRoute: typeof AppRoute
-    }
-    '/app/finish-sign-up': {
-      id: '/app/finish-sign-up'
-      path: '/finish-sign-up'
-      fullPath: '/app/finish-sign-up'
-      preLoaderRoute: typeof AppFinishSignUpImport
-      parentRoute: typeof AppImport
     }
     '/app/': {
       id: '/app/'
@@ -366,7 +352,6 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
-  AppFinishSignUpRoute: typeof AppFinishSignUpRoute
   AppIndexRoute: typeof AppIndexRoute
   AppSignInSplatRoute: typeof AppSignInSplatRoute
   AppSignUpSplatRoute: typeof AppSignUpSplatRoute
@@ -374,7 +359,6 @@ interface AppRouteChildren {
 
 const AppRouteChildren: AppRouteChildren = {
   AppLayoutRoute: AppLayoutRouteWithChildren,
-  AppFinishSignUpRoute: AppFinishSignUpRoute,
   AppIndexRoute: AppIndexRoute,
   AppSignInSplatRoute: AppSignInSplatRoute,
   AppSignUpSplatRoute: AppSignUpSplatRoute,
@@ -387,7 +371,6 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppLayoutRouteWithChildren
-  '/app/finish-sign-up': typeof AppFinishSignUpRoute
   '/app/': typeof AppIndexRoute
   '/app/settings': typeof AppLayoutSettingsRoute
   '/app/sign-in/$': typeof AppSignInSplatRoute
@@ -410,7 +393,6 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppIndexRoute
-  '/app/finish-sign-up': typeof AppFinishSignUpRoute
   '/app/settings': typeof AppLayoutSettingsRoute
   '/app/sign-in/$': typeof AppSignInSplatRoute
   '/app/sign-up/$': typeof AppSignUpSplatRoute
@@ -434,7 +416,6 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppRouteWithChildren
   '/app/_layout': typeof AppLayoutRouteWithChildren
-  '/app/finish-sign-up': typeof AppFinishSignUpRoute
   '/app/': typeof AppIndexRoute
   '/app/_layout/settings': typeof AppLayoutSettingsRoute
   '/app/sign-in/$': typeof AppSignInSplatRoute
@@ -459,7 +440,6 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/app'
-    | '/app/finish-sign-up'
     | '/app/'
     | '/app/settings'
     | '/app/sign-in/$'
@@ -481,7 +461,6 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/app'
-    | '/app/finish-sign-up'
     | '/app/settings'
     | '/app/sign-in/$'
     | '/app/sign-up/$'
@@ -503,7 +482,6 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/app'
     | '/app/_layout'
-    | '/app/finish-sign-up'
     | '/app/'
     | '/app/_layout/settings'
     | '/app/sign-in/$'
@@ -565,7 +543,6 @@ export const routeTree = rootRoute
       "filePath": "app",
       "children": [
         "/app/_layout",
-        "/app/finish-sign-up",
         "/app/",
         "/app/sign-in/$",
         "/app/sign-up/$"
@@ -588,10 +565,6 @@ export const routeTree = rootRoute
         "/app/_layout/recipe-books_/$recipeBookId/edit",
         "/app/_layout/recipes_/$recipeId/edit"
       ]
-    },
-    "/app/finish-sign-up": {
-      "filePath": "app/finish-sign-up.tsx",
-      "parent": "/app"
     },
     "/app/": {
       "filePath": "app/index.tsx",

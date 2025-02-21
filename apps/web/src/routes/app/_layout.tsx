@@ -1,5 +1,5 @@
+import { authClient } from '#src/features/auth/authClient';
 import { Layout } from '#src/features/layout/Layout';
-import { SignedIn, SignedOut } from '@clerk/tanstack-start';
 import { createFileRoute, Navigate } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/_layout')({
@@ -19,3 +19,33 @@ export const Route = createFileRoute('/app/_layout')({
     </>
   ),
 });
+
+function SignedIn({ children }: { children: React.ReactNode }) {
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+  } = authClient.useSession();
+
+  if (isPending || error || !session) {
+    console.log('Auth: Not signed in');
+    return null;
+  }
+
+  return children;
+}
+
+function SignedOut({ children }: { children: React.ReactNode }) {
+  const {
+    data: session,
+    isPending, //loading state
+    error, //error object
+  } = authClient.useSession();
+
+  if (isPending || error || session) {
+    console.log('Auth: Not signed out');
+    return null;
+  }
+
+  return children;
+}

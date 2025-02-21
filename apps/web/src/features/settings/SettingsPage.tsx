@@ -1,5 +1,4 @@
 import { Page } from '#src/components/Page';
-import { useAuth } from '@clerk/tanstack-start';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
@@ -18,13 +17,13 @@ import {
 } from '@open-zero/features/users';
 import { useRouter } from '@tanstack/react-router';
 import { useState } from 'react';
+import { authClient } from '../auth/authClient';
 
 export function SettingsPage() {
   const { data: user } = useSignedInUser();
   const updateUser = useUpdateUser();
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-  const { signOut } = useAuth();
 
   if (!user) {
     return null;
@@ -92,7 +91,7 @@ export function SettingsPage() {
           onClick={() => {
             setIsLoading(true);
 
-            void signOut().then(() => {
+            void authClient.signOut().then(() => {
               void router.invalidate();
             });
           }}

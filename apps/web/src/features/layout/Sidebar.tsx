@@ -5,7 +5,6 @@ import {
   dropTargetForElements,
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
-import { useClerk } from '@clerk/tanstack-start';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
@@ -52,7 +51,6 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
     options: { userId: userId },
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
-  const { openUserProfile } = useClerk();
 
   useEffect(() => {
     return monitorForElements({
@@ -182,7 +180,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         <MuiListItem disablePadding>
           <ListItemButton
             onClick={() => {
-              openUserProfile();
+              // openUserProfile();
             }}
             sx={{
               mx: 1,

@@ -1,8 +1,6 @@
 import { Copyright } from '#src/components/Copyright';
 import { RouterButton } from '#src/components/RouterButton';
-import { useUser } from '@clerk/tanstack-start';
 import { alpha, Box, Container, Grid2, Stack, Typography } from '@mui/material';
-import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
 import { Header } from './Header';
 import { ImportRecipeDemo } from './ImportRecipeDemo';
@@ -10,11 +8,11 @@ import { PhoneDemo } from './PhoneDemo';
 import { ShareDialogDemo } from './ShareDialogDemo';
 
 export function HomePage() {
-  const { isSignedIn } = useUser();
+  // const { isSignedIn } = useUser();
 
-  if (isSignedIn) {
-    return <Navigate to="/app/recipes" />;
-  }
+  // if (isSignedIn) {
+  //   return <Navigate to="/app/recipes" />;
+  // }
 
   return (
     <Box

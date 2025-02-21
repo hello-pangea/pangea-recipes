@@ -1,11 +1,11 @@
-import { useUser } from '@clerk/tanstack-start';
+import { authClient } from './authClient';
 
 export function useSignedInUserId() {
-  const { user } = useUser();
+  const { data: session } = authClient.useSession();
 
-  if (!user?.publicMetadata.helloRecipesUserId) {
+  if (!session?.user.id) {
     throw new Error('User does not exist');
   }
 
-  return user.publicMetadata.helloRecipesUserId;
+  return session.user.id;
 }

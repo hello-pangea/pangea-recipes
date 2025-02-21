@@ -50,8 +50,8 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
             include: {
               user: {
                 select: {
-                  emailAddress: true,
-                  firstName: true,
+                  email: true,
+                  name: true,
                 },
               },
             },
@@ -72,8 +72,7 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
           id: userId,
         },
         select: {
-          firstName: true,
-          lastName: true,
+          name: true,
         },
       });
 
@@ -90,18 +89,14 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
 
       if (recipeBookOwners.length) {
         for (const owner of recipeBookOwners) {
-          if (!owner.user.emailAddress) {
-            continue;
-          }
-
           await resend.emails.send({
             from: 'Hello Recipes <invites@notify.hellorecipes.com>',
-            to: owner.user.emailAddress,
+            to: owner.user.email,
             subject: `Share request for recipe book`,
             replyTo: 'hello@hellorecipes.com',
             react: RequestToJoinRecipeBookEmail({
-              ownerName: owner.user.firstName ?? undefined,
-              requesterName: `${requestingUser.firstName ?? 'Guest'}${requestingUser.lastName ? ` ${requestingUser.lastName}` : ''}`,
+              ownerName: owner.user.name || undefined,
+              requesterName: requestingUser.name || 'Guest',
               managerLink: `https://hellorecipes.com/recipe-books/${recipeBookId}`,
               recipeBookName: recipeBook.name,
             }),

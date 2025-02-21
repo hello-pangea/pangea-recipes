@@ -1,7 +1,5 @@
-import { config } from '#src/config/config.ts';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { noContentSchema } from '#src/types/noContent.ts';
-import { clerkClient } from '@clerk/fastify';
 import { prisma } from '@open-zero/database';
 import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
@@ -45,7 +43,7 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
               },
             },
             {
-              emailAddress: {
+              email: {
                 in: emails,
               },
             },
@@ -53,35 +51,35 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      if (emails) {
-        const emailsWithNoUser = emails.filter(
-          (email) => !existingUsers.some((user) => user.emailAddress === email),
-        );
+      // if (emails) {
+      //   const emailsWithNoUser = emails.filter(
+      //     (email) => !existingUsers.some((user) => user.emailAddress === email),
+      //   );
 
-        const signUpUrl =
-          config.NODE_ENV === 'development'
-            ? `http://localhost:3000/sign-up`
-            : `https://hellorecipes.com/sign-up`;
+      //   const signUpUrl =
+      //     config.NODE_ENV === 'development'
+      //       ? `http://localhost:3000/sign-up`
+      //       : `https://hellorecipes.com/sign-up`;
 
-        for (const email of emailsWithNoUser) {
-          const clerkInvite = await clerkClient.invitations.createInvitation({
-            emailAddress: email,
-            notify: true,
-            ignoreExisting: true,
-            redirectUrl: signUpUrl,
-          });
+      //   for (const email of emailsWithNoUser) {
+      //     const clerkInvite = await clerkClient.invitations.createInvitation({
+      //       emailAddress: email,
+      //       notify: true,
+      //       ignoreExisting: true,
+      //       redirectUrl: signUpUrl,
+      //     });
 
-          await prisma.recipeBookInvite.create({
-            data: {
-              recipeBookId: recipeBookId,
-              inviteeEmailAddress: email,
-              invitedByUserId: request.session.userId,
-              role: role,
-              clerkInviteId: clerkInvite.id,
-            },
-          });
-        }
-      }
+      //     await prisma.recipeBookInvite.create({
+      //       data: {
+      //         recipeBookId: recipeBookId,
+      //         inviteeEmailAddress: email,
+      //         invitedByUserId: request.session.userId,
+      //         role: role,
+      //         clerkInviteId: clerkInvite.id,
+      //       },
+      //     });
+      //   }
+      // }
 
       for (const user of existingUsers) {
         await prisma.recipeBookMember.create({
