@@ -21,6 +21,7 @@ export const auth = betterAuth({
     'http://localhost:3000',
     'https://hellorecipes.com',
     'https://api.hellorecipes.com',
+    'https://hello-recipes-staging.up.railway.app',
   ],
   logger: {
     disabled: false,
