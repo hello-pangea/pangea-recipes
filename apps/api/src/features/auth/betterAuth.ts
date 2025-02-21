@@ -15,18 +15,13 @@ export const auth = betterAuth({
   basePath: '/auth',
   baseURL:
     config.NODE_ENV === 'production'
-      ? 'https://hello-recipes-staging.up.railway.app'
+      ? 'https://api.hellorecipes.com'
       : 'http://localhost:3001',
   trustedOrigins: [
     'http://localhost:3000',
     'https://hellorecipes.com',
     'https://api.hellorecipes.com',
-    'https://hello-recipes-staging.up.railway.app',
   ],
-  logger: {
-    disabled: false,
-    level: 'debug',
-  },
   advanced: {
     generateId: false,
     crossSubDomainCookies: {
@@ -55,27 +50,4 @@ export const auth = betterAuth({
       clientSecret: config.FACEBOOK_APP_SECRET,
     },
   },
-  // user: {
-  //   modelName: 'users',
-  //   fields: {
-  //     emailVerified: 'email_verified',
-  //     updatedAt: 'updated_at',
-  //     createdAt: 'created_at',
-  //   },
-  // },
-  // account: {
-  //   modelName: 'accounts',
-  // },
-  // session: {
-  //   modelName: 'sessions',
-  // },
-  // databaseHooks: {
-  //   user: {
-  //     create: {
-  //       after: (user) => {
-
-  //       },
-  //     }
-  //   }
-  // }
 });
