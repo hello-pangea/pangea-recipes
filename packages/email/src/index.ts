@@ -1,1 +1,2 @@
-export { RequestToJoinRecipeBookEmail } from './request-to-join-recipe-book.js';
+export { RequestToJoinRecipeBookEmail } from './emails/RequestToJoinRecipeBook.js';
+export { VerifyEmail } from './emails/VerifyEmail.js';

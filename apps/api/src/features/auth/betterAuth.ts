@@ -1,5 +1,7 @@
 import { config } from '#src/config/config.ts';
+import { resend } from '#src/lib/resend.ts';
 import { prisma } from '@open-zero/database';
+import { VerifyEmail } from '@open-zero/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { openAPI } from 'better-auth/plugins';
@@ -11,6 +13,19 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  emailVerification: {
+    sendVerificationEmail: async ({ url, user }) => {
+      await resend.emails.send({
+        from: 'Hello Recipes <auth@notify.hellorecipes.com>',
+        to: user.email,
+        subject: `Verify your email address`,
+        replyTo: 'hello@hellorecipes.com',
+        react: VerifyEmail({
+          url: url,
+        }),
+      });
+    },
+  },
   plugins: [openAPI()],
   basePath: '/auth',
   baseURL:
@@ -19,6 +34,7 @@ export const auth = betterAuth({
       : 'http://localhost:3001',
   trustedOrigins: [
     'http://localhost:3000',
+    'http://localhost:3001',
     'https://hellorecipes.com',
     'https://api.hellorecipes.com',
   ],
@@ -26,7 +42,8 @@ export const auth = betterAuth({
     generateId: false,
     crossSubDomainCookies: {
       enabled: true,
-      domain: '.hellorecipes.com',
+      domain:
+        config.NODE_ENV === 'production' ? '.hellorecipes.com' : 'localhost',
     },
     defaultCookieAttributes: {
       secure: true,
