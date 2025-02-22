@@ -78,4 +78,5 @@ export const auth = betterAuth({
       clientSecret: config.FACEBOOK_APP_SECRET,
     },
   },
+  secret: config.BETTER_AUTH_SECRET,
 });
