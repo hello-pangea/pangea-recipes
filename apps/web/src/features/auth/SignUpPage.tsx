@@ -66,7 +66,6 @@ export function SignUpPage() {
       },
       {
         onSuccess: () => {
-          console.log('success');
           void navigate({
             to: redirect || '/app/recipes',
           });

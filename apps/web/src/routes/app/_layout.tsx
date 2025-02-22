@@ -28,7 +28,6 @@ function SignedIn({ children }: { children: React.ReactNode }) {
   } = authClient.useSession();
 
   if (isPending || error || !session) {
-    console.log('Auth: Not signed in');
     return null;
   }
 
@@ -43,7 +42,6 @@ function SignedOut({ children }: { children: React.ReactNode }) {
   } = authClient.useSession();
 
   if (isPending || error || session) {
-    console.log('Auth: Not signed out');
     return null;
   }
 
