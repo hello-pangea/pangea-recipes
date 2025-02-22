@@ -21,11 +21,7 @@ export const Route = createFileRoute('/app/_layout')({
 });
 
 function SignedIn({ children }: { children: React.ReactNode }) {
-  const {
-    data: session,
-    isPending, //loading state
-    error, //error object
-  } = authClient.useSession();
+  const { data: session, isPending, error } = authClient.useSession();
 
   if (isPending || error || !session) {
     return null;
@@ -35,11 +31,7 @@ function SignedIn({ children }: { children: React.ReactNode }) {
 }
 
 function SignedOut({ children }: { children: React.ReactNode }) {
-  const {
-    data: session,
-    isPending, //loading state
-    error, //error object
-  } = authClient.useSession();
+  const { data: session, isPending, error } = authClient.useSession();
 
   if (isPending || error || session) {
     return null;

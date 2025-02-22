@@ -33,11 +33,7 @@ export function Layout() {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const {
-    data: session,
-    isPending, //loading state
-    error, //error object
-  } = authClient.useSession();
+  const { data: session, isPending, error } = authClient.useSession();
   const router = useRouter();
   const routeContext = route.useRouteContext();
   const queryClient = useQueryClient();

@@ -14,15 +14,6 @@ import { routeTree } from './routeTree.gen';
 
 updateApiOptions({
   prefixUrl: config.VITE_API_URL,
-  // hooks: {
-  //   beforeRequest: [
-  //     async (request) => {
-  //       const token = await getSessionToken();
-
-  //       request.headers.set('Authorization', `Bearer ${token}`);
-  //     },
-  //   ],
-  // },
 });
 const queryClient = new QueryClient({
   defaultOptions: {

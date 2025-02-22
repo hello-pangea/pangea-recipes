@@ -86,13 +86,7 @@ export function CreateCanonicalIngredientPage({
     })
       .use(XHR, {
         endpoint: `${config.VITE_API_URL}/images/food-icon`,
-        // onBeforeRequest: async (request) => {
-        //   const token = await getSessionToken();
-
-        //   if (token) {
-        //     request.setRequestHeader('Authorization', `Bearer ${token}`);
-        //   }
-        // },
+        withCredentials: true,
       })
       .on('complete', (res) => {
         const uploadRes = res.successful?.at(0);
