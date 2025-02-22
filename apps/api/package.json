@@ -36,7 +36,7 @@
     "@sinclair/typebox": "^0.34.27",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "better-auth": "^1.1.18",
+    "better-auth": "^1.1.19",
     "chalk": "^5.4.1",
     "close-with-grace": "^2.2.0",
     "date-fns": "^4.1.0",

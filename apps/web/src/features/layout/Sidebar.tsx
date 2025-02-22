@@ -9,7 +9,6 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
 import {
@@ -20,7 +19,6 @@ import {
   IconButton,
   Link,
   List,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   ListItem as MuiListItem,
@@ -177,37 +175,6 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         </List>
       </Box>
       <Box sx={{ pb: 1 }}>
-        <MuiListItem disablePadding>
-          <ListItemButton
-            onClick={() => {
-              // openUserProfile();
-            }}
-            sx={{
-              mx: 1,
-              borderRadius: 1,
-              border: 2,
-              borderColor: 'transparent',
-            }}
-          >
-            <ListItemIcon
-              sx={{
-                minWidth: '42px',
-              }}
-            >
-              <PersonRoundedIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary={'Account'}
-              slotProps={{
-                primary: {
-                  sx: {
-                    fontSize: 16,
-                  },
-                },
-              }}
-            />
-          </ListItemButton>
-        </MuiListItem>
         <ListItem
           icon={<SettingsRoundedIcon />}
           label="Settings"
