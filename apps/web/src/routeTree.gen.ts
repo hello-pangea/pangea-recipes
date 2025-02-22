@@ -17,9 +17,11 @@ import { Route as TermsOfServiceImport } from './routes/terms-of-service'
 import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppIndexImport } from './routes/app/index'
+import { Route as AppSignUpImport } from './routes/app/sign-up'
+import { Route as AppSignInImport } from './routes/app/sign-in'
+import { Route as AppResetPasswordImport } from './routes/app/reset-password'
+import { Route as AppForgotPasswordImport } from './routes/app/forgot-password'
 import { Route as AppLayoutImport } from './routes/app/_layout'
-import { Route as AppSignUpSplatImport } from './routes/app/sign-up.$'
-import { Route as AppSignInSplatImport } from './routes/app/sign-in.$'
 import { Route as AppLayoutSettingsImport } from './routes/app/_layout.settings'
 import { Route as AppLayoutRecipesIndexImport } from './routes/app/_layout.recipes.index'
 import { Route as AppLayoutRecipeBooksIndexImport } from './routes/app/_layout.recipe-books.index'
@@ -69,20 +71,32 @@ const AppIndexRoute = AppIndexImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
+const AppSignUpRoute = AppSignUpImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppSignInRoute = AppSignInImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppResetPasswordRoute = AppResetPasswordImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => AppRoute,
+} as any)
+
+const AppForgotPasswordRoute = AppForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => AppRoute,
+} as any)
+
 const AppLayoutRoute = AppLayoutImport.update({
   id: '/_layout',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppSignUpSplatRoute = AppSignUpSplatImport.update({
-  id: '/sign-up/$',
-  path: '/sign-up/$',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppSignInSplatRoute = AppSignInSplatImport.update({
-  id: '/sign-in/$',
-  path: '/sign-in/$',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -203,6 +217,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppLayoutImport
       parentRoute: typeof AppRoute
     }
+    '/app/forgot-password': {
+      id: '/app/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/app/forgot-password'
+      preLoaderRoute: typeof AppForgotPasswordImport
+      parentRoute: typeof AppImport
+    }
+    '/app/reset-password': {
+      id: '/app/reset-password'
+      path: '/reset-password'
+      fullPath: '/app/reset-password'
+      preLoaderRoute: typeof AppResetPasswordImport
+      parentRoute: typeof AppImport
+    }
+    '/app/sign-in': {
+      id: '/app/sign-in'
+      path: '/sign-in'
+      fullPath: '/app/sign-in'
+      preLoaderRoute: typeof AppSignInImport
+      parentRoute: typeof AppImport
+    }
+    '/app/sign-up': {
+      id: '/app/sign-up'
+      path: '/sign-up'
+      fullPath: '/app/sign-up'
+      preLoaderRoute: typeof AppSignUpImport
+      parentRoute: typeof AppImport
+    }
     '/app/': {
       id: '/app/'
       path: '/'
@@ -216,20 +258,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/app/settings'
       preLoaderRoute: typeof AppLayoutSettingsImport
       parentRoute: typeof AppLayoutImport
-    }
-    '/app/sign-in/$': {
-      id: '/app/sign-in/$'
-      path: '/sign-in/$'
-      fullPath: '/app/sign-in/$'
-      preLoaderRoute: typeof AppSignInSplatImport
-      parentRoute: typeof AppImport
-    }
-    '/app/sign-up/$': {
-      id: '/app/sign-up/$'
-      path: '/sign-up/$'
-      fullPath: '/app/sign-up/$'
-      preLoaderRoute: typeof AppSignUpSplatImport
-      parentRoute: typeof AppImport
     }
     '/app/_layout/canonical-ingredients/new': {
       id: '/app/_layout/canonical-ingredients/new'
@@ -352,16 +380,20 @@ const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
 
 interface AppRouteChildren {
   AppLayoutRoute: typeof AppLayoutRouteWithChildren
+  AppForgotPasswordRoute: typeof AppForgotPasswordRoute
+  AppResetPasswordRoute: typeof AppResetPasswordRoute
+  AppSignInRoute: typeof AppSignInRoute
+  AppSignUpRoute: typeof AppSignUpRoute
   AppIndexRoute: typeof AppIndexRoute
-  AppSignInSplatRoute: typeof AppSignInSplatRoute
-  AppSignUpSplatRoute: typeof AppSignUpSplatRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppLayoutRoute: AppLayoutRouteWithChildren,
+  AppForgotPasswordRoute: AppForgotPasswordRoute,
+  AppResetPasswordRoute: AppResetPasswordRoute,
+  AppSignInRoute: AppSignInRoute,
+  AppSignUpRoute: AppSignUpRoute,
   AppIndexRoute: AppIndexRoute,
-  AppSignInSplatRoute: AppSignInSplatRoute,
-  AppSignUpSplatRoute: AppSignUpSplatRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
@@ -371,10 +403,12 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppLayoutRouteWithChildren
+  '/app/forgot-password': typeof AppForgotPasswordRoute
+  '/app/reset-password': typeof AppResetPasswordRoute
+  '/app/sign-in': typeof AppSignInRoute
+  '/app/sign-up': typeof AppSignUpRoute
   '/app/': typeof AppIndexRoute
   '/app/settings': typeof AppLayoutSettingsRoute
-  '/app/sign-in/$': typeof AppSignInSplatRoute
-  '/app/sign-up/$': typeof AppSignUpSplatRoute
   '/app/canonical-ingredients/new': typeof AppLayoutCanonicalIngredientsNewRoute
   '/app/recipe-books/$recipeBookId': typeof AppLayoutRecipeBooksRecipeBookIdRoute
   '/app/recipe-books/new': typeof AppLayoutRecipeBooksNewRoute
@@ -393,9 +427,11 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppIndexRoute
+  '/app/forgot-password': typeof AppForgotPasswordRoute
+  '/app/reset-password': typeof AppResetPasswordRoute
+  '/app/sign-in': typeof AppSignInRoute
+  '/app/sign-up': typeof AppSignUpRoute
   '/app/settings': typeof AppLayoutSettingsRoute
-  '/app/sign-in/$': typeof AppSignInSplatRoute
-  '/app/sign-up/$': typeof AppSignUpSplatRoute
   '/app/canonical-ingredients/new': typeof AppLayoutCanonicalIngredientsNewRoute
   '/app/recipe-books/$recipeBookId': typeof AppLayoutRecipeBooksRecipeBookIdRoute
   '/app/recipe-books/new': typeof AppLayoutRecipeBooksNewRoute
@@ -416,10 +452,12 @@ export interface FileRoutesById {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppRouteWithChildren
   '/app/_layout': typeof AppLayoutRouteWithChildren
+  '/app/forgot-password': typeof AppForgotPasswordRoute
+  '/app/reset-password': typeof AppResetPasswordRoute
+  '/app/sign-in': typeof AppSignInRoute
+  '/app/sign-up': typeof AppSignUpRoute
   '/app/': typeof AppIndexRoute
   '/app/_layout/settings': typeof AppLayoutSettingsRoute
-  '/app/sign-in/$': typeof AppSignInSplatRoute
-  '/app/sign-up/$': typeof AppSignUpSplatRoute
   '/app/_layout/canonical-ingredients/new': typeof AppLayoutCanonicalIngredientsNewRoute
   '/app/_layout/recipe-books/$recipeBookId': typeof AppLayoutRecipeBooksRecipeBookIdRoute
   '/app/_layout/recipe-books/new': typeof AppLayoutRecipeBooksNewRoute
@@ -440,10 +478,12 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/app'
+    | '/app/forgot-password'
+    | '/app/reset-password'
+    | '/app/sign-in'
+    | '/app/sign-up'
     | '/app/'
     | '/app/settings'
-    | '/app/sign-in/$'
-    | '/app/sign-up/$'
     | '/app/canonical-ingredients/new'
     | '/app/recipe-books/$recipeBookId'
     | '/app/recipe-books/new'
@@ -461,9 +501,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/terms-of-service'
     | '/app'
+    | '/app/forgot-password'
+    | '/app/reset-password'
+    | '/app/sign-in'
+    | '/app/sign-up'
     | '/app/settings'
-    | '/app/sign-in/$'
-    | '/app/sign-up/$'
     | '/app/canonical-ingredients/new'
     | '/app/recipe-books/$recipeBookId'
     | '/app/recipe-books/new'
@@ -482,10 +524,12 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/app'
     | '/app/_layout'
+    | '/app/forgot-password'
+    | '/app/reset-password'
+    | '/app/sign-in'
+    | '/app/sign-up'
     | '/app/'
     | '/app/_layout/settings'
-    | '/app/sign-in/$'
-    | '/app/sign-up/$'
     | '/app/_layout/canonical-ingredients/new'
     | '/app/_layout/recipe-books/$recipeBookId'
     | '/app/_layout/recipe-books/new'
@@ -543,9 +587,11 @@ export const routeTree = rootRoute
       "filePath": "app",
       "children": [
         "/app/_layout",
-        "/app/",
-        "/app/sign-in/$",
-        "/app/sign-up/$"
+        "/app/forgot-password",
+        "/app/reset-password",
+        "/app/sign-in",
+        "/app/sign-up",
+        "/app/"
       ]
     },
     "/app/_layout": {
@@ -566,6 +612,22 @@ export const routeTree = rootRoute
         "/app/_layout/recipes_/$recipeId/edit"
       ]
     },
+    "/app/forgot-password": {
+      "filePath": "app/forgot-password.tsx",
+      "parent": "/app"
+    },
+    "/app/reset-password": {
+      "filePath": "app/reset-password.tsx",
+      "parent": "/app"
+    },
+    "/app/sign-in": {
+      "filePath": "app/sign-in.tsx",
+      "parent": "/app"
+    },
+    "/app/sign-up": {
+      "filePath": "app/sign-up.tsx",
+      "parent": "/app"
+    },
     "/app/": {
       "filePath": "app/index.tsx",
       "parent": "/app"
@@ -573,14 +635,6 @@ export const routeTree = rootRoute
     "/app/_layout/settings": {
       "filePath": "app/_layout.settings.tsx",
       "parent": "/app/_layout"
-    },
-    "/app/sign-in/$": {
-      "filePath": "app/sign-in.$.tsx",
-      "parent": "/app"
-    },
-    "/app/sign-up/$": {
-      "filePath": "app/sign-up.$.tsx",
-      "parent": "/app"
     },
     "/app/_layout/canonical-ingredients/new": {
       "filePath": "app/_layout.canonical-ingredients.new.tsx",

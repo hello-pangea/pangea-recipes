@@ -1,0 +1,140 @@
+import { RouterLink } from '#src/components/RouterLink';
+import { zodResolver } from '@hookform/resolvers/zod';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  Container,
+  Stack,
+  Typography,
+} from '@mui/material';
+import { useMutation } from '@tanstack/react-query';
+import { useForm, type SubmitHandler } from 'react-hook-form';
+import { TextFieldElement } from 'react-hook-form-mui';
+import { z } from 'zod';
+import { authClient } from './authClient';
+
+const forgotPasswordFormSchema = z.object({
+  email: z.string().email(),
+});
+
+type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>;
+
+export function ForgotPasswordPage() {
+  const { handleSubmit, control } = useForm<ForgotPasswordFormSchema>({
+    resolver: zodResolver(forgotPasswordFormSchema),
+    defaultValues: {
+      email: '',
+    },
+  });
+  const sendEmail = useMutation({
+    mutationFn: (data: Parameters<typeof authClient.forgetPassword>[0]) => {
+      return authClient.forgetPassword(data, {
+        onError: (ctx) => {
+          throw ctx.error;
+        },
+      });
+    },
+  });
+
+  const onSubmit: SubmitHandler<ForgotPasswordFormSchema> = (data) => {
+    sendEmail.mutate({
+      email: data.email,
+      redirectTo: `${location.origin}/app/reset-password`,
+    });
+  };
+
+  return (
+    <Container
+      component="main"
+      maxWidth="sm"
+      sx={{
+        minHeight: '100vh',
+        py: 2,
+        display: 'flex',
+        alignItems: 'center',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}
+    >
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
+        <img src="/assets/lil-guy.svg" width={22} height={22} />
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: 16,
+            lineHeight: 1,
+            ml: 1.5,
+          }}
+        >
+          Hello Recipes
+        </Typography>
+      </Box>
+      <Card
+        variant="outlined"
+        sx={{
+          p: 2,
+          mb: 2,
+          width: 400,
+          border: 0,
+          boxShadow:
+            '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        }}
+      >
+        <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
+          {sendEmail.isSuccess ? 'Email sent' : 'Forgot password'}
+        </Typography>
+        {!sendEmail.isSuccess && (
+          <Typography sx={{ mb: 2 }}>
+            We will send you an email with instructions on how to reset your
+            password.
+          </Typography>
+        )}
+        {sendEmail.isSuccess ? (
+          <>
+            <Typography sx={{ mb: 2 }}>
+              An email with instructions on how to reset your password has been
+              sent to your email. Check your spam or junk folder if you don't
+              see the email in your inbox.
+            </Typography>
+            <RouterLink to="/app/sign-in" variant="caption">
+              Back
+            </RouterLink>
+          </>
+        ) : (
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack direction={'column'} spacing={2} sx={{ maxWidth: '400px' }}>
+              <TextFieldElement
+                label="Email"
+                name="email"
+                placeholder="name@example.com"
+                required
+                control={control}
+                fullWidth
+                type="email"
+                autoComplete="email"
+              />
+              {sendEmail.isError && (
+                <Alert severity="error">
+                  {sendEmail.error.message || 'An error occurred'}
+                </Alert>
+              )}
+              <Button
+                variant="contained"
+                type="submit"
+                loading={sendEmail.isPending}
+                fullWidth
+              >
+                Email me
+              </Button>
+              <RouterLink to="/app/sign-in" variant="caption">
+                Back
+              </RouterLink>
+            </Stack>
+          </form>
+        )}
+      </Card>
+    </Container>
+  );
+}

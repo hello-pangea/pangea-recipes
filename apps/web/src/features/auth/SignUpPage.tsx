@@ -27,12 +27,13 @@ const signUpFormSchema = z.object({
   email: z.string().email(),
   password: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters long' }),
+    .min(8, { message: 'Password must be at least 8 characters long' })
+    .max(128, { message: 'Password must be at most 128 characters long' }),
 });
 
 type SignUpFormSchema = z.infer<typeof signUpFormSchema>;
 
-const route = getRouteApi('/app/sign-up/$');
+const route = getRouteApi('/app/sign-up');
 
 export function SignUpPage() {
   const navigate = route.useNavigate();
@@ -47,7 +48,7 @@ export function SignUpPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
   const signUp = useMutation({
-    mutationFn: (data: { email: string; password: string; name: string }) => {
+    mutationFn: (data: Parameters<typeof authClient.signUp.email>[0]) => {
       return authClient.signUp.email(data, {
         onError: (ctx) => {
           throw ctx.error;
@@ -224,7 +225,7 @@ export function SignUpPage() {
             />
             {signUp.isError && (
               <Alert severity="error">
-                {signUp.error.message || 'oh noes'}
+                {signUp.error.message || 'An error occurred'}
               </Alert>
             )}
             <Button
@@ -242,7 +243,7 @@ export function SignUpPage() {
             </Typography>
             <Typography variant="caption">
               Already have an account?{' '}
-              <RouterLink to="/app/sign-in/$">Sign in</RouterLink>
+              <RouterLink to="/app/sign-in">Sign in</RouterLink>
             </Typography>
           </Stack>
         </form>

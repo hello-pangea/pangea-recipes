@@ -10,7 +10,7 @@ export const Route = createFileRoute('/app/_layout')({
       </SignedIn>
       <SignedOut>
         <Navigate
-          to="/app/sign-in/$"
+          to="/app/sign-in"
           search={{
             redirect: location.pathname,
           }}

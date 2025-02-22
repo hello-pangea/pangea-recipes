@@ -1,7 +1,7 @@
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
 import { prisma } from '@open-zero/database';
-import { VerifyEmail } from '@open-zero/email';
+import { ResetPassword, VerifyEmail } from '@open-zero/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { openAPI } from 'better-auth/plugins';
@@ -12,6 +12,17 @@ export const auth = betterAuth({
   }),
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, url }) => {
+      await resend.emails.send({
+        from: 'Hello Recipes <auth@notify.hellorecipes.com>',
+        to: user.email,
+        subject: `Reset your password`,
+        replyTo: 'hello@hellorecipes.com',
+        react: ResetPassword({
+          url: url,
+        }),
+      });
+    },
   },
   emailVerification: {
     sendVerificationEmail: async ({ url, user }) => {

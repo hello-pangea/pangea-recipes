@@ -64,7 +64,7 @@ export function Layout() {
   }, [isPending, error, router, queryClient, routeContext.userId]);
 
   if (!isPending && !error && !session) {
-    return <Navigate to="/app/sign-in/$" />;
+    return <Navigate to="/app/sign-in" />;
   }
 
   if (!routeContext.userId) {

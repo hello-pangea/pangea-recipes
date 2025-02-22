@@ -1,4 +1,3 @@
-import { RouterLink } from '#src/components/RouterLink';
 import { zodResolver } from '@hookform/resolvers/zod';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
@@ -8,7 +7,6 @@ import {
   Button,
   Card,
   Container,
-  Divider,
   IconButton,
   InputAdornment,
   Stack,
@@ -17,36 +15,35 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
+import type { SubmitHandler } from 'react-hook-form';
+import { TextFieldElement, useForm } from 'react-hook-form-mui';
 import { z } from 'zod';
 import { authClient } from './authClient';
 
-const signInFormSchema = z.object({
-  email: z.string().email(),
-  password: z
+const resetPasswordFormSchema = z.object({
+  newPassword: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters long' }),
+    .min(8, { message: 'Password must be at least 8 characters long' })
+    .max(128, { message: 'Password must be at most 128 characters long' }),
 });
 
-type SignInFormSchema = z.infer<typeof signInFormSchema>;
+type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>;
 
-const route = getRouteApi('/app/sign-in');
+const route = getRouteApi('/app/reset-password');
 
-export function SignInPage() {
+export function ResetPasswordPage() {
   const navigate = route.useNavigate();
-  const { redirect } = route.useSearch();
-  const { handleSubmit, control } = useForm<SignInFormSchema>({
-    resolver: zodResolver(signInFormSchema),
+  const { token } = route.useSearch();
+  const { handleSubmit, control } = useForm<ResetPasswordFormSchema>({
+    resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
-      email: '',
-      password: '',
+      newPassword: '',
     },
   });
   const [showPassword, setShowPassword] = useState(false);
-  const signIn = useMutation({
-    mutationFn: (data: Parameters<typeof authClient.signIn.email>[0]) => {
-      return authClient.signIn.email(data, {
+  const resetPassword = useMutation({
+    mutationFn: (data: Parameters<typeof authClient.resetPassword>[0]) => {
+      return authClient.resetPassword(data, {
         onError: (ctx) => {
           throw ctx.error;
         },
@@ -54,17 +51,16 @@ export function SignInPage() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignInFormSchema> = (data) => {
-    signIn.mutate(
+  const onSubmit: SubmitHandler<ResetPasswordFormSchema> = (data) => {
+    resetPassword.mutate(
       {
-        email: data.email,
-        password: data.password,
+        newPassword: data.newPassword,
+        token: token,
       },
       {
         onSuccess: () => {
-          console.log('success');
           void navigate({
-            to: redirect || '/app/recipes',
+            to: '/app/sign-in',
           });
         },
       },
@@ -102,84 +98,25 @@ export function SignInPage() {
         sx={{
           p: 2,
           mb: 2,
-          minWidth: 400,
+          width: 400,
           border: 0,
           boxShadow:
             '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         }}
       >
         <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
-          Sign in
+          Reset password
         </Typography>
-        <Stack direction={'row'} spacing={2}>
-          <Button
-            variant="outlined"
-            color="inherit"
-            fullWidth
-            startIcon={<img src="/assets/social-icons/google.svg" />}
-            onClick={() => {
-              void authClient.signIn.social({
-                provider: 'google',
-              });
-            }}
-          >
-            Google
-          </Button>
-          <Button
-            variant="outlined"
-            color="inherit"
-            fullWidth
-            startIcon={<img src="/assets/social-icons/facebook.svg" />}
-            onClick={() => {
-              void authClient.signIn.social({
-                provider: 'facebook',
-              });
-            }}
-          >
-            Facebook
-          </Button>
-        </Stack>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            mt: 2,
-            mb: 2,
-          }}
-        >
-          <Divider
-            sx={{
-              flexGrow: 1,
-            }}
-          />
-          <Typography variant="body2" sx={{ textAlign: 'center', mx: 2 }}>
-            or
-          </Typography>
-          <Divider
-            sx={{
-              flexGrow: 1,
-            }}
-          />
-        </Box>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack direction={'column'} spacing={2} sx={{ maxWidth: '400px' }}>
+          <Stack direction={'column'} spacing={3} sx={{ maxWidth: '400px' }}>
             <TextFieldElement
-              label="Email"
-              name="email"
-              required
-              control={control}
-              fullWidth
-              type="email"
-              autoComplete="email"
-            />
-            <TextFieldElement
-              label="Password"
-              name="password"
+              label="New password"
+              name="newPassword"
               required
               control={control}
               fullWidth
               type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
+              autoComplete="new-password"
               slotProps={{
                 input: {
                   endAdornment: (
@@ -212,33 +149,19 @@ export function SignInPage() {
                 },
               }}
             />
-            {signIn.isError && (
+            {resetPassword.isError && (
               <Alert severity="error">
-                {signIn.error.message || 'An error occurred'}
+                {resetPassword.error.message || 'An error occurred'}
               </Alert>
             )}
             <Button
               variant="contained"
               type="submit"
-              loading={signIn.isPending}
+              loading={resetPassword.isPending}
               fullWidth
             >
-              Sign in
+              Reset password
             </Button>
-            <Box
-              sx={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-              }}
-            >
-              <RouterLink to="/app/sign-up" variant="caption">
-                Don't have an account?
-              </RouterLink>
-              <RouterLink to="/app/forgot-password" variant="caption">
-                Forgot password?
-              </RouterLink>
-            </Box>
           </Stack>
         </form>
       </Card>
