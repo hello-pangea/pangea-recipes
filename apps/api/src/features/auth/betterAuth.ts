@@ -5,6 +5,7 @@ import { ResetPassword, VerifyEmail } from '@open-zero/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { openAPI } from 'better-auth/plugins';
+import { claimRecipeBookInvites } from '../users/userUtils.ts';
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -79,4 +80,13 @@ export const auth = betterAuth({
     },
   },
   secret: config.BETTER_AUTH_SECRET,
+  databaseHooks: {
+    user: {
+      create: {
+        after: async (user) => {
+          await claimRecipeBookInvites(user);
+        },
+      },
+    },
+  },
 });

@@ -57,7 +57,7 @@ model RecipeBookMember {
 model RecipeBookInvite {
   createdAt DateTime @default(now()) @map("created_at")
 
-  inviteeEmailAddress String @map("invitee_email_address")
+  inviteeEmail String @map("invitee_email")
 
   recipeBookId String     @map("recipe_book_id") @db.Uuid
   recipeBook   RecipeBook @relation(fields: [recipeBookId], references: [id], onDelete: Cascade)
@@ -65,13 +65,11 @@ model RecipeBookInvite {
   invitedByUserId String @map("invited_by_user_id") @db.Uuid
   invitedByUser   User   @relation(fields: [invitedByUserId], references: [id], onDelete: Cascade)
 
-  clerkInviteId String? @map("clerk_invite_id")
-
   role Role
 
   claimedAt DateTime? @map("claimed_at")
 
-  @@id([inviteeEmailAddress, recipeBookId])
+  @@id([inviteeEmail, recipeBookId])
   @@map("recipe_book_invites")
 }
 

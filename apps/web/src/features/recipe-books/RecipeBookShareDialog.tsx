@@ -87,12 +87,12 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
     ...new Set(
       (
         recipeBooks?.map((recipeBook) =>
-          recipeBook.invites.map((invite) => invite.inviteeEmailAddress),
+          recipeBook.invites.map((invite) => invite.inviteeEmail),
         ) ?? []
       ).flat(),
     ),
   ].filter((email) =>
-    recipeBook?.invites.every((invite) => invite.inviteeEmailAddress !== email),
+    recipeBook?.invites.every((invite) => invite.inviteeEmail !== email),
   );
   const knownMembers =
     recipeBooks
@@ -323,7 +323,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 ))}
                 {recipeBook.invites.map((invitee) => (
                   <Box
-                    key={invitee.inviteeEmailAddress}
+                    key={invitee.inviteeEmail}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
@@ -350,7 +350,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         </Avatar>
                       </Tooltip>
                       <Box>
-                        <Typography>{invitee.inviteeEmailAddress}</Typography>
+                        <Typography>{invitee.inviteeEmail}</Typography>
                         <Typography variant="caption">
                           Invite sent ({invitee.role})
                         </Typography>
@@ -360,7 +360,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       onClick={() => {
                         deleteRecipeBookInvite.mutate({
                           recipeBookId,
-                          inviteeEmailAddress: invitee.inviteeEmailAddress,
+                          inviteeEmail: invitee.inviteeEmail,
                         });
                       }}
                     >

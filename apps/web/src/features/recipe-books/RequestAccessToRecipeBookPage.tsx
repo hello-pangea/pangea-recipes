@@ -12,7 +12,6 @@ import { useSignedInUserId } from '../auth/useSignedInUserId';
 const routeApi = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
 
 export function RequestAccessToRecipeBookPage() {
-  // const { user: clerkUser } = useUser();
   const userId = useSignedInUserId();
   const { data: user } = useSignedInUser();
   const requestAccessToRecipeBook = useRequestAccessToRecipeBook();
@@ -22,10 +21,7 @@ export function RequestAccessToRecipeBookPage() {
   });
   const [addNameDialogOpen, setAddNameDialogOpen] = useState(false);
 
-  // const signedInAs =
-  //   clerkUser?.primaryEmailAddress?.emailAddress ??
-  //   clerkUser?.fullName ??
-  //   'Guest';
+  const signedInAs = user?.email ?? 'Guest';
 
   return (
     <Box sx={{ p: 3, mt: 8 }}>
@@ -73,9 +69,9 @@ export function RequestAccessToRecipeBookPage() {
             </Button>
           </>
         )}
-        {/* <Typography variant="caption">
+        <Typography variant="caption">
           You're signed in as {signedInAs}
-        </Typography> */}
+        </Typography>
       </Container>
       <AddNameDialog
         open={addNameDialogOpen}
