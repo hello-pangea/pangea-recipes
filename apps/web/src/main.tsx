@@ -9,21 +9,11 @@ import { StrictMode, Suspense } from 'react';
 import ReactDOM from 'react-dom/client';
 import { App } from './App';
 import { config } from './config/config';
-import { getSessionToken } from './lib/clerk';
 import { AppProviders } from './providers/AppProviders';
 import { routeTree } from './routeTree.gen';
 
 updateApiOptions({
   prefixUrl: config.VITE_API_URL,
-  hooks: {
-    beforeRequest: [
-      async (request) => {
-        const token = await getSessionToken();
-
-        request.headers.set('Authorization', `Bearer ${token}`);
-      },
-    ],
-  },
 });
 const queryClient = new QueryClient({
   defaultOptions: {

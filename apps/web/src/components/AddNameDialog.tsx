@@ -1,5 +1,4 @@
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
-import { focusNextInput } from '#src/lib/focusNextInput';
 import { isBlank } from '#src/lib/isBlank';
 import {
   Button,
@@ -15,8 +14,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form';
 import { TextFieldElement } from 'react-hook-form-mui';
 
 interface NameFormInputs {
-  firstName: string;
-  lastName: string | null;
+  name: string;
 }
 
 interface Props {
@@ -29,8 +27,7 @@ export function AddNameDialog({ open, onClose }: Props) {
   const updateUser = useUpdateUser();
   const { handleSubmit, control } = useForm<NameFormInputs>({
     defaultValues: {
-      firstName: '',
-      lastName: null,
+      name: '',
     },
   });
 
@@ -38,8 +35,7 @@ export function AddNameDialog({ open, onClose }: Props) {
     updateUser.mutate(
       {
         id: userId,
-        firstName: data.firstName,
-        lastName: data.lastName,
+        name: data.name,
       },
       {
         onSuccess: () => {
@@ -66,13 +62,16 @@ export function AddNameDialog({ open, onClose }: Props) {
           </DialogContentText>
           <Stack spacing={2}>
             <TextFieldElement
-              label="First name"
-              name="firstName"
+              label="Name"
+              name="name"
               control={control}
               fullWidth
               required
               onKeyDown={(event) => {
-                focusNextInput(event, 'input[name="lastName"]');
+                if (event.key === 'Enter') {
+                  event.preventDefault();
+                  void handleSubmit(onSubmit)();
+                }
               }}
               rules={{
                 validate: (value) => {
@@ -82,18 +81,6 @@ export function AddNameDialog({ open, onClose }: Props) {
 
                   return true;
                 },
-              }}
-            />
-            <TextFieldElement
-              label="Last name"
-              name="lastName"
-              control={control}
-              fullWidth
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  event.preventDefault();
-                  void handleSubmit(onSubmit)();
-                }
               }}
             />
           </Stack>

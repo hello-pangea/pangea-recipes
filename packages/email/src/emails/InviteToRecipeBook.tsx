@@ -15,19 +15,15 @@ import {
 import { type ReactNode } from 'react';
 
 interface EmailProps {
+  url: string;
   recipeBookName: string;
-  requesterName: string;
-  ownerName?: string;
-  managerLink: string;
 }
 
-export function RequestToJoinRecipeBookEmail({
-  recipeBookName,
-  managerLink,
-  ownerName,
-  requesterName,
+export function InviteToRecipeBook({
+  url = 'https://hellorecipes.com',
+  recipeBookName = 'Amazing Recipes',
 }: EmailProps): ReactNode {
-  const previewText = `Share a recipe book? ${requesterName} is requesting access to ${recipeBookName}.`;
+  const previewText = `Invite to recipe book "${recipeBookName}"`;
 
   return (
     <Html>
@@ -46,30 +42,27 @@ export function RequestToJoinRecipeBookEmail({
               />
             </Section>
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-              Share a recipe book?
+              Join "{recipeBookName}"
             </Heading>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello{ownerName ? ` ${ownerName}` : ''},
+              Hello,
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              {requesterName} is <strong>requesting access</strong> to "
-              {recipeBookName}"
-            </Text>
-            <Text className="text-black text-[14px] leading-[24px]">
-              {recipeBookName}
+              You've been invited to join the recipe book "{recipeBookName}" on
+              Hello Recipes.
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button
                 className="box-border w-full rounded-[8px] bg-indigo-600 px-[12px] py-[12px] text-center font-semibold text-white"
-                href={managerLink}
+                href={url}
               >
-                Accept the invite
+                Accept invitation
               </Button>
             </Section>
             <Text className="text-black text-[14px] leading-[24px]">
               or copy and paste this URL into your browser:{' '}
-              <Link href={managerLink} className="text-blue-600 no-underline">
-                {managerLink}
+              <Link href={url} className="text-blue-600 no-underline">
+                {url}
               </Link>
             </Text>
           </Container>
@@ -78,3 +71,5 @@ export function RequestToJoinRecipeBookEmail({
     </Html>
   );
 }
+
+export default InviteToRecipeBook;

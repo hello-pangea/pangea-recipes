@@ -14,8 +14,7 @@ export const recipeBookRequestSchema = Type.Object(
     createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
 
     userId: Type.String({ format: 'uuid' }),
-    firstName: Type.String(),
-    lastName: Nullable(Type.String()),
+    name: Nullable(Type.String()),
   },
   { $id: recipeBookRequestSchemaId },
 );

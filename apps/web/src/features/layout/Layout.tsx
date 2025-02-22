@@ -1,6 +1,5 @@
 import { RouterLink } from '#src/components/RouterLink';
 import { Sidebar } from '#src/features/layout/Sidebar';
-import { useUser } from '@clerk/tanstack-start';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
   AppBar,
@@ -21,10 +20,10 @@ import {
   getRouteApi,
   Navigate,
   Outlet,
-  useNavigate,
   useRouter,
 } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+import { authClient } from '../auth/authClient';
 import { NewButton } from './NewButton';
 
 const route = getRouteApi('/app/_layout');
@@ -34,10 +33,9 @@ export function Layout() {
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const { user: clerkUser, isLoaded, isSignedIn } = useUser();
+  const { data: session, isPending, error } = authClient.useSession();
   const router = useRouter();
   const routeContext = route.useRouteContext();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { data: user } = useSignedInUser();
   const { setMode } = useColorScheme();
@@ -49,34 +47,20 @@ export function Layout() {
   }, [user?.themePreference, setMode]);
 
   useEffect(() => {
-    if (isLoaded && isSignedIn) {
-      if (!clerkUser.publicMetadata.helloRecipesUserId) {
-        void navigate({
-          to: '/app/finish-sign-up',
-        });
-      }
-
+    if (!isPending && error) {
       if (!routeContext.userId) {
+        console.log('Invalidate');
+
         void router.invalidate();
         void queryClient.invalidateQueries({
           queryKey: getSignedInUserQueryOptions().queryKey,
         });
       }
     }
-  }, [
-    isSignedIn,
-    isLoaded,
-    router,
-    clerkUser?.publicMetadata.helloRecipesUserId,
-    queryClient,
-    navigate,
-    routeContext.userId,
-  ]);
+  }, [isPending, error, router, queryClient, routeContext.userId]);
 
-  if (isLoaded && clerkUser && !clerkUser.publicMetadata.helloRecipesUserId) {
-    return <Navigate to="/app/finish-sign-up" />;
-  } else if (isLoaded && !clerkUser) {
-    return <Navigate to="/app/sign-in/$" />;
+  if (!isPending && !error && !session) {
+    return <Navigate to="/app/sign-in" />;
   }
 
   if (!routeContext.userId) {

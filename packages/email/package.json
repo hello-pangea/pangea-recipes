@@ -15,7 +15,8 @@
     "build": "tsc",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsc --watch",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "preview": "email dev --port 3002 --dir src/emails"
   },
   "dependencies": {
     "@react-email/components": "^0.0.33",
@@ -27,6 +28,7 @@
     "@open-zero/typescript-config": "workspace:*",
     "@types/node": "^22.13.4",
     "@types/react": "^19.0.10",
+    "react-email": "^3.0.7",
     "typescript": "~5.7.3"
   }
 }

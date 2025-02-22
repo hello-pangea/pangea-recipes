@@ -1,3 +1,4 @@
+import { authRoutes } from '#src/features/auth/authRoutes.ts';
 import { canonicalIngredientRoutes } from '#src/features/canonical-ingredients/canonicalIngredientRoutes.ts';
 import { recipeBookRequestRoutes } from '#src/features/recipe-book-requests/recipeBookRequestRoutes.ts';
 import { imageRoutes } from '../features/images/imageRoutes.ts';
@@ -19,4 +20,5 @@ export async function routes(fastify: FastifyTypebox) {
   });
   await fastify.register(imageRoutes, { prefix: '/images' });
   await fastify.register(userRoutes, { prefix: '/users' });
+  await fastify.register(authRoutes);
 }

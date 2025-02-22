@@ -1,0 +1,74 @@
+model Session {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// The unique session token
+  token String @unique
+
+  /// The time when the session expires
+  expiresAt DateTime @map("expires_at")
+
+  /// The IP address of the device
+  ipAddress String? @map("ip_address")
+
+  /// The user agent information of the device
+  userAgent String? @map("user_agent")
+
+  @@map("sessions")
+}
+
+model Account {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  /// The id of the account as provided by the SSO or equal to userId for credential accounts
+  accountId  String @map("account_id")
+  /// The id of the provider
+  providerId String @map("provider_id")
+
+  /// The access token of the account. Returned by the provider
+  accessToken  String? @map("access_token")
+  /// The refresh token of the account. Returned by the provider
+  refreshToken String? @map("refresh_token")
+
+  /// The time when the verification request expires
+  accessTokenExpiresAt  DateTime? @map("access_token_expires_at")
+  /// The time when the verification request expires
+  refreshTokenExpiresAt DateTime? @map("refresh_token_expires_at")
+
+  /// The scope of the account. Returned by the provider
+  scope String?
+
+  /// The id token returned from the provider
+  idToken String? @map("id_token")
+
+  /// The password of the account. Mainly used for email and password authentication
+  password String?
+
+  @@map("accounts")
+}
+
+model Verification {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
+
+  /// The identifier for the verification request
+  identifier String
+
+  /// The value to be verified
+  value String
+
+  /// The time when the verification request expires
+  expiresAt DateTime @map("expires_at")
+
+  @@map("verifications")
+}

@@ -1,15 +1,16 @@
 model User {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @default(now()) @map("updated_at")
 
-  emailAddress String? @unique @map("email_address")
-  phoneNumber  String? @unique @map("phone_number")
-  firstName    String? @map("first_name")
-  lastName     String? @map("last_name")
+  name String
 
-  clerkUserId String @unique @map("clerk_user_id")
+  email         String  @unique @map("email")
+  emailVerified Boolean @map("email_verified")
 
-  accessRole AccessRole @map("access_role")
+  image String?
+
+  accessRole AccessRole @default(user) @map("access_role")
 
   themePreference ThemePreference @default(system) @map("theme_preference")
 
@@ -20,6 +21,8 @@ model User {
   recipeBooks        RecipeBookMember[]
   recipeBookInvites  RecipeBookInvite[]
   recipeBookRequests RecipeBookRequest[]
+  sessions           Session[]
+  accounts           Account[]
 
   @@map("users")
 }

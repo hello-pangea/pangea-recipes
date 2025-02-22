@@ -1,14 +1,15 @@
-import { clerkPlugin, getAuth } from '@clerk/fastify';
-import auth from '@fastify/auth';
+import { auth } from '#src/features/auth/betterAuth.ts';
+import fastifyAuth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fastifySensible from '@fastify/sensible';
-import openApi from '@fastify/swagger';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import scalar from '@scalar/fastify-api-reference';
 import * as Sentry from '@sentry/node';
+import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
-import { config, enablePrettyLogs } from '../config/config.ts';
+import { enablePrettyLogs } from '../config/config.ts';
+import { customOpenApi } from './customOpenApi.ts';
 import { routes } from './routes.ts';
 import schemaPlugin from './schemaPlugin.ts';
 
@@ -35,7 +36,7 @@ export async function createServer() {
   // Fastify plugins
   // -
 
-  void fastify.register(cors, {
+  await fastify.register(cors, {
     credentials: true,
     origin: [
       'http://localhost:3000',
@@ -45,87 +46,20 @@ export async function createServer() {
     ],
   });
 
-  void fastify.register(helmet);
+  await fastify.register(helmet);
 
-  void fastify.register(auth);
+  await fastify.register(fastifyAuth);
 
-  void fastify.register(fastifySensible);
-
-  const openApiServers = [
-    {
-      url: 'https://api.hellorecipes.com',
-      description: 'Production',
-    },
-    {
-      url: 'http://localhost:3001',
-      description: 'Local',
-    },
-  ];
-
-  void fastify.register(openApi, {
-    openapi: {
-      info: {
-        title: 'Hello Recipes',
-        description: 'A recipe management app by Open Zero',
-        version: '1.0.0',
-      },
-      tags: [
-        {
-          name: 'Foods',
-          description: 'Food related endpoints',
-        },
-        {
-          name: 'Recipes',
-          description: 'Recipe related endpoints',
-        },
-        {
-          name: 'Recipe books',
-          description: 'Collections of recipes that you can share with others',
-        },
-        {
-          name: 'Users',
-          description: 'User related endpoints',
-        },
-        {
-          name: 'Imported recipes',
-          description: 'Import recipes from other websites',
-        },
-      ],
-      servers:
-        config.NODE_ENV === 'development'
-          ? openApiServers.reverse()
-          : openApiServers,
-    },
-    // https://stackoverflow.com/a/77501891
-    refResolver: {
-      buildLocalReference(json, _baseUri, _fragment, i) {
-        // This mirrors the default behaviour
-        // see: https://github.com/fastify/fastify-swagger/blob/1b53e376b4b752481643cf5a5655c284684383c3/lib/mode/dynamic.js#L17
-        if (!json['title'] && json['$id']) {
-          json['title'] = json['$id'];
-        }
-        // Fallback if no $id is present
-        if (!json['$id']) {
-          return `def-${String(i)}`;
-        }
-
-        // eslint-disable-next-line @typescript-eslint/no-base-to-string
-        return String(json['$id']);
-      },
-    },
-  });
+  await fastify.register(fastifySensible);
 
   // -
   // Custom plugins
   // -
 
-  void fastify.register(schemaPlugin);
+  await fastify.register(customOpenApi);
 
-  await fastify.register(clerkPlugin, {
-    hookName: 'onRequest',
-  });
+  await fastify.register(schemaPlugin);
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   await fastify.register(scalar, {
     routePrefix: '/api-docs',
   });
@@ -140,21 +74,18 @@ export async function createServer() {
   // Hooks
   // -
 
-  // eslint-disable-next-line @typescript-eslint/require-await
   fastify.addHook('onRequest', async (request) => {
-    const { userId: clerkUserId, sessionClaims } = getAuth(request);
+    const session = await auth.api.getSession({
+      headers: fromNodeHeaders(request.headers),
+    });
 
-    if (!clerkUserId) {
-      return;
-    }
-
-    if (!sessionClaims.metadata.helloRecipesUserId) {
+    if (!session) {
       return;
     }
 
     request.session = {
-      userId: sessionClaims.metadata.helloRecipesUserId,
-      accessRole: sessionClaims.metadata.accessRole ?? 'user',
+      userId: session.user.id,
+      accessRole: 'user',
     };
   });
 
@@ -182,7 +113,7 @@ export async function createServer() {
   // Services
   // -
 
-  void fastify.register(routes);
+  await fastify.register(routes);
 
   await fastify.ready();
   fastify.swagger();

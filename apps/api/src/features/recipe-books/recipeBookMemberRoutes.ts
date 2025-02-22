@@ -1,8 +1,9 @@
 import { config } from '#src/config/config.ts';
+import { resend } from '#src/lib/resend.ts';
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { noContentSchema } from '#src/types/noContent.ts';
-import { clerkClient } from '@clerk/fastify';
 import { prisma } from '@open-zero/database';
+import { InviteToRecipeBook } from '@open-zero/email';
 import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipe-books';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.ts';
@@ -36,6 +37,12 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
         throw new Error('Must provide emails or userIds');
       }
 
+      const recipeBook = await prisma.recipeBook.findUniqueOrThrow({
+        where: {
+          id: recipeBookId,
+        },
+      });
+
       const existingUsers = await prisma.user.findMany({
         where: {
           OR: [
@@ -45,7 +52,7 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
               },
             },
             {
-              emailAddress: {
+              email: {
                 in: emails,
               },
             },
@@ -55,29 +62,32 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
 
       if (emails) {
         const emailsWithNoUser = emails.filter(
-          (email) => !existingUsers.some((user) => user.emailAddress === email),
+          (email) => !existingUsers.some((user) => user.email === email),
         );
 
         const signUpUrl =
           config.NODE_ENV === 'development'
-            ? `http://localhost:3000/sign-up`
-            : `https://hellorecipes.com/sign-up`;
+            ? `http://localhost:3000/app/sign-up`
+            : `https://hellorecipes.com/app/sign-up`;
 
         for (const email of emailsWithNoUser) {
-          const clerkInvite = await clerkClient.invitations.createInvitation({
-            emailAddress: email,
-            notify: true,
-            ignoreExisting: true,
-            redirectUrl: signUpUrl,
+          await resend.emails.send({
+            from: 'Hello Recipes <invites@notify.hellorecipes.com>',
+            to: email,
+            subject: `You've been invited to join a recipe book on Hello Recipes`,
+            replyTo: 'hello@hellorecipes.com',
+            react: InviteToRecipeBook({
+              url: signUpUrl,
+              recipeBookName: recipeBook.name,
+            }),
           });
 
           await prisma.recipeBookInvite.create({
             data: {
               recipeBookId: recipeBookId,
-              inviteeEmailAddress: email,
+              inviteeEmail: email,
               invitedByUserId: request.session.userId,
               role: role,
-              clerkInviteId: clerkInvite.id,
             },
           });
         }
@@ -140,7 +150,7 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
           recipeBookId: Type.String({ format: 'uuid' }),
         }),
         body: Type.Object({
-          inviteeEmailAddress: Type.String({ format: 'email' }),
+          inviteeEmail: Type.String({ format: 'email' }),
         }),
         response: {
           200: noContentSchema,
@@ -149,13 +159,13 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
     },
     async (request) => {
       const { recipeBookId } = request.params;
-      const { inviteeEmailAddress } = request.body;
+      const { inviteeEmail } = request.body;
 
       await prisma.recipeBookInvite.delete({
         where: {
-          inviteeEmailAddress_recipeBookId: {
+          inviteeEmail_recipeBookId: {
             recipeBookId: recipeBookId,
-            inviteeEmailAddress: inviteeEmailAddress,
+            inviteeEmail: inviteeEmail,
           },
         },
       });

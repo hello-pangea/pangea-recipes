@@ -1,100 +1,13 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
-import { clerkClient, getAuth } from '@clerk/fastify';
 import { prisma } from '@open-zero/database';
 import { updateUserDtoSchema, userSchemaRef } from '@open-zero/features/users';
 import { Type } from '@sinclair/typebox';
-import { ApiError } from '../../lib/ApiError.ts';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Users';
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function userRoutes(fastify: FastifyTypebox) {
-  fastify.post(
-    '/setup',
-    {
-      schema: {
-        tags: [routeTag],
-        summary: 'Setup a new user after Clerk auth',
-        response: {
-          200: Type.Object({
-            user: userSchemaRef,
-          }),
-        },
-      },
-    },
-    async (request) => {
-      const { userId: clerkUserId } = getAuth(request);
-
-      if (!clerkUserId) {
-        throw new ApiError({
-          statusCode: 401,
-          message: 'Unauthorized',
-          name: 'AuthError',
-        });
-      }
-
-      const clerkUser = await clerkClient.users.getUser(clerkUserId);
-
-      const user = await prisma.user.upsert({
-        where: {
-          clerkUserId: clerkUserId,
-        },
-        create: {
-          emailAddress: clerkUser.primaryEmailAddress?.emailAddress ?? null,
-          phoneNumber: clerkUser.primaryPhoneNumber?.phoneNumber ?? null,
-          firstName: clerkUser.firstName ?? null,
-          lastName: clerkUser.lastName ?? null,
-          accessRole: 'user',
-          clerkUserId: clerkUserId,
-        },
-        update: {},
-      });
-
-      await clerkClient.users.updateUserMetadata(clerkUserId, {
-        publicMetadata: {
-          helloRecipesUserId: user.id,
-          accessRole: user.accessRole,
-        },
-      });
-
-      if (user.emailAddress) {
-        const now = new Date();
-
-        const recipeBookInvites = await prisma.recipeBookInvite.findMany({
-          where: {
-            inviteeEmailAddress: user.emailAddress,
-          },
-        });
-
-        await prisma.$transaction(async (prisma) => {
-          if (!user.emailAddress) {
-            return;
-          }
-
-          await prisma.recipeBookInvite.updateMany({
-            where: {
-              inviteeEmailAddress: user.emailAddress,
-            },
-            data: {
-              claimedAt: now,
-            },
-          });
-
-          await prisma.recipeBookMember.createMany({
-            data: recipeBookInvites.map((invite) => ({
-              recipeBookId: invite.recipeBookId,
-              userId: user.id,
-              role: invite.role,
-            })),
-          });
-        });
-      }
-
-      return { user: user };
-    },
-  );
-
   fastify.get(
     '/:userId',
     {
@@ -185,8 +98,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { themePreference, unitsPreference, firstName, lastName } =
-        request.body;
+      const { themePreference, unitsPreference, name } = request.body;
       const { userId } = request.params;
 
       if (userId !== request.session?.userId) {
@@ -200,8 +112,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
         data: {
           themePreference: themePreference,
           unitsPreference: unitsPreference,
-          firstName: firstName,
-          lastName: lastName,
+          name: name,
         },
       });
 

@@ -13,11 +13,12 @@ export const userSchema = Type.Object(
 
     createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
 
-    firstName: Nullable(Type.String()),
-    lastName: Nullable(Type.String()),
+    name: Type.String(),
 
-    emailAddress: Nullable(Type.String()),
-    phoneNumber: Nullable(Type.String()),
+    email: Type.String(),
+    emailVerified: Type.Boolean(),
+
+    image: Nullable(Type.String()),
 
     accessRole: Type.Union([Type.Literal('admin'), Type.Literal('user')]),
 

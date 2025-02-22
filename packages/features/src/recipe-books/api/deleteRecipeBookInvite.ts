@@ -5,13 +5,13 @@ import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
 interface DeleteRecipeBookInvite {
   recipeBookId: string;
-  inviteeEmailAddress: string;
+  inviteeEmail: string;
 }
 
 function deleteRecipeBookInvite(data: DeleteRecipeBookInvite) {
   return api.delete(`recipe-books/${data.recipeBookId}/invitations`, {
     json: {
-      inviteeEmailAddress: data.inviteeEmailAddress,
+      inviteeEmail: data.inviteeEmail,
     },
   });
 }

@@ -87,21 +87,21 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
     ...new Set(
       (
         recipeBooks?.map((recipeBook) =>
-          recipeBook.invites.map((invite) => invite.inviteeEmailAddress),
+          recipeBook.invites.map((invite) => invite.inviteeEmail),
         ) ?? []
       ).flat(),
     ),
   ].filter((email) =>
-    recipeBook?.invites.every((invite) => invite.inviteeEmailAddress !== email),
+    recipeBook?.invites.every((invite) => invite.inviteeEmail !== email),
   );
   const knownMembers =
     recipeBooks
       ?.map((recipeBook) =>
         recipeBook.members
-          .filter((member) => member.firstName)
+          .filter((member) => member.name)
           .map((member) => ({
             userId: member.userId,
-            name: `${member.firstName}${member.lastName ? ` ${member.lastName}` : ''}`,
+            name: member.name,
           })),
       )
       .flat()
@@ -167,11 +167,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     py: 0.5,
                   }}
                 >
-                  <Typography>
-                    {request.firstName}
-                    {request.lastName ? ` ${request.lastName}` : ''} requested
-                    to join
-                  </Typography>
+                  <Typography>{request.name} requested to join</Typography>
                   <Button
                     variant="text"
                     onClick={() => {
@@ -305,8 +301,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       <Box>
                         <Typography>
                           {member.userId === userId ? '(You) ' : ''}
-                          {member.firstName}
-                          {member.lastName ? ` ${member.lastName}` : ''}
+                          {member.name}
                         </Typography>
                         <Typography variant="caption">{member.role}</Typography>
                       </Box>
@@ -328,7 +323,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 ))}
                 {recipeBook.invites.map((invitee) => (
                   <Box
-                    key={invitee.inviteeEmailAddress}
+                    key={invitee.inviteeEmail}
                     sx={{
                       display: 'flex',
                       alignItems: 'center',
@@ -355,7 +350,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         </Avatar>
                       </Tooltip>
                       <Box>
-                        <Typography>{invitee.inviteeEmailAddress}</Typography>
+                        <Typography>{invitee.inviteeEmail}</Typography>
                         <Typography variant="caption">
                           Invite sent ({invitee.role})
                         </Typography>
@@ -365,7 +360,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       onClick={() => {
                         deleteRecipeBookInvite.mutate({
                           recipeBookId,
-                          inviteeEmailAddress: invitee.inviteeEmailAddress,
+                          inviteeEmail: invitee.inviteeEmail,
                         });
                       }}
                     >
@@ -535,13 +530,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             {
               recipeBook.requests.find(
                 (request) => request.id === reviewRequestId,
-              )?.firstName
-            }
-            {recipeBook.requests.find(
-              (request) => request.id === reviewRequestId,
-            )?.lastName
-              ? ` ${recipeBook.requests.find((request) => request.id === reviewRequestId)?.lastName}`
-              : ''}{' '}
+              )?.name
+            }{' '}
             requested to join {recipeBook.name}.
           </Typography>
           <FormControl sx={{ minWidth: 100 }}>

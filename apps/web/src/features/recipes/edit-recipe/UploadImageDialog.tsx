@@ -1,5 +1,4 @@
 import { config } from '#src/config/config';
-import { getSessionToken } from '#src/lib/clerk';
 import {
   Button,
   Dialog,
@@ -32,13 +31,7 @@ export function UploadImageDialog({ open, onClose }: Props) {
     })
       .use(XHR, {
         endpoint: `${config.VITE_API_URL}/images`,
-        onBeforeRequest: async (request) => {
-          const token = await getSessionToken();
-
-          if (token) {
-            request.setRequestHeader('Authorization', `Bearer ${token}`);
-          }
-        },
+        withCredentials: true,
       })
       .once('complete', (res) => {
         const uploadRes = res.successful?.at(0);

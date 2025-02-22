@@ -1,7 +1,7 @@
 import { Copyright } from '#src/components/Copyright';
 import { RouterButton } from '#src/components/RouterButton';
-import { useUser } from '@clerk/tanstack-start';
 import { alpha, Box, Container, Grid2, Stack, Typography } from '@mui/material';
+import { useSignedInUser } from '@open-zero/features/users';
 import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
 import { Header } from './Header';
@@ -10,9 +10,9 @@ import { PhoneDemo } from './PhoneDemo';
 import { ShareDialogDemo } from './ShareDialogDemo';
 
 export function HomePage() {
-  const { isSignedIn } = useUser();
+  const { data: user } = useSignedInUser();
 
-  if (isSignedIn) {
+  if (user) {
     return <Navigate to="/app/recipes" />;
   }
 
@@ -165,7 +165,7 @@ export function HomePage() {
                 All your recipes on all your devices. Create recipe books with
                 friends and family.
               </Typography>
-              <RouterButton to="/app/sign-up/$" variant="contained">
+              <RouterButton to="/app/sign-up" variant="contained">
                 Sign up for free
               </RouterButton>
             </Box>
@@ -356,7 +356,7 @@ export function HomePage() {
             Hello Recipes is free to use. We don't have ads, trackers, popups,
             or distractions. We never sell data. Enjoy your recipes, your way.
           </Typography>
-          <RouterButton to="/app/sign-up/$" variant="contained">
+          <RouterButton to="/app/sign-up" variant="contained">
             Sign up
           </RouterButton>
         </Box>

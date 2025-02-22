@@ -12,7 +12,7 @@
     "clean": "turbo run clean",
     "db:deploy": "turbo run db:deploy",
     "db:generate": "turbo run db:generate",
-    "db:migrate": "turbo run db:migrate",
+    "db:migrate": "pnpm run -F=database db:migrate",
     "db:nuke": "turbo run db:nuke",
     "db:studio": "pnpm run -F=database db:studio",
     "dev": "turbo run dev",
@@ -21,6 +21,7 @@
     "format:package-json": "sort-package-json \"package.json\" \"apps/*/package.json\" \"packages/*/package.json\"",
     "format:prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "turbo run lint",
+    "preview-emails": "pnpm run -F=email preview",
     "test": "turbo run test"
   },
   "devDependencies": {

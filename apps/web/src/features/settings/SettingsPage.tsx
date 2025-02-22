@@ -1,9 +1,9 @@
 import { Page } from '#src/components/Page';
-import { useAuth } from '@clerk/tanstack-start';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
 import {
+  Alert,
   Box,
   Button,
   Stack,
@@ -16,15 +16,27 @@ import {
   useUpdateUser,
   type User,
 } from '@open-zero/features/users';
+import { useMutation } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
+import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { authClient } from '../auth/authClient';
 
 export function SettingsPage() {
   const { data: user } = useSignedInUser();
   const updateUser = useUpdateUser();
   const [isLoading, setIsLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
-  const { signOut } = useAuth();
+  const verifyEmail = useMutation({
+    mutationFn: (data: { email: string; callbackURL: string }) => {
+      return authClient.sendVerificationEmail(data, {
+        onError: (ctx) => {
+          throw ctx.error;
+        },
+      });
+    },
+  });
 
   if (!user) {
     return null;
@@ -35,6 +47,51 @@ export function SettingsPage() {
       <Typography variant="h1" sx={{ mb: 4 }}>
         Settings
       </Typography>
+      {!user.emailVerified && (
+        <Alert
+          severity={!verifyEmail.isSuccess ? 'warning' : 'success'}
+          sx={{ mb: 2 }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              ml: '5px',
+            }}
+          >
+            {!verifyEmail.isSuccess
+              ? "Your email hasn't been verified"
+              : 'Verification email sent'}
+            {!verifyEmail.isSuccess && (
+              <Button
+                color="inherit"
+                size="small"
+                loading={verifyEmail.isPending}
+                disabled={verifyEmail.isSuccess}
+                onClick={() => {
+                  verifyEmail.mutate(
+                    {
+                      email: user.email,
+                      callbackURL: `${location.origin}/app/recipes`,
+                    },
+                    {
+                      onError: () => {
+                        enqueueSnackbar('Failed to send verification email', {
+                          variant: 'error',
+                        });
+                      },
+                    },
+                  );
+                }}
+                sx={{ ml: '-5px' }}
+              >
+                Send verification email
+              </Button>
+            )}
+          </Box>
+        </Alert>
+      )}
       <Stack spacing={6}>
         <Box>
           <Typography variant="h2" sx={{ mb: 2 }}>
@@ -92,7 +149,7 @@ export function SettingsPage() {
           onClick={() => {
             setIsLoading(true);
 
-            void signOut().then(() => {
+            void authClient.signOut().then(() => {
               void router.invalidate();
             });
           }}
