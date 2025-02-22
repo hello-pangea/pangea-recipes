@@ -119,6 +119,7 @@ export function SignInPage() {
             onClick={() => {
               void authClient.signIn.social({
                 provider: 'google',
+                callbackURL: `${location.origin}/app/recipes`,
               });
             }}
           >
@@ -132,6 +133,7 @@ export function SignInPage() {
             onClick={() => {
               void authClient.signIn.social({
                 provider: 'facebook',
+                callbackURL: `${location.origin}/app/recipes`,
               });
             }}
           >
