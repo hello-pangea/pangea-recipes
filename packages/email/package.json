@@ -15,8 +15,8 @@
     "build": "tsc",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsc --watch",
-    "preview": "email dev --port 3002 --dir src/emails",
-    "lint": "eslint src/"
+    "lint": "eslint src/",
+    "preview": "email dev --port 3002 --dir src/emails"
   },
   "dependencies": {
     "@react-email/components": "^0.0.33",
