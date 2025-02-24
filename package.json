@@ -25,7 +25,7 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "prettier": "^3.5.1",
+    "prettier": "^3.5.2",
     "sort-package-json": "^2.14.0",
     "tsx": "^4.19.3",
     "turbo": "^2.4.2"
