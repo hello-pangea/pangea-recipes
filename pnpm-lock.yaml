@@ -248,7 +248,7 @@ importers:
         version: 7.54.2(react@19.0.0)
       react-hook-form-mui:
         specifier: ^7.5.0
-        version: 7.5.0(birdzgbfwymwdq2gtfn3ely4vy)
+        version: 7.5.0(f33225b2731e6d571e53e885735b9f37)
       zod:
         specifier: ^3.24.2
         version: 3.24.2
@@ -10046,7 +10046,7 @@ snapshots:
       - supports-color
       - utf-8-validate
 
-  react-hook-form-mui@7.5.0(birdzgbfwymwdq2gtfn3ely4vy):
+  react-hook-form-mui@7.5.0(f33225b2731e6d571e53e885735b9f37):
     dependencies:
       '@mui/material': 6.4.5(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(@types/react@19.0.10)(react@19.0.0))(@types/react@19.0.10)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       react: 19.0.0
