@@ -58,6 +58,9 @@ COPY --from=pruner /app/out/json/ .
 RUN --mount=type=cache,id=s/b9208e6a-e6a5-4f3b-9d15-9ec6b9af948d-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
     pnpm install --frozen-lockfile --offline --silent
 
+RUN --mount=type=cache,id=s/b9208e6a-e6a5-4f3b-9d15-9ec6b9af948d-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
+    pnpm rebuild -F=database
+
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
 
