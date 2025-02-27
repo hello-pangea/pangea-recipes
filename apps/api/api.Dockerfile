@@ -83,9 +83,9 @@ ENV NODE_ENV="production"
 
 COPY --chown=node:node --from=builder /app .
 
-ARG PORT
-ENV PORT=${PORT}
+# ARG PORT
+# ENV PORT=${PORT}
 
-EXPOSE ${PORT}
+EXPOSE 8080
 
 CMD ["node", "--experimental-strip-types", "--import", "./apps/api/src/instrument.ts", "apps/api/src/index.ts"]
