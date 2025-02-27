@@ -10,6 +10,9 @@ RUN apt-get update -y && apt-get install -y --no-install-recommends openssl && r
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
+ARG RAILWAY_SERVICE_ID
+ENV RAILWAY_SERVICE_ID=${RAILWAY_SERVICE_ID}
+
 # Enable corepack and install turbo globally
 RUN corepack enable && npm install -g corepack@latest
 
