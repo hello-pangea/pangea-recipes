@@ -4,68 +4,85 @@
 FROM node:22-bookworm-slim AS base
 
 # Install openssl and clean up in a single layer
-RUN apt-get update -y && apt-get install -y openssl
+# Required for prisma
+RUN apt-get update -y && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
 
-# Playwright vars
-ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
-# PNPM vars
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
 # Enable corepack and install turbo globally
-RUN corepack enable && npm install -g corepack@latest && pnpm install turbo --global
+RUN corepack enable && npm install -g corepack@latest
 
-RUN pnpm dlx playwright-chromium install chromium --with-deps && rm -rf /var/lib/apt/lists/*
+# Global turborepo
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install turbo@2.4.4 --global
 
-# Builder stage
-FROM base AS builder
+# Playwright setup (basically downloads chromium)
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm dlx playwright-chromium@1.50.1 install chromium --with-deps
+
+# ---
+# - We download packages asap to avoid re-downloads on code changes
+# - We only redownload when the lockfile changes
+# ---
+FROM base AS fetcher
+
+COPY pnpm*.yaml ./
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm fetch --ignore-scripts
+
+# ---
+# Use turbo prone to pull out relevant deps only
+# ---
+FROM base AS pruner
 
 WORKDIR /app
 COPY . .
 RUN turbo prune api --docker
 
-# Installer stage
-FROM base AS installer
+# ---
+# Build the app
+# ---
+FROM fetcher AS builder
 
 WORKDIR /app
 
-# pnpm fetch is expensive
-# We only copy over package.jsons and other dep stuff before running it
-# That way changing code won't invalidate the dependency step
-COPY --from=builder /app/out/json/ .
-RUN pnpm fetch
+# Copy lockfile and package.json's of isolated subworkspace
+COPY --from=pruner /app/out/pnpm-lock.yaml ./pnpm-lock.yaml
+COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
+COPY --from=pruner /app/out/json/ .
 
-# Now copy over the rest of the source code
+# Install all deps (prod & dev) from the cache
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --frozen-lockfile --offline --silent
 
-COPY --from=builder /app/out/full/ .
-COPY turbo.json turbo.json
+# Copy source code of isolated subworkspace
+COPY --from=pruner /app/out/full/ .
 
-# Should be quick due to the earlier fetch
-RUN pnpm install --frozen-lockfile --offline
-
-# Force prisma's postinstall script to work properly
-RUN pnpm rebuild -F=database
-
-# Build :)
+# Time to build! :)
 RUN turbo build --filter=api...
 
-# Prune dev deps away
-# https://pnpm.io/cli/prune
-# This is breaking the build, so we'll skip it for now
-# RUN rm -rf node_modules
-# RUN pnpm install --frozen-lockfile --offline --production
+# Remove all deps then install only prod deps
+RUN rm -rf node_modules
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
+    pnpm install --prod --frozen-lockfile --offline --silent
 
+# ---
+# Run the app (yippee!)
+# ---
 FROM base AS runner
-
-# Set node to production after installing dependencies and before building
-ENV NODE_ENV="production"
 
 USER node
 
 WORKDIR /app
 
-COPY --from=installer --chown=node:node /app .
+ENV NODE_ENV="production"
 
-EXPOSE 8080
+COPY --chown=node:node --from=builder /app .
+
+ARG PORT
+ENV PORT=${PORT}
+
+EXPOSE ${PORT}
 
 CMD ["node", "--experimental-strip-types", "--import", "./apps/api/src/instrument.ts", "apps/api/src/index.ts"]

@@ -37,10 +37,15 @@ services:
     container_name: api
     build:
       context: .
-      dockerfile: ./apps/api/Dockerfile
+      dockerfile: ./apps/api/api.Dockerfile
     restart: always
     ports:
       - 3001:3001
+    env_file:
+      - ./apps/api/.env
+    environment:
+      - PORT=3001
+      - NODE_ENV=production
 
 volumes:
   postgres-data:
