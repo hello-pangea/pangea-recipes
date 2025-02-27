@@ -50,9 +50,6 @@ export function RecipeBookMoreMenu({
         anchorEl={anchorEl}
         open={open}
         onClose={onClose}
-        MenuListProps={{
-          'aria-labelledby': 'more-button',
-        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -60,6 +57,11 @@ export function RecipeBookMoreMenu({
         transformOrigin={{
           vertical: 'top',
           horizontal: 'left',
+        }}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'more-button',
+          },
         }}
       >
         <MenuItem
@@ -88,9 +90,6 @@ export function RecipeBookMoreMenu({
         anchorEl={anchorEl}
         open={open}
         onClose={onClose}
-        MenuListProps={{
-          'aria-labelledby': 'more-button',
-        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -98,6 +97,11 @@ export function RecipeBookMoreMenu({
         transformOrigin={{
           vertical: 'top',
           horizontal: 'left',
+        }}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'more-button',
+          },
         }}
       >
         <MenuItem sx={{ p: 0 }}>

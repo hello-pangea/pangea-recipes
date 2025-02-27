@@ -132,8 +132,10 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
           vertical: 'top',
           horizontal: 'left',
         }}
-        MenuListProps={{
-          'aria-labelledby': 'quick-sharing-actions-button',
+        slotProps={{
+          list: {
+            'aria-labelledby': 'quick-sharing-actions-button',
+          },
         }}
       >
         <MenuItem

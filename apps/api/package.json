@@ -20,7 +20,7 @@
     "@aws-sdk/client-s3": "^3.750.0",
     "@aws-sdk/s3-request-presigner": "^3.750.0",
     "@fastify/auth": "^5.0.2",
-    "@fastify/cors": "^10.1.0",
+    "@fastify/cors": "^11.0.0",
     "@fastify/helmet": "^13.0.1",
     "@fastify/multipart": "^9.0.3",
     "@fastify/sensible": "^6.0.3",
@@ -43,7 +43,7 @@
     "fast-uri": "^3.0.6",
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",
-    "file-type": "^20.3.0",
+    "file-type": "^20.4.0",
     "openai": "^4.85.4",
     "openapi-merge": "^1.3.3",
     "playwright-chromium": "^1.50.1",
@@ -51,7 +51,7 @@
     "sharp": "^0.33.5",
     "timekeeper": "^2.3.1",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.462"
+    "user-agents": "^1.1.463"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",

@@ -78,9 +78,6 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
         anchorEl={moreMenuAnchorEl}
         open={moreMenuOpen}
         onClose={handleMoreMenuClose}
-        MenuListProps={{
-          'aria-labelledby': 'more-button',
-        }}
         anchorOrigin={{
           vertical: 'bottom',
           horizontal: 'left',
@@ -88,6 +85,11 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
+        }}
+        slotProps={{
+          list: {
+            'aria-labelledby': 'more-button',
+          },
         }}
       >
         <Link
