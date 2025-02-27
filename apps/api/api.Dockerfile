@@ -12,17 +12,15 @@ ENV PATH="$PNPM_HOME:$PATH"
 
 ARG RAILWAY_SERVICE_ID
 
-RUN echo "RAILWAY_SERVICE_ID: $RAILWAY_SERVICE_ID"
-
 # Enable corepack and install turbo globally
 RUN corepack enable && npm install -g corepack@latest
 
 # Global turborepo
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/pnpm/store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
     pnpm install turbo@2.4.4 --global
 
 # Playwright setup (basically downloads chromium)
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/pnpm/store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
     pnpm dlx playwright-chromium@1.50.1 install chromium --with-deps
 
 # ---
@@ -32,7 +30,7 @@ RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/pnpm/store,target=/pnpm/store
 FROM base AS fetcher
 
 COPY pnpm*.yaml ./
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/pnpm/store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
     pnpm fetch --ignore-scripts
 
 # ---
@@ -57,7 +55,7 @@ COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=pruner /app/out/json/ .
 
 # Install all deps (prod & dev) from the cache
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/pnpm/store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
     pnpm install --frozen-lockfile --offline --silent
 
 # Copy source code of isolated subworkspace
@@ -68,7 +66,7 @@ RUN turbo build --filter=api...
 
 # Remove all deps then install only prod deps
 RUN rm -rf node_modules
-RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/pnpm/store,target=/pnpm/store \
+RUN --mount=type=cache,id=s/${RAILWAY_SERVICE_ID}-/root/.local/share/pnpm/store/v3,target=/pnpm/store \
     pnpm install --prod --frozen-lockfile --offline --silent
 
 # ---
