@@ -37,6 +37,7 @@ export async function createServer() {
   // -
 
   await fastify.register(cors, {
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
     origin: [
       'http://localhost:3000',
