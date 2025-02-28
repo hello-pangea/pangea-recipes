@@ -14,12 +14,10 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && npm install -g corepack@latest
 
 # Global turborepo
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install turbo@2.4.4 --global
+RUN pnpm install turbo@2.4.4 --global
 
 # Playwright setup (basically downloads chromium)
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm dlx playwright-chromium@1.50.1 install chromium --with-deps
+RUN pnpm dlx playwright-chromium@1.50.1 install chromium --with-deps
 
 # ---
 # - We download packages asap to avoid re-downloads on code changes
@@ -28,8 +26,7 @@ RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
 FROM base AS fetcher
 
 COPY pnpm*.yaml ./
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm fetch --ignore-scripts
+RUN pnpm fetch --ignore-scripts
 
 # ---
 # Use turbo prone to pull out relevant deps only
@@ -53,8 +50,7 @@ COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=pruner /app/out/json/ .
 
 # Install all deps (prod & dev) from the cache
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --frozen-lockfile --offline --silent
+RUN pnpm install --frozen-lockfile --offline --silent
 
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
@@ -64,8 +60,7 @@ RUN turbo build --filter=api...
 
 # Remove all deps then install only prod deps
 RUN rm -rf node_modules
-RUN --mount=type=cache,id=pnpm,target=/pnpm/store \
-    pnpm install --prod --frozen-lockfile --offline --silent
+RUN pnpm install --prod --frozen-lockfile --offline --silent
 
 # ---
 # Run the app (yippee!)

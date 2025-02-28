@@ -3,14 +3,14 @@
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "dependsOn": ["^db:generate", "^build"],
+      "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
     "lint": {
-      "dependsOn": ["^db:generate", "^build"]
+      "dependsOn": ["^build"]
     },
     "dev": {
-      "dependsOn": ["^db:generate", "^build"],
+      "dependsOn": ["^build"],
       "cache": false,
       "persistent": true
     },
