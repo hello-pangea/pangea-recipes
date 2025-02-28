@@ -17,8 +17,8 @@
     "start": "node --env-file=.env --experimental-strip-types --import ./src/instrument.ts src/index.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.750.0",
-    "@aws-sdk/s3-request-presigner": "^3.750.0",
+    "@aws-sdk/client-s3": "^3.758.0",
+    "@aws-sdk/s3-request-presigner": "^3.758.0",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^11.0.0",
     "@fastify/helmet": "^13.0.1",
@@ -44,14 +44,14 @@
     "fastify": "^5.2.1",
     "fastify-plugin": "^5.0.1",
     "file-type": "^20.4.0",
-    "openai": "^4.85.4",
+    "openai": "^4.86.1",
     "openapi-merge": "^1.3.3",
     "playwright-chromium": "^1.50.1",
     "resend": "^4.1.2",
     "sharp": "^0.33.5",
     "timekeeper": "^2.3.1",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.463"
+    "user-agents": "^1.1.464"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
