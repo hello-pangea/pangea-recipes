@@ -32,6 +32,7 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
+import { numberToFraction } from '@open-zero/features';
 import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
 import { defaultUnitOptions } from '@open-zero/features/units';
 import { useSignedInUser } from '@open-zero/features/users';
@@ -205,6 +206,8 @@ export function EditIngredient({
     );
   }, [index, ingredientGroupIndex, ingredient]);
 
+  const parsedQuantity = getNumberFromInput(ingredient.quantity);
+
   return (
     <>
       <div
@@ -262,7 +265,7 @@ export function EditIngredient({
                   }}
                 >
                   {ingredient.name
-                    ? `${ingredient.quantity ?? ''}${ingredient.unit ? ` ${ingredient.unit} ` : ''}${ingredient.name}`
+                    ? `${parsedQuantity ? numberToFraction(parsedQuantity) : ''}${ingredient.unit ? ` ${ingredient.unit} ` : ''}${ingredient.name}`
                     : 'Ingredient'}
                 </Typography>
               </Box>
