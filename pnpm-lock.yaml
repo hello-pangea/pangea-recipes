@@ -12,8 +12,8 @@ importers:
         specifier: ^3.5.2
         version: 3.5.2
       sort-package-json:
-        specifier: ^2.15.0
-        version: 2.15.0
+        specifier: ^2.15.1
+        version: 2.15.1
       tsx:
         specifier: ^4.19.3
         version: 4.19.3
@@ -172,11 +172,11 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(@types/react@19.0.10)(react@19.0.0)
       '@fontsource-variable/inter':
-        specifier: ^5.1.1
-        version: 5.1.1
+        specifier: ^5.2.0
+        version: 5.2.0
       '@fontsource-variable/lora':
-        specifier: ^5.1.1
-        version: 5.1.1
+        specifier: ^5.2.0
+        version: 5.2.0
       '@hookform/resolvers':
         specifier: ^4.1.2
         version: 4.1.2(react-hook-form@7.54.2(react@19.0.0))
@@ -1163,11 +1163,11 @@ packages:
   '@floating-ui/vue@1.1.6':
     resolution: {integrity: sha512-XFlUzGHGv12zbgHNk5FN2mUB7ROul3oG2ENdTpWdE+qMFxyNxWSRmsoyhiEnpmabNm6WnUvR1OvJfUfN4ojC1A==}
 
-  '@fontsource-variable/inter@5.1.1':
-    resolution: {integrity: sha512-OpXFTmiH6tHkYijMvQTycFKBLK4X+SRV6tet1m4YOUH7SzIIlMqDja+ocDtiCA72UthBH/vF+3ZtlMr2rN/wIw==}
+  '@fontsource-variable/inter@5.2.0':
+    resolution: {integrity: sha512-JKtSEgBxbNKnF4+o+yEgkiW95ZOkgds1PO+NRO4+t1vrQdCb/Q/Um5seBKFFVzZ+HDx0JQfCioIme7Blsm++OQ==}
 
-  '@fontsource-variable/lora@5.1.1':
-    resolution: {integrity: sha512-renGhPji2o39E9CIdj1vAGwrV66IS7uz1AU/8DWC/zE2QdC2dA7mbaM/Q8gAfmVhow0Jyt4NPP25XrO5NQa8qg==}
+  '@fontsource-variable/lora@5.2.0':
+    resolution: {integrity: sha512-CpaZ4r64ISrFNkXRLmSY9bA8RWQ5WcM2DpkwdeyBDqqNI0XQ7s711fNccH9zizTd1oa9vP6M9t0mZ5Cn96+VYA==}
 
   '@headlessui/tailwindcss@0.2.2':
     resolution: {integrity: sha512-xNe42KjdyA4kfUKLLPGzME9zkH7Q3rOZ5huFihWNWOQFxnItxPB3/67yBI8/qBfY8nwBRx5GHn4VprsoluVMGw==}
@@ -5408,8 +5408,8 @@ packages:
   sort-object-keys@1.1.3:
     resolution: {integrity: sha512-855pvK+VkU7PaKYPc+Jjnmt4EzejQHyhhF33q31qG8x7maDzkeFhAAThdCYay11CISO+qAMwjOBP+fPZe0IPyg==}
 
-  sort-package-json@2.15.0:
-    resolution: {integrity: sha512-wpKu3DvFuymcRvPqJR7VN5J6wnqR+SYZ4SZmnJa9ckpV+BuoE0XYHZYsoWaJbt6oz8OwOXb4eoMjlEBM6hwhBw==}
+  sort-package-json@2.15.1:
+    resolution: {integrity: sha512-9x9+o8krTT2saA9liI4BljNjwAbvUnWf11Wq+i/iZt8nl2UGYnf3TH5uBydE7VALmP7AGwlfszuEeL8BDyb0YA==}
     hasBin: true
 
   source-map-js@1.2.1:
@@ -7152,9 +7152,9 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@fontsource-variable/inter@5.1.1': {}
+  '@fontsource-variable/inter@5.2.0': {}
 
-  '@fontsource-variable/lora@5.1.1': {}
+  '@fontsource-variable/lora@5.2.0': {}
 
   '@headlessui/tailwindcss@0.2.2(tailwindcss@4.0.9)':
     dependencies:
@@ -12421,7 +12421,7 @@ snapshots:
 
   sort-object-keys@1.1.3: {}
 
-  sort-package-json@2.15.0:
+  sort-package-json@2.15.1:
     dependencies:
       detect-indent: 7.0.1
       detect-newline: 4.0.1
