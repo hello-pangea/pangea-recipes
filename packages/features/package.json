@@ -47,13 +47,13 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.34.28",
-    "@tanstack/react-query": "^5.66.9",
+    "@tanstack/react-query": "^5.66.11",
     "ky": "^1.7.5"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.13.8",
     "decimal.js": "^10.5.0",
     "typescript": "~5.7.3"
   }

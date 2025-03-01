@@ -30,9 +30,9 @@
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@prisma/instrumentation": "^6.4.1",
-    "@scalar/fastify-api-reference": "^1.25.122",
-    "@sentry/node": "^9.2.0",
-    "@sentry/profiling-node": "^9.2.0",
+    "@scalar/fastify-api-reference": "^1.25.124",
+    "@sentry/node": "^9.3.0",
+    "@sentry/profiling-node": "^9.3.0",
     "@sinclair/typebox": "^0.34.28",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
@@ -51,12 +51,12 @@
     "sharp": "^0.33.5",
     "timekeeper": "^2.3.1",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.464"
+    "user-agents": "^1.1.465"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.13.5",
+    "@types/node": "^22.13.8",
     "@types/turndown": "^5.0.5",
     "@types/user-agents": "^1.0.4",
     "concurrently": "^9.1.2",
