@@ -313,7 +313,7 @@ export function EditIngredient({
             </Button>
             <Button
               onClick={() => {
-                removeIngredient(index);
+                setDialogOpen(false);
               }}
               variant="contained"
             >
