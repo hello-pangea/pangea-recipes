@@ -63,8 +63,8 @@ importers:
         specifier: ^6.4.1
         version: 6.4.1(@opentelemetry/api@1.9.0)
       '@scalar/fastify-api-reference':
-        specifier: ^1.25.124
-        version: 1.25.124(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)
+        specifier: ^1.25.125
+        version: 1.25.125(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)
       '@sentry/node':
         specifier: ^9.3.0
         version: 9.3.0
@@ -81,8 +81,8 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(ajv@8.17.1)
       better-auth:
-        specifier: ^1.1.21
-        version: 1.1.21
+        specifier: ^1.2.1
+        version: 1.2.1(typescript@5.7.3)
       chalk:
         specifier: ^5.4.1
         version: 5.4.1
@@ -126,8 +126,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       user-agents:
-        specifier: ^1.1.465
-        version: 1.1.465
+        specifier: ^1.1.466
+        version: 1.1.466
     devDependencies:
       '@open-zero/eslint-config':
         specifier: workspace:*
@@ -172,11 +172,11 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@emotion/react@11.14.0(@types/react@19.0.10)(react@19.0.0))(@types/react@19.0.10)(react@19.0.0)
       '@fontsource-variable/inter':
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.5
+        version: 5.2.5
       '@fontsource-variable/lora':
-        specifier: ^5.2.0
-        version: 5.2.0
+        specifier: ^5.2.5
+        version: 5.2.5
       '@hookform/resolvers':
         specifier: ^4.1.2
         version: 4.1.2(react-hook-form@7.54.2(react@19.0.0))
@@ -205,8 +205,8 @@ importers:
         specifier: ^1.112.0
         version: 1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@tanstack/router-devtools':
-        specifier: ^1.112.0
-        version: 1.112.0(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(csstype@3.1.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        specifier: ^1.112.6
+        version: 1.112.6(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(csstype@3.1.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@uppy/core':
         specifier: ^4.4.2
         version: 4.4.2
@@ -229,8 +229,8 @@ importers:
         specifier: ^4.3.3
         version: 4.3.3(@uppy/core@4.4.2)
       better-auth:
-        specifier: ^1.1.21
-        version: 1.1.21
+        specifier: ^1.2.1
+        version: 1.2.1(typescript@5.7.3)
       ky:
         specifier: ^1.7.5
         version: 1.7.5
@@ -260,8 +260,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/config-typescript
       '@tanstack/router-plugin':
-        specifier: ^1.112.0
-        version: 1.112.0(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(vite@6.2.0(@types/node@22.13.8)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.0))(webpack@5.97.1)
+        specifier: ^1.112.3
+        version: 1.112.3(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(vite@6.2.0(@types/node@22.13.8)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.0))(webpack@5.97.1)
       '@types/react':
         specifier: ^19.0.10
         version: 19.0.10
@@ -669,8 +669,8 @@ packages:
   '@better-auth/utils@0.2.3':
     resolution: {integrity: sha512-Ap1GaSmo6JYhJhxJOpUB0HobkKPTNzfta+bLV89HfpyCAHN7p8ntCrmNFHNAVD0F6v0mywFVEUg1FUhNCc81Rw==}
 
-  '@better-fetch/fetch@1.1.12':
-    resolution: {integrity: sha512-B3bfloI/2UBQWIATRN6qmlORrvx3Mp0kkNjmXLv0b+DtbtR+pP4/I5kQA/rDUv+OReLywCCldf6co4LdDmh8JA==}
+  '@better-fetch/fetch@1.1.15':
+    resolution: {integrity: sha512-0Bl8YYj1f8qCTNHeSn5+1DWv2hy7rLBrQ8rS8Y9XYloiwZEfc3k4yspIG0llRxafxqhGCwlGRg+F8q1HZRCMXA==}
 
   '@codemirror/autocomplete@6.18.6':
     resolution: {integrity: sha512-PHHBXFomUs5DF+9tCOM/UoW6XQ4R44lLNNhRaW9PKPTU0D7lIjRg3ElxaJnTwsl/oHiR93WSXDBrekhoUGCPtg==}
@@ -1163,11 +1163,11 @@ packages:
   '@floating-ui/vue@1.1.6':
     resolution: {integrity: sha512-XFlUzGHGv12zbgHNk5FN2mUB7ROul3oG2ENdTpWdE+qMFxyNxWSRmsoyhiEnpmabNm6WnUvR1OvJfUfN4ojC1A==}
 
-  '@fontsource-variable/inter@5.2.0':
-    resolution: {integrity: sha512-JKtSEgBxbNKnF4+o+yEgkiW95ZOkgds1PO+NRO4+t1vrQdCb/Q/Um5seBKFFVzZ+HDx0JQfCioIme7Blsm++OQ==}
+  '@fontsource-variable/inter@5.2.5':
+    resolution: {integrity: sha512-TrWffUAFOnT8zroE9YmGybagoOgM/HjRqMQ8k9R0vVgXlnUh/vnpbGPAS/Caz1KIlOPnPGh6fvJbb7DHbFCncA==}
 
-  '@fontsource-variable/lora@5.2.0':
-    resolution: {integrity: sha512-CpaZ4r64ISrFNkXRLmSY9bA8RWQ5WcM2DpkwdeyBDqqNI0XQ7s711fNccH9zizTd1oa9vP6M9t0mZ5Cn96+VYA==}
+  '@fontsource-variable/lora@5.2.5':
+    resolution: {integrity: sha512-eupTrzQnDFr3i9pci0efxfT0mCjGmWJNmDyvsl9Wq11JCyNr5ZN7bTjhIT6/q9daq5CshTsowg0/BH2gERbtXQ==}
 
   '@headlessui/tailwindcss@0.2.2':
     resolution: {integrity: sha512-xNe42KjdyA4kfUKLLPGzME9zkH7Q3rOZ5huFihWNWOQFxnItxPB3/67yBI8/qBfY8nwBRx5GHn4VprsoluVMGw==}
@@ -2092,12 +2092,12 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@scalar/api-client@2.2.53':
-    resolution: {integrity: sha512-09NuJjDCbYA/gz4TizWeAxXa3vhwZddquTkFwTrHFfMzSfkLkTNHOIdT01V26BtZCs4pghxtebRORxefQiah9A==}
+  '@scalar/api-client@2.2.54':
+    resolution: {integrity: sha512-cUwJ1eJCmjxXDZ12Mhjn8N1UaDfY9WkFYYpSyzOeQNMSuo9/wRdJq4soyHm9meeT6x91usiidopGHJBLi8L3rQ==}
     engines: {node: '>=18'}
 
-  '@scalar/api-reference@1.25.124':
-    resolution: {integrity: sha512-FETW/QVAL/S0p1y+eUdoy4EOrBqmmhIdGipBrn14ixMB30hSSekxNcKCabje7f0w48xX/pauqemEc3geAen/+Q==}
+  '@scalar/api-reference@1.25.125':
+    resolution: {integrity: sha512-/aq4VtFbx9DKRQL9woywIawhp82aryy4w5onZAz/6ELxfN6Cn1jFKhgV4nCi9kRgErNkhFT0PbjDO/e14QZWwg==}
     engines: {node: '>=18'}
 
   '@scalar/code-highlight@0.0.23':
@@ -2112,8 +2112,8 @@ packages:
     resolution: {integrity: sha512-EQW9N1+mDORhsbjdtCI3XDvmUKsuKw1uf6r3kT1Mm2zQKT+rWwA0ChsAkEN6OG62C0YumMuXpH71h1seAWptxw==}
     engines: {node: '>=18'}
 
-  '@scalar/fastify-api-reference@1.25.124':
-    resolution: {integrity: sha512-hYcxzjCEJwv3bq5JVnqCrgUFSRE1eYIS0/H1Okxj0iL6+LapBqVbTv/OVf3CgA2ZQbMl09v3T9wt4VCa6Nshuw==}
+  '@scalar/fastify-api-reference@1.25.125':
+    resolution: {integrity: sha512-ADT89XJyR/6Td9atgh19w1YYwJsdLPpBzuNhuKRkyxhvXWafHPHuDteC+WAqy/Qpqg9AlWEHUbOAUEgJuJykgA==}
     engines: {node: '>=18'}
 
   '@scalar/icons@0.1.3':
@@ -2547,8 +2547,8 @@ packages:
     resolution: {integrity: sha512-kmpMiBuz17Hxyl+ZO+B6/F98p07NSEmgr2JlZkKXcdupLIBAWqcXw+bjowFXNcTEwe9RWsS/WjAC/bBTftr0rA==}
     engines: {node: '>=12'}
 
-  '@tanstack/router-devtools@1.112.0':
-    resolution: {integrity: sha512-kbCvkY8y6vDnF09At9Q9q0yitXBFpO/BEuvMtLTkAKWwoZqPoEp7981AiWZeN62sphtdREn/1sTxvMNY8bBW2Q==}
+  '@tanstack/router-devtools@1.112.6':
+    resolution: {integrity: sha512-OhLZsDnrItA+8BiVdmyyWB2VgQyoCZAjSRshQJpbZdeAV69OvT2rqN2TtiLJsbSAJWmqL4/UcY/13DI9Iv+k3Q==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/react-router': ^1.112.0
@@ -2559,8 +2559,8 @@ packages:
       csstype:
         optional: true
 
-  '@tanstack/router-generator@1.112.0':
-    resolution: {integrity: sha512-c1wA2TMfmL1igw6OFKdOZVrFqAJ/PB3ZJE0+upofmwVydUMH7tipvmztWGiRmcxGd66sl6o1l1X39308ObwAGQ==}
+  '@tanstack/router-generator@1.112.3':
+    resolution: {integrity: sha512-RUT+O/j7YIjbemVJjkP4qM8MYaaOltKYhyp9VGtcWxWGS8U2QDwC9UsskjBVOj7QV7aq3UcnExicABwK/AMCCQ==}
     engines: {node: '>=12'}
     peerDependencies:
       '@tanstack/react-router': ^1.112.0
@@ -2568,8 +2568,8 @@ packages:
       '@tanstack/react-router':
         optional: true
 
-  '@tanstack/router-plugin@1.112.0':
-    resolution: {integrity: sha512-0ZFbHqAHtvbJzdDlIuxuJiOcbR5oue9IVA5OR93gS7sPCueZI1uZQB/hdtC+kcpdnYQKDcxjeNranhqbcaZZnQ==}
+  '@tanstack/router-plugin@1.112.3':
+    resolution: {integrity: sha512-XhKXFoJ7eajqghAPwHXfggyB8khopr5yVXiYQRiL+9Gek2q5M8N4z9+Uh2MM31KjTuiaJ72lZpUgT5FDj1m6Tg==}
     engines: {node: '>=12'}
     peerDependencies:
       '@rsbuild/core': '>=1.0.2'
@@ -3104,8 +3104,8 @@ packages:
     resolution: {integrity: sha512-bN798gFfQX+viw3R7yrGWRqnrN2oRkEkUjjl4JNn4E8GxxbjtG3FbrEIIY3l8/hrwUwIeCZvi4QuOTP4MErVug==}
     engines: {node: '>=12'}
 
-  ansis@3.16.0:
-    resolution: {integrity: sha512-sU7d/tfZiYrsIAXbdL/CNZld5bCkruzwT5KmqmadCJYxuLxHAOBjidxD5+iLmN/6xEfjcQq1l7OpsiCBlc4LzA==}
+  ansis@3.17.0:
+    resolution: {integrity: sha512-0qWUglt9JEqLFr3w1I1pbrChn1grhaiAR2ocX1PP/flRmxgtwTzPFFFnfIlD6aMOLQZgSuCRlidD70lvx8yhzg==}
     engines: {node: '>=14'}
 
   anymatch@3.1.3:
@@ -3192,11 +3192,11 @@ packages:
     resolution: {integrity: sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==}
     engines: {node: ^4.5.0 || >= 5.9}
 
-  better-auth@1.1.21:
-    resolution: {integrity: sha512-scyrQn8O9XL4oKmTt7nnA50P0v0RnI39yKevlMa0mI3646hXq/QOThjUrYy+cYCoq4tNLVsctQa9yUUMN9ZzhA==}
+  better-auth@1.2.1:
+    resolution: {integrity: sha512-ehECh654Y32pseRiAwHiDdqemCX5oM/B/N52heqVcRbgiVKC61FgdrBwBkQb9jV2jBk7E+C8iDZ5Nqshck3O1g==}
 
-  better-call@0.3.3:
-    resolution: {integrity: sha512-N4lDVm0NGmFfDJ0XMQ4O83Zm/3dPlvIQdxvwvgSLSkjFX5PM4GUYSVAuxNzXN27QZMHDkrJTWUqxBrm4tPC3eA==}
+  better-call@1.0.3:
+    resolution: {integrity: sha512-DUKImKoDIy5UtCvQbHTg0wuBRse6gu1Yvznn7+1B3I5TeY8sclRPFce0HI+4WF2bcb+9PqmkET8nXZubrHQh9A==}
 
   binary-extensions@2.3.0:
     resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==}
@@ -5791,8 +5791,8 @@ packages:
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
-  user-agents@1.1.465:
-    resolution: {integrity: sha512-GY8De/pftrU4Mz/Vv8YvU0072O+N3+fHjNkEvik540MNxBw1/iAvLGMo4Umx5RVESDJtBcy7BT97TzGwBKOPZg==}
+  user-agents@1.1.466:
+    resolution: {integrity: sha512-e5J7F7TirlxP1rD45eOkz7o/bEyZLSC1R/eKwRgw4pYSJHj3bqP+TzlwOT6De+GSv/hWaTK+8difw2wDzdiV/A==}
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -5800,6 +5800,14 @@ packages:
   uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
+
+  valibot@1.0.0-beta.15:
+    resolution: {integrity: sha512-BKy8XosZkDHWmYC+cJG74LBzP++Gfntwi33pP3D3RKztz2XV9jmFWnkOi21GoqARP8wAWARwhV6eTr1JcWzjGw==}
+    peerDependencies:
+      typescript: '>=5'
+    peerDependenciesMeta:
+      typescript:
+        optional: true
 
   validate-npm-package-license@3.0.4:
     resolution: {integrity: sha512-DpKm2Ui/xN7/HQKCtpZxoRWBhZ9Z0kqtygG8XCgNQ8ZlDnxuQmWhj566j8fN4Cu3/JmbhsDo7fcAJq4s9h27Ew==}
@@ -6674,7 +6682,7 @@ snapshots:
     dependencies:
       uncrypto: 0.1.3
 
-  '@better-fetch/fetch@1.1.12': {}
+  '@better-fetch/fetch@1.1.15': {}
 
   '@codemirror/autocomplete@6.18.6':
     dependencies:
@@ -7152,9 +7160,9 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@fontsource-variable/inter@5.2.0': {}
+  '@fontsource-variable/inter@5.2.5': {}
 
-  '@fontsource-variable/lora@5.2.0': {}
+  '@fontsource-variable/lora@5.2.5': {}
 
   '@headlessui/tailwindcss@0.2.2(tailwindcss@4.0.9)':
     dependencies:
@@ -8043,7 +8051,7 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.34.9':
     optional: true
 
-  '@scalar/api-client@2.2.53(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)':
+  '@scalar/api-client@2.2.54(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)':
     dependencies:
       '@headlessui/tailwindcss': 0.2.2(tailwindcss@4.0.9)
       '@headlessui/vue': 1.7.23(vue@3.5.13(typescript@5.7.3))
@@ -8094,11 +8102,11 @@ snapshots:
       - typescript
       - universal-cookie
 
-  '@scalar/api-reference@1.25.124(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)':
+  '@scalar/api-reference@1.25.125(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)':
     dependencies:
       '@floating-ui/vue': 1.1.6(vue@3.5.13(typescript@5.7.3))
       '@headlessui/vue': 1.7.23(vue@3.5.13(typescript@5.7.3))
-      '@scalar/api-client': 2.2.53(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)
+      '@scalar/api-client': 2.2.54(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)
       '@scalar/code-highlight': 0.0.23
       '@scalar/components': 0.13.27(typescript@5.7.3)
       '@scalar/oas-utils': 0.2.109(@hyperjump/browser@1.2.0)
@@ -8181,9 +8189,9 @@ snapshots:
     transitivePeerDependencies:
       - typescript
 
-  '@scalar/fastify-api-reference@1.25.124(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)':
+  '@scalar/fastify-api-reference@1.25.125(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)':
     dependencies:
-      '@scalar/api-reference': 1.25.124(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)
+      '@scalar/api-reference': 1.25.125(@hyperjump/browser@1.2.0)(tailwindcss@4.0.9)(typescript@5.7.3)
       '@scalar/types': 0.0.36
       fastify-plugin: 4.5.1
     transitivePeerDependencies:
@@ -8836,7 +8844,7 @@ snapshots:
       '@tanstack/history': 1.99.13
       '@tanstack/store': 0.7.0
 
-  '@tanstack/router-devtools@1.112.0(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(csstype@3.1.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
+  '@tanstack/router-devtools@1.112.6(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(csstype@3.1.3)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)':
     dependencies:
       '@tanstack/react-router': 1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       clsx: 2.1.1
@@ -8846,7 +8854,7 @@ snapshots:
     optionalDependencies:
       csstype: 3.1.3
 
-  '@tanstack/router-generator@1.112.0(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))':
+  '@tanstack/router-generator@1.112.3(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))':
     dependencies:
       '@tanstack/virtual-file-routes': 1.99.0
       prettier: 3.5.2
@@ -8855,7 +8863,7 @@ snapshots:
     optionalDependencies:
       '@tanstack/react-router': 1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
 
-  '@tanstack/router-plugin@1.112.0(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(vite@6.2.0(@types/node@22.13.8)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.0))(webpack@5.97.1)':
+  '@tanstack/router-plugin@1.112.3(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(vite@6.2.0(@types/node@22.13.8)(jiti@2.4.2)(terser@5.39.0)(tsx@4.19.3)(yaml@2.7.0))(webpack@5.97.1)':
     dependencies:
       '@babel/core': 7.26.9
       '@babel/plugin-syntax-jsx': 7.25.9(@babel/core@7.26.9)
@@ -8864,7 +8872,7 @@ snapshots:
       '@babel/traverse': 7.26.9
       '@babel/types': 7.26.9
       '@tanstack/router-core': 1.112.0
-      '@tanstack/router-generator': 1.112.0(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
+      '@tanstack/router-generator': 1.112.3(@tanstack/react-router@1.112.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))
       '@tanstack/router-utils': 1.102.2
       '@tanstack/virtual-file-routes': 1.99.0
       '@types/babel__core': 7.20.5
@@ -8885,7 +8893,7 @@ snapshots:
     dependencies:
       '@babel/generator': 7.26.9
       '@babel/parser': 7.26.9
-      ansis: 3.16.0
+      ansis: 3.17.0
       diff: 7.0.0
 
   '@tanstack/store@0.7.0': {}
@@ -9527,7 +9535,7 @@ snapshots:
 
   ansi-styles@6.2.1: {}
 
-  ansis@3.16.0: {}
+  ansis@3.17.0: {}
 
   anymatch@3.1.3:
     dependencies:
@@ -9644,27 +9652,30 @@ snapshots:
 
   base64id@2.0.0: {}
 
-  better-auth@1.1.21:
+  better-auth@1.2.1(typescript@5.7.3):
     dependencies:
       '@better-auth/utils': 0.2.3
-      '@better-fetch/fetch': 1.1.12
+      '@better-fetch/fetch': 1.1.15
       '@noble/ciphers': 0.6.0
       '@noble/hashes': 1.7.1
       '@simplewebauthn/browser': 13.1.0
       '@simplewebauthn/server': 13.1.1
-      better-call: 0.3.3
+      better-call: 1.0.3
       defu: 6.1.4
       jose: 5.10.0
       kysely: 0.27.5
       nanostores: 0.11.4
+      valibot: 1.0.0-beta.15(typescript@5.7.3)
       zod: 3.24.2
+    transitivePeerDependencies:
+      - typescript
 
-  better-call@0.3.3:
+  better-call@1.0.3:
     dependencies:
-      '@better-fetch/fetch': 1.1.12
+      '@better-fetch/fetch': 1.1.15
       rou3: 0.5.1
+      set-cookie-parser: 2.7.1
       uncrypto: 0.1.3
-      zod: 3.24.2
 
   binary-extensions@2.3.0: {}
 
@@ -12839,13 +12850,17 @@ snapshots:
     dependencies:
       react: 19.0.0
 
-  user-agents@1.1.465:
+  user-agents@1.1.466:
     dependencies:
       lodash.clonedeep: 4.5.0
 
   util-deprecate@1.0.2: {}
 
   uuid@9.0.1: {}
+
+  valibot@1.0.0-beta.15(typescript@5.7.3):
+    optionalDependencies:
+      typescript: 5.7.3
 
   validate-npm-package-license@3.0.4:
     dependencies:

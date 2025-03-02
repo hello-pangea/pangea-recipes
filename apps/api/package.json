@@ -30,13 +30,13 @@
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@prisma/instrumentation": "^6.4.1",
-    "@scalar/fastify-api-reference": "^1.25.124",
+    "@scalar/fastify-api-reference": "^1.25.125",
     "@sentry/node": "^9.3.0",
     "@sentry/profiling-node": "^9.3.0",
     "@sinclair/typebox": "^0.34.28",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "better-auth": "^1.1.21",
+    "better-auth": "^1.2.1",
     "chalk": "^5.4.1",
     "close-with-grace": "^2.2.0",
     "date-fns": "^4.1.0",
@@ -51,7 +51,7 @@
     "sharp": "^0.33.5",
     "timekeeper": "^2.3.1",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.465"
+    "user-agents": "^1.1.466"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
