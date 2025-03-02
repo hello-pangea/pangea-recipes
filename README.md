@@ -46,7 +46,7 @@ This should print the correct version of node. If it doesn't, use [nvm](https://
 For [`nvm`](https://github.com/nvm-sh/nvm), run this from the project root to install the correct version of node.
 
 ```sh
- `nvm install && nvm use` to instruct `nvm`
+nvm install && nvm use
 ```
 
 4. Enable Corepack
@@ -65,7 +65,7 @@ pnpm i
 
 - Duplicate `apps/api/.env.example` to `/apps/api/.env`
 - Duplicate `apps/web/.env.example` to `/apps/web/.env`
-- Remplace the example values in each `.env` file with real values
+- Replace the example values in each `.env` file with real values
 
 7. Run `pnpm dx` to start a local postgres instance with some seed data
 
