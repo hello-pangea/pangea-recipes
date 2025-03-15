@@ -96,7 +96,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     importFromUrl ?? false,
   );
   const { enqueueSnackbar } = useSnackbar();
-  const navigate = useNavigate({ from: '/' });
+  const navigate = useNavigate();
   const form = useForm<RecipeFormInputs>({
     defaultValues: defaultRecipe ?? {
       recipeName: '',
@@ -564,18 +564,22 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           setImportDialogOpen(false);
 
           void navigate({
-            search: {
+            to: '.',
+            search: (prev) => ({
+              ...prev,
               importFromUrl: undefined,
-            },
+            }),
           });
         }}
         onImport={(importedRecipe, websitePageId) => {
           setImportDialogOpen(false);
 
           void navigate({
-            search: {
+            to: '.',
+            search: (prev) => ({
+              ...prev,
               importFromUrl: undefined,
-            },
+            }),
           });
 
           reset({
