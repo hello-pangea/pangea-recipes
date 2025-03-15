@@ -7,6 +7,9 @@ FROM node:22-bookworm-slim AS base
 # Required for prisma
 RUN apt-get update -y && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
 
+# Playwright vars
+ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
+# PNPM vars
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
