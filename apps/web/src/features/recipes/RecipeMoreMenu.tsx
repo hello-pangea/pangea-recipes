@@ -304,7 +304,7 @@ export function RecipeMoreMenu({
           </ListItemIcon>
           <ListItemText>New recipe book</ListItemText>
         </MenuItem>
-        <Divider />
+        {filteredRecipeBooks.length > 0 && <Divider />}
         {filteredRecipeBooks.map((book) => (
           <MenuItem
             key={book.id}
