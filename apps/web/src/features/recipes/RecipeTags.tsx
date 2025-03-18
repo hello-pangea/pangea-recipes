@@ -9,28 +9,81 @@ import {
   IconButton,
   InputAdornment,
   Popover,
+  Stack,
   TextField,
   Typography,
   type SxProps,
   type Theme,
 } from '@mui/material';
-import type { CreateTagDto, Tag } from '@open-zero/features';
-import { useState } from 'react';
+import type { Tag } from '@open-zero/features';
+import {
+  useRecipe,
+  useUpdateRecipe,
+  useUsedRecipeTags,
+} from '@open-zero/features/recipes';
+import { useMemo, useRef, useState } from 'react';
+import { useSignedInUserId } from '../auth/useSignedInUserId';
 
 interface Props {
-  tags: Tag[];
-  onTagsChange: (tags: (Tag | CreateTagDto)[]) => void;
+  recipeId: string;
   sx?: SxProps<Theme>;
 }
 
-export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
+export function RecipeTags({ recipeId, sx = [] }: Props) {
+  const userId = useSignedInUserId();
+  const { data: recipe } = useRecipe({ recipeId });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [search, setsSearch] = useState('');
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const updateRecipe = useUpdateRecipe();
+  const { data: usedTags } = useUsedRecipeTags({ userId: userId });
+
+  const tags = recipe?.tags ?? [];
+
+  const filteredUsedTags = useMemo(() => {
+    if (!usedTags) {
+      return [];
+    }
+
+    const possibleTags = usedTags
+      .filter((tag) => !tags.some((t) => t.name === tag.name))
+      .sort((a, b) => a.name.localeCompare(b.name));
+
+    if (!search) {
+      return possibleTags;
+    }
+
+    return possibleTags.filter((tag) => tag.name.includes(search));
+  }, [usedTags, search, tags]);
 
   function handleClose() {
     setAnchorEl(null);
 
     setsSearch('');
+  }
+
+  function handleAddTag(tag: string) {
+    if (!tag) {
+      return;
+    }
+
+    const newTags = [...tags, { name: tag }];
+
+    updateRecipe.mutate({
+      id: recipeId,
+      tags: newTags,
+    });
+
+    handleClose();
+  }
+
+  function handleRemoveTag(tag: Tag) {
+    const newTags = tags.filter((t) => t.id !== tag.id);
+
+    updateRecipe.mutate({
+      id: recipeId,
+      tags: newTags,
+    });
   }
 
   return (
@@ -53,7 +106,7 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
           size="small"
           deleteIcon={<ClearRoundedIcon />}
           onDelete={() => {
-            onTagsChange(tags.filter((t) => t.id !== tag.id));
+            handleRemoveTag(tag);
           }}
         />
       ))}
@@ -65,6 +118,10 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
         icon={<AddRoundedIcon />}
         onClick={(event) => {
           setAnchorEl(event.currentTarget);
+
+          setTimeout(() => {
+            inputRef.current?.focus();
+          }, 100);
         }}
       />
       <Popover
@@ -75,13 +132,14 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
           paper: {
             sx: {
               p: 1.5,
-              width: 200,
+              width: 250,
             },
           },
         }}
       >
         <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Add tag</Typography>
         <TextField
+          inputRef={inputRef}
           variant="outlined"
           size="small"
           placeholder="Search"
@@ -89,6 +147,11 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
           fullWidth
           onChange={(event) => {
             setsSearch(event.target.value);
+          }}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter') {
+              handleAddTag(search);
+            }
           }}
           slotProps={{
             input: {
@@ -120,11 +183,30 @@ export function TagEditor({ tags, onTagsChange, sx = [] }: Props) {
             },
           }}
         />
+        <Stack
+          direction="column"
+          spacing={1}
+          sx={{
+            maxHeight: 200,
+            overflowY: 'auto',
+            alignItems: 'flex-start',
+            mb: 1,
+          }}
+        >
+          {filteredUsedTags.map((tag) => (
+            <Chip
+              size="small"
+              key={tag.id}
+              label={tag.name}
+              onClick={() => {
+                handleAddTag(tag.name);
+              }}
+            />
+          ))}
+        </Stack>
         <Button
           onClick={() => {
-            handleClose();
-
-            onTagsChange([...tags, { name: search }]);
+            handleAddTag(search);
           }}
         >
           Add

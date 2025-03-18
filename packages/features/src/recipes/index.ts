@@ -7,5 +7,6 @@ export * from './types/recipeProjected.js';
 export * from './api/createRecipe.js';
 export * from './api/deleteRecipe.js';
 export * from './api/getRecipe.js';
+export * from './api/getUsedRecipeTags.js';
 export * from './api/listRecipes.js';
 export * from './api/updateRecipe.js';

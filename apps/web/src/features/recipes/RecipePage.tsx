@@ -1,4 +1,3 @@
-import { TagEditor } from '#src/components/TagEditor';
 import { useWakeLock } from '#src/hooks/useWakeLock';
 import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -23,10 +22,7 @@ import {
   Typography,
 } from '@mui/material';
 import { stepDownSnapped, stepUpSnapped } from '@open-zero/features';
-import {
-  getRecipeQueryOptions,
-  useUpdateRecipe,
-} from '@open-zero/features/recipes';
+import { getRecipeQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi, useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
@@ -34,6 +30,7 @@ import { useState } from 'react';
 import { Ingredient } from './Ingredient';
 import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
+import { RecipeTags } from './RecipeTags';
 
 const route = getRouteApi('/app/_layout/recipes/$recipeId');
 
@@ -44,7 +41,6 @@ export function RecipePage() {
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
-  const recipeUpdater = useUpdateRecipe();
   const { enqueueSnackbar } = useSnackbar();
   const {
     isSupported: isWakeLockSupported,
@@ -64,10 +60,6 @@ export function RecipePage() {
   const servingsMultiplier = recipe.servings
     ? (getNumberFromInput(servingsModifier) ?? 1) / recipe.servings
     : (getNumberFromInput(servingsModifier) ?? 1);
-
-  console.log(recipe.servings);
-  console.log(servingsModifier);
-  console.log(servingsMultiplier);
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -135,14 +127,8 @@ export function RecipePage() {
                   <MoreVertRoundedIcon />
                 </IconButton>
               </Box>
-              <TagEditor
-                tags={recipe.tags}
-                onTagsChange={(newTags) => {
-                  recipeUpdater.mutate({
-                    id: recipe.id,
-                    tags: newTags,
-                  });
-                }}
+              <RecipeTags
+                recipeId={recipe.id}
                 sx={{
                   mb: 2,
                 }}

@@ -1,6 +1,6 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma, type Prisma } from '@open-zero/database';
-import { type CreateTagDto } from '@open-zero/features';
+import { tagSchema, type CreateTagDto } from '@open-zero/features';
 import {
   createRecipeDtoScema,
   recipeProjectedSchema,
@@ -558,6 +558,53 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       });
 
       return reply.code(204).send();
+    },
+  );
+
+  fastify.get(
+    '/used-tags',
+    {
+      preHandler: fastify.auth([verifySession]),
+      schema: {
+        tags: [routeTag],
+        summary: 'List used recipe tags',
+        querystring: Type.Object({
+          userId: Type.Optional(Type.String({ format: 'uuid' })),
+        }),
+        response: {
+          200: Type.Object({
+            tags: Type.Array(tagSchema),
+          }),
+        },
+      },
+    },
+    async (request) => {
+      const { userId } = request.query;
+
+      if (userId && userId !== request.session?.userId) {
+        throw new ApiError({
+          statusCode: 403,
+          message: 'Forbidden',
+          name: 'AuthError',
+        });
+      }
+
+      const tags = await prisma.recipeTag.findMany({
+        where: {
+          recipe: {
+            userId: userId,
+          },
+        },
+        select: {
+          tag: true,
+        },
+      });
+
+      const tagsDto = tags.map((tag) => tag.tag);
+
+      return {
+        tags: tagsDto,
+      };
     },
   );
 }
