@@ -7,7 +7,6 @@ import {
 } from '../../recipes/index.js';
 import type { RecipeBook } from '../types/recipeBook.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
-import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
 interface RemoveRecipeFromRecipeBook {
   recipeBookId: string;
@@ -39,7 +38,7 @@ export function useRemoveRecipeFromRecipeBook({
       const [data] = args;
 
       void queryClient.invalidateQueries({
-        queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
       void queryClient.invalidateQueries({
         queryKey: getRecipeQueryOptions(args[1].recipeId).queryKey,

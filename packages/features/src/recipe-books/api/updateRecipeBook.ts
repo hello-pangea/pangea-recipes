@@ -4,7 +4,6 @@ import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import type { RecipeBook } from '../types/recipeBook.js';
 import type { UpdateRecipeBookDto } from '../types/updateRecipeBookDto.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
-import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
 function updateRecipeBook(
   data: UpdateRecipeBookDto & { id: string },
@@ -29,7 +28,7 @@ export function useUpdateRecipeBook({ mutationConfig }: Options = {}) {
       const [data] = args;
 
       void queryClient.invalidateQueries({
-        queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
       queryClient.setQueryData(
         getRecipeBookQueryOptions(data.id).queryKey,

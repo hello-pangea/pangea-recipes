@@ -7,7 +7,6 @@ import { nutritionSchema } from '../types/nutrition.js';
 import { recipeSchema, type Recipe } from '../types/recipe.js';
 import { createRecipeDtoScema } from './createRecipe.js';
 import { getRecipeQueryOptions } from './getRecipe.js';
-import { getListRecipesQueryOptions } from './listRecipes.js';
 
 export type UpdateRecipeDto = Static<typeof updateRecipeDtoScema>;
 export const updateRecipeDtoScema = Type.Partial(
@@ -76,7 +75,7 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
       const [data] = args;
 
       void queryClient.invalidateQueries({
-        queryKey: getListRecipesQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
       queryClient.setQueryData(
         getRecipeQueryOptions(data.recipe.id).queryKey,

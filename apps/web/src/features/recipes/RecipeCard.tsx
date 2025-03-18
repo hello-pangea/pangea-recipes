@@ -170,13 +170,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
             aria-haspopup="true"
             aria-expanded={moreMenuOpen ? 'true' : undefined}
             onClick={(event) => {
-              event.stopPropagation();
-              event.preventDefault();
               setMoreMenuAnchorEl(event.currentTarget);
-            }}
-            onMouseDown={(event) => {
-              event.stopPropagation();
-              event.preventDefault();
             }}
           >
             <MoreVertRoundedIcon />

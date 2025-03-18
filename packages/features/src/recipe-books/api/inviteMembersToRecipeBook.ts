@@ -3,7 +3,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
-import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
 type InviteMembersToRecipeBook = Static<
   typeof inviteMembersToRecipeBookBodySchema
@@ -43,7 +42,7 @@ export function useInviteMembersToRecipeBook({ mutationConfig }: Options = {}) {
         queryKey: getRecipeBookQueryOptions(input.recipeBookId).queryKey,
       });
       void queryClient.invalidateQueries({
-        queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
 
       onSuccess?.(...args);

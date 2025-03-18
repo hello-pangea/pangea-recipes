@@ -2,7 +2,6 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
-import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
 interface DeleteRecipeBookInvite {
   recipeBookId: string;
@@ -31,7 +30,7 @@ export function useDeleteRecipeBookMember({ mutationConfig }: Options = {}) {
       });
 
       void queryClient.invalidateQueries({
-        queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
 
       onSuccess?.(...args);

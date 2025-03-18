@@ -3,7 +3,6 @@ import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import type { CreateRecipeBookDto } from '../types/createRecipeBookDto.js';
 import type { RecipeBook } from '../types/recipeBook.js';
-import { getListRecipeBooksQueryOptions } from './listRecipeBooks.js';
 
 function createRecipeBook(data: CreateRecipeBookDto): Promise<RecipeBook> {
   return api
@@ -24,7 +23,7 @@ export function useCreateRecipeBook({ mutationConfig }: Options = {}) {
   return useMutation({
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({
-        queryKey: getListRecipeBooksQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
 
       onSuccess?.(...args);

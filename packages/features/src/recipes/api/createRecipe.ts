@@ -5,7 +5,6 @@ import { api } from '../../lib/api.js';
 import { Nullable } from '../../lib/nullable.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { recipeSchema, type Recipe } from '../types/recipe.js';
-import { getListRecipesQueryOptions } from './listRecipes.js';
 
 export type CreateRecipeDto = Static<typeof createRecipeDtoScema>;
 export const createRecipeDtoScema = Type.Composite([
@@ -76,7 +75,7 @@ export function useCreateRecipe({ mutationConfig }: Options = {}) {
   return useMutation({
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({
-        queryKey: getListRecipesQueryOptions({ userId: '' }).queryKey,
+        queryKey: ['recipeBooks'],
       });
 
       onSuccess?.(...args);
