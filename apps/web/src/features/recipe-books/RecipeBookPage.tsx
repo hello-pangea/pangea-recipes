@@ -13,7 +13,7 @@ import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
 
-const route = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
+const route = getRouteApi('/app/_auth/recipe-books/$recipeBookId');
 
 export function RecipeBookPage() {
   const { recipeBookId } = route.useParams();

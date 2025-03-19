@@ -43,14 +43,14 @@ export function Header() {
         }}
       >
         <RouterButton
-          to="/app/sign-in"
+          to="/sign-in"
           variant="text"
           size={isSmall ? 'small' : 'medium'}
         >
           Sign in
         </RouterButton>
         <RouterButton
-          to="/app/sign-up"
+          to="/sign-up"
           variant="contained"
           size={isSmall ? 'small' : 'medium'}
         >

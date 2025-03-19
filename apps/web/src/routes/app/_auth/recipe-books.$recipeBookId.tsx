@@ -4,7 +4,7 @@ import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
 import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
 import { HTTPError } from 'ky';
 
-export const Route = createFileRoute('/app/_layout/recipe-books/$recipeBookId')(
+export const Route = createFileRoute('/app/_auth/recipe-books/$recipeBookId')(
   {
     loader: ({
       context: { queryClient, userId },

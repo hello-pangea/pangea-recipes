@@ -3,7 +3,7 @@ import { getCanonicalIngredientQueryOptions } from '@open-zero/features/canonica
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute(
-  '/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit',
+  '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit',
 )({
   loader: ({ context: { queryClient }, params: { canonicalIngredientId } }) => {
     return queryClient.ensureQueryData(

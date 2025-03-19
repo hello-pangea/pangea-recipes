@@ -32,7 +32,7 @@ import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 import { RecipeTags } from './RecipeTags';
 
-const route = getRouteApi('/app/_layout/recipes/$recipeId');
+const route = getRouteApi('/app/_auth/recipes/$recipeId');
 
 export function RecipePage() {
   const { recipeId } = route.useParams();

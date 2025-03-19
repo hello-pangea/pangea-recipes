@@ -2,7 +2,7 @@ import { authClient } from '#src/features/auth/authClient';
 import { Layout } from '#src/features/layout/Layout';
 import { createFileRoute, Navigate } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/app/_layout')({
+export const Route = createFileRoute('/app/_auth')({
   component: () => (
     <>
       <SignedIn>
@@ -10,7 +10,7 @@ export const Route = createFileRoute('/app/_layout')({
       </SignedIn>
       <SignedOut>
         <Navigate
-          to="/app/sign-in"
+          to="/sign-in"
           search={{
             redirect: location.pathname,
           }}

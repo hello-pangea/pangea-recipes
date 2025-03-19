@@ -26,7 +26,7 @@ import { useEffect, useState } from 'react';
 import { authClient } from '../auth/authClient';
 import { NewButton } from './NewButton';
 
-const route = getRouteApi('/app/_layout');
+const route = getRouteApi('/app/_auth');
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -60,7 +60,7 @@ export function Layout() {
   }, [isPending, error, router, queryClient, routeContext.userId]);
 
   if (!isPending && !error && !session) {
-    return <Navigate to="/app/sign-in" />;
+    return <Navigate to="/sign-in" />;
   }
 
   if (!routeContext.userId) {

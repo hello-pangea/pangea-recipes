@@ -33,7 +33,7 @@ const signUpFormSchema = z.object({
 
 type SignUpFormSchema = z.infer<typeof signUpFormSchema>;
 
-const route = getRouteApi('/app/sign-up');
+const route = getRouteApi('/sign-up');
 
 export function SignUpPage() {
   const navigate = route.useNavigate();
@@ -244,7 +244,7 @@ export function SignUpPage() {
             </Typography>
             <Typography variant="caption">
               Already have an account?{' '}
-              <RouterLink to="/app/sign-in">Sign in</RouterLink>
+              <RouterLink to="/sign-in">Sign in</RouterLink>
             </Typography>
           </Stack>
         </form>

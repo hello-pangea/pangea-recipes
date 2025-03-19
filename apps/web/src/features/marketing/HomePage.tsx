@@ -165,7 +165,7 @@ export function HomePage() {
                 All your recipes on all your devices. Create recipe books with
                 friends and family.
               </Typography>
-              <RouterButton to="/app/sign-up" variant="contained">
+              <RouterButton to="/sign-up" variant="contained">
                 Sign up for free
               </RouterButton>
             </Box>
@@ -356,7 +356,7 @@ export function HomePage() {
             Hello Recipes is free to use. We don't have ads, trackers, popups,
             or distractions. We never sell data. Enjoy your recipes, your way.
           </Typography>
-          <RouterButton to="/app/sign-up" variant="contained">
+          <RouterButton to="/sign-up" variant="contained">
             Sign up
           </RouterButton>
         </Box>

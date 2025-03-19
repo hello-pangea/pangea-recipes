@@ -6,7 +6,7 @@ export function App() {
   const { data: session, isPending, error } = authClient.useSession();
 
   if (isPending || error) {
-    return <div>Loading...</div>;
+    return null;
   }
 
   return (

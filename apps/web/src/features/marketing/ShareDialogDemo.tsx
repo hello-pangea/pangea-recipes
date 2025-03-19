@@ -137,7 +137,7 @@ export function ShareDialogDemo() {
         variant="outlined"
         onClick={() => {
           void navigator.clipboard
-            .writeText(`${window.location.origin}/app/sign-up`)
+            .writeText(`${window.location.origin}/sign-up`)
             .then(() => {
               setLinkCopied(true);
               setTimeout(() => {

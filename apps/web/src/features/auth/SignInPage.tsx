@@ -31,7 +31,7 @@ const signInFormSchema = z.object({
 
 type SignInFormSchema = z.infer<typeof signInFormSchema>;
 
-const route = getRouteApi('/app/sign-in');
+const route = getRouteApi('/sign-in');
 
 export function SignInPage() {
   const navigate = route.useNavigate();
@@ -233,10 +233,10 @@ export function SignInPage() {
                 alignItems: 'center',
               }}
             >
-              <RouterLink to="/app/sign-up" variant="caption">
+              <RouterLink to="/sign-up" variant="caption">
                 Don't have an account?
               </RouterLink>
-              <RouterLink to="/app/forgot-password" variant="caption">
+              <RouterLink to="/forgot-password" variant="caption">
                 Forgot password?
               </RouterLink>
             </Box>

@@ -33,7 +33,7 @@ export function ImportRecipeDemo() {
         }}
       >
         <RouterButton
-          to="/app/sign-up"
+          to="/sign-up"
           variant="contained"
           startIcon={<DownloadRoundedIcon />}
         >

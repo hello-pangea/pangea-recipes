@@ -41,7 +41,7 @@ export function ForgotPasswordPage() {
   const onSubmit: SubmitHandler<ForgotPasswordFormSchema> = (data) => {
     sendEmail.mutate({
       email: data.email,
-      redirectTo: `${location.origin}/app/reset-password`,
+      redirectTo: `${location.origin}/reset-password`,
     });
   };
 
@@ -98,7 +98,7 @@ export function ForgotPasswordPage() {
               sent to your email. Check your spam or junk folder if you don't
               see the email in your inbox.
             </Typography>
-            <RouterLink to="/app/sign-in" variant="caption">
+            <RouterLink to="/sign-in" variant="caption">
               Back
             </RouterLink>
           </>
@@ -128,7 +128,7 @@ export function ForgotPasswordPage() {
               >
                 Email me
               </Button>
-              <RouterLink to="/app/sign-in" variant="caption">
+              <RouterLink to="/sign-in" variant="caption">
                 Back
               </RouterLink>
             </Stack>

@@ -67,8 +67,8 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
 
         const signUpUrl =
           config.NODE_ENV === 'development'
-            ? `http://localhost:3000/app/sign-up`
-            : `https://hellorecipes.com/app/sign-up`;
+            ? `http://localhost:3000/sign-up`
+            : `https://hellorecipes.com/sign-up`;
 
         for (const email of emailsWithNoUser) {
           await resend.emails.send({

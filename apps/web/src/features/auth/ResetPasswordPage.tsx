@@ -29,7 +29,7 @@ const resetPasswordFormSchema = z.object({
 
 type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>;
 
-const route = getRouteApi('/app/reset-password');
+const route = getRouteApi('/reset-password');
 
 export function ResetPasswordPage() {
   const navigate = route.useNavigate();
@@ -60,7 +60,7 @@ export function ResetPasswordPage() {
       {
         onSuccess: () => {
           void navigate({
-            to: '/app/sign-in',
+            to: '/sign-in',
           });
         },
       },

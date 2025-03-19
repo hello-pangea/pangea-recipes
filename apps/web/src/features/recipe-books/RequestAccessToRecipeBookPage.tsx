@@ -9,7 +9,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
-const routeApi = getRouteApi('/app/_layout/recipe-books/$recipeBookId');
+const routeApi = getRouteApi('/app/_auth/recipe-books/$recipeBookId');
 
 export function RequestAccessToRecipeBookPage() {
   const userId = useSignedInUserId();

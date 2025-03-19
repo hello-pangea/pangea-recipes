@@ -3,7 +3,7 @@ import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute(
-  '/app/_layout/recipe-books_/$recipeBookId/edit',
+  '/app/_auth/recipe-books_/$recipeBookId/edit',
 )({
   loader: ({ context: { queryClient }, params: { recipeBookId } }) => {
     return queryClient.ensureQueryData(getRecipeBookQueryOptions(recipeBookId));

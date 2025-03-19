@@ -14,26 +14,26 @@ import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as TermsOfServiceImport } from './routes/terms-of-service'
+import { Route as SignUpImport } from './routes/sign-up'
+import { Route as SignInImport } from './routes/sign-in'
+import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as PrivacyPolicyImport } from './routes/privacy-policy'
+import { Route as ForgotPasswordImport } from './routes/forgot-password'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppIndexImport } from './routes/app/index'
-import { Route as AppSignUpImport } from './routes/app/sign-up'
-import { Route as AppSignInImport } from './routes/app/sign-in'
-import { Route as AppResetPasswordImport } from './routes/app/reset-password'
-import { Route as AppForgotPasswordImport } from './routes/app/forgot-password'
-import { Route as AppLayoutImport } from './routes/app/_layout'
-import { Route as AppLayoutSettingsImport } from './routes/app/_layout.settings'
-import { Route as AppLayoutRecipesIndexImport } from './routes/app/_layout.recipes.index'
-import { Route as AppLayoutRecipeBooksIndexImport } from './routes/app/_layout.recipe-books.index'
-import { Route as AppLayoutCanonicalIngredientsIndexImport } from './routes/app/_layout.canonical-ingredients.index'
-import { Route as AppLayoutRecipesNewImport } from './routes/app/_layout.recipes.new'
-import { Route as AppLayoutRecipesRecipeIdImport } from './routes/app/_layout.recipes.$recipeId'
-import { Route as AppLayoutRecipeBooksNewImport } from './routes/app/_layout.recipe-books.new'
-import { Route as AppLayoutRecipeBooksRecipeBookIdImport } from './routes/app/_layout.recipe-books.$recipeBookId'
-import { Route as AppLayoutCanonicalIngredientsNewImport } from './routes/app/_layout.canonical-ingredients.new'
-import { Route as AppLayoutRecipesRecipeIdEditImport } from './routes/app/_layout.recipes_.$recipeId.edit'
-import { Route as AppLayoutRecipeBooksRecipeBookIdEditImport } from './routes/app/_layout.recipe-books_.$recipeBookId.edit'
-import { Route as AppLayoutCanonicalIngredientsCanonicalIngredientIdEditImport } from './routes/app/_layout.canonical-ingredients_.$canonicalIngredientId.edit'
+import { Route as AppAuthRouteImport } from './routes/app/_auth/route'
+import { Route as AppAuthSettingsImport } from './routes/app/_auth/settings'
+import { Route as AppAuthRecipesIndexImport } from './routes/app/_auth/recipes.index'
+import { Route as AppAuthRecipeBooksIndexImport } from './routes/app/_auth/recipe-books.index'
+import { Route as AppAuthCanonicalIngredientsIndexImport } from './routes/app/_auth/canonical-ingredients.index'
+import { Route as AppAuthRecipesNewImport } from './routes/app/_auth/recipes.new'
+import { Route as AppAuthRecipesRecipeIdImport } from './routes/app/_auth/recipes.$recipeId'
+import { Route as AppAuthRecipeBooksNewImport } from './routes/app/_auth/recipe-books.new'
+import { Route as AppAuthRecipeBooksRecipeBookIdImport } from './routes/app/_auth/recipe-books.$recipeBookId'
+import { Route as AppAuthCanonicalIngredientsNewImport } from './routes/app/_auth/canonical-ingredients.new'
+import { Route as AppAuthRecipesRecipeIdEditImport } from './routes/app/_auth/recipes_.$recipeId.edit'
+import { Route as AppAuthRecipeBooksRecipeBookIdEditImport } from './routes/app/_auth/recipe-books_.$recipeBookId.edit'
+import { Route as AppAuthCanonicalIngredientsCanonicalIngredientIdEditImport } from './routes/app/_auth/canonical-ingredients_.$canonicalIngredientId.edit'
 
 // Create Virtual Routes
 
@@ -53,9 +53,33 @@ const TermsOfServiceRoute = TermsOfServiceImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const SignUpRoute = SignUpImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const SignInRoute = SignInImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ResetPasswordRoute = ResetPasswordImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const PrivacyPolicyRoute = PrivacyPolicyImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ForgotPasswordRoute = ForgotPasswordImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -71,111 +95,88 @@ const AppIndexRoute = AppIndexImport.update({
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppSignUpRoute = AppSignUpImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
+const AppAuthRouteRoute = AppAuthRouteImport.update({
+  id: '/_auth',
   getParentRoute: () => AppRoute,
 } as any)
 
-const AppSignInRoute = AppSignInImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppResetPasswordRoute = AppResetPasswordImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppForgotPasswordRoute = AppForgotPasswordImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppLayoutRoute = AppLayoutImport.update({
-  id: '/_layout',
-  getParentRoute: () => AppRoute,
-} as any)
-
-const AppLayoutSettingsRoute = AppLayoutSettingsImport.update({
+const AppAuthSettingsRoute = AppAuthSettingsImport.update({
   id: '/settings',
   path: '/settings',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
-const AppLayoutRecipesIndexRoute = AppLayoutRecipesIndexImport.update({
+const AppAuthRecipesIndexRoute = AppAuthRecipesIndexImport.update({
   id: '/recipes/',
   path: '/recipes/',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
-const AppLayoutRecipeBooksIndexRoute = AppLayoutRecipeBooksIndexImport.update({
+const AppAuthRecipeBooksIndexRoute = AppAuthRecipeBooksIndexImport.update({
   id: '/recipe-books/',
   path: '/recipe-books/',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
-const AppLayoutCanonicalIngredientsIndexRoute =
-  AppLayoutCanonicalIngredientsIndexImport.update({
+const AppAuthCanonicalIngredientsIndexRoute =
+  AppAuthCanonicalIngredientsIndexImport.update({
     id: '/canonical-ingredients/',
     path: '/canonical-ingredients/',
-    getParentRoute: () => AppLayoutRoute,
+    getParentRoute: () => AppAuthRouteRoute,
   } as any)
 
-const AppLayoutRecipesNewRoute = AppLayoutRecipesNewImport.update({
+const AppAuthRecipesNewRoute = AppAuthRecipesNewImport.update({
   id: '/recipes/new',
   path: '/recipes/new',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
-const AppLayoutRecipesRecipeIdRoute = AppLayoutRecipesRecipeIdImport.update({
+const AppAuthRecipesRecipeIdRoute = AppAuthRecipesRecipeIdImport.update({
   id: '/recipes/$recipeId',
   path: '/recipes/$recipeId',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
-const AppLayoutRecipeBooksNewRoute = AppLayoutRecipeBooksNewImport.update({
+const AppAuthRecipeBooksNewRoute = AppAuthRecipeBooksNewImport.update({
   id: '/recipe-books/new',
   path: '/recipe-books/new',
-  getParentRoute: () => AppLayoutRoute,
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
-const AppLayoutRecipeBooksRecipeBookIdRoute =
-  AppLayoutRecipeBooksRecipeBookIdImport.update({
+const AppAuthRecipeBooksRecipeBookIdRoute =
+  AppAuthRecipeBooksRecipeBookIdImport.update({
     id: '/recipe-books/$recipeBookId',
     path: '/recipe-books/$recipeBookId',
-    getParentRoute: () => AppLayoutRoute,
+    getParentRoute: () => AppAuthRouteRoute,
   } as any)
 
-const AppLayoutCanonicalIngredientsNewRoute =
-  AppLayoutCanonicalIngredientsNewImport.update({
+const AppAuthCanonicalIngredientsNewRoute =
+  AppAuthCanonicalIngredientsNewImport.update({
     id: '/canonical-ingredients/new',
     path: '/canonical-ingredients/new',
-    getParentRoute: () => AppLayoutRoute,
+    getParentRoute: () => AppAuthRouteRoute,
   } as any)
 
-const AppLayoutRecipesRecipeIdEditRoute =
-  AppLayoutRecipesRecipeIdEditImport.update({
+const AppAuthRecipesRecipeIdEditRoute = AppAuthRecipesRecipeIdEditImport.update(
+  {
     id: '/recipes_/$recipeId/edit',
     path: '/recipes/$recipeId/edit',
-    getParentRoute: () => AppLayoutRoute,
-  } as any)
+    getParentRoute: () => AppAuthRouteRoute,
+  } as any,
+)
 
-const AppLayoutRecipeBooksRecipeBookIdEditRoute =
-  AppLayoutRecipeBooksRecipeBookIdEditImport.update({
+const AppAuthRecipeBooksRecipeBookIdEditRoute =
+  AppAuthRecipeBooksRecipeBookIdEditImport.update({
     id: '/recipe-books_/$recipeBookId/edit',
     path: '/recipe-books/$recipeBookId/edit',
-    getParentRoute: () => AppLayoutRoute,
+    getParentRoute: () => AppAuthRouteRoute,
   } as any)
 
-const AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute =
-  AppLayoutCanonicalIngredientsCanonicalIngredientIdEditImport.update({
+const AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute =
+  AppAuthCanonicalIngredientsCanonicalIngredientIdEditImport.update({
     id: '/canonical-ingredients_/$canonicalIngredientId/edit',
     path: '/canonical-ingredients/$canonicalIngredientId/edit',
-    getParentRoute: () => AppLayoutRoute,
+    getParentRoute: () => AppAuthRouteRoute,
   } as any)
 
 // Populate the FileRoutesByPath interface
@@ -189,11 +190,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordImport
+      parentRoute: typeof rootRoute
+    }
     '/privacy-policy': {
       id: '/privacy-policy'
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyImport
+      parentRoute: typeof rootRoute
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordImport
+      parentRoute: typeof rootRoute
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInImport
+      parentRoute: typeof rootRoute
+    }
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpImport
       parentRoute: typeof rootRoute
     }
     '/terms-of-service': {
@@ -210,40 +239,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppImport
       parentRoute: typeof rootRoute
     }
-    '/app/_layout': {
-      id: '/app/_layout'
+    '/app/_auth': {
+      id: '/app/_auth'
       path: '/app'
       fullPath: '/app'
-      preLoaderRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRouteImport
       parentRoute: typeof AppRoute
-    }
-    '/app/forgot-password': {
-      id: '/app/forgot-password'
-      path: '/forgot-password'
-      fullPath: '/app/forgot-password'
-      preLoaderRoute: typeof AppForgotPasswordImport
-      parentRoute: typeof AppImport
-    }
-    '/app/reset-password': {
-      id: '/app/reset-password'
-      path: '/reset-password'
-      fullPath: '/app/reset-password'
-      preLoaderRoute: typeof AppResetPasswordImport
-      parentRoute: typeof AppImport
-    }
-    '/app/sign-in': {
-      id: '/app/sign-in'
-      path: '/sign-in'
-      fullPath: '/app/sign-in'
-      preLoaderRoute: typeof AppSignInImport
-      parentRoute: typeof AppImport
-    }
-    '/app/sign-up': {
-      id: '/app/sign-up'
-      path: '/sign-up'
-      fullPath: '/app/sign-up'
-      preLoaderRoute: typeof AppSignUpImport
-      parentRoute: typeof AppImport
     }
     '/app/': {
       id: '/app/'
@@ -252,147 +253,138 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexImport
       parentRoute: typeof AppImport
     }
-    '/app/_layout/settings': {
-      id: '/app/_layout/settings'
+    '/app/_auth/settings': {
+      id: '/app/_auth/settings'
       path: '/settings'
       fullPath: '/app/settings'
-      preLoaderRoute: typeof AppLayoutSettingsImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthSettingsImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/canonical-ingredients/new': {
-      id: '/app/_layout/canonical-ingredients/new'
+    '/app/_auth/canonical-ingredients/new': {
+      id: '/app/_auth/canonical-ingredients/new'
       path: '/canonical-ingredients/new'
       fullPath: '/app/canonical-ingredients/new'
-      preLoaderRoute: typeof AppLayoutCanonicalIngredientsNewImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthCanonicalIngredientsNewImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipe-books/$recipeBookId': {
-      id: '/app/_layout/recipe-books/$recipeBookId'
+    '/app/_auth/recipe-books/$recipeBookId': {
+      id: '/app/_auth/recipe-books/$recipeBookId'
       path: '/recipe-books/$recipeBookId'
       fullPath: '/app/recipe-books/$recipeBookId'
-      preLoaderRoute: typeof AppLayoutRecipeBooksRecipeBookIdImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipeBooksRecipeBookIdImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipe-books/new': {
-      id: '/app/_layout/recipe-books/new'
+    '/app/_auth/recipe-books/new': {
+      id: '/app/_auth/recipe-books/new'
       path: '/recipe-books/new'
       fullPath: '/app/recipe-books/new'
-      preLoaderRoute: typeof AppLayoutRecipeBooksNewImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipeBooksNewImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipes/$recipeId': {
-      id: '/app/_layout/recipes/$recipeId'
+    '/app/_auth/recipes/$recipeId': {
+      id: '/app/_auth/recipes/$recipeId'
       path: '/recipes/$recipeId'
       fullPath: '/app/recipes/$recipeId'
-      preLoaderRoute: typeof AppLayoutRecipesRecipeIdImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipesRecipeIdImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipes/new': {
-      id: '/app/_layout/recipes/new'
+    '/app/_auth/recipes/new': {
+      id: '/app/_auth/recipes/new'
       path: '/recipes/new'
       fullPath: '/app/recipes/new'
-      preLoaderRoute: typeof AppLayoutRecipesNewImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipesNewImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/canonical-ingredients/': {
-      id: '/app/_layout/canonical-ingredients/'
+    '/app/_auth/canonical-ingredients/': {
+      id: '/app/_auth/canonical-ingredients/'
       path: '/canonical-ingredients'
       fullPath: '/app/canonical-ingredients'
-      preLoaderRoute: typeof AppLayoutCanonicalIngredientsIndexImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthCanonicalIngredientsIndexImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipe-books/': {
-      id: '/app/_layout/recipe-books/'
+    '/app/_auth/recipe-books/': {
+      id: '/app/_auth/recipe-books/'
       path: '/recipe-books'
       fullPath: '/app/recipe-books'
-      preLoaderRoute: typeof AppLayoutRecipeBooksIndexImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipeBooksIndexImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipes/': {
-      id: '/app/_layout/recipes/'
+    '/app/_auth/recipes/': {
+      id: '/app/_auth/recipes/'
       path: '/recipes'
       fullPath: '/app/recipes'
-      preLoaderRoute: typeof AppLayoutRecipesIndexImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipesIndexImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit': {
-      id: '/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit'
+    '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit': {
+      id: '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit'
       path: '/canonical-ingredients/$canonicalIngredientId/edit'
       fullPath: '/app/canonical-ingredients/$canonicalIngredientId/edit'
-      preLoaderRoute: typeof AppLayoutCanonicalIngredientsCanonicalIngredientIdEditImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipe-books_/$recipeBookId/edit': {
-      id: '/app/_layout/recipe-books_/$recipeBookId/edit'
+    '/app/_auth/recipe-books_/$recipeBookId/edit': {
+      id: '/app/_auth/recipe-books_/$recipeBookId/edit'
       path: '/recipe-books/$recipeBookId/edit'
       fullPath: '/app/recipe-books/$recipeBookId/edit'
-      preLoaderRoute: typeof AppLayoutRecipeBooksRecipeBookIdEditImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipeBooksRecipeBookIdEditImport
+      parentRoute: typeof AppAuthRouteImport
     }
-    '/app/_layout/recipes_/$recipeId/edit': {
-      id: '/app/_layout/recipes_/$recipeId/edit'
+    '/app/_auth/recipes_/$recipeId/edit': {
+      id: '/app/_auth/recipes_/$recipeId/edit'
       path: '/recipes/$recipeId/edit'
       fullPath: '/app/recipes/$recipeId/edit'
-      preLoaderRoute: typeof AppLayoutRecipesRecipeIdEditImport
-      parentRoute: typeof AppLayoutImport
+      preLoaderRoute: typeof AppAuthRecipesRecipeIdEditImport
+      parentRoute: typeof AppAuthRouteImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface AppLayoutRouteChildren {
-  AppLayoutSettingsRoute: typeof AppLayoutSettingsRoute
-  AppLayoutCanonicalIngredientsNewRoute: typeof AppLayoutCanonicalIngredientsNewRoute
-  AppLayoutRecipeBooksRecipeBookIdRoute: typeof AppLayoutRecipeBooksRecipeBookIdRoute
-  AppLayoutRecipeBooksNewRoute: typeof AppLayoutRecipeBooksNewRoute
-  AppLayoutRecipesRecipeIdRoute: typeof AppLayoutRecipesRecipeIdRoute
-  AppLayoutRecipesNewRoute: typeof AppLayoutRecipesNewRoute
-  AppLayoutCanonicalIngredientsIndexRoute: typeof AppLayoutCanonicalIngredientsIndexRoute
-  AppLayoutRecipeBooksIndexRoute: typeof AppLayoutRecipeBooksIndexRoute
-  AppLayoutRecipesIndexRoute: typeof AppLayoutRecipesIndexRoute
-  AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute: typeof AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
-  AppLayoutRecipeBooksRecipeBookIdEditRoute: typeof AppLayoutRecipeBooksRecipeBookIdEditRoute
-  AppLayoutRecipesRecipeIdEditRoute: typeof AppLayoutRecipesRecipeIdEditRoute
+interface AppAuthRouteRouteChildren {
+  AppAuthSettingsRoute: typeof AppAuthSettingsRoute
+  AppAuthCanonicalIngredientsNewRoute: typeof AppAuthCanonicalIngredientsNewRoute
+  AppAuthRecipeBooksRecipeBookIdRoute: typeof AppAuthRecipeBooksRecipeBookIdRoute
+  AppAuthRecipeBooksNewRoute: typeof AppAuthRecipeBooksNewRoute
+  AppAuthRecipesRecipeIdRoute: typeof AppAuthRecipesRecipeIdRoute
+  AppAuthRecipesNewRoute: typeof AppAuthRecipesNewRoute
+  AppAuthCanonicalIngredientsIndexRoute: typeof AppAuthCanonicalIngredientsIndexRoute
+  AppAuthRecipeBooksIndexRoute: typeof AppAuthRecipeBooksIndexRoute
+  AppAuthRecipesIndexRoute: typeof AppAuthRecipesIndexRoute
+  AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute: typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute
+  AppAuthRecipeBooksRecipeBookIdEditRoute: typeof AppAuthRecipeBooksRecipeBookIdEditRoute
+  AppAuthRecipesRecipeIdEditRoute: typeof AppAuthRecipesRecipeIdEditRoute
 }
 
-const AppLayoutRouteChildren: AppLayoutRouteChildren = {
-  AppLayoutSettingsRoute: AppLayoutSettingsRoute,
-  AppLayoutCanonicalIngredientsNewRoute: AppLayoutCanonicalIngredientsNewRoute,
-  AppLayoutRecipeBooksRecipeBookIdRoute: AppLayoutRecipeBooksRecipeBookIdRoute,
-  AppLayoutRecipeBooksNewRoute: AppLayoutRecipeBooksNewRoute,
-  AppLayoutRecipesRecipeIdRoute: AppLayoutRecipesRecipeIdRoute,
-  AppLayoutRecipesNewRoute: AppLayoutRecipesNewRoute,
-  AppLayoutCanonicalIngredientsIndexRoute:
-    AppLayoutCanonicalIngredientsIndexRoute,
-  AppLayoutRecipeBooksIndexRoute: AppLayoutRecipeBooksIndexRoute,
-  AppLayoutRecipesIndexRoute: AppLayoutRecipesIndexRoute,
-  AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute:
-    AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute,
-  AppLayoutRecipeBooksRecipeBookIdEditRoute:
-    AppLayoutRecipeBooksRecipeBookIdEditRoute,
-  AppLayoutRecipesRecipeIdEditRoute: AppLayoutRecipesRecipeIdEditRoute,
+const AppAuthRouteRouteChildren: AppAuthRouteRouteChildren = {
+  AppAuthSettingsRoute: AppAuthSettingsRoute,
+  AppAuthCanonicalIngredientsNewRoute: AppAuthCanonicalIngredientsNewRoute,
+  AppAuthRecipeBooksRecipeBookIdRoute: AppAuthRecipeBooksRecipeBookIdRoute,
+  AppAuthRecipeBooksNewRoute: AppAuthRecipeBooksNewRoute,
+  AppAuthRecipesRecipeIdRoute: AppAuthRecipesRecipeIdRoute,
+  AppAuthRecipesNewRoute: AppAuthRecipesNewRoute,
+  AppAuthCanonicalIngredientsIndexRoute: AppAuthCanonicalIngredientsIndexRoute,
+  AppAuthRecipeBooksIndexRoute: AppAuthRecipeBooksIndexRoute,
+  AppAuthRecipesIndexRoute: AppAuthRecipesIndexRoute,
+  AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute:
+    AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute,
+  AppAuthRecipeBooksRecipeBookIdEditRoute:
+    AppAuthRecipeBooksRecipeBookIdEditRoute,
+  AppAuthRecipesRecipeIdEditRoute: AppAuthRecipesRecipeIdEditRoute,
 }
 
-const AppLayoutRouteWithChildren = AppLayoutRoute._addFileChildren(
-  AppLayoutRouteChildren,
+const AppAuthRouteRouteWithChildren = AppAuthRouteRoute._addFileChildren(
+  AppAuthRouteRouteChildren,
 )
 
 interface AppRouteChildren {
-  AppLayoutRoute: typeof AppLayoutRouteWithChildren
-  AppForgotPasswordRoute: typeof AppForgotPasswordRoute
-  AppResetPasswordRoute: typeof AppResetPasswordRoute
-  AppSignInRoute: typeof AppSignInRoute
-  AppSignUpRoute: typeof AppSignUpRoute
+  AppAuthRouteRoute: typeof AppAuthRouteRouteWithChildren
   AppIndexRoute: typeof AppIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
-  AppLayoutRoute: AppLayoutRouteWithChildren,
-  AppForgotPasswordRoute: AppForgotPasswordRoute,
-  AppResetPasswordRoute: AppResetPasswordRoute,
-  AppSignInRoute: AppSignInRoute,
-  AppSignUpRoute: AppSignUpRoute,
+  AppAuthRouteRoute: AppAuthRouteRouteWithChildren,
   AppIndexRoute: AppIndexRoute,
 }
 
@@ -400,88 +392,88 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/app': typeof AppLayoutRouteWithChildren
-  '/app/forgot-password': typeof AppForgotPasswordRoute
-  '/app/reset-password': typeof AppResetPasswordRoute
-  '/app/sign-in': typeof AppSignInRoute
-  '/app/sign-up': typeof AppSignUpRoute
+  '/app': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
-  '/app/settings': typeof AppLayoutSettingsRoute
-  '/app/canonical-ingredients/new': typeof AppLayoutCanonicalIngredientsNewRoute
-  '/app/recipe-books/$recipeBookId': typeof AppLayoutRecipeBooksRecipeBookIdRoute
-  '/app/recipe-books/new': typeof AppLayoutRecipeBooksNewRoute
-  '/app/recipes/$recipeId': typeof AppLayoutRecipesRecipeIdRoute
-  '/app/recipes/new': typeof AppLayoutRecipesNewRoute
-  '/app/canonical-ingredients': typeof AppLayoutCanonicalIngredientsIndexRoute
-  '/app/recipe-books': typeof AppLayoutRecipeBooksIndexRoute
-  '/app/recipes': typeof AppLayoutRecipesIndexRoute
-  '/app/canonical-ingredients/$canonicalIngredientId/edit': typeof AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
-  '/app/recipe-books/$recipeBookId/edit': typeof AppLayoutRecipeBooksRecipeBookIdEditRoute
-  '/app/recipes/$recipeId/edit': typeof AppLayoutRecipesRecipeIdEditRoute
+  '/app/settings': typeof AppAuthSettingsRoute
+  '/app/canonical-ingredients/new': typeof AppAuthCanonicalIngredientsNewRoute
+  '/app/recipe-books/$recipeBookId': typeof AppAuthRecipeBooksRecipeBookIdRoute
+  '/app/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
+  '/app/recipes/$recipeId': typeof AppAuthRecipesRecipeIdRoute
+  '/app/recipes/new': typeof AppAuthRecipesNewRoute
+  '/app/canonical-ingredients': typeof AppAuthCanonicalIngredientsIndexRoute
+  '/app/recipe-books': typeof AppAuthRecipeBooksIndexRoute
+  '/app/recipes': typeof AppAuthRecipesIndexRoute
+  '/app/canonical-ingredients/$canonicalIngredientId/edit': typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute
+  '/app/recipe-books/$recipeBookId/edit': typeof AppAuthRecipeBooksRecipeBookIdEditRoute
+  '/app/recipes/$recipeId/edit': typeof AppAuthRecipesRecipeIdEditRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppIndexRoute
-  '/app/forgot-password': typeof AppForgotPasswordRoute
-  '/app/reset-password': typeof AppResetPasswordRoute
-  '/app/sign-in': typeof AppSignInRoute
-  '/app/sign-up': typeof AppSignUpRoute
-  '/app/settings': typeof AppLayoutSettingsRoute
-  '/app/canonical-ingredients/new': typeof AppLayoutCanonicalIngredientsNewRoute
-  '/app/recipe-books/$recipeBookId': typeof AppLayoutRecipeBooksRecipeBookIdRoute
-  '/app/recipe-books/new': typeof AppLayoutRecipeBooksNewRoute
-  '/app/recipes/$recipeId': typeof AppLayoutRecipesRecipeIdRoute
-  '/app/recipes/new': typeof AppLayoutRecipesNewRoute
-  '/app/canonical-ingredients': typeof AppLayoutCanonicalIngredientsIndexRoute
-  '/app/recipe-books': typeof AppLayoutRecipeBooksIndexRoute
-  '/app/recipes': typeof AppLayoutRecipesIndexRoute
-  '/app/canonical-ingredients/$canonicalIngredientId/edit': typeof AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
-  '/app/recipe-books/$recipeBookId/edit': typeof AppLayoutRecipeBooksRecipeBookIdEditRoute
-  '/app/recipes/$recipeId/edit': typeof AppLayoutRecipesRecipeIdEditRoute
+  '/app/settings': typeof AppAuthSettingsRoute
+  '/app/canonical-ingredients/new': typeof AppAuthCanonicalIngredientsNewRoute
+  '/app/recipe-books/$recipeBookId': typeof AppAuthRecipeBooksRecipeBookIdRoute
+  '/app/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
+  '/app/recipes/$recipeId': typeof AppAuthRecipesRecipeIdRoute
+  '/app/recipes/new': typeof AppAuthRecipesNewRoute
+  '/app/canonical-ingredients': typeof AppAuthCanonicalIngredientsIndexRoute
+  '/app/recipe-books': typeof AppAuthRecipeBooksIndexRoute
+  '/app/recipes': typeof AppAuthRecipesIndexRoute
+  '/app/canonical-ingredients/$canonicalIngredientId/edit': typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute
+  '/app/recipe-books/$recipeBookId/edit': typeof AppAuthRecipeBooksRecipeBookIdEditRoute
+  '/app/recipes/$recipeId/edit': typeof AppAuthRecipesRecipeIdEditRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/forgot-password': typeof ForgotPasswordRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/sign-in': typeof SignInRoute
+  '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppRouteWithChildren
-  '/app/_layout': typeof AppLayoutRouteWithChildren
-  '/app/forgot-password': typeof AppForgotPasswordRoute
-  '/app/reset-password': typeof AppResetPasswordRoute
-  '/app/sign-in': typeof AppSignInRoute
-  '/app/sign-up': typeof AppSignUpRoute
+  '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
-  '/app/_layout/settings': typeof AppLayoutSettingsRoute
-  '/app/_layout/canonical-ingredients/new': typeof AppLayoutCanonicalIngredientsNewRoute
-  '/app/_layout/recipe-books/$recipeBookId': typeof AppLayoutRecipeBooksRecipeBookIdRoute
-  '/app/_layout/recipe-books/new': typeof AppLayoutRecipeBooksNewRoute
-  '/app/_layout/recipes/$recipeId': typeof AppLayoutRecipesRecipeIdRoute
-  '/app/_layout/recipes/new': typeof AppLayoutRecipesNewRoute
-  '/app/_layout/canonical-ingredients/': typeof AppLayoutCanonicalIngredientsIndexRoute
-  '/app/_layout/recipe-books/': typeof AppLayoutRecipeBooksIndexRoute
-  '/app/_layout/recipes/': typeof AppLayoutRecipesIndexRoute
-  '/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit': typeof AppLayoutCanonicalIngredientsCanonicalIngredientIdEditRoute
-  '/app/_layout/recipe-books_/$recipeBookId/edit': typeof AppLayoutRecipeBooksRecipeBookIdEditRoute
-  '/app/_layout/recipes_/$recipeId/edit': typeof AppLayoutRecipesRecipeIdEditRoute
+  '/app/_auth/settings': typeof AppAuthSettingsRoute
+  '/app/_auth/canonical-ingredients/new': typeof AppAuthCanonicalIngredientsNewRoute
+  '/app/_auth/recipe-books/$recipeBookId': typeof AppAuthRecipeBooksRecipeBookIdRoute
+  '/app/_auth/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
+  '/app/_auth/recipes/$recipeId': typeof AppAuthRecipesRecipeIdRoute
+  '/app/_auth/recipes/new': typeof AppAuthRecipesNewRoute
+  '/app/_auth/canonical-ingredients/': typeof AppAuthCanonicalIngredientsIndexRoute
+  '/app/_auth/recipe-books/': typeof AppAuthRecipeBooksIndexRoute
+  '/app/_auth/recipes/': typeof AppAuthRecipesIndexRoute
+  '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit': typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute
+  '/app/_auth/recipe-books_/$recipeBookId/edit': typeof AppAuthRecipeBooksRecipeBookIdEditRoute
+  '/app/_auth/recipes_/$recipeId/edit': typeof AppAuthRecipesRecipeIdEditRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/forgot-password'
     | '/privacy-policy'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
     | '/terms-of-service'
     | '/app'
-    | '/app/forgot-password'
-    | '/app/reset-password'
-    | '/app/sign-in'
-    | '/app/sign-up'
     | '/app/'
     | '/app/settings'
     | '/app/canonical-ingredients/new'
@@ -498,13 +490,13 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/forgot-password'
     | '/privacy-policy'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
     | '/terms-of-service'
     | '/app'
-    | '/app/forgot-password'
-    | '/app/reset-password'
-    | '/app/sign-in'
-    | '/app/sign-up'
     | '/app/settings'
     | '/app/canonical-ingredients/new'
     | '/app/recipe-books/$recipeBookId'
@@ -520,40 +512,48 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/forgot-password'
     | '/privacy-policy'
+    | '/reset-password'
+    | '/sign-in'
+    | '/sign-up'
     | '/terms-of-service'
     | '/app'
-    | '/app/_layout'
-    | '/app/forgot-password'
-    | '/app/reset-password'
-    | '/app/sign-in'
-    | '/app/sign-up'
+    | '/app/_auth'
     | '/app/'
-    | '/app/_layout/settings'
-    | '/app/_layout/canonical-ingredients/new'
-    | '/app/_layout/recipe-books/$recipeBookId'
-    | '/app/_layout/recipe-books/new'
-    | '/app/_layout/recipes/$recipeId'
-    | '/app/_layout/recipes/new'
-    | '/app/_layout/canonical-ingredients/'
-    | '/app/_layout/recipe-books/'
-    | '/app/_layout/recipes/'
-    | '/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit'
-    | '/app/_layout/recipe-books_/$recipeBookId/edit'
-    | '/app/_layout/recipes_/$recipeId/edit'
+    | '/app/_auth/settings'
+    | '/app/_auth/canonical-ingredients/new'
+    | '/app/_auth/recipe-books/$recipeBookId'
+    | '/app/_auth/recipe-books/new'
+    | '/app/_auth/recipes/$recipeId'
+    | '/app/_auth/recipes/new'
+    | '/app/_auth/canonical-ingredients/'
+    | '/app/_auth/recipe-books/'
+    | '/app/_auth/recipes/'
+    | '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit'
+    | '/app/_auth/recipe-books_/$recipeBookId/edit'
+    | '/app/_auth/recipes_/$recipeId/edit'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  SignInRoute: typeof SignInRoute
+  SignUpRoute: typeof SignUpRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
   AppRoute: typeof AppRouteWithChildren
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  SignInRoute: SignInRoute,
+  SignUpRoute: SignUpRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
   AppRoute: AppRouteWithChildren,
 }
@@ -569,7 +569,11 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/forgot-password",
         "/privacy-policy",
+        "/reset-password",
+        "/sign-in",
+        "/sign-up",
         "/terms-of-service",
         "/app"
       ]
@@ -577,108 +581,100 @@ export const routeTree = rootRoute
     "/": {
       "filePath": "index.tsx"
     },
+    "/forgot-password": {
+      "filePath": "forgot-password.tsx"
+    },
     "/privacy-policy": {
       "filePath": "privacy-policy.tsx"
+    },
+    "/reset-password": {
+      "filePath": "reset-password.tsx"
+    },
+    "/sign-in": {
+      "filePath": "sign-in.tsx"
+    },
+    "/sign-up": {
+      "filePath": "sign-up.tsx"
     },
     "/terms-of-service": {
       "filePath": "terms-of-service.tsx"
     },
     "/app": {
-      "filePath": "app",
+      "filePath": "app/_auth",
       "children": [
-        "/app/_layout",
-        "/app/forgot-password",
-        "/app/reset-password",
-        "/app/sign-in",
-        "/app/sign-up",
+        "/app/_auth",
         "/app/"
       ]
     },
-    "/app/_layout": {
-      "filePath": "app/_layout.tsx",
+    "/app/_auth": {
+      "filePath": "app/_auth/route.tsx",
       "parent": "/app",
       "children": [
-        "/app/_layout/settings",
-        "/app/_layout/canonical-ingredients/new",
-        "/app/_layout/recipe-books/$recipeBookId",
-        "/app/_layout/recipe-books/new",
-        "/app/_layout/recipes/$recipeId",
-        "/app/_layout/recipes/new",
-        "/app/_layout/canonical-ingredients/",
-        "/app/_layout/recipe-books/",
-        "/app/_layout/recipes/",
-        "/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit",
-        "/app/_layout/recipe-books_/$recipeBookId/edit",
-        "/app/_layout/recipes_/$recipeId/edit"
+        "/app/_auth/settings",
+        "/app/_auth/canonical-ingredients/new",
+        "/app/_auth/recipe-books/$recipeBookId",
+        "/app/_auth/recipe-books/new",
+        "/app/_auth/recipes/$recipeId",
+        "/app/_auth/recipes/new",
+        "/app/_auth/canonical-ingredients/",
+        "/app/_auth/recipe-books/",
+        "/app/_auth/recipes/",
+        "/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit",
+        "/app/_auth/recipe-books_/$recipeBookId/edit",
+        "/app/_auth/recipes_/$recipeId/edit"
       ]
-    },
-    "/app/forgot-password": {
-      "filePath": "app/forgot-password.tsx",
-      "parent": "/app"
-    },
-    "/app/reset-password": {
-      "filePath": "app/reset-password.tsx",
-      "parent": "/app"
-    },
-    "/app/sign-in": {
-      "filePath": "app/sign-in.tsx",
-      "parent": "/app"
-    },
-    "/app/sign-up": {
-      "filePath": "app/sign-up.tsx",
-      "parent": "/app"
     },
     "/app/": {
       "filePath": "app/index.tsx",
       "parent": "/app"
     },
-    "/app/_layout/settings": {
-      "filePath": "app/_layout.settings.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/settings": {
+      "filePath": "app/_auth/settings.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/canonical-ingredients/new": {
-      "filePath": "app/_layout.canonical-ingredients.new.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/canonical-ingredients/new": {
+      "filePath": "app/_auth/canonical-ingredients.new.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipe-books/$recipeBookId": {
-      "filePath": "app/_layout.recipe-books.$recipeBookId.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipe-books/$recipeBookId": {
+      "filePath": "app/_auth/recipe-books.$recipeBookId.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipe-books/new": {
-      "filePath": "app/_layout.recipe-books.new.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipe-books/new": {
+      "filePath": "app/_auth/recipe-books.new.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipes/$recipeId": {
-      "filePath": "app/_layout.recipes.$recipeId.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipes/$recipeId": {
+      "filePath": "app/_auth/recipes.$recipeId.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipes/new": {
-      "filePath": "app/_layout.recipes.new.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipes/new": {
+      "filePath": "app/_auth/recipes.new.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/canonical-ingredients/": {
-      "filePath": "app/_layout.canonical-ingredients.index.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/canonical-ingredients/": {
+      "filePath": "app/_auth/canonical-ingredients.index.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipe-books/": {
-      "filePath": "app/_layout.recipe-books.index.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipe-books/": {
+      "filePath": "app/_auth/recipe-books.index.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipes/": {
-      "filePath": "app/_layout.recipes.index.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipes/": {
+      "filePath": "app/_auth/recipes.index.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit": {
-      "filePath": "app/_layout.canonical-ingredients_.$canonicalIngredientId.edit.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit": {
+      "filePath": "app/_auth/canonical-ingredients_.$canonicalIngredientId.edit.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipe-books_/$recipeBookId/edit": {
-      "filePath": "app/_layout.recipe-books_.$recipeBookId.edit.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipe-books_/$recipeBookId/edit": {
+      "filePath": "app/_auth/recipe-books_.$recipeBookId.edit.tsx",
+      "parent": "/app/_auth"
     },
-    "/app/_layout/recipes_/$recipeId/edit": {
-      "filePath": "app/_layout.recipes_.$recipeId.edit.tsx",
-      "parent": "/app/_layout"
+    "/app/_auth/recipes_/$recipeId/edit": {
+      "filePath": "app/_auth/recipes_.$recipeId.edit.tsx",
+      "parent": "/app/_auth"
     }
   }
 }

@@ -3,7 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipePage, type RecipeFormInputs } from './CreateRecipePage';
 
-const route = getRouteApi('/app/_layout/recipes_/$recipeId/edit');
+const route = getRouteApi('/app/_auth/recipes_/$recipeId/edit');
 
 export function EditRecipePage() {
   const { recipeId } = route.useParams();

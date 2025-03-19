@@ -4,7 +4,7 @@ import { getRouteApi } from '@tanstack/react-router';
 import { CreateCanonicalIngredientPage } from './CreateCanonicalIngredientPage';
 
 const route = getRouteApi(
-  '/app/_layout/canonical-ingredients_/$canonicalIngredientId/edit',
+  '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit',
 );
 
 export function EditCanonicalIngredientPage() {
