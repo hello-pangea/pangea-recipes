@@ -41,9 +41,8 @@ export async function imageRoutes(fastify: FastifyTypebox) {
     },
     async (request) => {
       const file = request.body.file;
-      const originalBuffer = await file.toBuffer();
 
-      const { imageId, imageUrl } = await processAndUploadImage(originalBuffer);
+      const { imageId, imageUrl } = await processAndUploadImage(file);
 
       return {
         imageId: imageId,

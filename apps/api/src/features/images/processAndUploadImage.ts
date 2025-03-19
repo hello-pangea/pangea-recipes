@@ -1,21 +1,20 @@
 import { getFileUrl, uploadFile } from '#src/lib/s3.ts';
+import type { MultipartFile } from '@fastify/multipart';
 import { prisma } from '@open-zero/database';
-import { fileTypeFromBuffer } from 'file-type';
 import sharp from 'sharp';
 
-export async function processAndUploadImage(imageBuffer: Buffer) {
+export async function processAndUploadImage(multipartFile: MultipartFile) {
+  const imageBuffer = await multipartFile.toBuffer();
   const sharpInstance = sharp(imageBuffer);
 
-  const originalImageKey = `images/original/${crypto.randomUUID()}.jpg`;
+  const originalImageKey = `images/original/${crypto.randomUUID()}`;
 
   const rotatedImage = await sharpInstance.rotate().toBuffer();
-
-  const originalMimeType = await fileTypeFromBuffer(imageBuffer);
 
   await uploadFile({
     buffer: rotatedImage,
     key: originalImageKey,
-    mimeType: originalMimeType?.mime ?? 'image/jpeg',
+    mimeType: multipartFile.mimetype,
     public: false,
   });
 
@@ -25,7 +24,7 @@ export async function processAndUploadImage(imageBuffer: Buffer) {
     .jpeg()
     .toBuffer();
 
-  const modifiedImageKey = `images/transformed${crypto.randomUUID()}.jpg`;
+  const modifiedImageKey = `images/transformed/${crypto.randomUUID()}`;
 
   await uploadFile({
     buffer: modifiedBuffer,
