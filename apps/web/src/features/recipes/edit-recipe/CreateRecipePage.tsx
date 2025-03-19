@@ -1,4 +1,3 @@
-import { Page } from '#src/components/Page';
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { focusNextInput } from '#src/lib/focusNextInput';
 import { getNumberFromInput } from '#src/lib/getNumberFromInput';
@@ -315,23 +314,60 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
   };
 
   return (
-    <Page>
-      <Box sx={{ mb: 2 }}>
-        <Typography variant="h1">
-          {defaultRecipe ? 'Edit recipe' : 'New recipe'}
-        </Typography>
-        <Button
-          size="small"
-          startIcon={<LinkRoundedIcon />}
-          onClick={() => {
-            setImportDialogOpen(true);
-          }}
-        >
-          Import from url
-        </Button>
-      </Box>
+    <Box
+      sx={{
+        px: { xs: 2, sm: 3 },
+        pb: 4,
+        width: '100%',
+      }}
+    >
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              position: 'sticky',
+              top: 8,
+              maxWidth: 750,
+              backgroundColor: (theme) => theme.palette.background.paper,
+              zIndex: 11,
+              px: 2,
+              py: 1.5,
+              borderRadius: 1.5,
+              boxShadow:
+                '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+            }}
+          >
+            <Typography variant="h1">
+              {defaultRecipe ? 'Edit recipe' : 'New recipe'}
+            </Typography>
+            <Button
+              variant="contained"
+              startIcon={<SaveRoundedIcon />}
+              type="submit"
+              loading={createRecipe.isPending || updateRecipe.isPending}
+              sx={{
+                display: 'flex',
+              }}
+            >
+              Save
+            </Button>
+          </Box>
+          <Button
+            size="small"
+            startIcon={<LinkRoundedIcon />}
+            onClick={() => {
+              setImportDialogOpen(true);
+            }}
+            sx={{
+              mb: 2,
+              mt: 2,
+            }}
+          >
+            Import from url
+          </Button>
           <Grid2
             container
             spacing={3}
@@ -545,17 +581,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               maxWidth: 300,
             }}
           />
-          <Button
-            variant="contained"
-            startIcon={<SaveRoundedIcon />}
-            type="submit"
-            loading={createRecipe.isPending || updateRecipe.isPending}
-            sx={{
-              display: 'flex',
-            }}
-          >
-            Save
-          </Button>
         </form>
       </FormProvider>
       <ImportRecipeDialog
@@ -626,6 +651,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           });
         }}
       />
-    </Page>
+    </Box>
   );
 }
