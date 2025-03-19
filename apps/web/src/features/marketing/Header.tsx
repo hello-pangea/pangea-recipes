@@ -22,13 +22,14 @@ export function Header() {
           height={isSmall ? 24 : 32}
         />
         <Typography
-          variant="h1"
           sx={{
+            fontFamily: (theme) => theme.typography.h1.fontFamily,
+            color: (theme) => theme.typography.h1.color,
+            fontWeight: (theme) => theme.typography.h1.fontWeight,
             fontSize: isSmall ? 16 : 22,
             lineHeight: 1,
             ml: isSmall ? 1 : 2,
           }}
-          component={'p'}
         >
           <RouterLink to="/" color="inherit" underline="none">
             Hello Recipes

@@ -6,7 +6,6 @@ import {
   Box,
   IconButton,
   Toolbar,
-  Typography,
   useColorScheme,
   useMediaQuery,
   type Theme,
@@ -118,20 +117,7 @@ export function Layout() {
                     color: 'inherit',
                   }}
                 >
-                  <Box sx={{ display: 'flex', alignItems: 'center', mx: 2 }}>
-                    <img src="/assets/lil-guy.svg" width={24} height={24} />
-                    <Typography
-                      variant="h1"
-                      sx={{
-                        fontSize: 18,
-                        lineHeight: 1,
-                        ml: 1.5,
-                        pt: '0.3rem',
-                      }}
-                    >
-                      Hello Recipes
-                    </Typography>
-                  </Box>
+                  <img src="/assets/lil-guy.svg" width={24} height={24} />
                 </RouterLink>
               </Box>
               <NewButton />
