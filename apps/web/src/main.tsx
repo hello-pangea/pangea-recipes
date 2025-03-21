@@ -1,6 +1,9 @@
 import '#src/theme/theme.css';
+// @ts-expect-error Font imports are ok
 import '@fontsource-variable/inter';
+// @ts-expect-error Font imports are ok
 import '@fontsource-variable/lora';
+
 import { updateApiOptions } from '@open-zero/features';
 import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';

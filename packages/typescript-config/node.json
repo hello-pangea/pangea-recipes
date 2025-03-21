@@ -3,12 +3,12 @@
   "compilerOptions": {
     "composite": false,
 
-    "declaration": false,
-    "declarationMap": false,
     "sourceMap": true,
     "inlineSources": false,
 
     "verbatimModuleSyntax": true,
+    "noUncheckedSideEffectImports": true,
+    "noFallthroughCasesInSwitch": true,
 
     "exactOptionalPropertyTypes": false,
 

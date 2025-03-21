@@ -1,12 +1,8 @@
 {
   "extends": "@open-zero/typescript-config/vite.json",
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "dist",
-    "declaration": false,
-    "declarationMap": false,
     "paths": {
-      "#src/*": ["src/*"]
+      "#src/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules"],
