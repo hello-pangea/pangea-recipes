@@ -38,7 +38,7 @@ export function RecipeTags({ recipeId, sx = [] }: Props) {
   const updateRecipe = useUpdateRecipe();
   const { data: usedTags } = useUsedRecipeTags({ userId: userId });
 
-  const tags = recipe?.tags ?? [];
+  const tags = useMemo(() => recipe?.tags ?? [], [recipe?.tags]);
 
   const filteredUsedTags = useMemo(() => {
     if (!usedTags) {

@@ -13,7 +13,7 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@atlaskit/pragmatic-drag-and-drop": "^1.5.1",
+    "@atlaskit/pragmatic-drag-and-drop": "^1.5.2",
     "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "^2.1.0",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.0.3",
     "@emotion/react": "^11.14.0",
@@ -28,8 +28,8 @@
     "@sinclair/typebox": "^0.34.30",
     "@tanstack/react-query": "^5.69.0",
     "@tanstack/react-query-devtools": "^5.69.0",
-    "@tanstack/react-router": "^1.114.25",
-    "@tanstack/react-router-devtools": "^1.114.25",
+    "@tanstack/react-router": "^1.114.27",
+    "@tanstack/react-router-devtools": "^1.114.27",
     "@uppy/core": "^4.4.3",
     "@uppy/dashboard": "^4.3.2",
     "@uppy/drag-drop": "^4.1.1",
@@ -49,10 +49,10 @@
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@tanstack/router-plugin": "^1.114.25",
-    "@types/react": "^19.0.11",
+    "@tanstack/router-plugin": "^1.114.27",
+    "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react-swc": "^3.8.0",
+    "@vitejs/plugin-react-swc": "^3.8.1",
     "concurrently": "^9.1.2",
     "typescript": "~5.8.2",
     "vite": "^6.2.2"
