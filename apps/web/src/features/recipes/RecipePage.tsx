@@ -12,7 +12,7 @@ import {
   Card,
   FormControlLabel,
   FormGroup,
-  Grid2,
+  Grid,
   IconButton,
   Link,
   Popover,
@@ -67,8 +67,8 @@ export function RecipePage() {
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, mt: { xs: 0, sm: 2 } }}>
-      <Grid2 container spacing={4} sx={{ mb: 2 }}>
-        <Grid2
+      <Grid container spacing={4} sx={{ mb: 2 }}>
+        <Grid
           size={{
             xs: 12,
             md: hasCoverImage ? 6 : 12,
@@ -136,8 +136,8 @@ export function RecipePage() {
               <Typography sx={{ maxWidth: 500 }}>
                 {recipe.description}
               </Typography>
-              <Grid2 container spacing={2} sx={{ mt: 4 }}>
-                <Grid2
+              <Grid container spacing={2} sx={{ mt: 4 }}>
+                <Grid
                   size={{
                     xs: 12,
                     sm: 4,
@@ -252,9 +252,9 @@ export function RecipePage() {
                       </Stack>
                     </Popover>
                   </Stack>
-                </Grid2>
+                </Grid>
                 {recipe.prepTime && (
-                  <Grid2
+                  <Grid
                     size={{
                       xs: 12,
                       sm: 4,
@@ -271,10 +271,10 @@ export function RecipePage() {
                         </Typography>
                       </Stack>
                     </Stack>
-                  </Grid2>
+                  </Grid>
                 )}
                 {recipe.cookTime && (
-                  <Grid2
+                  <Grid
                     size={{
                       xs: 12,
                       sm: 4,
@@ -291,14 +291,14 @@ export function RecipePage() {
                         </Typography>
                       </Stack>
                     </Stack>
-                  </Grid2>
+                  </Grid>
                 )}
-              </Grid2>
+              </Grid>
             </Card>
           </Stack>
-        </Grid2>
+        </Grid>
         {hasCoverImage && (
-          <Grid2
+          <Grid
             size={{
               xs: 12,
               md: 6,
@@ -325,9 +325,9 @@ export function RecipePage() {
                 }}
               />
             </Box>
-          </Grid2>
+          </Grid>
         )}
-      </Grid2>
+      </Grid>
       {isWakeLockSupported && (
         <FormGroup sx={{ mb: 2 }}>
           <FormControlLabel
@@ -347,8 +347,8 @@ export function RecipePage() {
           />
         </FormGroup>
       )}
-      <Grid2 container spacing={2}>
-        <Grid2
+      <Grid container spacing={2}>
+        <Grid
           size={{
             xs: 12,
             sm: 6,
@@ -377,8 +377,8 @@ export function RecipePage() {
               </Box>
             ))}
           </Stack>
-        </Grid2>
-        <Grid2
+        </Grid>
+        <Grid
           size={{
             xs: 12,
             sm: 6,
@@ -423,8 +423,8 @@ export function RecipePage() {
               </Box>
             ))}
           </Stack>
-        </Grid2>
-      </Grid2>
+        </Grid>
+      </Grid>
       {recipe.nutrition && (
         <Nutrition
           nutrition={recipe.nutrition}

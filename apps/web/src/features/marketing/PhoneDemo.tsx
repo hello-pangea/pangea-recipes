@@ -1,5 +1,5 @@
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Box, Card, Grid2, InputBase, Typography } from '@mui/material';
+import { Box, Card, Grid, InputBase, Typography } from '@mui/material';
 import { useState } from 'react';
 
 const recipes = [
@@ -107,9 +107,9 @@ export function PhoneDemo() {
           />
         </Box>
       </Box>
-      <Grid2 container spacing={1}>
+      <Grid container spacing={1}>
         {recipes.map((recipe) => (
-          <Grid2 size={6} key={recipe.id}>
+          <Grid size={6} key={recipe.id}>
             <Card
               variant="outlined"
               sx={{
@@ -147,9 +147,9 @@ export function PhoneDemo() {
                 </Typography>
               </Box>
             </Card>
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
     </Box>
   );
 }

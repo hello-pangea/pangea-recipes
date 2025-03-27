@@ -1,6 +1,6 @@
 import { Copyright } from '#src/components/Copyright';
 import { RouterButton } from '#src/components/RouterButton';
-import { alpha, Box, Container, Grid2, Stack, Typography } from '@mui/material';
+import { alpha, Box, Container, Grid, Stack, Typography } from '@mui/material';
 import { useSignedInUser } from '@open-zero/features/users';
 import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
@@ -32,12 +32,12 @@ export function HomePage() {
           mb: 16,
         }}
       >
-        <Grid2
+        <Grid
           container
           spacing={4}
           direction={{ xs: 'column-reverse', md: 'row' }}
         >
-          <Grid2
+          <Grid
             size={{
               xs: 12,
               md: 5,
@@ -50,8 +50,8 @@ export function HomePage() {
             }}
           >
             <PhoneDemo />
-          </Grid2>
-          <Grid2
+          </Grid>
+          <Grid
             size={{
               xs: 12,
               md: 7,
@@ -169,12 +169,12 @@ export function HomePage() {
                 Sign up for free
               </RouterButton>
             </Box>
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
       </Container>
       <Container maxWidth="lg">
         <Stack spacing={32}>
-          <Grid2
+          <Grid
             container
             spacing={{
               xs: 8,
@@ -182,7 +182,7 @@ export function HomePage() {
               md: 8,
             }}
           >
-            <Grid2
+            <Grid
               size={{
                 xs: 12,
                 sm: 6,
@@ -214,17 +214,17 @@ export function HomePage() {
                 <b>Never forget</b> another recipe. Quickly add your favorites
                 and want-to-try recipes to your collection.
               </Typography>
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               size={{
                 xs: 12,
                 sm: 6,
               }}
             >
               <ImportRecipeDemo />
-            </Grid2>
-          </Grid2>
-          <Grid2
+            </Grid>
+          </Grid>
+          <Grid
             container
             spacing={{
               xs: 8,
@@ -232,7 +232,7 @@ export function HomePage() {
               md: 8,
             }}
           >
-            <Grid2
+            <Grid
               size={{
                 xs: 12,
                 sm: 6,
@@ -264,8 +264,8 @@ export function HomePage() {
                 All your favorite recipes, available on the web on all your
                 devices.
               </Typography>
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               size={{
                 xs: 12,
                 sm: 6,
@@ -276,9 +276,9 @@ export function HomePage() {
               }}
             >
               <DesktopDemo />
-            </Grid2>
-          </Grid2>
-          <Grid2
+            </Grid>
+          </Grid>
+          <Grid
             container
             spacing={{
               xs: 8,
@@ -286,7 +286,7 @@ export function HomePage() {
               md: 8,
             }}
           >
-            <Grid2
+            <Grid
               size={{
                 xs: 12,
                 sm: 6,
@@ -318,16 +318,16 @@ export function HomePage() {
                 Collaborate with friends and family to make the perfect{' '}
                 <b>recipe book</b>. Share with a single link or invite.
               </Typography>
-            </Grid2>
-            <Grid2
+            </Grid>
+            <Grid
               size={{
                 xs: 12,
                 sm: 6,
               }}
             >
               <ShareDialogDemo />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
         </Stack>
         <Box
           sx={{

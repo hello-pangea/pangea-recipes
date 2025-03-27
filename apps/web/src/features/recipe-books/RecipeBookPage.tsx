@@ -1,6 +1,6 @@
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import { Box, Button, Grid2, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
   useRemoveRecipeFromRecipeBook,
@@ -79,9 +79,9 @@ export function RecipeBookPage() {
       {recipeBook.description && (
         <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
       )}
-      <Grid2 container spacing={2}>
+      <Grid container spacing={2}>
         {recipes?.map((recipe) => (
-          <Grid2
+          <Grid
             key={recipe.id}
             size={{
               xs: 12,
@@ -98,9 +98,9 @@ export function RecipeBookPage() {
                 });
               }}
             />
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
       <RecipeBookMoreMenu
         recipeBookId={recipeBookId}
         anchorEl={moreMenuAnchorEl}

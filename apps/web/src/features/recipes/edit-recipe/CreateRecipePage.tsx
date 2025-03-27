@@ -8,7 +8,7 @@ import {
   Autocomplete,
   Box,
   Button,
-  Grid2,
+  Grid,
   InputAdornment,
   Stack,
   TextField,
@@ -368,7 +368,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           >
             Import from url
           </Button>
-          <Grid2
+          <Grid
             container
             spacing={3}
             sx={{
@@ -376,7 +376,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               maxWidth: '750px',
             }}
           >
-            <Grid2 size={{ xs: 12 }}>
+            <Grid size={{ xs: 12 }}>
               <TextFieldElement
                 label="Recipe name"
                 name="recipeName"
@@ -388,8 +388,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   focusNextInput(event, 'textarea[name="description"]');
                 }}
               />
-            </Grid2>
-            <Grid2 size={{ xs: 12 }}>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
               <TextFieldElement
                 label="Description"
                 name="description"
@@ -397,8 +397,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 multiline
                 fullWidth
               />
-            </Grid2>
-            <Grid2 size={{ xs: 6, sm: 4 }}>
+            </Grid>
+            <Grid size={{ xs: 6, sm: 4 }}>
               <TextFieldElement
                 label="Servings"
                 name="servings"
@@ -410,8 +410,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   focusNextInput(event, 'input[name="prepTime"]');
                 }}
               />
-            </Grid2>
-            <Grid2 size={{ xs: 6, sm: 4 }}>
+            </Grid>
+            <Grid size={{ xs: 6, sm: 4 }}>
               <TextFieldElement
                 label="Prep time"
                 name="prepTime"
@@ -430,8 +430,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   },
                 }}
               />
-            </Grid2>
-            <Grid2 size={{ xs: 6, sm: 4 }}>
+            </Grid>
+            <Grid size={{ xs: 6, sm: 4 }}>
               <TextFieldElement
                 label="Cook time"
                 name="cookTime"
@@ -452,8 +452,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                   },
                 }}
               />
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
           <UploadRecipeImage sx={{ mb: 6 }} />
           <Typography variant="h2" sx={{ mb: 2 }}>
             Ingredients
@@ -541,9 +541,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             Required recipes
           </Typography>
           {usesRecipes.length > 0 && (
-            <Grid2 container spacing={2} sx={{ mb: 3 }}>
+            <Grid container spacing={2} sx={{ mb: 3 }}>
               {usesRecipes.map((usesRecipe, index) => (
-                <Grid2
+                <Grid
                   key={usesRecipe.recipeId}
                   size={{
                     xs: 12,
@@ -557,9 +557,9 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                       removeRecipe(index);
                     }}
                   />
-                </Grid2>
+                </Grid>
               ))}
-            </Grid2>
+            </Grid>
           )}
           <Autocomplete
             options={

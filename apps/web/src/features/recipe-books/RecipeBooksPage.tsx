@@ -1,6 +1,6 @@
 import { Page } from '#src/components/Page';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Box, Grid2, InputBase, Typography } from '@mui/material';
+import { Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
@@ -88,9 +88,9 @@ export function RecipeBooksPage() {
           />
         </Box>
       </Box>
-      <Grid2 container spacing={2}>
+      <Grid container spacing={2}>
         {filteredRecipeBooks.map((recipeBook) => (
-          <Grid2
+          <Grid
             key={recipeBook.id}
             size={{
               xs: 12,
@@ -99,9 +99,9 @@ export function RecipeBooksPage() {
             }}
           >
             <RecipeBookCard recipeBookId={recipeBook.id} />
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
       {!isError && !recipeBooks.length && <EmptyRecipeBooks sx={{ mt: 8 }} />}
     </Page>
   );

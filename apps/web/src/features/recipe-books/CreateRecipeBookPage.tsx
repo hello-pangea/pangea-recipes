@@ -9,7 +9,7 @@ import {
   Avatar,
   Box,
   Button,
-  Grid2,
+  Grid,
   ListItemIcon,
   ListItemText,
   Menu,
@@ -111,7 +111,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
       </Box>
       <FormProvider {...form}>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid2
+          <Grid
             container
             spacing={3}
             sx={{
@@ -119,7 +119,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
               maxWidth: '750px',
             }}
           >
-            <Grid2 size={12}>
+            <Grid size={12}>
               <TextFieldElement
                 label="Recipe book name"
                 id="recipeBookName"
@@ -131,8 +131,8 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
                   focusNextInput(event, 'textarea[name="description"]');
                 }}
               />
-            </Grid2>
-            <Grid2 size={{ xs: 12 }}>
+            </Grid>
+            <Grid size={{ xs: 12 }}>
               <TextFieldElement
                 label="Description"
                 id="description"
@@ -141,8 +141,8 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
                 multiline
                 fullWidth
               />
-            </Grid2>
-            <Grid2 size={12}>
+            </Grid>
+            <Grid size={12}>
               <Box
                 sx={{
                   borderRadius: 1,
@@ -199,8 +199,8 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
                   </Box>
                 </Box>
               </Box>
-            </Grid2>
-          </Grid2>
+            </Grid>
+          </Grid>
           <Button
             variant="contained"
             startIcon={<SaveRoundedIcon />}

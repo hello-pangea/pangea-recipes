@@ -6,7 +6,7 @@ import {
   AccordionSummary,
   alpha,
   Box,
-  Grid2,
+  Grid,
   Typography,
   type SxProps,
   type Theme,
@@ -78,10 +78,10 @@ export function Nutrition({
               maxWidth: 500,
             }}
           >
-            <Grid2 container>
+            <Grid container>
               {nutritionKeysToDisplay.map((key, index) => (
                 <Fragment key={key}>
-                  <Grid2
+                  <Grid
                     size={6}
                     sx={{
                       backgroundColor: (theme) =>
@@ -101,8 +101,8 @@ export function Nutrition({
                     }}
                   >
                     <Typography>{nutriotionRecord[key].label}</Typography>
-                  </Grid2>
-                  <Grid2
+                  </Grid>
+                  <Grid
                     size={6}
                     sx={{
                       backgroundColor: (theme) =>
@@ -129,10 +129,10 @@ export function Nutrition({
                       </Typography>
                       {nutriotionRecord[key].unit}
                     </Typography>
-                  </Grid2>
+                  </Grid>
                 </Fragment>
               ))}
-            </Grid2>
+            </Grid>
           </Box>
         </AccordionDetails>
       </Accordion>

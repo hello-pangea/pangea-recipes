@@ -6,7 +6,7 @@ import {
   AccordionSummary,
   alpha,
   Box,
-  Grid2,
+  Grid,
   InputAdornment,
   InputBase,
   Typography,
@@ -130,10 +130,10 @@ export function EditNutrition({ sx = [] }: Props) {
               maxWidth: 500,
             }}
           >
-            <Grid2 container>
+            <Grid container>
               {nutritionLines.map(({ label, name, unit }, index) => (
                 <Fragment key={name}>
-                  <Grid2
+                  <Grid
                     size={6}
                     sx={{
                       backgroundColor: (theme) =>
@@ -151,8 +151,8 @@ export function EditNutrition({ sx = [] }: Props) {
                     }}
                   >
                     <Typography>{label}</Typography>
-                  </Grid2>
-                  <Grid2
+                  </Grid>
+                  <Grid
                     size={6}
                     sx={{
                       backgroundColor: (theme) =>
@@ -187,10 +187,10 @@ export function EditNutrition({ sx = [] }: Props) {
                         />
                       )}
                     />
-                  </Grid2>
+                  </Grid>
                 </Fragment>
               ))}
-            </Grid2>
+            </Grid>
           </Box>
         </AccordionDetails>
       </Accordion>

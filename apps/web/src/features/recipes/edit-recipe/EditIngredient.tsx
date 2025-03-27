@@ -26,7 +26,7 @@ import {
   Dialog,
   DialogActions,
   DialogContent,
-  Grid2,
+  Grid,
   IconButton,
   TextField,
   Typography,
@@ -340,7 +340,7 @@ export function EditIngredientContent({
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
   return (
-    <Grid2
+    <Grid
       container
       spacing={{
         xs: 3,
@@ -348,7 +348,7 @@ export function EditIngredientContent({
       }}
       flex={1}
     >
-      <Grid2
+      <Grid
         size={{
           xs: 12,
           sm: 'auto',
@@ -388,8 +388,8 @@ export function EditIngredientContent({
             },
           }}
         />
-      </Grid2>
-      <Grid2
+      </Grid>
+      <Grid
         size={{
           xs: 12,
           sm: 'auto',
@@ -460,8 +460,8 @@ export function EditIngredientContent({
             />
           )}
         />
-      </Grid2>
-      <Grid2
+      </Grid>
+      <Grid
         size={{
           xs: 12,
           sm: 'grow',
@@ -538,9 +538,9 @@ export function EditIngredientContent({
             />
           )}
         />
-      </Grid2>
+      </Grid>
       {isSmall && (
-        <Grid2 size={12}>
+        <Grid size={12}>
           <TextFieldElement
             label={'Notes'}
             name={`ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.notes`}
@@ -549,10 +549,10 @@ export function EditIngredientContent({
             fullWidth
             multiline
           />
-        </Grid2>
+        </Grid>
       )}
       {!isSmall && (
-        <Grid2
+        <Grid
           size={{
             xs: 'auto',
           }}
@@ -570,8 +570,8 @@ export function EditIngredientContent({
           >
             <DeleteRoundedIcon />
           </IconButton>
-        </Grid2>
+        </Grid>
       )}
-    </Grid2>
+    </Grid>
   );
 }
