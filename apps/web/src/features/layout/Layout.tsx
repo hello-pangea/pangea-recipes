@@ -120,7 +120,13 @@ export function Layout() {
                   <img src="/assets/lil-guy.svg" width={24} height={24} />
                 </RouterLink>
               </Box>
-              <NewButton />
+              <NewButton
+                slotProps={{
+                  button: {
+                    size: 'small',
+                  },
+                }}
+              />
             </Toolbar>
           </AppBar>
         )}

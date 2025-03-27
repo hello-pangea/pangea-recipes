@@ -8,15 +8,19 @@ import {
   ListItemText,
   Menu,
   MenuItem,
+  type ButtonProps,
 } from '@mui/material';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
 interface Props {
-  onOptionClicked?: () => void;
+  onOptionClick?: () => void;
+  slotProps?: {
+    button: ButtonProps;
+  };
 }
 
-export function NewButton({ onOptionClicked }: Props) {
+export function NewButton({ onOptionClick, slotProps }: Props) {
   const [newMenuAnchorEl, setNewMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
@@ -29,6 +33,7 @@ export function NewButton({ onOptionClicked }: Props) {
         onClick={(event) => {
           setNewMenuAnchorEl(event.currentTarget);
         }}
+        {...slotProps?.button}
       >
         New
       </Button>
@@ -61,9 +66,7 @@ export function NewButton({ onOptionClicked }: Props) {
             onClick={() => {
               setNewMenuAnchorEl(null);
 
-              if (onOptionClicked) {
-                onOptionClicked();
-              }
+              onOptionClick?.();
             }}
           >
             <ListItemIcon>
@@ -89,9 +92,7 @@ export function NewButton({ onOptionClicked }: Props) {
             onClick={() => {
               setNewMenuAnchorEl(null);
 
-              if (onOptionClicked) {
-                onOptionClicked();
-              }
+              onOptionClick?.();
             }}
           >
             <ListItemIcon>
@@ -114,9 +115,7 @@ export function NewButton({ onOptionClicked }: Props) {
             onClick={() => {
               setNewMenuAnchorEl(null);
 
-              if (onOptionClicked) {
-                onOptionClicked();
-              }
+              onOptionClick?.();
             }}
           >
             <ListItemIcon>
