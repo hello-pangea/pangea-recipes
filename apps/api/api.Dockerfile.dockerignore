@@ -6,7 +6,7 @@
 !packages/database
 !packages/features
 !packages/email
-!packages/config-typescript
+!packages/typescript-config
 !packages/config-eslint-node
 !turbo.json
 !.gitignore
