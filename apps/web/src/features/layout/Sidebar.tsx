@@ -110,7 +110,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
       </RouterLink>
       <Box sx={{ p: 1 }}>
         <NewButton
-          onOptionClicked={() => {
+          onOptionClick={() => {
             onClose();
           }}
         />
