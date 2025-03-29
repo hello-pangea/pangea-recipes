@@ -20,15 +20,15 @@
   },
   "dependencies": {
     "@react-email/components": "^0.0.34",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.13.13",
+    "@types/node": "^22.13.14",
     "@types/react": "^19.0.12",
-    "react-email": "^3.0.7",
+    "react-email": "^4.0.2",
     "typescript": "~5.8.2"
   }
 }
