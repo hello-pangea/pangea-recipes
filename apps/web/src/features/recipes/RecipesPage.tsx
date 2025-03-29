@@ -4,6 +4,7 @@ import { Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { useMeasure } from 'react-use';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipes } from './EmptyRecipes';
 import { RecipeCard } from './RecipeCard';
@@ -15,6 +16,8 @@ export function RecipesPage() {
   );
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipes = useMemo(() => {
     if (search) {
@@ -88,19 +91,13 @@ export function RecipesPage() {
           />
         </Box>
       </Box>
-      <Grid container spacing={2}>
-        {filteredRecipes.map((recipe) => (
-          <Grid
-            key={recipe.id}
-            size={{
-              xs: 12,
-              sm: 6,
-              lg: 4,
-            }}
-          >
-            <RecipeCard recipeId={recipe.id} />
-          </Grid>
-        ))}
+      <Grid ref={ref} container spacing={2} columns={columns}>
+        {width !== 0 &&
+          filteredRecipes.map((recipe) => (
+            <Grid key={recipe.id} size={1}>
+              <RecipeCard recipeId={recipe.id} />
+            </Grid>
+          ))}
       </Grid>
       {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
     </Page>

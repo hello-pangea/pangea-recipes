@@ -4,6 +4,7 @@ import { Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { useMeasure } from 'react-use';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipeBooks } from './EmptyRecipeBooks';
 import { RecipeBookCard } from './RecipeBookCard';
@@ -15,6 +16,8 @@ export function RecipeBooksPage() {
   );
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipeBooks = useMemo(() => {
     if (search) {
@@ -88,19 +91,13 @@ export function RecipeBooksPage() {
           />
         </Box>
       </Box>
-      <Grid container spacing={2}>
-        {filteredRecipeBooks.map((recipeBook) => (
-          <Grid
-            key={recipeBook.id}
-            size={{
-              xs: 12,
-              sm: 6,
-              lg: 4,
-            }}
-          >
-            <RecipeBookCard recipeBookId={recipeBook.id} />
-          </Grid>
-        ))}
+      <Grid ref={ref} container spacing={2} columns={columns}>
+        {width !== 0 &&
+          filteredRecipeBooks.map((recipeBook) => (
+            <Grid key={recipeBook.id} size={1}>
+              <RecipeBookCard recipeBookId={recipeBook.id} />
+            </Grid>
+          ))}
       </Grid>
       {!isError && !recipeBooks.length && <EmptyRecipeBooks sx={{ mt: 8 }} />}
     </Page>

@@ -9,6 +9,7 @@ import { useRecipes } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
+import { useMeasure } from 'react-use';
 import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
@@ -23,6 +24,8 @@ export function RecipeBookPage() {
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useRecipes({ options: { recipeBookId } });
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -79,27 +82,21 @@ export function RecipeBookPage() {
       {recipeBook.description && (
         <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
       )}
-      <Grid container spacing={2}>
-        {recipes?.map((recipe) => (
-          <Grid
-            key={recipe.id}
-            size={{
-              xs: 12,
-              md: 6,
-              lg: 4,
-            }}
-          >
-            <RecipeCard
-              recipeId={recipe.id}
-              onRemoveFromRecipeBook={() => {
-                removeRecipeFromRecipeBook.mutate({
-                  recipeId: recipe.id,
-                  recipeBookId,
-                });
-              }}
-            />
-          </Grid>
-        ))}
+      <Grid ref={ref} container spacing={2} columns={columns}>
+        {width !== 0 &&
+          recipes?.map((recipe) => (
+            <Grid key={recipe.id} size={1}>
+              <RecipeCard
+                recipeId={recipe.id}
+                onRemoveFromRecipeBook={() => {
+                  removeRecipeFromRecipeBook.mutate({
+                    recipeId: recipe.id,
+                    recipeBookId,
+                  });
+                }}
+              />
+            </Grid>
+          ))}
       </Grid>
       <RecipeBookMoreMenu
         recipeBookId={recipeBookId}
