@@ -2,8 +2,8 @@ import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
 import {
   canonicalIngredientSchemaRef,
-  createCanonicalIngredientDtoScema,
-  updateCanonicalIngredientDtoSchema,
+  createCanonicalIngredientSpec,
+  updateCanonicalIngredientSpec,
   type CanonicalIngredient,
 } from '@open-zero/features/canonical-ingredients';
 import { Type } from '@sinclair/typebox';
@@ -23,11 +23,9 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Create a canonical ingredient',
-        body: createCanonicalIngredientDtoScema,
+        body: createCanonicalIngredientSpec.body,
         response: {
-          200: Type.Object({
-            canonicalIngredient: canonicalIngredientSchemaRef,
-          }),
+          200: createCanonicalIngredientSpec.response,
         },
       },
     },
@@ -190,11 +188,9 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
         params: Type.Object({
           canonicalIngredientId: Type.String({ format: 'uuid' }),
         }),
-        body: updateCanonicalIngredientDtoSchema,
+        body: updateCanonicalIngredientSpec.body,
         response: {
-          200: Type.Object({
-            canonicalIngredient: canonicalIngredientSchemaRef,
-          }),
+          200: updateCanonicalIngredientSpec.response,
         },
       },
     },
