@@ -19,10 +19,8 @@ const forgotPasswordFormSchema = z.object({
   email: z.string().email(),
 });
 
-type ForgotPasswordFormSchema = z.infer<typeof forgotPasswordFormSchema>;
-
 export function ForgotPasswordPage() {
-  const { handleSubmit, control } = useForm<ForgotPasswordFormSchema>({
+  const { handleSubmit, control } = useForm({
     resolver: zodResolver(forgotPasswordFormSchema),
     defaultValues: {
       email: '',
@@ -38,7 +36,9 @@ export function ForgotPasswordPage() {
     },
   });
 
-  const onSubmit: SubmitHandler<ForgotPasswordFormSchema> = (data) => {
+  const onSubmit: SubmitHandler<z.output<typeof forgotPasswordFormSchema>> = (
+    data,
+  ) => {
     sendEmail.mutate({
       email: data.email,
       redirectTo: `${location.origin}/reset-password`,

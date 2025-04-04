@@ -29,14 +29,12 @@ const signInFormSchema = z.object({
     .min(8, { message: 'Password must be at least 8 characters long' }),
 });
 
-type SignInFormSchema = z.infer<typeof signInFormSchema>;
-
 const route = getRouteApi('/sign-in');
 
 export function SignInPage() {
   const navigate = route.useNavigate();
   const { redirect } = route.useSearch();
-  const { handleSubmit, control } = useForm<SignInFormSchema>({
+  const { handleSubmit, control } = useForm({
     resolver: zodResolver(signInFormSchema),
     defaultValues: {
       email: '',
@@ -54,7 +52,7 @@ export function SignInPage() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignInFormSchema> = (data) => {
+  const onSubmit: SubmitHandler<z.output<typeof signInFormSchema>> = (data) => {
     signIn.mutate(
       {
         email: data.email,

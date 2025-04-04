@@ -27,14 +27,12 @@ const resetPasswordFormSchema = z.object({
     .max(128, { message: 'Password must be at most 128 characters long' }),
 });
 
-type ResetPasswordFormSchema = z.infer<typeof resetPasswordFormSchema>;
-
 const route = getRouteApi('/reset-password');
 
 export function ResetPasswordPage() {
   const navigate = route.useNavigate();
   const { token } = route.useSearch();
-  const { handleSubmit, control } = useForm<ResetPasswordFormSchema>({
+  const { handleSubmit, control } = useForm({
     resolver: zodResolver(resetPasswordFormSchema),
     defaultValues: {
       newPassword: '',
@@ -51,7 +49,9 @@ export function ResetPasswordPage() {
     },
   });
 
-  const onSubmit: SubmitHandler<ResetPasswordFormSchema> = (data) => {
+  const onSubmit: SubmitHandler<z.output<typeof resetPasswordFormSchema>> = (
+    data,
+  ) => {
     resetPassword.mutate(
       {
         newPassword: data.newPassword,

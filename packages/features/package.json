@@ -22,14 +22,14 @@
     "lint": "eslint src/"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.34.31",
-    "@tanstack/react-query": "^5.70.0",
-    "ky": "^1.7.5"
+    "@sinclair/typebox": "^0.34.33",
+    "@tanstack/react-query": "^5.71.5",
+    "ky": "^1.8.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.13.14",
+    "@types/node": "^22.14.0",
     "decimal.js": "^10.5.0",
     "typescript": "~5.8.2"
   }

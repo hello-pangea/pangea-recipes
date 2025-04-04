@@ -31,14 +31,12 @@ const signUpFormSchema = z.object({
     .max(128, { message: 'Password must be at most 128 characters long' }),
 });
 
-type SignUpFormSchema = z.infer<typeof signUpFormSchema>;
-
 const route = getRouteApi('/sign-up');
 
 export function SignUpPage() {
   const navigate = route.useNavigate();
   const { redirect } = route.useSearch();
-  const { handleSubmit, control } = useForm<SignUpFormSchema>({
+  const { handleSubmit, control } = useForm({
     resolver: zodResolver(signUpFormSchema),
     defaultValues: {
       name: '',
@@ -57,7 +55,7 @@ export function SignUpPage() {
     },
   });
 
-  const onSubmit: SubmitHandler<SignUpFormSchema> = (data) => {
+  const onSubmit: SubmitHandler<z.output<typeof signUpFormSchema>> = (data) => {
     signUp.mutate(
       {
         email: data.email,
