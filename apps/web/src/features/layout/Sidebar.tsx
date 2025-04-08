@@ -304,9 +304,11 @@ function ListItem({
             py: small ? 0.5 : undefined,
             border: 2,
             borderColor: (theme) =>
-              draggingOver ? theme.palette.primary.main : 'transparent',
+              draggingOver ? theme.vars.palette.primary.main : 'transparent',
             backgroundColor: (theme) =>
-              draggingOver ? alpha(theme.palette.primary.main, 0.2) : undefined,
+              draggingOver
+                ? alpha(theme.vars.palette.primary.main, 0.2)
+                : undefined,
             transitionProperty: 'border-color, background-color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',
@@ -318,7 +320,7 @@ function ListItem({
             <ListItemIcon
               sx={{
                 color: (theme) =>
-                  selected ? theme.palette.primary.main : undefined,
+                  selected ? theme.vars.palette.primary.main : undefined,
                 minWidth: small ? '28px' : '42px',
               }}
             >
@@ -331,7 +333,7 @@ function ListItem({
               primary: {
                 sx: {
                   color: (theme) =>
-                    selected ? theme.palette.primary.main : undefined,
+                    selected ? theme.vars.palette.primary.main : undefined,
                   fontSize: small ? 14 : 16,
                 },
               },

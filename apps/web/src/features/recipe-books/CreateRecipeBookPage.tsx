@@ -147,7 +147,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
                 sx={{
                   borderRadius: 1,
                   p: 2,
-                  bgcolor: (theme) => theme.palette.background.paper,
+                  bgcolor: (theme) => theme.vars.palette.background.paper,
                 }}
               >
                 <Typography variant="h3" sx={{ mb: 2 }}>
@@ -164,12 +164,12 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
                     sx={{
                       backgroundColor: (theme) =>
                         access === 'public'
-                          ? alpha(theme.palette.success.main, 0.1)
-                          : alpha(theme.palette.text.primary, 0.1),
+                          ? alpha(theme.vars.palette.success.main, 0.1)
+                          : alpha(theme.vars.palette.text.primary, 0.1),
                       color: (theme) =>
                         access === 'public'
-                          ? theme.palette.success.main
-                          : theme.palette.text.primary,
+                          ? theme.vars.palette.success.main
+                          : theme.vars.palette.text.primary,
                     }}
                   >
                     {access === 'public' ? (

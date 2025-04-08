@@ -137,7 +137,7 @@ export function RecipeMoreMenu({
           }}
           sx={{
             backgroundColor: (theme) =>
-              booksOpen ? theme.palette.action.hover : 'transparent',
+              booksOpen ? theme.vars.palette.action.hover : 'transparent',
           }}
         >
           <ListItemIcon>
@@ -258,7 +258,9 @@ export function RecipeMoreMenu({
                 startAdornment: (
                   <InputAdornment position="start">
                     <SearchRoundedIcon
-                      sx={{ color: (theme) => theme.palette.text.disabled }}
+                      sx={{
+                        color: (theme) => theme.vars.palette.text.disabled,
+                      }}
                     />
                   </InputAdornment>
                 ),

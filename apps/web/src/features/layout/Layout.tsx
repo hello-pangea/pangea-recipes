@@ -81,13 +81,14 @@ export function Layout() {
             position="static"
             elevation={0}
             sx={{
-              backgroundColor: (theme) => theme.palette.background.default,
-              color: (theme) => theme.palette.text.primary,
+              backgroundColor: (theme) => theme.vars.palette.background.default,
+              color: (theme) => theme.vars.palette.text.primary,
             }}
           >
             <Toolbar
               sx={{
-                backgroundColor: (theme) => theme.palette.background.default,
+                backgroundColor: (theme) =>
+                  theme.vars.palette.background.default,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',

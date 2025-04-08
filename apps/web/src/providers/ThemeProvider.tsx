@@ -1,5 +1,6 @@
 import { theme } from '#src/theme/theme';
 import { CssBaseline, ThemeProvider as MuiThemeProvider } from '@mui/material';
+import type {} from '@mui/material/themeCssVarsAugmentation';
 
 interface Props {
   children: React.ReactNode;
@@ -7,8 +8,7 @@ interface Props {
 
 export function ThemeProvider({ children }: Props) {
   return (
-    // @ts-expect-error for some reason typescript is unhappy here, but it works
-    <MuiThemeProvider theme={theme} noSsr forceThemeRerender>
+    <MuiThemeProvider theme={theme} noSsr>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

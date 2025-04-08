@@ -158,7 +158,7 @@ export function RecipeTags({ recipeId, sx = [] }: Props) {
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchRoundedIcon
-                    sx={{ color: (theme) => theme.palette.text.disabled }}
+                    sx={{ color: (theme) => theme.vars.palette.text.disabled }}
                   />
                 </InputAdornment>
               ),

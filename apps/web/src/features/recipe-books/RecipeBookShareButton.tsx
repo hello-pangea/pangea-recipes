@@ -55,10 +55,10 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
               setShareDialogOpen(true);
             }}
             sx={{
-              color: (theme) => theme.palette.primary.contrastText,
-              backgroundColor: (theme) => theme.palette.primary.main,
+              color: (theme) => theme.vars.palette.primary.contrastText,
+              backgroundColor: (theme) => theme.vars.palette.primary.main,
               '&:hover': {
-                backgroundColor: (theme) => theme.palette.primary.dark,
+                backgroundColor: (theme) => theme.vars.palette.primary.dark,
               },
             }}
           >

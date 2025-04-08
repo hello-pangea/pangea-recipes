@@ -331,7 +331,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               position: 'sticky',
               top: 8,
               maxWidth: 750,
-              backgroundColor: (theme) => theme.palette.background.paper,
+              backgroundColor: (theme) => theme.vars.palette.background.paper,
               zIndex: 11,
               px: 2,
               py: 1.5,

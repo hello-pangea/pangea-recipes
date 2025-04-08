@@ -33,7 +33,7 @@ export function DropIndicator({
       sx={{
         position: 'absolute',
         zIndex: 1000,
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.vars.palette.primary.main,
         pointerEvents: 'none',
         display: 'flex',
         alignItems: 'center',
@@ -62,8 +62,8 @@ export function DropIndicator({
           position: 'absolute',
           borderWidth: `${strokeSize}px`,
           borderStyle: 'solid',
-          borderColor: theme.palette.primary.main,
-          backgroundColor: theme.palette.background.paper,
+          borderColor: theme.vars.palette.primary.main,
+          backgroundColor: theme.vars.palette.background.paper,
           borderRadius: '50%',
           ...(orientation === 'horizontal'
             ? { left: `-${terminalSize - insetValue}px` }

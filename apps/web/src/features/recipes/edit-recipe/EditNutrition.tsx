@@ -105,7 +105,7 @@ export function EditNutrition({ sx = [] }: Props) {
     <Box
       sx={[
         {
-          backgroundColor: (theme) => theme.palette.background.paper,
+          backgroundColor: (theme) => theme.vars.palette.background.paper,
           borderRadius: 1,
         },
         ...(isSxArray(sx) ? sx : [sx]),
@@ -125,7 +125,7 @@ export function EditNutrition({ sx = [] }: Props) {
           <Box
             sx={{
               border: 1,
-              borderColor: (theme) => theme.palette.divider,
+              borderColor: (theme) => theme.vars.palette.divider,
               borderRadius: 1,
               maxWidth: 500,
             }}
@@ -138,12 +138,12 @@ export function EditNutrition({ sx = [] }: Props) {
                     sx={{
                       backgroundColor: (theme) =>
                         index % 2 !== 0
-                          ? alpha(theme.palette.text.primary, 0.05)
+                          ? alpha(theme.vars.palette.text.primary, 0.05)
                           : undefined,
                       borderRight: 1,
                       borderBottom:
                         index === nutritionLines.length - 1 ? undefined : 1,
-                      borderColor: (theme) => theme.palette.divider,
+                      borderColor: (theme) => theme.vars.palette.divider,
                       display: 'flex',
                       alignItems: 'center',
                       py: 0.5,
@@ -157,11 +157,11 @@ export function EditNutrition({ sx = [] }: Props) {
                     sx={{
                       backgroundColor: (theme) =>
                         index % 2 !== 0
-                          ? alpha(theme.palette.text.primary, 0.05)
+                          ? alpha(theme.vars.palette.text.primary, 0.05)
                           : undefined,
                       borderBottom:
                         index === nutritionLines.length - 1 ? undefined : 1,
-                      borderColor: (theme) => theme.palette.divider,
+                      borderColor: (theme) => theme.vars.palette.divider,
                     }}
                   >
                     <Controller

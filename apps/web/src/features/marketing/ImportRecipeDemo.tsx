@@ -6,7 +6,7 @@ export function ImportRecipeDemo() {
   return (
     <Box
       sx={{
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => theme.vars.palette.background.paper,
         borderRadius: '28px',
         p: 3,
         boxShadow:

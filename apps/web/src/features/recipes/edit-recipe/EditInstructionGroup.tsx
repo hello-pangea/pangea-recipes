@@ -251,11 +251,13 @@ function EmptyInstructionGroupDroppable({
           borderWidth: '2px',
           borderRadius: 1,
           borderColor: (theme) =>
-            isDraggedOver ? theme.palette.primary.main : theme.palette.divider,
+            isDraggedOver
+              ? theme.vars.palette.primary.main
+              : theme.vars.palette.divider,
           backgroundColor: (theme) =>
             isDraggedOver
-              ? alpha(theme.palette.primary.main, 0.2)
-              : theme.palette.background.default,
+              ? alpha(theme.vars.palette.primary.main, 0.2)
+              : theme.vars.palette.background.default,
           justifyContent: 'center',
           flexDirection: 'column',
           alignItems: 'center',
@@ -268,8 +270,8 @@ function EmptyInstructionGroupDroppable({
           sx={{
             color: (theme) =>
               isDraggedOver
-                ? theme.palette.primary.main
-                : theme.palette.text.secondary,
+                ? theme.vars.palette.primary.main
+                : theme.vars.palette.text.secondary,
             transitionProperty: 'color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',
@@ -279,8 +281,8 @@ function EmptyInstructionGroupDroppable({
           sx={{
             color: (theme) =>
               isDraggedOver
-                ? theme.palette.primary.main
-                : theme.palette.text.secondary,
+                ? theme.vars.palette.primary.main
+                : theme.vars.palette.text.secondary,
             transitionProperty: 'color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',

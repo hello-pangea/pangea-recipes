@@ -54,8 +54,8 @@ export function RecipeBooksPage() {
               borderRadius: 99,
               backgroundColor: (theme) =>
                 searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[200],
+                  ? theme.vars.palette.background.paper
+                  : theme.vars.palette.grey[200],
               display: 'flex',
               alignItems: 'center',
               width: '100%',
@@ -69,8 +69,8 @@ export function RecipeBooksPage() {
             (theme) =>
               theme.applyStyles('dark', {
                 backgroundColor: searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[900],
+                  ? theme.vars.palette.background.paper
+                  : theme.vars.palette.grey[900],
               }),
           ]}
         >

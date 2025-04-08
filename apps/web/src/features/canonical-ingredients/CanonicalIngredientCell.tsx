@@ -116,7 +116,9 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
           <ListItemIcon>
             <DeleteRoundedIcon color="error" fontSize="small" />
           </ListItemIcon>
-          <ListItemText sx={{ color: (theme) => theme.palette.error.main }}>
+          <ListItemText
+            sx={{ color: (theme) => theme.vars.palette.error.main }}
+          >
             Delete
           </ListItemText>
         </MenuItem>

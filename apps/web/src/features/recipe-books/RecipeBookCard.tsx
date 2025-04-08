@@ -86,7 +86,7 @@ export function RecipeBookCard({ recipeBookId }: Props) {
               <Tooltip title="Shared">
                 <GroupRoundedIcon
                   sx={{
-                    color: (theme) => theme.palette.text.secondary,
+                    color: (theme) => theme.vars.palette.text.secondary,
                   }}
                   fontSize="inherit"
                 />

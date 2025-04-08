@@ -251,7 +251,7 @@ export function EditIngredient({
                   borderRadius: 1,
                   border: 1,
                   borderColor: (theme) =>
-                    alpha(theme.palette.text.primary, 0.23),
+                    alpha(theme.vars.palette.text.primary, 0.23),
                   px: '14px',
                   py: '8.5px',
                 }}
@@ -260,8 +260,8 @@ export function EditIngredient({
                   sx={{
                     color: (theme) =>
                       ingredient.name
-                        ? theme.palette.text.primary
-                        : theme.palette.text.secondary,
+                        ? theme.vars.palette.text.primary
+                        : theme.vars.palette.text.secondary,
                   }}
                 >
                   {ingredient.name

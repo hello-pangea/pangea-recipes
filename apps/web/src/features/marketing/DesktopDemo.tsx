@@ -44,7 +44,7 @@ export function DesktopDemo() {
         width: 400,
         height: 280,
         border: 4,
-        borderColor: (theme) => theme.palette.text.heading,
+        borderColor: (theme) => theme.vars.palette.text.heading,
         borderRadius: 2,
         px: 2,
         py: 1,
@@ -63,7 +63,7 @@ export function DesktopDemo() {
             width: 8,
             height: 8,
             borderRadius: 99,
-            backgroundColor: (theme) => theme.palette.error.main,
+            backgroundColor: (theme) => theme.vars.palette.error.main,
             opacity: 0.5,
           }}
         />
@@ -72,7 +72,7 @@ export function DesktopDemo() {
             width: 8,
             height: 8,
             borderRadius: 99,
-            backgroundColor: (theme) => theme.palette.warning.main,
+            backgroundColor: (theme) => theme.vars.palette.warning.main,
             opacity: 0.5,
           }}
         />
@@ -81,7 +81,7 @@ export function DesktopDemo() {
             width: 8,
             height: 8,
             borderRadius: 99,
-            backgroundColor: (theme) => theme.palette.success.main,
+            backgroundColor: (theme) => theme.vars.palette.success.main,
             opacity: 0.5,
           }}
         />
@@ -103,8 +103,8 @@ export function DesktopDemo() {
               borderRadius: 99,
               backgroundColor: (theme) =>
                 searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[200],
+                  ? theme.vars.palette.background.paper
+                  : theme.vars.palette.grey[200],
               display: 'flex',
               alignItems: 'center',
               width: '100%',
@@ -118,8 +118,8 @@ export function DesktopDemo() {
             (theme) =>
               theme.applyStyles('dark', {
                 backgroundColor: searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[900],
+                  ? theme.vars.palette.background.paper
+                  : theme.vars.palette.grey[900],
               }),
           ]}
         >

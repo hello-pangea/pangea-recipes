@@ -102,7 +102,7 @@ export function RecipePage() {
                       rel="nofollow"
                       target="_blank"
                       sx={{
-                        color: (theme) => theme.palette.text.secondary,
+                        color: (theme) => theme.vars.palette.text.secondary,
                       }}
                     >
                       {recipe.websiteSource.title}
@@ -406,7 +406,7 @@ export function RecipePage() {
                       >
                         <Typography
                           sx={{
-                            color: (theme) => theme.palette.primary.main,
+                            color: (theme) => theme.vars.palette.primary.main,
                             fontWeight: 'bold',
                             fontFamily: '"Lora Variable", serif',
                             fontSize: 22,

@@ -49,7 +49,7 @@ export function PhoneDemo() {
         width: 250,
         height: 540,
         border: 4,
-        borderColor: (theme) => theme.palette.text.heading,
+        borderColor: (theme) => theme.vars.palette.text.heading,
         borderRadius: 3,
         px: 2,
         py: 3,
@@ -74,8 +74,8 @@ export function PhoneDemo() {
               borderRadius: 99,
               backgroundColor: (theme) =>
                 searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[200],
+                  ? theme.vars.palette.background.paper
+                  : theme.vars.palette.grey[200],
               display: 'flex',
               alignItems: 'center',
               width: '100%',
@@ -89,8 +89,8 @@ export function PhoneDemo() {
             (theme) =>
               theme.applyStyles('dark', {
                 backgroundColor: searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[900],
+                  ? theme.vars.palette.background.paper
+                  : theme.vars.palette.grey[900],
               }),
           ]}
         >

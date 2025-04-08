@@ -13,7 +13,7 @@ export function DragPreview({ text, icon, errorText }: Props) {
         border: 1,
         borderColor: 'divider',
         borderRadius: '8px',
-        backgroundColor: (theme) => theme.palette.background.paper,
+        backgroundColor: (theme) => theme.vars.palette.background.paper,
         display: 'inline-block',
         px: 1,
         py: 0.5,
@@ -41,7 +41,7 @@ export function DragPreview({ text, icon, errorText }: Props) {
       {errorText && (
         <Typography
           sx={{
-            color: (theme) => theme.palette.error.main,
+            color: (theme) => theme.vars.palette.error.main,
             fontSize: '0.75rem',
             mt: 0.5,
             whiteSpace: 'nowrap',

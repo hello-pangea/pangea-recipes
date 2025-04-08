@@ -84,7 +84,7 @@ export function HomePage() {
                   component={'span'}
                   variant="h1"
                   sx={{
-                    color: (theme) => theme.palette.primary.main,
+                    color: (theme) => theme.vars.palette.primary.main,
                     fontSize: 'inherit',
                     fontFamily: 'inherit',
                     fontWeight: 'bold',
@@ -97,7 +97,7 @@ export function HomePage() {
                   component={'span'}
                   variant="h1"
                   sx={{
-                    color: (theme) => theme.palette.primary.main,
+                    color: (theme) => theme.vars.palette.primary.main,
                     fontSize: 'inherit',
                     fontFamily: 'inherit',
                     fontWeight: 'bold',
@@ -111,10 +111,10 @@ export function HomePage() {
                 <Box
                   sx={{
                     border: 1,
-                    borderColor: (theme) => theme.palette.primary.main,
+                    borderColor: (theme) => theme.vars.palette.primary.main,
                     borderRadius: '8px',
                     backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
+                      alpha(theme.vars.palette.primary.main, 0.1),
                     display: 'flex',
                     alignItems: 'center',
                     px: 1,
@@ -125,7 +125,7 @@ export function HomePage() {
                     variant="body2"
                     sx={{
                       fontWeight: 'bold',
-                      color: (theme) => theme.palette.primary.main,
+                      color: (theme) => theme.vars.palette.primary.main,
                     }}
                   >
                     Free
@@ -134,10 +134,10 @@ export function HomePage() {
                 <Box
                   sx={{
                     border: 1,
-                    borderColor: (theme) => theme.palette.primary.main,
+                    borderColor: (theme) => theme.vars.palette.primary.main,
                     borderRadius: '8px',
                     backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
+                      alpha(theme.vars.palette.primary.main, 0.1),
                     display: 'flex',
                     alignItems: 'center',
                     px: 1,
@@ -148,7 +148,7 @@ export function HomePage() {
                     variant="body2"
                     sx={{
                       fontWeight: 'bold',
-                      color: (theme) => theme.palette.primary.main,
+                      color: (theme) => theme.vars.palette.primary.main,
                     }}
                   >
                     No ads
@@ -202,7 +202,7 @@ export function HomePage() {
                   variant="h1"
                   component={'span'}
                   sx={{
-                    color: (theme) => theme.palette.primary.main,
+                    color: (theme) => theme.vars.palette.primary.main,
                     fontWeight: 'bold',
                   }}
                 >
@@ -253,7 +253,7 @@ export function HomePage() {
                   variant="h1"
                   component={'span'}
                   sx={{
-                    color: (theme) => theme.palette.primary.main,
+                    color: (theme) => theme.vars.palette.primary.main,
                     fontWeight: 'bold',
                   }}
                 >
@@ -306,7 +306,7 @@ export function HomePage() {
                   variant="h1"
                   component={'span'}
                   sx={{
-                    color: (theme) => theme.palette.primary.main,
+                    color: (theme) => theme.vars.palette.primary.main,
                     fontWeight: 'bold',
                   }}
                 >
@@ -331,7 +331,7 @@ export function HomePage() {
         </Stack>
         <Box
           sx={{
-            backgroundColor: (theme) => theme.palette.background.paper,
+            backgroundColor: (theme) => theme.vars.palette.background.paper,
             borderRadius: '28px',
             px: 3,
             py: 8,

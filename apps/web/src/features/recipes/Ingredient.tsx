@@ -45,7 +45,7 @@ export function Ingredient({ ingredient, multiplier }: Props) {
           <Typography
             component={'span'}
             sx={{
-              color: (theme) => theme.palette.text.heading,
+              color: (theme) => theme.vars.palette.text.heading,
               fontWeight: 'bold',
             }}
           >
@@ -59,7 +59,7 @@ export function Ingredient({ ingredient, multiplier }: Props) {
           <Typography
             component={'span'}
             sx={{
-              color: (theme) => theme.palette.text.secondary,
+              color: (theme) => theme.vars.palette.text.secondary,
               ml: 1,
               fontWeight: 300,
             }}
