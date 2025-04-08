@@ -7,7 +7,8 @@ interface Props {
 
 export function ThemeProvider({ children }: Props) {
   return (
-    <MuiThemeProvider theme={theme} noSsr>
+    // @ts-expect-error for some reason typescript is unhappy here, but it works
+    <MuiThemeProvider theme={theme} noSsr forceThemeRerender>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
@@ -8,3 +9,4 @@ onlyBuiltDependencies:
   - esbuild
   - playwright-chromium
   - prisma
+  - sharp
