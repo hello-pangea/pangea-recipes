@@ -21,15 +21,15 @@
     "@fontsource-variable/inter": "^5.2.5",
     "@fontsource-variable/lora": "^5.2.5",
     "@hookform/resolvers": "^5.0.1",
-    "@mui/icons-material": "^7.0.1",
-    "@mui/material": "^7.0.1",
+    "@mui/icons-material": "^7.0.2",
+    "@mui/material": "^7.0.2",
     "@mui/x-date-pickers": "^7.28.3",
     "@open-zero/features": "workspace:*",
     "@sinclair/typebox": "^0.34.33",
-    "@tanstack/react-query": "^5.72.1",
-    "@tanstack/react-query-devtools": "^5.72.1",
-    "@tanstack/react-router": "^1.115.2",
-    "@tanstack/react-router-devtools": "^1.115.2",
+    "@tanstack/react-query": "^5.72.2",
+    "@tanstack/react-query-devtools": "^5.72.2",
+    "@tanstack/react-router": "^1.115.3",
+    "@tanstack/react-router-devtools": "^1.115.3",
     "@uppy/core": "^4.4.4",
     "@uppy/dashboard": "^4.3.3",
     "@uppy/drag-drop": "^4.1.2",
@@ -50,12 +50,12 @@
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@tanstack/router-plugin": "^1.115.2",
-    "@types/react": "^19.1.0",
-    "@types/react-dom": "^19.1.1",
+    "@tanstack/router-plugin": "^1.115.3",
+    "@types/react": "^19.1.1",
+    "@types/react-dom": "^19.1.2",
     "@vitejs/plugin-react-swc": "^3.8.1",
     "concurrently": "^9.1.2",
     "typescript": "~5.8.3",
-    "vite": "^6.2.5"
+    "vite": "^6.2.6"
   }
 }

@@ -206,13 +206,13 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 );
               }}
               freeSolo
-              renderTags={(value: readonly InviteOption[], getTagProps) =>
-                value.map((option: InviteOption, index: number) => {
+              renderValue={(value, getTagProps) =>
+                value.map((option, index) => {
                   const { key, ...tagProps } = getTagProps({ index });
                   return (
                     <Chip
                       variant="outlined"
-                      label={option.label}
+                      label={(option as InviteOption).label}
                       key={key}
                       {...tagProps}
                     />

@@ -79,8 +79,8 @@ export function ShareDialogDemo() {
             ),
           );
         }}
-        renderTags={(value: readonly InviteOption[], getTagProps) =>
-          value.map((option: InviteOption, index: number) => {
+        renderValue={(value, getTagProps) =>
+          value.map((option, index) => {
             const { key, ...tagProps } = getTagProps({ index });
             return (
               <Chip
