@@ -164,8 +164,8 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
                     sx={{
                       backgroundColor: (theme) =>
                         access === 'public'
-                          ? alpha(theme.vars.palette.success.main, 0.1)
-                          : alpha(theme.vars.palette.text.primary, 0.1),
+                          ? alpha(theme.palette.success.main, 0.1)
+                          : alpha(theme.palette.text.primary, 0.1),
                       color: (theme) =>
                         access === 'public'
                           ? theme.vars.palette.success.main

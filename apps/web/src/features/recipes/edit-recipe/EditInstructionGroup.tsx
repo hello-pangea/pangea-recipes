@@ -256,7 +256,7 @@ function EmptyInstructionGroupDroppable({
               : theme.vars.palette.divider,
           backgroundColor: (theme) =>
             isDraggedOver
-              ? alpha(theme.vars.palette.primary.main, 0.2)
+              ? alpha(theme.palette.primary.main, 0.2)
               : theme.vars.palette.background.default,
           justifyContent: 'center',
           flexDirection: 'column',

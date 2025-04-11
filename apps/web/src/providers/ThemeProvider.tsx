@@ -8,7 +8,7 @@ interface Props {
 
 export function ThemeProvider({ children }: Props) {
   return (
-    <MuiThemeProvider theme={theme} noSsr>
+    <MuiThemeProvider theme={theme} noSsr forceThemeRerender>
       <CssBaseline />
       {children}
     </MuiThemeProvider>

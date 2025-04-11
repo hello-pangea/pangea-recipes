@@ -114,7 +114,7 @@ export function HomePage() {
                     borderColor: (theme) => theme.vars.palette.primary.main,
                     borderRadius: '8px',
                     backgroundColor: (theme) =>
-                      alpha(theme.vars.palette.primary.main, 0.1),
+                      alpha(theme.palette.primary.main, 0.1),
                     display: 'flex',
                     alignItems: 'center',
                     px: 1,
@@ -137,7 +137,7 @@ export function HomePage() {
                     borderColor: (theme) => theme.vars.palette.primary.main,
                     borderRadius: '8px',
                     backgroundColor: (theme) =>
-                      alpha(theme.vars.palette.primary.main, 0.1),
+                      alpha(theme.palette.primary.main, 0.1),
                     display: 'flex',
                     alignItems: 'center',
                     px: 1,

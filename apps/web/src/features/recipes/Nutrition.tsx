@@ -86,7 +86,7 @@ export function Nutrition({
                     sx={{
                       backgroundColor: (theme) =>
                         index % 2 !== 0
-                          ? alpha(theme.vars.palette.text.primary, 0.05)
+                          ? alpha(theme.palette.text.primary, 0.05)
                           : undefined,
                       borderRight: 1,
                       borderBottom:
@@ -107,7 +107,7 @@ export function Nutrition({
                     sx={{
                       backgroundColor: (theme) =>
                         index % 2 !== 0
-                          ? alpha(theme.vars.palette.text.primary, 0.05)
+                          ? alpha(theme.palette.text.primary, 0.05)
                           : undefined,
                       borderBottom:
                         index === nutritionKeysToDisplay.length - 1

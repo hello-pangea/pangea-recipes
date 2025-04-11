@@ -251,7 +251,7 @@ export function EditIngredient({
                   borderRadius: 1,
                   border: 1,
                   borderColor: (theme) =>
-                    alpha(theme.vars.palette.text.primary, 0.23),
+                    alpha(theme.palette.text.primary, 0.23),
                   px: '14px',
                   py: '8.5px',
                 }}

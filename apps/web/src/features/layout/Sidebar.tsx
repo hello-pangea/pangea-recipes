@@ -306,9 +306,7 @@ function ListItem({
             borderColor: (theme) =>
               draggingOver ? theme.vars.palette.primary.main : 'transparent',
             backgroundColor: (theme) =>
-              draggingOver
-                ? alpha(theme.vars.palette.primary.main, 0.2)
-                : undefined,
+              draggingOver ? alpha(theme.palette.primary.main, 0.2) : undefined,
             transitionProperty: 'border-color, background-color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',

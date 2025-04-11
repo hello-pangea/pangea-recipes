@@ -159,7 +159,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     borderRadius: 1,
                     overflow: 'hidden',
                     backgroundColor: (theme) =>
-                      alpha(theme.vars.palette.primary.main, 0.1),
+                      alpha(theme.palette.primary.main, 0.1),
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -292,7 +292,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       <Avatar
                         sx={{
                           backgroundColor: (theme) =>
-                            alpha(theme.vars.palette.text.primary, 0.1),
+                            alpha(theme.palette.text.primary, 0.1),
                           color: (theme) => theme.vars.palette.text.primary,
                         }}
                       >
@@ -342,7 +342,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         <Avatar
                           sx={{
                             backgroundColor: (theme) =>
-                              alpha(theme.vars.palette.text.primary, 0.1),
+                              alpha(theme.palette.text.primary, 0.1),
                             color: (theme) => theme.vars.palette.text.primary,
                           }}
                         >
@@ -386,8 +386,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 sx={{
                   backgroundColor: (theme) =>
                     recipeBook.access === 'public'
-                      ? alpha(theme.vars.palette.success.main, 0.1)
-                      : alpha(theme.vars.palette.text.primary, 0.1),
+                      ? alpha(theme.palette.success.main, 0.1)
+                      : alpha(theme.palette.text.primary, 0.1),
                   color: (theme) =>
                     recipeBook.access === 'public'
                       ? theme.vars.palette.success.main
