@@ -4,6 +4,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fastifySensible from '@fastify/sensible';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
+import type { User } from '@open-zero/features/users';
 import scalar from '@scalar/fastify-api-reference';
 import * as Sentry from '@sentry/node';
 import { fromNodeHeaders } from 'better-auth/node';
@@ -86,7 +87,7 @@ export async function createServer() {
 
     request.session = {
       userId: session.user.id,
-      accessRole: 'user',
+      accessRole: session.user.accessRole as User['accessRole'],
     };
   });
 

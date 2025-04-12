@@ -19,28 +19,25 @@ export async function updateIngredientGroups(data: {
     return;
   }
 
-  const ingredientNames = newIngredientGroups.flatMap((group) =>
+  let ingredientTerms = newIngredientGroups.flatMap((group) =>
     group.ingredients.map((ingredient) => ingredient.name.toLocaleLowerCase()),
   );
 
+  ingredientTerms.push(
+    ...ingredientTerms.map((term) => term.split(' ')).flat(),
+  );
+
+  ingredientTerms = [...new Set(ingredientTerms.filter(Boolean))];
+
+  const conditions: Prisma.CanonicalIngredientWhereInput[] =
+    ingredientTerms.flatMap((term) => [
+      { name: { contains: term, mode: 'insensitive' } },
+      { aliases: { some: { name: { contains: term, mode: 'insensitive' } } } },
+    ]);
+
   const canonicalIngredients = await tx.canonicalIngredient.findMany({
     where: {
-      OR: [
-        {
-          name: {
-            in: ingredientNames,
-          },
-        },
-        {
-          aliases: {
-            some: {
-              name: {
-                in: ingredientNames,
-              },
-            },
-          },
-        },
-      ],
+      OR: conditions,
     },
     include: {
       aliases: {
@@ -89,22 +86,29 @@ export async function updateIngredientGroups(data: {
             order: index,
             ingredients: {
               create: ingredientGroup.ingredients.map((ingredient, index) => {
+                const terms = ingredient.name
+                  .toLocaleLowerCase()
+                  .split(' ')
+                  .filter(Boolean);
+                const matchingCanonicalIngredient =
+                  canonicalIngredients.find((canonicalIngredient) =>
+                    ingredient.name
+                      .toLocaleLowerCase()
+                      .includes(canonicalIngredient.name),
+                  ) ??
+                  canonicalIngredients.find(
+                    (canonicalIngredient) =>
+                      terms.includes(canonicalIngredient.name) ||
+                      canonicalIngredient.aliases.some((alias) =>
+                        terms.includes(alias.name),
+                      ),
+                  );
+
                 return {
                   ...ingredient,
                   order: index,
                   canonicalIngredientId:
-                    canonicalIngredients.find(
-                      (canonicalIngredient) =>
-                        canonicalIngredient.name ===
-                        ingredient.name.toLocaleLowerCase(),
-                    )?.id ??
-                    canonicalIngredients.find((canonicalIngredient) =>
-                      canonicalIngredient.aliases.some(
-                        (alias) =>
-                          alias.name === ingredient.name.toLocaleLowerCase(),
-                      ),
-                    )?.id ??
-                    null,
+                    matchingCanonicalIngredient?.id ?? null,
                 };
               }),
             },
@@ -129,22 +133,29 @@ export async function updateIngredientGroups(data: {
             ingredients: {
               deleteMany: {},
               create: group.ingredients.map((ingredient, index) => {
+                const terms = ingredient.name
+                  .toLocaleLowerCase()
+                  .split(' ')
+                  .filter(Boolean);
+                const matchingCanonicalIngredient =
+                  canonicalIngredients.find((canonicalIngredient) =>
+                    ingredient.name
+                      .toLocaleLowerCase()
+                      .includes(canonicalIngredient.name),
+                  ) ??
+                  canonicalIngredients.find(
+                    (canonicalIngredient) =>
+                      terms.includes(canonicalIngredient.name) ||
+                      canonicalIngredient.aliases.some((alias) =>
+                        terms.includes(alias.name),
+                      ),
+                  );
+
                 return {
                   ...ingredient,
                   order: index,
                   canonicalIngredientId:
-                    canonicalIngredients.find(
-                      (canonicalIngredient) =>
-                        canonicalIngredient.name ===
-                        ingredient.name.toLocaleLowerCase(),
-                    )?.id ??
-                    canonicalIngredients.find((canonicalIngredient) =>
-                      canonicalIngredient.aliases.some(
-                        (alias) =>
-                          alias.name === ingredient.name.toLocaleLowerCase(),
-                      ),
-                    )?.id ??
-                    null,
+                    matchingCanonicalIngredient?.id ?? null,
                 };
               }),
             },

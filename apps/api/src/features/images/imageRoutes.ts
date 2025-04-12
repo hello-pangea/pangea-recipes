@@ -75,7 +75,7 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       const { file } = request.body;
       const originalBuffer = await file.toBuffer();
 
-      const imageKey = `food-icons/${crypto.randomUUID()}.svg`;
+      const imageKey = `food-icons/${crypto.randomUUID()}`;
 
       await uploadFile({
         buffer: originalBuffer,

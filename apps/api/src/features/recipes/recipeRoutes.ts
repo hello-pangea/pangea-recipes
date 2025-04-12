@@ -57,30 +57,31 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         throw new Error('User not authenticated');
       }
 
-      const ingredientNames = ingredientGroups.flatMap((group) =>
+      let ingredientTerms = ingredientGroups.flatMap((group) =>
         group.ingredients.map((ingredient) =>
           ingredient.name.toLocaleLowerCase(),
         ),
       );
 
+      ingredientTerms.push(
+        ...ingredientTerms.map((term) => term.split(' ')).flat(),
+      );
+
+      ingredientTerms = [...new Set(ingredientTerms.filter(Boolean))];
+
+      const conditions: Prisma.CanonicalIngredientWhereInput[] =
+        ingredientTerms.flatMap((term) => [
+          { name: { contains: term, mode: 'insensitive' } },
+          {
+            aliases: {
+              some: { name: { contains: term, mode: 'insensitive' } },
+            },
+          },
+        ]);
+
       const canonicalIngredients = await prisma.canonicalIngredient.findMany({
         where: {
-          OR: [
-            {
-              name: {
-                in: ingredientNames,
-              },
-            },
-            {
-              aliases: {
-                some: {
-                  name: {
-                    in: ingredientNames,
-                  },
-                },
-              },
-            },
-          ],
+          OR: conditions,
         },
         include: {
           aliases: {
@@ -116,6 +117,24 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
               order: index,
               ingredients: {
                 create: ingredientGroup.ingredients.map((ingredient, index) => {
+                  const terms = ingredient.name
+                    .toLocaleLowerCase()
+                    .split(' ')
+                    .filter(Boolean);
+                  const matchingCanonicalIngredient =
+                    canonicalIngredients.find((canonicalIngredient) =>
+                      ingredient.name
+                        .toLocaleLowerCase()
+                        .includes(canonicalIngredient.name),
+                    ) ??
+                    canonicalIngredients.find(
+                      (canonicalIngredient) =>
+                        terms.includes(canonicalIngredient.name) ||
+                        canonicalIngredient.aliases.some((alias) =>
+                          terms.includes(alias.name),
+                        ),
+                    );
+
                   return {
                     ...ingredient,
                     order: index,
@@ -125,12 +144,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                           canonicalIngredient.name ===
                           ingredient.name.toLocaleLowerCase(),
                       )?.id ??
-                      canonicalIngredients.find((canonicalIngredient) =>
-                        canonicalIngredient.aliases.some(
-                          (alias) =>
-                            alias.name === ingredient.name.toLocaleLowerCase(),
-                        ),
-                      )?.id ??
+                      matchingCanonicalIngredient?.id ??
                       null,
                   };
                 }),

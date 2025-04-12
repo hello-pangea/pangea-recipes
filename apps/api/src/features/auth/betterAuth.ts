@@ -69,6 +69,16 @@ export const auth = betterAuth({
       maxAge: 5 * 60,
     },
   },
+  user: {
+    additionalFields: {
+      accessRole: {
+        type: 'string',
+        required: true,
+        defaultValue: 'user',
+        input: false,
+      },
+    },
+  },
   socialProviders: {
     google: {
       clientId: config.GOOGLE_CLIENT_ID,
