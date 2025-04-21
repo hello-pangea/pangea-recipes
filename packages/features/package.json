@@ -23,8 +23,8 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.34.33",
-    "@tanstack/react-query": "^5.73.3",
-    "ky": "^1.8.0"
+    "@tanstack/react-query": "^5.74.4",
+    "ky": "^1.8.1"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
