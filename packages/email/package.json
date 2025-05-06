@@ -15,7 +15,8 @@
     "build": "tsc",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "tsc --watch",
-    "lint": "eslint src/",
+    "lint:eslint": "eslint src/",
+    "lint:type-check": "tsc --noEmit",
     "preview": "email dev --port 3002 --dir src/emails"
   },
   "dependencies": {

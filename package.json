@@ -20,7 +20,7 @@
     "format": "pnpm format:prettier && pnpm format:package-json",
     "format:package-json": "sort-package-json \"package.json\" \"apps/*/package.json\" \"packages/*/package.json\"",
     "format:prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "lint": "turbo run lint",
+    "lint": "turbo run lint:eslint lint:type-check",
     "preview-emails": "pnpm run -F=email preview",
     "test": "turbo run test"
   },

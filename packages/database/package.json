@@ -24,7 +24,8 @@
     "db:deploy": "prisma migrate deploy",
     "dx": "pnpm db:setup",
     "dev": "tsc --watch",
-    "lint": "eslint src/"
+    "lint:eslint": "eslint src/",
+    "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@prisma/client": "^6.7.0"
