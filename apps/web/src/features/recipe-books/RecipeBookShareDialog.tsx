@@ -257,7 +257,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                   inputProps={{ 'aria-label': 'Permission' }}
                   value={inviteRole}
                   onChange={(event) => {
-                    setInviteRole(event.target.value as 'editor' | 'viewer');
+                    setInviteRole(event.target.value);
                   }}
                 >
                   <MenuItem value={'editor'}>Editor</MenuItem>
@@ -539,7 +539,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               inputProps={{ 'aria-label': 'Permission' }}
               value={inviteRole}
               onChange={(event) => {
-                setInviteRole(event.target.value as 'editor' | 'viewer');
+                setInviteRole(event.target.value);
               }}
             >
               <MenuItem value={'editor'}>Editor</MenuItem>
