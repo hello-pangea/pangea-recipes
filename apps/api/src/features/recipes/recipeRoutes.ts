@@ -49,6 +49,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         tags,
         websitePageId,
         nutrition,
+        toTry,
       } = request.body;
 
       const userId = request.session?.userId;
@@ -111,6 +112,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                 })),
               }
             : undefined,
+          toTry: toTry,
           ingredientGroups: {
             create: ingredientGroups.map((ingredientGroup, index) => ({
               name: ingredientGroup.name ?? null,
@@ -363,6 +365,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         tags,
         imageIds,
         nutrition,
+        toTry,
       } = request.body;
       const { recipeId } = request.params;
 
@@ -469,6 +472,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           prepTime: prepTime,
           cookTime: cookTime,
           servings: servings,
+          toTry: toTry,
           usesRecipes: !usesRecipes
             ? undefined
             : {

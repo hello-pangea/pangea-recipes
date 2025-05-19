@@ -29,7 +29,7 @@ import {
   useForm,
   type SubmitHandler,
 } from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
+import { SwitchElement, TextFieldElement } from 'react-hook-form-mui';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { EditIngredientGroup } from './EditIngredientGroup';
 import { EditInstructionGroup } from './EditInstructionGroup';
@@ -43,6 +43,7 @@ export interface RecipeFormInputs {
   prepTime: string;
   cookTime: string;
   servings: string;
+  toTry: boolean;
   image: {
     id: string;
     url: string;
@@ -104,6 +105,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       cookTime: '',
       servings: '',
       image: null,
+      toTry: true,
       ingredientGroups: [
         {
           id: null,
@@ -224,6 +226,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           ? Math.round(parseInt(data.cookTime) * 60)
           : null,
         servings: data.servings ? parseInt(data.servings) : null,
+        toTry: data.toTry,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,
@@ -275,6 +278,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           : undefined,
         servings: data.servings ? parseInt(data.servings) : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
+        toTry: data.toTry,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           name: ig.name,
           ingredients: ig.ingredients.map((i) => ({
@@ -454,6 +458,14 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
               />
             </Grid>
           </Grid>
+          <SwitchElement
+            label="To try"
+            name="toTry"
+            control={control}
+            sx={{
+              mb: 2,
+            }}
+          />
           <UploadRecipeImage sx={{ mb: 6 }} />
           <Typography variant="h2" sx={{ mb: 2 }}>
             Ingredients

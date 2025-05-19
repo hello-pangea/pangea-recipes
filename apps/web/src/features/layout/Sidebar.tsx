@@ -11,6 +11,7 @@ import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
+import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
 import {
   alpha,
   Box,
@@ -130,6 +131,15 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               to: '/app/recipes',
             }}
             plainPath="/app/recipes"
+          />
+          <ListItem
+            icon={<UpcomingRoundedIcon />}
+            label="To Try"
+            onClick={onClose}
+            linkProps={{
+              to: '/app/recipes-to-try',
+            }}
+            plainPath="/app/recipes-to-try"
           />
           <ListItem
             icon={<MenuBookRoundedIcon />}
@@ -274,7 +284,8 @@ function ListItem({
 
   const selected = matchExact
     ? location.pathname === plainPath
-    : location.pathname.startsWith(plainPath);
+    : location.pathname === plainPath ||
+      location.pathname.startsWith(plainPath + '/');
 
   return (
     <>

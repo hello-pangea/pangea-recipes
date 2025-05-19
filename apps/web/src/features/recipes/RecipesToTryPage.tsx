@@ -1,34 +1,31 @@
 import { Page } from '#src/components/Page';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Box, Grid, InputBase, Typography } from '@mui/material';
+import { Box, Grid2, InputBase, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { useMeasure } from 'react-use';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipes } from './EmptyRecipes';
 import { RecipeCard } from './RecipeCard';
 
-export function RecipesPage() {
+export function RecipesToTryPage() {
   const userId = useSignedInUserId();
   const { data: recipes, isError } = useSuspenseQuery(
     getListRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
-  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipes = useMemo(() => {
-    const triedRecipes = recipes.filter((recipe) => !recipe.toTry);
+    const toTryRecipes = recipes.filter((recipe) => recipe.toTry);
 
     if (search) {
-      return triedRecipes.filter((recipe) =>
+      return toTryRecipes.filter((recipe) =>
         recipe.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
-    return triedRecipes;
+    return toTryRecipes;
   }, [recipes, search]);
 
   return (
@@ -44,7 +41,7 @@ export function RecipesPage() {
           mt: { xs: 0, sm: 4 },
         }}
       >
-        My Recipes
+        Recipes To Try
       </Typography>
       <Box
         sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
@@ -56,8 +53,8 @@ export function RecipesPage() {
               borderRadius: 99,
               backgroundColor: (theme) =>
                 searchFocused
-                  ? theme.vars.palette.background.paper
-                  : theme.vars.palette.grey[200],
+                  ? theme.palette.background.paper
+                  : theme.palette.grey[200],
               display: 'flex',
               alignItems: 'center',
               width: '100%',
@@ -71,8 +68,8 @@ export function RecipesPage() {
             (theme) =>
               theme.applyStyles('dark', {
                 backgroundColor: searchFocused
-                  ? theme.vars.palette.background.paper
-                  : theme.vars.palette.grey[900],
+                  ? theme.palette.background.paper
+                  : theme.palette.grey[900],
               }),
           ]}
         >
@@ -93,14 +90,20 @@ export function RecipesPage() {
           />
         </Box>
       </Box>
-      <Grid ref={ref} container spacing={2} columns={columns}>
-        {width !== 0 &&
-          filteredRecipes.map((recipe) => (
-            <Grid key={recipe.id} size={1}>
-              <RecipeCard recipeId={recipe.id} />
-            </Grid>
-          ))}
-      </Grid>
+      <Grid2 container spacing={2}>
+        {filteredRecipes.map((recipe) => (
+          <Grid2
+            key={recipe.id}
+            size={{
+              xs: 12,
+              sm: 6,
+              lg: 4,
+            }}
+          >
+            <RecipeCard recipeId={recipe.id} />
+          </Grid2>
+        ))}
+      </Grid2>
       {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
     </Page>
   );
