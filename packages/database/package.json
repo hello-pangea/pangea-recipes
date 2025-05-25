@@ -28,7 +28,8 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@prisma/client": "^6.8.2"
+    "@prisma/client": "^6.8.2",
+    "dotenv": "^16.5.0"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
