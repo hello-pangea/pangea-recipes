@@ -43,7 +43,7 @@ export interface RecipeFormInputs {
   prepTime: string;
   cookTime: string;
   servings: string;
-  toTry: boolean;
+  tryLater: boolean;
   image: {
     id: string;
     url: string;
@@ -105,7 +105,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       cookTime: '',
       servings: '',
       image: null,
-      toTry: true,
+      tryLater: true,
       ingredientGroups: [
         {
           id: null,
@@ -226,7 +226,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           ? Math.round(parseInt(data.cookTime) * 60)
           : null,
         servings: data.servings ? parseInt(data.servings) : null,
-        toTry: data.toTry,
+        tryLater: data.tryLater,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           id: ig.id ?? undefined,
           name: ig.name,
@@ -278,7 +278,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
           : undefined,
         servings: data.servings ? parseInt(data.servings) : undefined,
         imageIds: data.image ? [data.image.id] : undefined,
-        toTry: data.toTry,
+        tryLater: data.tryLater,
         ingredientGroups: data.ingredientGroups.map((ig) => ({
           name: ig.name,
           ingredients: ig.ingredients.map((i) => ({
@@ -459,8 +459,8 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             </Grid>
           </Grid>
           <SwitchElement
-            label="To try"
-            name="toTry"
+            label="Try later"
+            name="tryLater"
             control={control}
             sx={{
               mb: 2,

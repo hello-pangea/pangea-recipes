@@ -20,7 +20,7 @@ export function RecipesPage() {
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipes = useMemo(() => {
-    const triedRecipes = recipes.filter((recipe) => !recipe.toTry);
+    const triedRecipes = recipes.filter((recipe) => !recipe.tryLater);
 
     if (search) {
       return triedRecipes.filter((recipe) =>

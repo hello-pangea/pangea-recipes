@@ -15,7 +15,7 @@ model Recipe {
 
   servings Int?
 
-  toTry Boolean @default(false) @map("to_try")
+  tryLater Boolean @default(false) @map("try_later")
 
   sourceWebsitePageId String?      @map("source_website_page_id") @db.Uuid
   sourceWebsitePage   WebsitePage? @relation(fields: [sourceWebsitePageId], references: [id])

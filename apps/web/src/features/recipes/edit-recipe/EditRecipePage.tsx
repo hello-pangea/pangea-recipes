@@ -29,7 +29,7 @@ export function EditRecipePage() {
             ? ''
             : String(Math.round(recipe.prepTime / 60)),
         servings: recipe.servings ? String(recipe.servings) : '',
-        toTry: recipe.toTry,
+        tryLater: recipe.tryLater,
         image: recipe.images?.at(0)
           ? {
               // @ts-expect-error Wait for typescript 5.5

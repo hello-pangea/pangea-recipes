@@ -165,7 +165,7 @@ export function RecipeMoreMenu({
           onClick={() => {
             updateRecipe.mutate({
               id: recipe.id,
-              toTry: !recipe.toTry,
+              tryLater: !recipe.tryLater,
             });
           }}
         >
@@ -173,7 +173,7 @@ export function RecipeMoreMenu({
             <UpcomingRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {recipe.toTry ? 'Remove from "To Try"' : 'Add to "To Try"'}
+            {recipe.tryLater ? 'Remove from "Try Later"' : 'Add to "Try Later"'}
           </ListItemText>
         </MenuItem>
         <Divider />

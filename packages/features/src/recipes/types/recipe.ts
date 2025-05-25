@@ -25,7 +25,7 @@ export const recipeSchema = Type.Object(
 
     servings: Nullable(Type.Number()),
 
-    toTry: Type.Boolean(),
+    tryLater: Type.Boolean(),
 
     websiteSource: Nullable(
       Type.Object({

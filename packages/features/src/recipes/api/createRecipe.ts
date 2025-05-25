@@ -17,7 +17,7 @@ export const createRecipeDtoScema = Type.Composite([
       'servings',
       'usesRecipes',
       'nutrition',
-      'toTry',
+      'tryLater',
     ]),
   ),
   Type.Object({

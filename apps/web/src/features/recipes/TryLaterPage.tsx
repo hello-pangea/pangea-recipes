@@ -1,6 +1,6 @@
 import { Page } from '#src/components/Page';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Box, Grid2, InputBase, Typography } from '@mui/material';
+import { Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
@@ -8,7 +8,7 @@ import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipes } from './EmptyRecipes';
 import { RecipeCard } from './RecipeCard';
 
-export function RecipesToTryPage() {
+export function TryLaterPage() {
   const userId = useSignedInUserId();
   const { data: recipes, isError } = useSuspenseQuery(
     getListRecipesQueryOptions({ userId: userId }),
@@ -17,7 +17,7 @@ export function RecipesToTryPage() {
   const [searchFocused, setSearchFocused] = useState(false);
 
   const filteredRecipes = useMemo(() => {
-    const toTryRecipes = recipes.filter((recipe) => recipe.toTry);
+    const toTryRecipes = recipes.filter((recipe) => recipe.tryLater);
 
     if (search) {
       return toTryRecipes.filter((recipe) =>
@@ -41,7 +41,7 @@ export function RecipesToTryPage() {
           mt: { xs: 0, sm: 4 },
         }}
       >
-        Recipes To Try
+        Recipes To Try Later
       </Typography>
       <Box
         sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
@@ -90,9 +90,9 @@ export function RecipesToTryPage() {
           />
         </Box>
       </Box>
-      <Grid2 container spacing={2}>
+      <Grid container spacing={2}>
         {filteredRecipes.map((recipe) => (
-          <Grid2
+          <Grid
             key={recipe.id}
             size={{
               xs: 12,
@@ -101,9 +101,9 @@ export function RecipesToTryPage() {
             }}
           >
             <RecipeCard recipeId={recipe.id} />
-          </Grid2>
+          </Grid>
         ))}
-      </Grid2>
+      </Grid>
       {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
     </Page>
   );

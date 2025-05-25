@@ -134,12 +134,12 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           />
           <ListItem
             icon={<UpcomingRoundedIcon />}
-            label="To Try"
+            label="Try later"
             onClick={onClose}
             linkProps={{
-              to: '/app/recipes-to-try',
+              to: '/app/try-later',
             }}
-            plainPath="/app/recipes-to-try"
+            plainPath="/app/try-later"
           />
           <ListItem
             icon={<MenuBookRoundedIcon />}
