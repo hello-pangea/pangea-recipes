@@ -210,4 +210,4 @@ dist-ssr
 server/dist
 public/dist
 
-packages/database/prisma/generated
+packages/database/generated-client

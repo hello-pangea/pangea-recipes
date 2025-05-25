@@ -51,7 +51,6 @@ export const auth = betterAuth({
     'https://api.hellorecipes.com',
   ],
   advanced: {
-    generateId: false,
     crossSubDomainCookies: {
       enabled: true,
       domain:

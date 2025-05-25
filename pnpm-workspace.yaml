@@ -1,10 +1,10 @@
 packages:
   - apps/*
   - packages/*
-
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
+  - '@sentry-internal/node-cpu-profiler'
   - '@swc/core'
   - esbuild
   - playwright-chromium

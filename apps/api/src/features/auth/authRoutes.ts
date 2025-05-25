@@ -1,41 +1,54 @@
 import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
-import { toNodeHandler } from 'better-auth/node';
-import type { HttpHeader } from 'fastify/types/utils.js';
 import { auth } from './betterAuth.ts';
+
+// Docs for better-auth integration with Fastify:
+// https://www.better-auth.com/docs/integrations/fastify
 
 // eslint-disable-next-line @typescript-eslint/require-await
 export async function authRoutes(fastify: FastifyTypebox) {
-  const authhandler = toNodeHandler(auth);
-  fastify.addContentTypeParser(
-    'application/json',
-    (_request, _payload, done) => {
-      done(null, null);
+  fastify.route({
+    method: ['GET', 'POST'],
+    url: '/auth/*',
+    schema: {
+      tags: ['X-HIDDEN'],
     },
-  );
-  fastify.all(
-    '/auth/*',
-    {
-      schema: {
-        tags: ['X-HIDDEN'],
-      },
-    },
-    async (request, reply) => {
-      reply.raw.setHeaders(headersRecordToMap(reply.getHeaders()));
+    async handler(request, reply) {
+      try {
+        // Construct request URL
+        const url = new URL(
+          request.url,
+          `http://${request.headers.host ?? ''}`,
+        );
 
-      await authhandler(request.raw, reply.raw);
+        // Convert Fastify headers to standard Headers object
+        const headers = new Headers();
+        Object.entries(request.headers).forEach(([key, value]) => {
+          if (value) headers.append(key, value.toString());
+        });
+
+        // Create Fetch API-compatible request
+        const req = new Request(url.toString(), {
+          method: request.method,
+          headers,
+          body: request.body ? JSON.stringify(request.body) : undefined,
+        });
+
+        // Process authentication request
+        const response = await auth.handler(req);
+
+        // Forward response to client
+        reply.status(response.status);
+        response.headers.forEach((value, key) => {
+          reply.header(key, value);
+        });
+        reply.send(response.body ? await response.text() : null);
+      } catch (error) {
+        fastify.log.error('Authentication Error:', error);
+        reply.status(500).send({
+          error: 'Internal authentication error',
+          code: 'AUTH_FAILURE',
+        });
+      }
     },
-  );
+  });
 }
-
-const headersRecordToMap = (
-  headers: Record<HttpHeader, string | number | string[] | undefined>,
-) => {
-  const entries = Object.entries(headers);
-  const map = new Map<string, number | string | readonly string[]>();
-  for (const [headerKey, headerValue] of entries) {
-    if (headerValue != null) {
-      map.set(headerKey, headerValue);
-    }
-  }
-  return map;
-};
