@@ -105,7 +105,7 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
       cookTime: '',
       servings: '',
       image: null,
-      tryLater: true,
+      tryLater: false,
       ingredientGroups: [
         {
           id: null,
