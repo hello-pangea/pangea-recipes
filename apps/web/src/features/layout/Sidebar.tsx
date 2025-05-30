@@ -34,6 +34,11 @@ import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { NewButton } from './NewButton';
+import { useUpdateRecipe } from '@open-zero/features/recipes';
+import type {
+  DropTargetArgs,
+  ElementDragType,
+} from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 
 const drawerWidth = 240;
 
@@ -50,6 +55,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
     options: { userId: userId },
   });
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
+  const updateRecipe = useUpdateRecipe();
 
   useEffect(() => {
     return monitorForElements({
@@ -74,6 +80,26 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           addRecipeToRecipeBook.mutate({
             recipeId: sourceRecipeId,
             recipeBookId: targetRecipeBookId,
+          });
+        } else if (
+          sourceType === 'recipe' &&
+          targetType === 'recipes_sidebar'
+        ) {
+          const sourceRecipeId = source.data['recipeId'] as string;
+
+          updateRecipe.mutate({
+            id: sourceRecipeId,
+            tryLater: false,
+          });
+        } else if (
+          sourceType === 'recipe' &&
+          targetType === 'try_later_sidebar'
+        ) {
+          const sourceRecipeId = source.data['recipeId'] as string;
+
+          updateRecipe.mutate({
+            id: sourceRecipeId,
+            tryLater: true,
           });
         }
       },
@@ -123,7 +149,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         }}
       >
         <List>
-          <ListItem
+          <DroppableListItem
             icon={<RestaurantMenuRoundedIcon />}
             label="Recipes"
             onClick={onClose}
@@ -131,8 +157,17 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               to: '/app/recipes',
             }}
             plainPath="/app/recipes"
+            data={{
+              type: 'recipes_sidebar',
+            }}
+            canDrop={({ source }) => {
+              return (
+                source.data['type'] === 'recipe' &&
+                Boolean(source.data['tryLater'])
+              );
+            }}
           />
-          <ListItem
+          <DroppableListItem
             icon={<UpcomingRoundedIcon />}
             label="Try later"
             onClick={onClose}
@@ -140,6 +175,14 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               to: '/app/try-later',
             }}
             plainPath="/app/try-later"
+            data={{
+              type: 'try_later_sidebar',
+            }}
+            canDrop={({ source }) => {
+              return (
+                source.data['type'] === 'recipe' && !source.data['tryLater']
+              );
+            }}
           />
           <ListItem
             icon={<MenuBookRoundedIcon />}
@@ -396,6 +439,44 @@ function DroppableRecipeBookListItem({
       },
     });
   }, [recipeBookId]);
+
+  return (
+    <div ref={ref}>
+      <ListItem {...rest} draggingOver={isDraggedOver} />
+    </div>
+  );
+}
+
+type DroppableListItemProps = ListItemProps & {
+  data: Record<string | symbol, unknown>;
+  canDrop?: DropTargetArgs<ElementDragType>['canDrop'];
+};
+
+function DroppableListItem({ data, canDrop, ...rest }: DroppableListItemProps) {
+  const ref = useRef<null | HTMLDivElement>(null);
+  const [isDraggedOver, setIsDraggedOver] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) {
+      return;
+    }
+
+    return dropTargetForElements({
+      element: el,
+      getData: () => data,
+      onDragEnter: () => {
+        setIsDraggedOver(true);
+      },
+      onDragLeave: () => {
+        setIsDraggedOver(false);
+      },
+      onDrop: () => {
+        setIsDraggedOver(false);
+      },
+      canDrop: canDrop,
+    });
+  }, [data, canDrop]);
 
   return (
     <div ref={ref}>
