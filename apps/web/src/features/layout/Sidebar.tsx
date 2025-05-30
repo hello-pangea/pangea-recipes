@@ -108,7 +108,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           source.data['type'] as string,
         ),
     });
-  }, [addRecipeToRecipeBook]);
+  }, [addRecipeToRecipeBook, updateRecipe]);
 
   const sidebarContent = (
     <>
