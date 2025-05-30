@@ -27,8 +27,8 @@
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.15.21",
-    "@types/react": "^19.1.5",
+    "@types/node": "^22.15.27",
+    "@types/react": "^19.1.6",
     "react-email": "^4.0.15",
     "typescript": "~5.8.3"
   }
