@@ -44,6 +44,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
     const data = {
       type: 'recipe',
       recipeId: recipeId,
+      tryLater: recipe.tryLater,
     };
 
     return draggable({

@@ -22,6 +22,7 @@ import { Route as ForgotPasswordImport } from './routes/forgot-password'
 import { Route as IndexImport } from './routes/index'
 import { Route as AppIndexImport } from './routes/app/index'
 import { Route as AppAuthRouteImport } from './routes/app/_auth/route'
+import { Route as AppAuthTryLaterImport } from './routes/app/_auth/try-later'
 import { Route as AppAuthSettingsImport } from './routes/app/_auth/settings'
 import { Route as AppAuthRecipesIndexImport } from './routes/app/_auth/recipes.index'
 import { Route as AppAuthRecipeBooksIndexImport } from './routes/app/_auth/recipe-books.index'
@@ -98,6 +99,12 @@ const AppIndexRoute = AppIndexImport.update({
 const AppAuthRouteRoute = AppAuthRouteImport.update({
   id: '/_auth',
   getParentRoute: () => AppRoute,
+} as any)
+
+const AppAuthTryLaterRoute = AppAuthTryLaterImport.update({
+  id: '/try-later',
+  path: '/try-later',
+  getParentRoute: () => AppAuthRouteRoute,
 } as any)
 
 const AppAuthSettingsRoute = AppAuthSettingsImport.update({
@@ -260,6 +267,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthSettingsImport
       parentRoute: typeof AppAuthRouteImport
     }
+    '/app/_auth/try-later': {
+      id: '/app/_auth/try-later'
+      path: '/try-later'
+      fullPath: '/app/try-later'
+      preLoaderRoute: typeof AppAuthTryLaterImport
+      parentRoute: typeof AppAuthRouteImport
+    }
     '/app/_auth/canonical-ingredients/new': {
       id: '/app/_auth/canonical-ingredients/new'
       path: '/canonical-ingredients/new'
@@ -344,6 +358,7 @@ declare module '@tanstack/react-router' {
 
 interface AppAuthRouteRouteChildren {
   AppAuthSettingsRoute: typeof AppAuthSettingsRoute
+  AppAuthTryLaterRoute: typeof AppAuthTryLaterRoute
   AppAuthCanonicalIngredientsNewRoute: typeof AppAuthCanonicalIngredientsNewRoute
   AppAuthRecipeBooksRecipeBookIdRoute: typeof AppAuthRecipeBooksRecipeBookIdRoute
   AppAuthRecipeBooksNewRoute: typeof AppAuthRecipeBooksNewRoute
@@ -359,6 +374,7 @@ interface AppAuthRouteRouteChildren {
 
 const AppAuthRouteRouteChildren: AppAuthRouteRouteChildren = {
   AppAuthSettingsRoute: AppAuthSettingsRoute,
+  AppAuthTryLaterRoute: AppAuthTryLaterRoute,
   AppAuthCanonicalIngredientsNewRoute: AppAuthCanonicalIngredientsNewRoute,
   AppAuthRecipeBooksRecipeBookIdRoute: AppAuthRecipeBooksRecipeBookIdRoute,
   AppAuthRecipeBooksNewRoute: AppAuthRecipeBooksNewRoute,
@@ -401,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/app': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/settings': typeof AppAuthSettingsRoute
+  '/app/try-later': typeof AppAuthTryLaterRoute
   '/app/canonical-ingredients/new': typeof AppAuthCanonicalIngredientsNewRoute
   '/app/recipe-books/$recipeBookId': typeof AppAuthRecipeBooksRecipeBookIdRoute
   '/app/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
@@ -424,6 +441,7 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/app': typeof AppIndexRoute
   '/app/settings': typeof AppAuthSettingsRoute
+  '/app/try-later': typeof AppAuthTryLaterRoute
   '/app/canonical-ingredients/new': typeof AppAuthCanonicalIngredientsNewRoute
   '/app/recipe-books/$recipeBookId': typeof AppAuthRecipeBooksRecipeBookIdRoute
   '/app/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
@@ -450,6 +468,7 @@ export interface FileRoutesById {
   '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/_auth/settings': typeof AppAuthSettingsRoute
+  '/app/_auth/try-later': typeof AppAuthTryLaterRoute
   '/app/_auth/canonical-ingredients/new': typeof AppAuthCanonicalIngredientsNewRoute
   '/app/_auth/recipe-books/$recipeBookId': typeof AppAuthRecipeBooksRecipeBookIdRoute
   '/app/_auth/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
@@ -476,6 +495,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/'
     | '/app/settings'
+    | '/app/try-later'
     | '/app/canonical-ingredients/new'
     | '/app/recipe-books/$recipeBookId'
     | '/app/recipe-books/new'
@@ -498,6 +518,7 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/app'
     | '/app/settings'
+    | '/app/try-later'
     | '/app/canonical-ingredients/new'
     | '/app/recipe-books/$recipeBookId'
     | '/app/recipe-books/new'
@@ -522,6 +543,7 @@ export interface FileRouteTypes {
     | '/app/_auth'
     | '/app/'
     | '/app/_auth/settings'
+    | '/app/_auth/try-later'
     | '/app/_auth/canonical-ingredients/new'
     | '/app/_auth/recipe-books/$recipeBookId'
     | '/app/_auth/recipe-books/new'
@@ -611,6 +633,7 @@ export const routeTree = rootRoute
       "parent": "/app",
       "children": [
         "/app/_auth/settings",
+        "/app/_auth/try-later",
         "/app/_auth/canonical-ingredients/new",
         "/app/_auth/recipe-books/$recipeBookId",
         "/app/_auth/recipe-books/new",
@@ -630,6 +653,10 @@ export const routeTree = rootRoute
     },
     "/app/_auth/settings": {
       "filePath": "app/_auth/settings.tsx",
+      "parent": "/app/_auth"
+    },
+    "/app/_auth/try-later": {
+      "filePath": "app/_auth/try-later.tsx",
       "parent": "/app/_auth"
     },
     "/app/_auth/canonical-ingredients/new": {

@@ -5,6 +5,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
 import {
   Box,
   CircularProgress,
@@ -22,7 +23,11 @@ import {
   useCreateRecipeBook,
   useRecipeBooks,
 } from '@open-zero/features/recipe-books';
-import { useDeleteRecipe, useRecipe } from '@open-zero/features/recipes';
+import {
+  useDeleteRecipe,
+  useRecipe,
+  useUpdateRecipe,
+} from '@open-zero/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -51,6 +56,7 @@ export function RecipeMoreMenu({
   });
   const deleteRecipe = useDeleteRecipe();
   const createRecipeBook = useCreateRecipeBook();
+  const updateRecipe = useUpdateRecipe();
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const open = Boolean(anchorEl);
 
@@ -151,6 +157,24 @@ export function RecipeMoreMenu({
           >
             <ChevronRightRoundedIcon fontSize="small" />
           </ListItemIcon>
+        </MenuItem>
+        <MenuItem
+          onMouseEnter={() => {
+            setBooksAnchorEl(null);
+          }}
+          onClick={() => {
+            updateRecipe.mutate({
+              id: recipe.id,
+              tryLater: !recipe.tryLater,
+            });
+          }}
+        >
+          <ListItemIcon>
+            <UpcomingRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>
+            {recipe.tryLater ? 'Remove from "Try Later"' : 'Add to "Try Later"'}
+          </ListItemText>
         </MenuItem>
         <Divider />
         {onRemoveFromRecipeBook && (

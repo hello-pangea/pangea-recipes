@@ -17,6 +17,7 @@ export const updateRecipeDtoScema = Type.Partial(
       'prepTime',
       'cookTime',
       'servings',
+      'tryLater',
     ]),
     Type.Pick(createRecipeDtoScema, ['usesRecipes', 'tags']),
     Type.Object({
@@ -76,6 +77,9 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
 
       void queryClient.invalidateQueries({
         queryKey: ['recipeBooks'],
+      });
+      void queryClient.invalidateQueries({
+        queryKey: ['recipes'],
       });
       queryClient.setQueryData(
         getRecipeQueryOptions(data.recipe.id).queryKey,
