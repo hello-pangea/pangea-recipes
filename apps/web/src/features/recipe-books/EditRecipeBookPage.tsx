@@ -14,8 +14,8 @@ export function EditRecipeBookPage() {
 
   return (
     <CreateRecipeBookPage
-      defaultRecipeBook={{
-        id: recipeBook.id,
+      updateRecipeBookId={recipeBookId}
+      defaultValues={{
         recipeBookName: recipeBook.name,
         description: recipeBook.description,
         access: recipeBook.access,

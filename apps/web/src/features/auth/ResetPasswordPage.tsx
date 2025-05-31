@@ -1,4 +1,4 @@
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppForm } from '#src/hooks/form';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -15,12 +15,10 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
-import { TextFieldElement, useForm } from 'react-hook-form-mui';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { authClient } from './authClient';
 
-const resetPasswordFormSchema = z.object({
+const formSchema = z.object({
   newPassword: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters long' })
@@ -32,12 +30,6 @@ const route = getRouteApi('/reset-password');
 export function ResetPasswordPage() {
   const navigate = route.useNavigate();
   const { token } = route.useSearch();
-  const { handleSubmit, control } = useForm({
-    resolver: zodResolver(resetPasswordFormSchema),
-    defaultValues: {
-      newPassword: '',
-    },
-  });
   const [showPassword, setShowPassword] = useState(false);
   const resetPassword = useMutation({
     mutationFn: (data: Parameters<typeof authClient.resetPassword>[0]) => {
@@ -48,24 +40,31 @@ export function ResetPasswordPage() {
       });
     },
   });
+  const form = useAppForm({
+    defaultValues: {
+      newPassword: '',
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      const parsed = formSchema.parse(value);
 
-  const onSubmit: SubmitHandler<z.output<typeof resetPasswordFormSchema>> = (
-    data,
-  ) => {
-    resetPassword.mutate(
-      {
-        newPassword: data.newPassword,
-        token: token,
-      },
-      {
-        onSuccess: () => {
-          void navigate({
-            to: '/sign-in',
-          });
+      resetPassword.mutate(
+        {
+          newPassword: parsed.newPassword,
+          token: token,
         },
-      },
-    );
-  };
+        {
+          onSuccess: () => {
+            void navigate({
+              to: '/sign-in',
+            });
+          },
+        },
+      );
+    },
+  });
 
   return (
     <Container
@@ -107,47 +106,56 @@ export function ResetPasswordPage() {
         <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
           Reset password
         </Typography>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
+        >
           <Stack direction={'column'} spacing={3} sx={{ maxWidth: '400px' }}>
-            <TextFieldElement
-              label="New password"
+            <form.AppField
               name="newPassword"
-              required
-              control={control}
-              fullWidth
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="new-password"
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? 'hide the password'
-                            : 'display the password'
-                        }
-                        onClick={() => {
-                          setShowPassword((show) => !show);
-                        }}
-                        onMouseDown={(event) => {
-                          event.preventDefault();
-                        }}
-                        onMouseUp={(event) => {
-                          event.preventDefault();
-                        }}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityOffRoundedIcon />
-                        ) : (
-                          <VisibilityRoundedIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
+              children={(field) => (
+                <field.TextField
+                  label="New password"
+                  required
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={
+                              showPassword
+                                ? 'hide the password'
+                                : 'display the password'
+                            }
+                            onClick={() => {
+                              setShowPassword((show) => !show);
+                            }}
+                            onMouseDown={(event) => {
+                              event.preventDefault();
+                            }}
+                            onMouseUp={(event) => {
+                              event.preventDefault();
+                            }}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <VisibilityOffRoundedIcon />
+                            ) : (
+                              <VisibilityRoundedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
             />
             {resetPassword.isError && (
               <Alert severity="error">

@@ -1,5 +1,5 @@
 import { RouterLink } from '#src/components/RouterLink';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppForm } from '#src/hooks/form';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -17,14 +17,12 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import type { SubmitHandler } from 'react-hook-form';
-import { TextFieldElement, useForm } from 'react-hook-form-mui';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { authClient } from './authClient';
 
-const signUpFormSchema = z.object({
-  name: z.string().optional(),
-  email: z.string().email(),
+const formSchema = z.object({
+  name: z.string().transform((val) => (val === '' ? undefined : val)),
+  email: z.email(),
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters long' })
@@ -36,14 +34,6 @@ const route = getRouteApi('/sign-up');
 export function SignUpPage() {
   const navigate = route.useNavigate();
   const { redirect } = route.useSearch();
-  const { handleSubmit, control } = useForm({
-    resolver: zodResolver(signUpFormSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-    },
-  });
   const [showPassword, setShowPassword] = useState(false);
   const signUp = useMutation({
     mutationFn: (data: Parameters<typeof authClient.signUp.email>[0]) => {
@@ -54,23 +44,34 @@ export function SignUpPage() {
       });
     },
   });
+  const form = useAppForm({
+    defaultValues: {
+      name: '',
+      email: '',
+      password: '',
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      const parsed = formSchema.parse(value);
 
-  const onSubmit: SubmitHandler<z.output<typeof signUpFormSchema>> = (data) => {
-    signUp.mutate(
-      {
-        email: data.email,
-        password: data.password,
-        name: data.name ?? '',
-      },
-      {
-        onSuccess: () => {
-          void navigate({
-            to: redirect || '/app/recipes',
-          });
+      signUp.mutate(
+        {
+          email: parsed.email,
+          password: parsed.password,
+          name: parsed.name ?? '',
         },
-      },
-    );
-  };
+        {
+          onSuccess: () => {
+            void navigate({
+              to: redirect || '/app/recipes',
+            });
+          },
+        },
+      );
+    },
+  });
 
   return (
     <Container
@@ -164,63 +165,78 @@ export function SignUpPage() {
             }}
           />
         </Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
+        >
           <Stack direction={'column'} spacing={3} sx={{ maxWidth: '400px' }}>
-            <TextFieldElement
-              label="Name (optional)"
+            <form.AppField
               name="name"
-              control={control}
-              fullWidth
-              autoComplete="name"
+              children={(field) => (
+                <field.TextField
+                  label="Name (optional)"
+                  fullWidth
+                  autoComplete="name"
+                />
+              )}
             />
-            <TextFieldElement
-              label="Email"
+            <form.AppField
               name="email"
-              required
-              control={control}
-              fullWidth
-              type="email"
-              autoComplete="email"
+              children={(field) => (
+                <field.TextField
+                  label="Email"
+                  fullWidth
+                  type="email"
+                  autoComplete="email"
+                  required
+                />
+              )}
             />
-            <TextFieldElement
-              label="Password"
+            <form.AppField
               name="password"
-              required
-              control={control}
-              fullWidth
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="new-password"
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? 'hide the password'
-                            : 'display the password'
-                        }
-                        onClick={() => {
-                          setShowPassword((show) => !show);
-                        }}
-                        onMouseDown={(event) => {
-                          event.preventDefault();
-                        }}
-                        onMouseUp={(event) => {
-                          event.preventDefault();
-                        }}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityOffRoundedIcon />
-                        ) : (
-                          <VisibilityRoundedIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
+              children={(field) => (
+                <field.TextField
+                  label="Password"
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="new-password"
+                  required
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={
+                              showPassword
+                                ? 'hide the password'
+                                : 'display the password'
+                            }
+                            onClick={() => {
+                              setShowPassword((show) => !show);
+                            }}
+                            onMouseDown={(event) => {
+                              event.preventDefault();
+                            }}
+                            onMouseUp={(event) => {
+                              event.preventDefault();
+                            }}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <VisibilityOffRoundedIcon />
+                            ) : (
+                              <VisibilityRoundedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
             />
             {signUp.isError && (
               <Alert severity="error">

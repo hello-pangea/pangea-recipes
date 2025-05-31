@@ -18,6 +18,12 @@ export const config = tseslint.config(
     },
     rules: {
       'react/no-unescaped-entities': 'off',
+      'react/no-children-prop': [
+        'warn',
+        {
+          allowFunctions: true,
+        },
+      ],
     },
   },
   {
