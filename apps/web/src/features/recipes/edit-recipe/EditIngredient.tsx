@@ -370,7 +370,7 @@ export const EditIngredientContent = withForm({
                 onKeyDown={(event) => {
                   focusNextInput(
                     event,
-                    `input[name="ingredientGroups.${ingredientGroupIndex}.ingredients.${index}.unit"]`,
+                    `input[name="ingredientGroups[${ingredientGroupIndex}].ingredients[${index}].unit"]`,
                   );
                 }}
                 // rules={{
