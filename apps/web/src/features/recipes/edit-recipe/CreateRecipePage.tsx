@@ -1,6 +1,6 @@
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
+import { useAppForm } from '#src/hooks/form';
 import { focusNextInput } from '#src/lib/focusNextInput';
-import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
@@ -8,9 +8,12 @@ import {
   Autocomplete,
   Box,
   Button,
+  FormControlLabel,
+  FormGroup,
   Grid,
   InputAdornment,
   Stack,
+  Switch,
   TextField,
   Typography,
 } from '@mui/material';
@@ -23,161 +26,126 @@ import {
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import {
-  FormProvider,
-  useFieldArray,
-  useForm,
-  type SubmitHandler,
-} from 'react-hook-form';
-import { SwitchElement, TextFieldElement } from 'react-hook-form-mui';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { EditIngredientGroup } from './EditIngredientGroup';
 import { EditInstructionGroup } from './EditInstructionGroup';
 import { EditNutrition } from './EditNutrition';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
+import {
+  recipeFormOptions,
+  recipeFormSchema,
+  type RecipeFormInputs,
+} from './recipeForm';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
-export interface RecipeFormInputs {
-  recipeName: string;
-  description: string | null;
-  prepTime: string;
-  cookTime: string;
-  servings: string;
-  tryLater: boolean;
-  image: {
-    id: string;
-    url: string;
-  } | null;
-  ingredientGroups: {
-    id: string | null;
-    name: string | null;
-    ingredients: {
-      name: string;
-      unit: string | null;
-      quantity: number | null;
-      notes: string | null;
-    }[];
-  }[];
-  usesRecipes: { recipeId: string }[];
-  instructionGroups: {
-    id: string | null;
-    name: string | null;
-    instructions: { text: string }[];
-  }[];
-  websitePageId?: string;
-  nutrition?: {
-    calories: string | null;
-
-    totalFatG: string | null;
-    unsaturatedFatG: string | null;
-    saturatedFatG: string | null;
-    transFatG: string | null;
-
-    carbsG: string | null;
-    proteinG: string | null;
-    fiberG: string | null;
-    sugarG: string | null;
-
-    sodiumMg: string | null;
-    ironMg: string | null;
-    calciumMg: string | null;
-    potassiumMg: string | null;
-    cholesterolMg: string | null;
-  };
-}
-
 interface Props {
-  defaultRecipe?: RecipeFormInputs & { id: string };
+  defaultValues?: RecipeFormInputs;
+  updateRecipeId?: string;
 }
 
-export function CreateRecipePage({ defaultRecipe }: Props) {
+export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
   const { importFromUrl } = useSearch({ strict: false });
   const [importDialogOpen, setImportDialogOpen] = useState(
     importFromUrl ?? false,
   );
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const form = useForm<RecipeFormInputs>({
-    defaultValues: defaultRecipe ?? {
-      recipeName: '',
-      description: '',
-      prepTime: '',
-      cookTime: '',
-      servings: '',
-      image: null,
-      tryLater: false,
-      ingredientGroups: [
-        {
-          id: null,
-          name: null,
-          ingredients: [
-            {
-              name: '',
-              unit: null,
-              quantity: null,
-              notes: null,
-            },
-            {
-              name: '',
-              unit: null,
-              quantity: null,
-              notes: null,
-            },
-            {
-              name: '',
-              unit: null,
-              quantity: null,
-              notes: null,
-            },
-          ],
-        },
-      ],
-      usesRecipes: [],
-      instructionGroups: [
-        {
-          id: null,
-          name: null,
-          instructions: [
-            {
-              text: '',
-            },
-            {
-              text: '',
-            },
-            {
-              text: '',
-            },
-          ],
-        },
-      ],
+  const form = useAppForm({
+    ...recipeFormOptions,
+    defaultValues:
+      defaultValues ??
+      ({
+        recipeName: '',
+        description: '',
+        prepTime: '',
+        cookTime: '',
+        servings: '',
+        image: null,
+        tryLater: false,
+        ingredientGroups: [
+          {
+            id: null,
+            name: null,
+            ingredients: [
+              {
+                name: '',
+                unit: null,
+                quantity: null,
+                notes: null,
+              },
+              {
+                name: '',
+                unit: null,
+                quantity: null,
+                notes: null,
+              },
+              {
+                name: '',
+                unit: null,
+                quantity: null,
+                notes: null,
+              },
+            ],
+          },
+        ],
+        usesRecipes: [],
+        instructionGroups: [
+          {
+            id: null,
+            name: null,
+            instructions: [
+              {
+                text: '',
+              },
+              {
+                text: '',
+              },
+              {
+                text: '',
+              },
+            ],
+          },
+        ],
+      } as RecipeFormInputs),
+    onSubmit: ({ value }) => {
+      const parsed = recipeFormSchema.parse(value);
+
+      if (updateRecipeId) {
+        updateRecipe.mutate({
+          id: updateRecipeId,
+          name: parsed.recipeName,
+          description: emptyStringToNull(parsed.description),
+          prepTime: parsed.prepTime,
+          cookTime: parsed.cookTime,
+          servings: parsed.servings ? parseInt(parsed.servings) : null,
+          tryLater: parsed.tryLater,
+          ingredientGroups: parsed.ingredientGroups,
+          instructionGroups: parsed.instructionGroups.map((ig) => ({
+            id: ig.id ?? undefined,
+            name: ig.name,
+            instructions: ig.instructions,
+          })),
+          imageIds: parsed.image ? [parsed.image.id] : null,
+          nutrition: parsed.nutrition,
+        });
+      } else {
+        createRecipe.mutate({
+          name: parsed.recipeName,
+          description: emptyStringToUndefined(parsed.description),
+          websitePageId: parsed.websitePageId,
+          prepTime: parsed.prepTime,
+          cookTime: parsed.cookTime,
+          servings: parsed.servings ? parseInt(parsed.servings) : undefined,
+          imageIds: parsed.image ? [parsed.image.id] : undefined,
+          tryLater: parsed.tryLater,
+          ingredientGroups: parsed.ingredientGroups,
+          instructionGroups: parsed.instructionGroups,
+          nutrition: parsed.nutrition,
+        });
+      }
     },
   });
   const userId = useSignedInUserId();
-  const { handleSubmit, control, reset } = form;
-  const {
-    fields: usesRecipes,
-    append: appendRecipe,
-    remove: removeRecipe,
-  } = useFieldArray({
-    control,
-    name: 'usesRecipes',
-  });
-  const {
-    fields: instructionGroups,
-    append: appendInstructionGroup,
-    remove: removeInstructionGroup,
-  } = useFieldArray({
-    control,
-    name: 'instructionGroups',
-  });
-  const {
-    fields: ingredientGroups,
-    append: appendIngredientGroup,
-    remove: removeIngredientGroup,
-  } = useFieldArray({
-    control,
-    name: 'ingredientGroups',
-  });
 
   const { data: recipes } = useRecipes({
     options: {
@@ -213,110 +181,6 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
     },
   });
 
-  const onSubmit: SubmitHandler<RecipeFormInputs> = (data) => {
-    if (defaultRecipe) {
-      updateRecipe.mutate({
-        id: defaultRecipe.id,
-        name: data.recipeName,
-        description: emptyStringToNull(data.description),
-        prepTime: data.prepTime
-          ? Math.round(parseInt(data.prepTime) * 60)
-          : null,
-        cookTime: data.cookTime
-          ? Math.round(parseInt(data.cookTime) * 60)
-          : null,
-        servings: data.servings ? parseInt(data.servings) : null,
-        tryLater: data.tryLater,
-        ingredientGroups: data.ingredientGroups.map((ig) => ({
-          id: ig.id ?? undefined,
-          name: ig.name,
-          ingredients: ig.ingredients.map((i) => ({
-            ...i,
-            quantity: i.quantity ? getNumberFromInput(i.quantity) : null,
-          })),
-        })),
-        instructionGroups: data.instructionGroups.map((ig) => ({
-          id: ig.id ?? undefined,
-          name: ig.name,
-          instructions: ig.instructions,
-        })),
-        imageIds: data.image ? [data.image.id] : null,
-        nutrition: data.nutrition
-          ? {
-              calories: getNumberFromInput(data.nutrition.calories),
-
-              totalFatG: getNumberFromInput(data.nutrition.totalFatG),
-              unsaturatedFatG: getNumberFromInput(
-                data.nutrition.unsaturatedFatG,
-              ),
-              saturatedFatG: getNumberFromInput(data.nutrition.saturatedFatG),
-              transFatG: getNumberFromInput(data.nutrition.transFatG),
-
-              carbsG: getNumberFromInput(data.nutrition.carbsG),
-              proteinG: getNumberFromInput(data.nutrition.proteinG),
-              fiberG: getNumberFromInput(data.nutrition.fiberG),
-              sugarG: getNumberFromInput(data.nutrition.sugarG),
-
-              sodiumMg: getNumberFromInput(data.nutrition.sodiumMg),
-              ironMg: getNumberFromInput(data.nutrition.ironMg),
-              calciumMg: getNumberFromInput(data.nutrition.calciumMg),
-              potassiumMg: getNumberFromInput(data.nutrition.potassiumMg),
-              cholesterolMg: getNumberFromInput(data.nutrition.cholesterolMg),
-            }
-          : undefined,
-      });
-    } else {
-      createRecipe.mutate({
-        name: data.recipeName,
-        description: emptyStringToUndefined(data.description),
-        websitePageId: data.websitePageId,
-        prepTime: data.prepTime
-          ? Math.round(parseInt(data.prepTime) * 60)
-          : undefined,
-        cookTime: data.cookTime
-          ? Math.round(parseInt(data.cookTime) * 60)
-          : undefined,
-        servings: data.servings ? parseInt(data.servings) : undefined,
-        imageIds: data.image ? [data.image.id] : undefined,
-        tryLater: data.tryLater,
-        ingredientGroups: data.ingredientGroups.map((ig) => ({
-          name: ig.name,
-          ingredients: ig.ingredients.map((i) => ({
-            ...i,
-            quantity: i.quantity ? getNumberFromInput(i.quantity) : null,
-          })),
-        })),
-        instructionGroups: data.instructionGroups.map((ig) => ({
-          name: ig.name,
-          instructions: ig.instructions,
-        })),
-        nutrition: data.nutrition
-          ? {
-              calories: getNumberFromInput(data.nutrition.calories),
-
-              totalFatG: getNumberFromInput(data.nutrition.totalFatG),
-              unsaturatedFatG: getNumberFromInput(
-                data.nutrition.unsaturatedFatG,
-              ),
-              saturatedFatG: getNumberFromInput(data.nutrition.saturatedFatG),
-              transFatG: getNumberFromInput(data.nutrition.transFatG),
-
-              carbsG: getNumberFromInput(data.nutrition.carbsG),
-              proteinG: getNumberFromInput(data.nutrition.proteinG),
-              fiberG: getNumberFromInput(data.nutrition.fiberG),
-              sugarG: getNumberFromInput(data.nutrition.sugarG),
-
-              sodiumMg: getNumberFromInput(data.nutrition.sodiumMg),
-              ironMg: getNumberFromInput(data.nutrition.ironMg),
-              calciumMg: getNumberFromInput(data.nutrition.calciumMg),
-              potassiumMg: getNumberFromInput(data.nutrition.potassiumMg),
-              cholesterolMg: getNumberFromInput(data.nutrition.cholesterolMg),
-            }
-          : undefined,
-      });
-    }
-  };
-
   return (
     <Box
       sx={{
@@ -325,276 +189,328 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
         width: '100%',
       }}
     >
-      <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Box
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          void form.handleSubmit();
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            position: 'sticky',
+            top: 8,
+            maxWidth: 750,
+            backgroundColor: (theme) => theme.vars.palette.background.paper,
+            zIndex: 11,
+            px: 2,
+            py: 1.5,
+            borderRadius: 1.5,
+            boxShadow:
+              '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+          }}
+        >
+          <Typography variant="h1">
+            {updateRecipeId ? 'Edit recipe' : 'New recipe'}
+          </Typography>
+          <Button
+            variant="contained"
+            startIcon={<SaveRoundedIcon />}
+            type="submit"
+            loading={createRecipe.isPending || updateRecipe.isPending}
             sx={{
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              position: 'sticky',
-              top: 8,
-              maxWidth: 750,
-              backgroundColor: (theme) => theme.vars.palette.background.paper,
-              zIndex: 11,
-              px: 2,
-              py: 1.5,
-              borderRadius: 1.5,
-              boxShadow:
-                '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
             }}
           >
-            <Typography variant="h1">
-              {defaultRecipe ? 'Edit recipe' : 'New recipe'}
-            </Typography>
-            <Button
-              variant="contained"
-              startIcon={<SaveRoundedIcon />}
-              type="submit"
-              loading={createRecipe.isPending || updateRecipe.isPending}
-              sx={{
-                display: 'flex',
-              }}
-            >
-              Save
-            </Button>
-          </Box>
-          <Button
-            size="small"
-            startIcon={<LinkRoundedIcon />}
-            onClick={() => {
-              setImportDialogOpen(true);
-            }}
-            sx={{
-              mb: 2,
-              mt: 2,
-            }}
-          >
-            Import from url
+            Save
           </Button>
-          <Grid
-            container
-            spacing={3}
-            sx={{
-              mb: 2,
-              maxWidth: '750px',
-            }}
-          >
-            <Grid size={{ xs: 12 }}>
-              <TextFieldElement
-                label="Recipe name"
-                name="recipeName"
-                control={control}
-                fullWidth
-                multiline
-                required
-                onKeyDown={(event) => {
-                  focusNextInput(event, 'textarea[name="description"]');
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextFieldElement
-                label="Description"
-                name="description"
-                control={control}
-                multiline
-                fullWidth
-              />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 4 }}>
-              <TextFieldElement
-                label="Servings"
-                name="servings"
-                control={control}
-                type="number"
-                fullWidth
-                size="small"
-                onKeyDown={(event) => {
-                  focusNextInput(event, 'input[name="prepTime"]');
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 4 }}>
-              <TextFieldElement
-                label="Prep time"
-                name="prepTime"
-                control={control}
-                type="number"
-                fullWidth
-                size="small"
-                onKeyDown={(event) => {
-                  focusNextInput(event, 'input[name="cookTime"]');
-                }}
-                slotProps={{
-                  input: {
-                    endAdornment: (
-                      <InputAdornment position="end">minutes</InputAdornment>
-                    ),
-                  },
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 6, sm: 4 }}>
-              <TextFieldElement
-                label="Cook time"
-                name="cookTime"
-                control={control}
-                type="number"
-                fullWidth
-                size="small"
-                onKeyDown={(event) => {
-                  if (event.key === 'Enter') {
-                    event.preventDefault();
-                  }
-                }}
-                slotProps={{
-                  input: {
-                    endAdornment: (
-                      <InputAdornment position="end">minutes</InputAdornment>
-                    ),
-                  },
-                }}
-              />
-            </Grid>
-          </Grid>
-          <SwitchElement
-            label="Try later"
-            name="tryLater"
-            control={control}
-            sx={{
-              mb: 2,
-            }}
-          />
-          <UploadRecipeImage sx={{ mb: 6 }} />
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Ingredients
-          </Typography>
-          <Stack
-            direction={'column'}
-            spacing={2}
-            sx={{ mb: 2, maxWidth: '750px' }}
-          >
-            {ingredientGroups.map((ingredientGroup, ingredientGroupIndex) => (
-              <EditIngredientGroup
-                key={ingredientGroup.id}
-                index={ingredientGroupIndex}
-                minimal={ingredientGroups.length <= 1}
-                onRemove={() => {
-                  removeIngredientGroup(ingredientGroupIndex);
-                }}
-              />
-            ))}
-          </Stack>
-          <Button
-            variant="text"
-            size="small"
-            startIcon={<AddRoundedIcon />}
-            onClick={() => {
-              appendIngredientGroup({
-                id: null,
-                name: null,
-                ingredients: [
-                  {
-                    name: '',
-                    unit: null,
-                    quantity: null,
-                    notes: null,
-                  },
-                ],
-              });
-            }}
-            sx={{ mb: 6 }}
-          >
-            Add ingredient group
-          </Button>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Instructions
-          </Typography>
-          <Stack
-            direction={'column'}
-            spacing={2}
-            sx={{ mb: 2, maxWidth: '750px' }}
-          >
-            {instructionGroups.map(
-              (instructionGroup, instructionGroupIndex) => (
-                <EditInstructionGroup
-                  key={instructionGroup.id}
-                  index={instructionGroupIndex}
-                  minimal={instructionGroups.length <= 1}
-                  onRemove={() => {
-                    removeInstructionGroup(instructionGroupIndex);
+        </Box>
+        <Button
+          size="small"
+          startIcon={<LinkRoundedIcon />}
+          onClick={() => {
+            setImportDialogOpen(true);
+          }}
+          sx={{
+            mb: 2,
+            mt: 2,
+          }}
+        >
+          Import from url
+        </Button>
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            mb: 2,
+            maxWidth: '750px',
+          }}
+        >
+          <Grid size={{ xs: 12 }}>
+            <form.AppField
+              name="recipeName"
+              children={(field) => (
+                <field.TextField
+                  label="Recipe name"
+                  fullWidth
+                  multiline
+                  required
+                  onKeyDown={(event) => {
+                    focusNextInput(event, 'textarea[name="description"]');
                   }}
                 />
-              ),
-            )}
-          </Stack>
-          <Button
-            variant="text"
-            size="small"
-            startIcon={<AddRoundedIcon />}
-            onClick={() => {
-              appendInstructionGroup({
-                id: null,
-                name: null,
-                instructions: [
-                  {
-                    text: '',
-                  },
-                ],
-              });
-            }}
-            sx={{ mb: 6 }}
-          >
-            Add instruction group
-          </Button>
-          <EditNutrition sx={{ mb: 6, maxWidth: 750 }} />
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Required recipes
-          </Typography>
-          {usesRecipes.length > 0 && (
-            <Grid container spacing={2} sx={{ mb: 3 }}>
-              {usesRecipes.map((usesRecipe, index) => (
-                <Grid
-                  key={usesRecipe.recipeId}
-                  size={{
-                    xs: 12,
-                    md: 4,
-                    lg: 3,
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <form.AppField
+              name="description"
+              children={(field) => (
+                <field.TextField label="Description" fullWidth multiline />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <form.AppField
+              name="servings"
+              children={(field) => (
+                <field.TextField
+                  label="Servings"
+                  type="number"
+                  fullWidth
+                  size="small"
+                  onKeyDown={(event) => {
+                    focusNextInput(event, 'input[name="prepTime"]');
                   }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <form.AppField
+              name="prepTime"
+              children={(field) => (
+                <field.TextField
+                  label="Prep time"
+                  type="number"
+                  fullWidth
+                  size="small"
+                  onKeyDown={(event) => {
+                    focusNextInput(event, 'input[name="cookTime"]');
+                  }}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">minutes</InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 6, sm: 4 }}>
+            <form.AppField
+              name="cookTime"
+              children={(field) => (
+                <field.TextField
+                  label="Cook time"
+                  type="number"
+                  fullWidth
+                  size="small"
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                    }
+                  }}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">minutes</InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
+            />
+          </Grid>
+        </Grid>
+        <form.Field
+          name="tryLater"
+          children={({ state, handleChange, handleBlur }) => {
+            return (
+              <FormGroup
+                sx={{
+                  mb: 2,
+                }}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={(e) => {
+                        handleChange(e.target.checked);
+                      }}
+                      onBlur={handleBlur}
+                      checked={state.value}
+                    />
+                  }
+                  label="Try later"
+                />
+              </FormGroup>
+            );
+          }}
+        />
+        <UploadRecipeImage form={form} sx={{ mb: 6 }} />
+        <Typography variant="h2" sx={{ mb: 2 }}>
+          Ingredients
+        </Typography>
+        <form.Field name="ingredientGroups" mode="array">
+          {(field) => {
+            return (
+              <>
+                <Stack
+                  direction={'column'}
+                  spacing={2}
+                  sx={{ mb: 2, maxWidth: '750px' }}
                 >
-                  <RequiredRecipeCard
-                    recipeId={usesRecipe.recipeId}
-                    onRemove={() => {
-                      removeRecipe(index);
-                    }}
-                  />
+                  {field.state.value.map((_, ingredientGroupIndex) => {
+                    return (
+                      <EditIngredientGroup
+                        form={form}
+                        key={ingredientGroupIndex}
+                        index={ingredientGroupIndex}
+                      />
+                    );
+                  })}
+                </Stack>
+                <Button
+                  variant="text"
+                  size="small"
+                  startIcon={<AddRoundedIcon />}
+                  onClick={() => {
+                    field.pushValue({
+                      id: null,
+                      name: null,
+                      ingredients: [
+                        {
+                          name: '',
+                          unit: null,
+                          quantity: null,
+                          notes: null,
+                        },
+                      ],
+                    });
+                  }}
+                  sx={{ mb: 6 }}
+                >
+                  Add ingredient group
+                </Button>
+              </>
+            );
+          }}
+        </form.Field>
+        <Typography variant="h2" sx={{ mb: 2 }}>
+          Instructions
+        </Typography>
+        <form.Field name="instructionGroups" mode="array">
+          {(field) => {
+            return (
+              <>
+                <Stack
+                  direction={'column'}
+                  spacing={2}
+                  sx={{ mb: 2, maxWidth: '750px' }}
+                >
+                  {field.state.value.map((_, instructionGroupIndex) => {
+                    return (
+                      <EditInstructionGroup
+                        form={form}
+                        key={instructionGroupIndex}
+                        index={instructionGroupIndex}
+                      />
+                    );
+                  })}
+                </Stack>
+                <Button
+                  variant="text"
+                  size="small"
+                  startIcon={<AddRoundedIcon />}
+                  onClick={() => {
+                    field.pushValue({
+                      id: null,
+                      name: null,
+                      instructions: [
+                        {
+                          text: '',
+                        },
+                      ],
+                    });
+                  }}
+                  sx={{ mb: 6 }}
+                >
+                  Add instruction group
+                </Button>
+              </>
+            );
+          }}
+        </form.Field>
+        <EditNutrition form={form} sx={{ mb: 6, maxWidth: 750 }} />
+        <Typography variant="h2" sx={{ mb: 2 }}>
+          Required recipes
+        </Typography>
+        <form.Field name="usesRecipes" mode="array">
+          {(field) => {
+            return (
+              <>
+                <Grid container spacing={2} sx={{ mb: 3 }}>
+                  {field.state.value.map((usesRecipe, index) => {
+                    return (
+                      <Grid
+                        key={usesRecipe.recipeId}
+                        size={{
+                          xs: 12,
+                          md: 4,
+                          lg: 3,
+                        }}
+                      >
+                        <RequiredRecipeCard
+                          recipeId={usesRecipe.recipeId}
+                          onRemove={() => {
+                            field.removeValue(index);
+                          }}
+                        />
+                      </Grid>
+                    );
+                  })}
                 </Grid>
-              ))}
-            </Grid>
-          )}
-          <Autocomplete
-            options={
-              recipes?.map((r) => {
-                return { label: r.name, id: r.id };
-              }) ?? []
-            }
-            size="small"
-            renderInput={(params) => (
-              <TextField {...params} label="Add required recipe" />
-            )}
-            onChange={(_, value) => {
-              if (value) {
-                appendRecipe({ recipeId: value.id });
-              }
-            }}
-            sx={{
-              mb: 6,
-              maxWidth: 300,
-            }}
-          />
-        </form>
-      </FormProvider>
+                <Autocomplete
+                  options={
+                    recipes?.map((r) => {
+                      return { label: r.name, id: r.id };
+                    }) ?? []
+                  }
+                  size="small"
+                  renderInput={(params) => (
+                    <TextField {...params} label="Add required recipe" />
+                  )}
+                  onChange={(_, value) => {
+                    if (value) {
+                      field.pushValue({ recipeId: value.id });
+                    }
+                  }}
+                  sx={{
+                    mb: 6,
+                    maxWidth: 300,
+                  }}
+                />
+              </>
+            );
+          }}
+        </form.Field>
+      </form>
       <ImportRecipeDialog
         open={importDialogOpen}
         onClose={() => {
@@ -619,18 +535,24 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
             }),
           });
 
-          reset({
-            recipeName: importedRecipe.name ?? undefined,
-            description: importedRecipe.description,
-            cookTime: importedRecipe.cookTime?.toString(),
-            prepTime: importedRecipe.prepTime?.toString(),
-            servings: importedRecipe.servings?.toString(),
-            instructionGroups: importedRecipe.instructionGroups?.map((ig) => ({
-              name: ig.title,
-              instructions: ig.instructions.map((i) => ({ text: i })),
-            })),
-            websitePageId,
-            ingredientGroups: importedRecipe.ingredientGroups?.map((ig) => ({
+          form.setFieldValue('recipeName', importedRecipe.name ?? '');
+          form.setFieldValue('description', importedRecipe.description ?? '');
+          form.setFieldValue(
+            'cookTime',
+            importedRecipe.cookTime?.toString() ?? '',
+          );
+          form.setFieldValue(
+            'prepTime',
+            importedRecipe.prepTime?.toString() ?? '',
+          );
+          form.setFieldValue(
+            'servings',
+            importedRecipe.servings?.toString() ?? '',
+          );
+          form.setFieldValue('websitePageId', websitePageId);
+          form.setFieldValue(
+            'ingredientGroups',
+            importedRecipe.ingredientGroups?.map((ig) => ({
               name: ig.title,
               ingredients: ig.ingredients.map((ingredient) => ({
                 name: ingredient.name,
@@ -638,29 +560,21 @@ export function CreateRecipePage({ defaultRecipe }: Props) {
                 quantity: ingredient.quantity ?? null,
                 notes: ingredient.notes ?? null,
               })),
-            })),
-            nutrition: importedRecipe.nutrition
-              ? {
-                  calories: importedRecipe.nutrition.calories?.toString(),
-                  totalFatG: importedRecipe.nutrition.totalFatG?.toString(),
-                  unsaturatedFatG:
-                    importedRecipe.nutrition.unsaturatedFatG?.toString(),
-                  saturatedFatG:
-                    importedRecipe.nutrition.saturatedFatG?.toString(),
-                  transFatG: importedRecipe.nutrition.transFatG?.toString(),
-                  carbsG: importedRecipe.nutrition.carbsG?.toString(),
-                  proteinG: importedRecipe.nutrition.proteinG?.toString(),
-                  fiberG: importedRecipe.nutrition.fiberG?.toString(),
-                  sugarG: importedRecipe.nutrition.sugarG?.toString(),
-                  sodiumMg: importedRecipe.nutrition.sodiumMg?.toString(),
-                  ironMg: importedRecipe.nutrition.ironMg?.toString(),
-                  calciumMg: importedRecipe.nutrition.calciumMg?.toString(),
-                  potassiumMg: importedRecipe.nutrition.potassiumMg?.toString(),
-                  cholesterolMg:
-                    importedRecipe.nutrition.cholesterolMg?.toString(),
-                }
-              : undefined,
-          });
+            })) ?? [],
+          );
+          form.setFieldValue(
+            'instructionGroups',
+            importedRecipe.instructionGroups?.map((ig) => ({
+              name: ig.title,
+              instructions: ig.instructions.map((i) => ({ text: i })),
+            })) ?? [],
+          );
+          form.setFieldValue('usesRecipes', []);
+          form.setFieldValue(
+            'nutrition',
+            importedRecipe.nutrition ?? undefined,
+          );
+          form.setFieldValue('image', null);
         }}
       />
     </Box>

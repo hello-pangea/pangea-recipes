@@ -1,7 +1,8 @@
 import { getRecipeQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
-import { CreateRecipePage, type RecipeFormInputs } from './CreateRecipePage';
+import { CreateRecipePage } from './CreateRecipePage';
+import type { RecipeFormInputs } from './recipeForm';
 
 const route = getRouteApi('/app/_auth/recipes_/$recipeId/edit');
 
@@ -12,8 +13,8 @@ export function EditRecipePage() {
 
   return (
     <CreateRecipePage
-      defaultRecipe={{
-        id: recipe.id,
+      updateRecipeId={recipe.id}
+      defaultValues={{
         recipeName: recipe.name,
         description: recipe.description,
         usesRecipes:

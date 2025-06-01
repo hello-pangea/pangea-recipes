@@ -208,7 +208,6 @@ export function CreateCanonicalIngredientPage({
                             name={`aliases[${i}].name`}
                             children={(subField) => (
                               <subField.TextField
-                                value={subField.state.value}
                                 placeholder="Alias"
                                 size="small"
                                 fullWidth
