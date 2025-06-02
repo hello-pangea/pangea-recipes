@@ -421,7 +421,7 @@ export const EditIngredientContent = withForm({
                     />
                   )}
                   renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const { key, ...optionProps } = props;
 
                     const unitOption = defaultUnitOptions.find(
@@ -488,7 +488,7 @@ export const EditIngredientContent = withForm({
                     />
                   )}
                   renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, react/prop-types
+                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const { key, ...optionProps } = props;
 
                     const canonicalIngredient = canonicalIngredients?.find(
