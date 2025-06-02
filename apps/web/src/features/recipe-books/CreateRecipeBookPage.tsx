@@ -1,4 +1,5 @@
 import { Page } from '#src/components/Page';
+import { useAppForm } from '#src/hooks/form';
 import { focusNextInput } from '#src/lib/focusNextInput';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -20,41 +21,31 @@ import { emptyStringToUndefined } from '@open-zero/features';
 import {
   useCreateRecipeBook,
   useUpdateRecipeBook,
-  type RecipeBook,
 } from '@open-zero/features/recipe-books';
+import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import {
-  FormProvider,
-  useForm,
-  useWatch,
-  type SubmitHandler,
-} from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
+import { z } from 'zod/v4';
 
-export interface RecipeBookFormInputs {
-  recipeBookName: string;
-  description: string | null;
-  access: RecipeBook['access'];
-}
+const formSchema = z.object({
+  recipeBookName: z.string().min(1, { message: 'Name is required' }),
+  description: z.string().transform((val) => (val === '' ? null : val)),
+  access: z.enum(['public', 'private']),
+});
+type RecipeBookFormInputs = z.infer<typeof formSchema>;
 
 interface Props {
-  defaultRecipeBook?: RecipeBookFormInputs & { id: string };
+  defaultValues?: RecipeBookFormInputs;
+  updateRecipeBookId?: string;
 }
 
-export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
+export function CreateRecipeBookPage({
+  defaultValues,
+  updateRecipeBookId,
+}: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const form = useForm<RecipeBookFormInputs>({
-    defaultValues: defaultRecipeBook ?? {
-      recipeBookName: '',
-      description: '',
-      access: 'public',
-    },
-  });
-  const { handleSubmit, control, setValue } = form;
-  const access = useWatch({ control, name: 'access' });
   const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] =
     useState<null | HTMLElement>(null);
 
@@ -86,134 +77,152 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
     },
   });
 
-  const onSubmit: SubmitHandler<RecipeBookFormInputs> = (data) => {
-    if (defaultRecipeBook) {
-      recipeBookUpdater.mutate({
-        id: defaultRecipeBook.id,
-        name: data.recipeBookName,
-        description: emptyStringToUndefined(data.description),
-      });
-    } else {
-      recipeBookCreator.mutate({
-        name: data.recipeBookName,
-        description: emptyStringToUndefined(data.description),
-        access: data.access,
-      });
-    }
-  };
+  const form = useAppForm({
+    defaultValues: defaultValues ?? {
+      recipeBookName: '',
+      description: '',
+      access: 'public',
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      const parsed = formSchema.parse(value);
+
+      if (updateRecipeBookId) {
+        recipeBookUpdater.mutate({
+          id: updateRecipeBookId,
+          name: parsed.recipeBookName,
+          description: emptyStringToUndefined(parsed.description),
+        });
+      } else {
+        recipeBookCreator.mutate({
+          name: parsed.recipeBookName,
+          description: emptyStringToUndefined(parsed.description),
+          access: parsed.access,
+        });
+      }
+    },
+  });
+
+  const access = useStore(form.store, (state) => state.values.access);
 
   return (
     <Page>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
-          {defaultRecipeBook ? 'Edit recipe book' : 'New recipe book'}
+          {updateRecipeBookId ? 'Edit recipe book' : 'New recipe book'}
         </Typography>
       </Box>
-      <FormProvider {...form}>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid
-            container
-            spacing={3}
-            sx={{
-              mb: 4,
-              maxWidth: '750px',
-            }}
-          >
-            <Grid size={12}>
-              <TextFieldElement
-                label="Recipe book name"
-                id="recipeBookName"
-                name="recipeBookName"
-                control={control}
-                fullWidth
-                multiline
-                onKeyDown={(event) => {
-                  focusNextInput(event, 'textarea[name="description"]');
-                }}
-              />
-            </Grid>
-            <Grid size={{ xs: 12 }}>
-              <TextFieldElement
-                label="Description"
-                id="description"
-                name="description"
-                control={control}
-                multiline
-                fullWidth
-              />
-            </Grid>
-            <Grid size={12}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          void form.handleSubmit();
+        }}
+      >
+        <Grid
+          container
+          spacing={3}
+          sx={{
+            mb: 4,
+            maxWidth: '750px',
+          }}
+        >
+          <Grid size={12}>
+            <form.AppField
+              name="recipeBookName"
+              children={(field) => (
+                <field.TextField
+                  label="Recipe book name"
+                  fullWidth
+                  multiline
+                  onKeyDown={(event) => {
+                    focusNextInput(event, 'textarea[name="description"]');
+                  }}
+                />
+              )}
+            />
+          </Grid>
+          <Grid size={{ xs: 12 }}>
+            <form.AppField
+              name="description"
+              children={(field) => (
+                <field.TextField label="Description" fullWidth multiline />
+              )}
+            />
+          </Grid>
+          <Grid size={12}>
+            <Box
+              sx={{
+                borderRadius: 1,
+                p: 2,
+                bgcolor: (theme) => theme.vars.palette.background.paper,
+              }}
+            >
+              <Typography variant="h3" sx={{ mb: 2 }}>
+                General access
+              </Typography>
               <Box
                 sx={{
-                  borderRadius: 1,
-                  p: 2,
-                  bgcolor: (theme) => theme.vars.palette.background.paper,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 2,
                 }}
               >
-                <Typography variant="h3" sx={{ mb: 2 }}>
-                  General access
-                </Typography>
-                <Box
+                <Avatar
                   sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 2,
+                    backgroundColor: (theme) =>
+                      access === 'public'
+                        ? alpha(theme.palette.success.main, 0.1)
+                        : alpha(theme.palette.text.primary, 0.1),
+                    color: (theme) =>
+                      access === 'public'
+                        ? theme.vars.palette.success.main
+                        : theme.vars.palette.text.primary,
                   }}
                 >
-                  <Avatar
-                    sx={{
-                      backgroundColor: (theme) =>
-                        access === 'public'
-                          ? alpha(theme.palette.success.main, 0.1)
-                          : alpha(theme.palette.text.primary, 0.1),
-                      color: (theme) =>
-                        access === 'public'
-                          ? theme.vars.palette.success.main
-                          : theme.vars.palette.text.primary,
+                  {access === 'public' ? (
+                    <PublicRoundedIcon />
+                  ) : (
+                    <LockOutlinedIcon />
+                  )}
+                </Avatar>
+                <Box>
+                  <Button
+                    color="inherit"
+                    endIcon={<ArrowDropDownRoundedIcon />}
+                    sx={{ ml: -1, mb: 0.5 }}
+                    onClick={(event) => {
+                      setGeneralAccessMenuAnchorEl(event.currentTarget);
                     }}
                   >
-                    {access === 'public' ? (
-                      <PublicRoundedIcon />
-                    ) : (
-                      <LockOutlinedIcon />
-                    )}
-                  </Avatar>
-                  <Box>
-                    <Button
-                      color="inherit"
-                      endIcon={<ArrowDropDownRoundedIcon />}
-                      sx={{ ml: -1, mb: 0.5 }}
-                      onClick={(event) => {
-                        setGeneralAccessMenuAnchorEl(event.currentTarget);
-                      }}
-                    >
-                      {access === 'public'
-                        ? 'Anyone with the link'
-                        : 'Restricted'}
-                    </Button>
-                    <Typography variant="caption">
-                      {access === 'public'
-                        ? 'Anyone on the internet with the link can view'
-                        : 'Only people with access can open with the link'}
-                    </Typography>
-                  </Box>
+                    {access === 'public'
+                      ? 'Anyone with the link'
+                      : 'Restricted'}
+                  </Button>
+                  <Typography variant="caption">
+                    {access === 'public'
+                      ? 'Anyone on the internet with the link can view'
+                      : 'Only people with access can open with the link'}
+                  </Typography>
                 </Box>
               </Box>
-            </Grid>
+            </Box>
           </Grid>
-          <Button
-            variant="contained"
-            startIcon={<SaveRoundedIcon />}
-            type="submit"
-            loading={recipeBookCreator.isPending}
-            sx={{
-              display: 'flex',
-            }}
-          >
-            Save
-          </Button>
-        </form>
-      </FormProvider>
+        </Grid>
+        <Button
+          variant="contained"
+          startIcon={<SaveRoundedIcon />}
+          type="submit"
+          loading={recipeBookCreator.isPending}
+          sx={{
+            display: 'flex',
+          }}
+        >
+          Save
+        </Button>
+      </form>
       <Menu
         anchorEl={generalAccessMenuAnchorEl}
         open={Boolean(generalAccessMenuAnchorEl)}
@@ -232,7 +241,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
         <MenuItem
           selected={access === 'private'}
           onClick={() => {
-            setValue('access', 'private');
+            form.setFieldValue('access', 'private');
 
             setGeneralAccessMenuAnchorEl(null);
           }}
@@ -245,7 +254,7 @@ export function CreateRecipeBookPage({ defaultRecipeBook }: Props) {
         <MenuItem
           selected={access === 'public'}
           onClick={() => {
-            setValue('access', 'public');
+            form.setFieldValue('access', 'public');
 
             setGeneralAccessMenuAnchorEl(null);
           }}

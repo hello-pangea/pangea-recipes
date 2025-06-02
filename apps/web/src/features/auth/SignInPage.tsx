@@ -1,5 +1,5 @@
 import { RouterLink } from '#src/components/RouterLink';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppForm } from '#src/hooks/form';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -17,13 +17,11 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { authClient } from './authClient';
 
-const signInFormSchema = z.object({
-  email: z.string().email(),
+const formSchema = z.object({
+  email: z.email(),
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters long' }),
@@ -34,13 +32,6 @@ const route = getRouteApi('/sign-in');
 export function SignInPage() {
   const navigate = route.useNavigate();
   const { redirect } = route.useSearch();
-  const { handleSubmit, control } = useForm({
-    resolver: zodResolver(signInFormSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
-  });
   const [showPassword, setShowPassword] = useState(false);
   const signIn = useMutation({
     mutationFn: (data: Parameters<typeof authClient.signIn.email>[0]) => {
@@ -51,22 +42,32 @@ export function SignInPage() {
       });
     },
   });
+  const form = useAppForm({
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      const parsed = formSchema.parse(value);
 
-  const onSubmit: SubmitHandler<z.output<typeof signInFormSchema>> = (data) => {
-    signIn.mutate(
-      {
-        email: data.email,
-        password: data.password,
-      },
-      {
-        onSuccess: () => {
-          void navigate({
-            to: redirect || '/app/recipes',
-          });
+      signIn.mutate(
+        {
+          email: parsed.email,
+          password: parsed.password,
         },
-      },
-    );
-  };
+        {
+          onSuccess: () => {
+            void navigate({
+              to: redirect || '/app/recipes',
+            });
+          },
+        },
+      );
+    },
+  });
 
   return (
     <Container
@@ -160,56 +161,68 @@ export function SignInPage() {
             }}
           />
         </Box>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            void form.handleSubmit();
+          }}
+        >
           <Stack direction={'column'} spacing={2} sx={{ maxWidth: '400px' }}>
-            <TextFieldElement
-              label="Email"
+            <form.AppField
               name="email"
-              required
-              control={control}
-              fullWidth
-              type="email"
-              autoComplete="email"
+              children={(field) => (
+                <field.TextField
+                  fullWidth
+                  required
+                  label="Email"
+                  type="email"
+                  autoComplete="email"
+                />
+              )}
             />
-            <TextFieldElement
-              label="Password"
+            <form.AppField
               name="password"
-              required
-              control={control}
-              fullWidth
-              type={showPassword ? 'text' : 'password'}
-              autoComplete="current-password"
-              slotProps={{
-                input: {
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label={
-                          showPassword
-                            ? 'hide the password'
-                            : 'display the password'
-                        }
-                        onClick={() => {
-                          setShowPassword((show) => !show);
-                        }}
-                        onMouseDown={(event) => {
-                          event.preventDefault();
-                        }}
-                        onMouseUp={(event) => {
-                          event.preventDefault();
-                        }}
-                        edge="end"
-                      >
-                        {showPassword ? (
-                          <VisibilityOffRoundedIcon />
-                        ) : (
-                          <VisibilityRoundedIcon />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ),
-                },
-              }}
+              children={(field) => (
+                <field.TextField
+                  label="Password"
+                  required
+                  fullWidth
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton
+                            aria-label={
+                              showPassword
+                                ? 'hide the password'
+                                : 'display the password'
+                            }
+                            onClick={() => {
+                              setShowPassword((show) => !show);
+                            }}
+                            onMouseDown={(event) => {
+                              event.preventDefault();
+                            }}
+                            onMouseUp={(event) => {
+                              event.preventDefault();
+                            }}
+                            edge="end"
+                          >
+                            {showPassword ? (
+                              <VisibilityOffRoundedIcon />
+                            ) : (
+                              <VisibilityRoundedIcon />
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ),
+                    },
+                  }}
+                />
+              )}
             />
             {signIn.isError && (
               <Alert severity="error">

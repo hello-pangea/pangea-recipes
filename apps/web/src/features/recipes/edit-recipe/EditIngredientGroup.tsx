@@ -1,3 +1,5 @@
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { getReorderDestinationIndex } from '@atlaskit/pragmatic-drag-and-drop-hitbox/util/get-reorder-destination-index';
 import {
@@ -15,204 +17,402 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
+import { useStore } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
-import {
-  TextFieldElement,
-  useFieldArray,
-  useFormContext,
-} from 'react-hook-form-mui';
-import type { RecipeFormInputs } from './CreateRecipePage';
 import { EditIngredient } from './EditIngredient';
+import { recipeFormOptions, type RecipeFormInputs } from './recipeForm';
 
 interface Props {
   index: number;
-  minimal?: boolean;
-  onRemove: () => void;
 }
 
-export function EditIngredientGroup({
-  index: ingredientGroupIndex,
-  minimal,
-  onRemove,
-}: Props) {
-  const { control } = useFormContext<RecipeFormInputs>();
-  const {
-    fields: ingredients,
-    append: appendIngredient,
-    remove: removeIngredient,
-    move: moveIngredient,
-    insert: insertIngredient,
-  } = useFieldArray({
-    control,
-    name: `ingredientGroups.${ingredientGroupIndex}.ingredients`,
-  });
+export const EditIngredientGroup = withForm({
+  ...recipeFormOptions,
+  props: {} as FormPropsWrapper<Props>,
+  render: function Render({ form, index: ingredientGroupIndex }) {
+    const ingredients = useStore(
+      form.store,
+      (state) =>
+        state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients ??
+        [],
+    );
+    const minimal = useStore(
+      form.store,
+      (state) => state.values.ingredientGroups.length <= 1,
+    );
 
-  useEffect(() => {
-    return monitorForElements({
-      onDrop(dropResult) {
-        const source = dropResult.source;
-        const sourceType = source.data['type'] as string | undefined;
+    useEffect(() => {
+      return monitorForElements({
+        onDrop(dropResult) {
+          const source = dropResult.source;
+          const sourceType = source.data['type'] as string | undefined;
 
-        const target = dropResult.location.current.dropTargets[0];
+          const target = dropResult.location.current.dropTargets[0];
 
-        if (!target) {
-          return;
-        }
+          if (!target) {
+            return;
+          }
 
-        const targetType = target.data['type'] as string | undefined;
+          const targetType = target.data['type'] as string | undefined;
 
-        if (sourceType === 'ingredient' && targetType === 'ingredient') {
-          console.log('DND: reorder ingredients');
+          if (sourceType === 'ingredient' && targetType === 'ingredient') {
+            console.log('DND: reorder ingredients');
 
-          const sourceIndex = source.data['index'] as number;
-          const targetIndex = target.data['index'] as number;
+            const sourceIndex = source.data['index'] as number;
+            const targetIndex = target.data['index'] as number;
 
-          const sourceGroupIndex = source.data['groupIndex'] as number;
-          const targetGroupIndex = target.data['groupIndex'] as number;
+            const sourceGroupIndex = source.data['groupIndex'] as number;
+            const targetGroupIndex = target.data['groupIndex'] as number;
 
-          if (
-            sourceGroupIndex === targetGroupIndex &&
-            sourceGroupIndex === ingredientGroupIndex
-          ) {
-            console.log('DND: reorder ingredients within the same group');
+            if (
+              sourceGroupIndex === targetGroupIndex &&
+              sourceGroupIndex === ingredientGroupIndex
+            ) {
+              console.log('DND: reorder ingredients within the same group');
 
-            const closestEdgeOfTarget = extractClosestEdge(target.data);
+              const closestEdgeOfTarget = extractClosestEdge(target.data);
 
-            const finishIndex = getReorderDestinationIndex({
-              startIndex: sourceIndex,
-              closestEdgeOfTarget,
-              indexOfTarget: targetIndex,
-              axis: 'vertical',
-            });
+              const finishIndex = getReorderDestinationIndex({
+                startIndex: sourceIndex,
+                closestEdgeOfTarget,
+                indexOfTarget: targetIndex,
+                axis: 'vertical',
+              });
 
-            moveIngredient(sourceIndex, finishIndex);
+              form.moveFieldValues(
+                `ingredientGroups[${ingredientGroupIndex}].ingredients`,
+                sourceIndex,
+                finishIndex,
+              );
+            } else if (
+              sourceGroupIndex !== targetGroupIndex &&
+              sourceGroupIndex === ingredientGroupIndex
+            ) {
+              console.log('DND: move ingredient to another group (remove)');
+
+              void form.removeFieldValue(
+                `ingredientGroups[${sourceGroupIndex}].ingredients`,
+                sourceIndex,
+              );
+            } else if (
+              sourceGroupIndex !== targetGroupIndex &&
+              targetGroupIndex === ingredientGroupIndex
+            ) {
+              console.log('DND: insert ingredient from another group');
+
+              const closestEdgeOfTarget = extractClosestEdge(target.data);
+
+              const finishIndex =
+                closestEdgeOfTarget === 'bottom'
+                  ? targetIndex + 1
+                  : targetIndex;
+
+              void form.insertFieldValue(
+                `ingredientGroups[${ingredientGroupIndex}].ingredients`,
+                finishIndex,
+                source.data[
+                  'ingredient'
+                ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
+              );
+            }
           } else if (
-            sourceGroupIndex !== targetGroupIndex &&
-            sourceGroupIndex === ingredientGroupIndex
+            sourceType === 'ingredient' &&
+            targetType === 'empty_ingredient_group'
           ) {
-            console.log('DND: move ingredient to another group (remove)');
+            console.log('DND: move ingredient to empty group');
 
-            removeIngredient(sourceIndex);
-          } else if (
-            sourceGroupIndex !== targetGroupIndex &&
-            targetGroupIndex === ingredientGroupIndex
-          ) {
-            console.log('DND: insert ingredient from another group');
+            const sourceIndex = source.data['index'] as number;
+            const sourceGroupIndex = source.data['groupIndex'] as number;
 
-            const closestEdgeOfTarget = extractClosestEdge(target.data);
+            const targetGroupIndex = target.data[
+              'ingredientGroupIndex'
+            ] as number;
 
-            const finishIndex =
-              closestEdgeOfTarget === 'bottom' ? targetIndex + 1 : targetIndex;
+            if (sourceGroupIndex === ingredientGroupIndex) {
+              void form.removeFieldValue(
+                `ingredientGroups[${sourceGroupIndex}].ingredients`,
+                sourceIndex,
+              );
+            }
 
-            insertIngredient(
-              finishIndex,
-              source.data[
-                'ingredient'
-              ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
-            );
+            if (targetGroupIndex === ingredientGroupIndex) {
+              form.pushFieldValue(
+                `ingredientGroups[${ingredientGroupIndex}].ingredients`,
+                source.data[
+                  'ingredient'
+                ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
+              );
+            }
           }
-        } else if (
-          sourceType === 'ingredient' &&
-          targetType === 'empty_ingredient_group'
-        ) {
-          console.log('DND: move ingredient to empty group');
+        },
+        canMonitor: ({ source }) =>
+          ['ingredient', 'empty_ingredient_group'].includes(
+            source.data['type'] as string,
+          ),
+      });
+    }, [ingredientGroupIndex, form]);
 
-          const sourceIndex = source.data['index'] as number;
-          const sourceGroupIndex = source.data['groupIndex'] as number;
-
-          const targetGroupIndex = target.data[
-            'ingredientGroupIndex'
-          ] as number;
-
-          if (sourceGroupIndex === ingredientGroupIndex) {
-            removeIngredient(sourceIndex);
-          }
-
-          if (targetGroupIndex === ingredientGroupIndex) {
-            appendIngredient(
-              source.data[
-                'ingredient'
-              ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
-            );
-          }
-        }
-      },
-      canMonitor: ({ source }) =>
-        ['ingredient', 'empty_ingredient_group'].includes(
-          source.data['type'] as string,
-        ),
-    });
-  }, [
-    appendIngredient,
-    ingredientGroupIndex,
-    insertIngredient,
-    moveIngredient,
-    removeIngredient,
-  ]);
-
-  return (
-    <Card sx={{ p: 2 }}>
-      {!minimal && (
+    return (
+      <Card sx={{ p: 2 }}>
+        {!minimal && (
+          <Stack
+            direction={'row'}
+            alignItems={'center'}
+            spacing={2}
+            sx={{
+              mb: 4,
+            }}
+          >
+            <form.AppField
+              name={`ingredientGroups[${ingredientGroupIndex}].name`}
+              children={(subField) => (
+                <subField.TextField
+                  label="Title"
+                  placeholder="ex. Cake, Frosting"
+                  required
+                  fullWidth
+                  variant="filled"
+                />
+              )}
+            />
+            <IconButton
+              onClick={() => {
+                void form.removeFieldValue(
+                  `ingredientGroups`,
+                  ingredientGroupIndex,
+                );
+              }}
+            >
+              <DeleteRoundedIcon />
+            </IconButton>
+          </Stack>
+        )}
         <Stack
-          direction={'row'}
-          alignItems={'center'}
+          direction={'column'}
           spacing={2}
-          sx={{
-            mb: 4,
+          useFlexGap
+          sx={{ mb: 2, maxWidth: '750px' }}
+        >
+          {ingredients.map((_ingredient, ingredientIndex) => (
+            <EditIngredient
+              form={form}
+              ingredientGroupIndex={ingredientGroupIndex}
+              index={ingredientIndex}
+              key={ingredientIndex}
+            />
+          ))}
+          {ingredients.length === 0 && (
+            <EmptyIngredientGroupDroppable
+              ingredientGroupIndex={ingredientGroupIndex}
+            />
+          )}
+        </Stack>
+        <Button
+          variant="outlined"
+          size="small"
+          startIcon={<AddRoundedIcon />}
+          onClick={() => {
+            form.pushFieldValue(
+              `ingredientGroups[${ingredientGroupIndex}].ingredients`,
+              {
+                name: '',
+                unit: null,
+                quantity: null,
+                notes: null,
+              },
+            );
           }}
         >
-          <TextFieldElement
-            name={`ingredientGroups.${ingredientGroupIndex}.name`}
-            label="Title"
-            placeholder="ex. Cake, Frosting"
-            control={control}
-            required
-            fullWidth
-            variant="filled"
-          />
-          <IconButton onClick={onRemove}>
-            <DeleteRoundedIcon />
-          </IconButton>
-        </Stack>
-      )}
-      <Stack
-        direction={'column'}
-        spacing={2}
-        useFlexGap
-        sx={{ mb: 2, maxWidth: '750px' }}
-      >
-        {ingredients.map((ingredient, ingredientIndex) => (
-          <EditIngredient
-            ingredientGroupIndex={ingredientGroupIndex}
-            index={ingredientIndex}
-            key={ingredient.id}
-            removeIngredient={removeIngredient}
-          />
-        ))}
-        {ingredients.length === 0 && (
-          <EmptyIngredientGroupDroppable
-            ingredientGroupIndex={ingredientGroupIndex}
-          />
-        )}
-      </Stack>
-      <Button
-        variant="outlined"
-        size="small"
-        startIcon={<AddRoundedIcon />}
-        onClick={() => {
-          appendIngredient({
-            name: '',
-            unit: null,
-            quantity: null,
-            notes: null,
-          });
-        }}
-      >
-        Add ingredient
-      </Button>
-    </Card>
-  );
-}
+          Add ingredient
+        </Button>
+      </Card>
+    );
+  },
+});
+
+// export function EditIngredientGroup({
+//   index: ingredientGroupIndex,
+//   minimal,
+//   onRemove,
+// }: Props) {
+//   const { control } = useFormContext<RecipeFormInputs>();
+//   const {
+//     fields: ingredients,
+//     append: appendIngredient,
+//     remove: removeIngredient,
+//     move: moveIngredient,
+//     insert: insertIngredient,
+//   } = useFieldArray({
+//     control,
+//     name: `ingredientGroups.${ingredientGroupIndex}.ingredients`,
+//   });
+
+//   useEffect(() => {
+//     return monitorForElements({
+//       onDrop(dropResult) {
+//         const source = dropResult.source;
+//         const sourceType = source.data['type'] as string | undefined;
+
+//         const target = dropResult.location.current.dropTargets[0];
+
+//         if (!target) {
+//           return;
+//         }
+
+//         const targetType = target.data['type'] as string | undefined;
+
+//         if (sourceType === 'ingredient' && targetType === 'ingredient') {
+//           console.log('DND: reorder ingredients');
+
+//           const sourceIndex = source.data['index'] as number;
+//           const targetIndex = target.data['index'] as number;
+
+//           const sourceGroupIndex = source.data['groupIndex'] as number;
+//           const targetGroupIndex = target.data['groupIndex'] as number;
+
+//           if (
+//             sourceGroupIndex === targetGroupIndex &&
+//             sourceGroupIndex === ingredientGroupIndex
+//           ) {
+//             console.log('DND: reorder ingredients within the same group');
+
+//             const closestEdgeOfTarget = extractClosestEdge(target.data);
+
+//             const finishIndex = getReorderDestinationIndex({
+//               startIndex: sourceIndex,
+//               closestEdgeOfTarget,
+//               indexOfTarget: targetIndex,
+//               axis: 'vertical',
+//             });
+
+//             moveIngredient(sourceIndex, finishIndex);
+//           } else if (
+//             sourceGroupIndex !== targetGroupIndex &&
+//             sourceGroupIndex === ingredientGroupIndex
+//           ) {
+//             console.log('DND: move ingredient to another group (remove)');
+
+//             removeIngredient(sourceIndex);
+//           } else if (
+//             sourceGroupIndex !== targetGroupIndex &&
+//             targetGroupIndex === ingredientGroupIndex
+//           ) {
+//             console.log('DND: insert ingredient from another group');
+
+//             const closestEdgeOfTarget = extractClosestEdge(target.data);
+
+//             const finishIndex =
+//               closestEdgeOfTarget === 'bottom' ? targetIndex + 1 : targetIndex;
+
+//             insertIngredient(
+//               finishIndex,
+//               source.data[
+//                 'ingredient'
+//               ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
+//             );
+//           }
+//         } else if (
+//           sourceType === 'ingredient' &&
+//           targetType === 'empty_ingredient_group'
+//         ) {
+//           console.log('DND: move ingredient to empty group');
+
+//           const sourceIndex = source.data['index'] as number;
+//           const sourceGroupIndex = source.data['groupIndex'] as number;
+
+//           const targetGroupIndex = target.data[
+//             'ingredientGroupIndex'
+//           ] as number;
+
+//           if (sourceGroupIndex === ingredientGroupIndex) {
+//             removeIngredient(sourceIndex);
+//           }
+
+//           if (targetGroupIndex === ingredientGroupIndex) {
+//             appendIngredient(
+//               source.data[
+//                 'ingredient'
+//               ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
+//             );
+//           }
+//         }
+//       },
+//       canMonitor: ({ source }) =>
+//         ['ingredient', 'empty_ingredient_group'].includes(
+//           source.data['type'] as string,
+//         ),
+//     });
+//   }, [
+//     appendIngredient,
+//     ingredientGroupIndex,
+//     insertIngredient,
+//     moveIngredient,
+//     removeIngredient,
+//   ]);
+
+//   return (
+//     <Card sx={{ p: 2 }}>
+//       {!minimal && (
+//         <Stack
+//           direction={'row'}
+//           alignItems={'center'}
+//           spacing={2}
+//           sx={{
+//             mb: 4,
+//           }}
+//         >
+//           <TextFieldElement
+//             name={`ingredientGroups.${ingredientGroupIndex}.name`}
+//             label="Title"
+//             placeholder="ex. Cake, Frosting"
+//             control={control}
+//             required
+//             fullWidth
+//             variant="filled"
+//           />
+//           <IconButton onClick={onRemove}>
+//             <DeleteRoundedIcon />
+//           </IconButton>
+//         </Stack>
+//       )}
+//       <Stack
+//         direction={'column'}
+//         spacing={2}
+//         useFlexGap
+//         sx={{ mb: 2, maxWidth: '750px' }}
+//       >
+//         {ingredients.map((ingredient, ingredientIndex) => (
+//           <EditIngredient
+//             ingredientGroupIndex={ingredientGroupIndex}
+//             index={ingredientIndex}
+//             key={ingredient.id}
+//             removeIngredient={removeIngredient}
+//           />
+//         ))}
+//         {ingredients.length === 0 && (
+//           <EmptyIngredientGroupDroppable
+//             ingredientGroupIndex={ingredientGroupIndex}
+//           />
+//         )}
+//       </Stack>
+//       <Button
+//         variant="outlined"
+//         size="small"
+//         startIcon={<AddRoundedIcon />}
+//         onClick={() => {
+//           appendIngredient({
+//             name: '',
+//             unit: null,
+//             quantity: null,
+//             notes: null,
+//           });
+//         }}
+//       >
+//         Add ingredient
+//       </Button>
+//     </Card>
+//   );
+// }
 
 interface DroppableProps {
   ingredientGroupIndex: number;

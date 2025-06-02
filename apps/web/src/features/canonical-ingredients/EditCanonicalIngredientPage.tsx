@@ -16,8 +16,8 @@ export function EditCanonicalIngredientPage() {
 
   return (
     <CreateCanonicalIngredientPage
-      defaultCanonicalIngredient={{
-        id: canonicalIngredient.id,
+      updateCanonicalIngredientId={canonicalIngredientId}
+      defaultValues={{
         name: canonicalIngredient.name,
         icon: canonicalIngredient.icon ?? null,
         aliases: canonicalIngredient.aliases.map((alias) => ({ name: alias })),

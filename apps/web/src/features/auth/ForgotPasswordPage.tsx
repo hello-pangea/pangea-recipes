@@ -1,5 +1,5 @@
 import { RouterLink } from '#src/components/RouterLink';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { useAppForm } from '#src/hooks/form';
 import {
   Alert,
   Box,
@@ -10,22 +10,14 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
-import { z } from 'zod';
+import { z } from 'zod/v4';
 import { authClient } from './authClient';
 
-const forgotPasswordFormSchema = z.object({
-  email: z.string().email(),
+const formSchema = z.object({
+  email: z.email(),
 });
 
 export function ForgotPasswordPage() {
-  const { handleSubmit, control } = useForm({
-    resolver: zodResolver(forgotPasswordFormSchema),
-    defaultValues: {
-      email: '',
-    },
-  });
   const sendEmail = useMutation({
     mutationFn: (data: Parameters<typeof authClient.forgetPassword>[0]) => {
       return authClient.forgetPassword(data, {
@@ -35,15 +27,22 @@ export function ForgotPasswordPage() {
       });
     },
   });
+  const form = useAppForm({
+    defaultValues: {
+      email: '',
+    },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      const parsed = formSchema.parse(value);
 
-  const onSubmit: SubmitHandler<z.output<typeof forgotPasswordFormSchema>> = (
-    data,
-  ) => {
-    sendEmail.mutate({
-      email: data.email,
-      redirectTo: `${location.origin}/reset-password`,
-    });
-  };
+      sendEmail.mutate({
+        email: parsed.email,
+        redirectTo: `${location.origin}/reset-password`,
+      });
+    },
+  });
 
   return (
     <Container
@@ -103,17 +102,26 @@ export function ForgotPasswordPage() {
             </RouterLink>
           </>
         ) : (
-          <form onSubmit={handleSubmit(onSubmit)}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              void form.handleSubmit();
+            }}
+          >
             <Stack direction={'column'} spacing={2} sx={{ maxWidth: '400px' }}>
-              <TextFieldElement
-                label="Email"
+              <form.AppField
                 name="email"
-                placeholder="name@example.com"
-                required
-                control={control}
-                fullWidth
-                type="email"
-                autoComplete="email"
+                children={(field) => (
+                  <field.TextField
+                    label="Email"
+                    fullWidth
+                    placeholder="name@example.com"
+                    required
+                    type="email"
+                    autoComplete="email"
+                  />
+                )}
               />
               {sendEmail.isError && (
                 <Alert severity="error">

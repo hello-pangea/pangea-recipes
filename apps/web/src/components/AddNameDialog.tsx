@@ -1,5 +1,5 @@
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
-import { isBlank } from '#src/lib/isBlank';
+import { useAppForm } from '#src/hooks/form';
 import {
   Button,
   Dialog,
@@ -10,12 +10,11 @@ import {
   Stack,
 } from '@mui/material';
 import { useUpdateUser } from '@open-zero/features/users';
-import { useForm, type SubmitHandler } from 'react-hook-form';
-import { TextFieldElement } from 'react-hook-form-mui';
+import { z } from 'zod/v4';
 
-interface NameFormInputs {
-  name: string;
-}
+const formSchema = z.object({
+  name: z.string().min(1),
+});
 
 interface Props {
   open: boolean;
@@ -25,28 +24,38 @@ interface Props {
 export function AddNameDialog({ open, onClose }: Props) {
   const userId = useSignedInUserId();
   const updateUser = useUpdateUser();
-  const { handleSubmit, control } = useForm<NameFormInputs>({
+  const form = useAppForm({
     defaultValues: {
       name: '',
     },
+    validators: {
+      onSubmit: formSchema,
+    },
+    onSubmit: ({ value }) => {
+      const parsed = formSchema.parse(value);
+
+      updateUser.mutate(
+        {
+          id: userId,
+          name: parsed.name,
+        },
+        {
+          onSuccess: () => {
+            onClose(true);
+          },
+        },
+      );
+    },
   });
 
-  const onSubmit: SubmitHandler<NameFormInputs> = (data) => {
-    updateUser.mutate(
-      {
-        id: userId,
-        name: data.name,
-      },
-      {
-        onSuccess: () => {
-          onClose(true);
-        },
-      },
-    );
-  };
-
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        void form.handleSubmit();
+      }}
+    >
       <Dialog
         open={open}
         onClose={() => {
@@ -61,27 +70,22 @@ export function AddNameDialog({ open, onClose }: Props) {
             Add your name so others know who you are.
           </DialogContentText>
           <Stack spacing={2}>
-            <TextFieldElement
-              label="Name"
+            <form.AppField
               name="name"
-              control={control}
-              fullWidth
-              required
-              onKeyDown={(event) => {
-                if (event.key === 'Enter') {
-                  event.preventDefault();
-                  void handleSubmit(onSubmit)();
-                }
-              }}
-              rules={{
-                validate: (value) => {
-                  if (isBlank(value)) {
-                    return 'First name cannot be blank';
-                  }
-
-                  return true;
-                },
-              }}
+              children={(field) => (
+                <field.TextField
+                  label="Name"
+                  fullWidth
+                  autoComplete="name"
+                  required
+                  onKeyDown={(event) => {
+                    if (event.key === 'Enter') {
+                      event.preventDefault();
+                      void form.handleSubmit();
+                    }
+                  }}
+                />
+              )}
             />
           </Stack>
         </DialogContent>
