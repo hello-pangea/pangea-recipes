@@ -2,8 +2,8 @@ import { DragPreview } from '#src/components/DragPreview';
 import { DropIndicator } from '#src/components/DropIndicator';
 import { withForm } from '#src/hooks/form';
 import { focusNextInput } from '#src/lib/focusNextInput';
+import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
-import { positiveNumberOrNullSchema } from '#src/utils/zod/positiveNumberOrNullSchema';
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -41,7 +41,6 @@ import { useSignedInUser } from '@open-zero/features/users';
 import { useStore } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { z } from 'zod/v4';
 import { IngredientNotesButton } from './IngredientNotesButton';
 import { recipeFormOptions } from './recipeForm';
 
@@ -201,10 +200,7 @@ export const EditIngredient = withForm({
       );
     }, [index, ingredientGroupIndex, ingredient]);
 
-    const parsedQuantity = z.safeParse(
-      positiveNumberOrNullSchema,
-      ingredient?.quantity,
-    );
+    const parsedQuantity = getNumberFromInput(ingredient?.quantity);
 
     return (
       <>
@@ -263,7 +259,7 @@ export const EditIngredient = withForm({
                     }}
                   >
                     {ingredient?.name
-                      ? `${parsedQuantity.success && parsedQuantity.data ? numberToFraction(parsedQuantity.data) : ''}${ingredient.unit ? ` ${ingredient.unit} ` : ''}${ingredient.name}`
+                      ? `${parsedQuantity !== null ? numberToFraction(parsedQuantity) : ''}${ingredient.unit ? ` ${ingredient.unit} ` : ''}${ingredient.name}`
                       : 'Ingredient'}
                   </Typography>
                 </Box>
@@ -373,21 +369,6 @@ export const EditIngredientContent = withForm({
                     `input[name="ingredientGroups[${ingredientGroupIndex}].ingredients[${index}].unit"]`,
                   );
                 }}
-                // rules={{
-                //   validate: (value: number | string | null) => {
-                //     if (value === null || value === '') {
-                //       return true;
-                //     }
-
-                //     const parsedValue = getNumberFromInput(value);
-
-                //     if (parsedValue === null || isNaN(parsedValue)) {
-                //       return 'Invalid number';
-                //     }
-
-                //     return true;
-                //   },
-                // }}
               />
             )}
           />
