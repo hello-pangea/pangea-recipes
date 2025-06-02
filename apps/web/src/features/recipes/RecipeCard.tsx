@@ -26,6 +26,7 @@ interface Props {
 export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
   const { data: recipe } = useRecipe({ recipeId: recipeId });
   const ref = useRef<null | HTMLDivElement>(null);
+  const [isHovering, setIsHovering] = useState(false);
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
     null,
   );
@@ -117,6 +118,12 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
           },
         }}
         onContextMenu={handleContextMenu}
+        onMouseEnter={() => {
+          setIsHovering(true);
+        }}
+        onMouseLeave={() => {
+          setIsHovering(false);
+        }}
       >
         {recipe.images?.length ? (
           <Link
@@ -206,6 +213,9 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
                 type: 'more',
                 anchorEl: event.currentTarget,
               });
+            }}
+            sx={{
+              visibility: isHovering || moreMenuAnchor ? 'visible' : 'hidden',
             }}
           >
             <MoreVertRoundedIcon />
