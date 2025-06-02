@@ -29,10 +29,19 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
     null,
   );
-  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
-  const moreMenuOpen = Boolean(moreMenuAnchorEl);
+  const [moreMenuAnchor, setMoreMenuAnchor] = useState<
+    | {
+        type: 'context';
+        mouseX: number;
+        mouseY: number;
+      }
+    | {
+        type: 'more';
+        anchorEl: HTMLElement;
+      }
+    | null
+  >(null);
+  const moreMenuOpen = Boolean(moreMenuAnchor);
 
   useEffect(() => {
     const element = ref.current;
@@ -50,12 +59,6 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
     return draggable({
       element: element,
       getInitialData: () => data,
-      // onDragStart: () => {
-      //   setDragging(true);
-      // },
-      // onDrop: () => {
-      //   setDragging(false);
-      // },
       onGenerateDragPreview({ nativeSetDragImage }) {
         setCustomNativeDragPreview({
           nativeSetDragImage,
@@ -70,6 +73,33 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       },
     });
   }, [recipeId, recipe]);
+
+  const handleContextMenu = (event: React.MouseEvent) => {
+    event.preventDefault();
+
+    setMoreMenuAnchor(
+      moreMenuAnchor === null
+        ? {
+            type: 'context',
+            mouseX: event.clientX + 2,
+            mouseY: event.clientY - 6,
+          }
+        : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
+          // Other native context menus might behave different.
+          // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
+          null,
+    );
+
+    // Prevent text selection lost after opening the context menu on Safari and Firefox
+    const selection = document.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+
+      setTimeout(() => {
+        selection.addRange(range);
+      });
+    }
+  };
 
   if (!recipe) {
     return <CircularProgress />;
@@ -86,6 +116,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
           },
         }}
+        onContextMenu={handleContextMenu}
       >
         {recipe.images?.length ? (
           <Link
@@ -171,7 +202,10 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
             aria-haspopup="true"
             aria-expanded={moreMenuOpen ? 'true' : undefined}
             onClick={(event) => {
-              setMoreMenuAnchorEl(event.currentTarget);
+              setMoreMenuAnchor({
+                type: 'more',
+                anchorEl: event.currentTarget,
+              });
             }}
           >
             <MoreVertRoundedIcon />
@@ -180,11 +214,21 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       </Card>
       <RecipeMoreMenu
         recipeId={recipeId}
-        anchorEl={moreMenuAnchorEl}
+        anchorEl={
+          moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
+        }
         onClose={() => {
-          setMoreMenuAnchorEl(null);
+          setMoreMenuAnchor(null);
         }}
+        anchorReference={
+          moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'
+        }
         onRemoveFromRecipeBook={onRemoveFromRecipeBook}
+        anchorPosition={
+          moreMenuAnchor?.type === 'context'
+            ? { top: moreMenuAnchor.mouseY, left: moreMenuAnchor.mouseX }
+            : undefined
+        }
       />
       {previewContainer
         ? createPortal(<DragPreview text={recipe.name} />, previewContainer)

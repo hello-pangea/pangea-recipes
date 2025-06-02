@@ -17,6 +17,7 @@ import {
   Menu,
   MenuItem,
   TextField,
+  type MenuProps,
 } from '@mui/material';
 import {
   useAddRecipeToRecipeBook,
@@ -32,9 +33,9 @@ import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
-interface Props {
+interface Props
+  extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
   recipeId: string;
-  anchorEl: HTMLElement | null;
   onClose: () => void;
   onDelete?: () => void;
   onRemoveFromRecipeBook?: () => void;
@@ -43,6 +44,8 @@ interface Props {
 export function RecipeMoreMenu({
   recipeId,
   anchorEl,
+  anchorPosition,
+  anchorReference,
   onClose,
   onDelete,
   onRemoveFromRecipeBook,
@@ -58,7 +61,7 @@ export function RecipeMoreMenu({
   const createRecipeBook = useCreateRecipeBook();
   const updateRecipe = useUpdateRecipe();
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl || anchorPosition);
 
   const [booksAnchorEl, setBooksAnchorEl] = useState<null | HTMLElement>(null);
   const booksOpen = Boolean(booksAnchorEl);
@@ -97,6 +100,8 @@ export function RecipeMoreMenu({
       <Menu
         id="more-menu"
         anchorEl={anchorEl}
+        anchorPosition={anchorPosition}
+        anchorReference={anchorReference}
         open={open}
         onClose={handleClose}
         anchorOrigin={{
@@ -137,6 +142,7 @@ export function RecipeMoreMenu({
             <ListItemText>Edit</ListItemText>
           </Link>
         </MenuItem>
+        <Divider />
         <MenuItem
           onMouseEnter={(event) => {
             setBooksAnchorEl(event.currentTarget);
