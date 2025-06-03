@@ -23,7 +23,7 @@ export function useRequestAccessToRecipeBook({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBookRequests'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: requestAccessToRecipeBook,

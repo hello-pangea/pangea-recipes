@@ -51,7 +51,7 @@ export function useRemoveRecipeFromRecipeBook({
         data,
       );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: removeRecipeFromRecipeBook,

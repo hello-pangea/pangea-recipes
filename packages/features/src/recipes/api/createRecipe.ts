@@ -79,7 +79,7 @@ export function useCreateRecipe({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: createRecipe,

@@ -29,7 +29,7 @@ export function useSetupUser({ mutationConfig }: Options = {}) {
         structuredClone(data),
       );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: setupUser,

@@ -25,7 +25,7 @@ export function useDeleteRecipe({ mutationConfig }: Options = {}) {
         queryKey: ['recipes'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: deleteRecipe,

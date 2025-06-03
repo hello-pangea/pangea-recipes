@@ -45,7 +45,7 @@ export function useAddRecipeToRecipeBook({ mutationConfig }: Options = {}) {
         data,
       );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: addRecipeToRecipeBook,

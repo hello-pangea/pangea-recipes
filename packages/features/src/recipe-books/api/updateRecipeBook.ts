@@ -35,7 +35,7 @@ export function useUpdateRecipeBook({ mutationConfig }: Options = {}) {
         data,
       );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: updateRecipeBook,

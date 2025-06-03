@@ -86,7 +86,7 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
         data.recipe,
       );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: updateRecipe,

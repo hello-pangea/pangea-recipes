@@ -28,7 +28,7 @@ export function useAcceptRecipeBookRequest({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: acceptRecipeBookRequest,

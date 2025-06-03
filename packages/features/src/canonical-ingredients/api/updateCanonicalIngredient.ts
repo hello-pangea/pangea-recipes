@@ -49,7 +49,7 @@ export function useUpdateCanonicalIngredient({ mutationConfig }: Options = {}) {
         queryKey: getListCanonicalIngredientsQueryOptions().queryKey,
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: updateCanonicalIngredient,

@@ -33,7 +33,7 @@ export function useDeleteRecipeBookInvite({ mutationConfig }: Options = {}) {
         queryKey: getRecipeBookQueryOptions(input.recipeBookId).queryKey,
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: deleteRecipeBookInvite,

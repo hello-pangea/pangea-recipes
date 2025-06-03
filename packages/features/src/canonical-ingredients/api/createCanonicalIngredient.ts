@@ -45,7 +45,7 @@ export function useCreateCanonicalIngredient({ mutationConfig }: Options = {}) {
         queryKey: getListCanonicalIngredientsQueryOptions().queryKey,
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: createCanonicalIngredient,

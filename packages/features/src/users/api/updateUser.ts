@@ -27,7 +27,7 @@ export function useUpdateUser({ mutationConfig }: Options = {}) {
         queryKey: getSignedInUserQueryOptions().queryKey,
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: updateUser,
