@@ -43,6 +43,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
     | null
   >(null);
   const moreMenuOpen = Boolean(moreMenuAnchor);
+  const isTouchDevice = matchMedia('(hover: none)').matches;
 
   useEffect(() => {
     const element = ref.current;
@@ -117,13 +118,21 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
           },
         }}
-        onContextMenu={handleContextMenu}
-        onMouseEnter={() => {
-          setIsHovering(true);
-        }}
-        onMouseLeave={() => {
-          setIsHovering(false);
-        }}
+        onContextMenu={isTouchDevice ? undefined : handleContextMenu}
+        onMouseEnter={
+          isTouchDevice
+            ? undefined
+            : () => {
+                setIsHovering(true);
+              }
+        }
+        onMouseLeave={
+          isTouchDevice
+            ? undefined
+            : () => {
+                setIsHovering(false);
+              }
+        }
       >
         {recipe.images?.length ? (
           <Link
@@ -215,7 +224,10 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               });
             }}
             sx={{
-              visibility: isHovering || moreMenuAnchor ? 'visible' : 'hidden',
+              visibility:
+                isHovering || moreMenuAnchor || isTouchDevice
+                  ? 'visible'
+                  : 'hidden',
             }}
           >
             <MoreVertRoundedIcon />
