@@ -5,10 +5,10 @@ import {
 } from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@open-zero/database';
-import { Type, type Static, type TSchema } from '@sinclair/typebox';
-import { Value } from '@sinclair/typebox/value';
+import { zodTextFormat } from 'openai/helpers/zod';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
+import { z } from 'zod/v3';
 
 const turndownService = new TurndownService();
 turndownService.remove('script');
@@ -153,34 +153,22 @@ export async function getLlmImportRecipe(urlString: string) {
       throw error;
     });
 
-  const openAiRes = await openAi.chat.completions.create({
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You are a helpful assistent specializing in reading recipes. You will be given unstructured recipe info from a website. Parse it into the given structured data format.',
-      },
-      {
-        role: 'user',
-        content: recipeMarkdown,
-      },
-    ],
-    model: 'gpt-4o-2024-11-20',
-    response_format: {
-      type: 'json_schema',
-      json_schema: {
-        name: 'recipe',
-        strict: true,
-        schema: llmRecipeSchema,
-      },
+  const openAiRes = await openAi.responses.parse({
+    instructions: 'Parse the given recipe into a structured recipe object.',
+    input: recipeMarkdown,
+    model: 'gpt-4.1-2025-04-14',
+    text: {
+      format: zodTextFormat(zodLlmRecipeSchema, 'recipe'),
     },
   });
 
-  const llmContent = JSON.parse(
-    openAiRes.choices.at(0)?.message.content ?? '',
-  ) as object;
+  const llmRecipe = openAiRes.output_parsed;
 
-  (llmContent as Static<typeof llmRecipeSchema>).ingredientGroups?.map((ig) =>
+  if (!llmRecipe) {
+    throw new Error('Failed to parse recipe with OpenAI response');
+  }
+
+  llmRecipe.ingredientGroups?.map((ig) =>
     ig.ingredients.map((i) => {
       if (i.unit === '' || i.unit === 'null') {
         i.unit = null;
@@ -194,101 +182,72 @@ export async function getLlmImportRecipe(urlString: string) {
     }),
   );
 
-  const parsedRecipe = parse(llmRecipeSchema, llmContent);
-
-  return { parsedRecipe, websitePage };
+  return { parsedRecipe: llmRecipe, websitePage };
 }
 
-function parse<T extends TSchema>(schema: T, value: unknown): Static<T> {
-  const c = Value.Convert(
-    schema,
-    Value.Cast(
-      schema,
-      Value.Default(schema, Value.Clean(schema, Value.Clone(value))),
-    ),
-  );
-  Value.Assert(schema, c);
-  return Value.Decode(schema, c);
-}
-
-const Nullable = <T extends TSchema>(schema: T) =>
-  Type.Union([schema, Type.Null()]);
-
-const llmRecipeSchema = Type.Object(
-  {
-    name: Nullable(Type.String()),
-
-    description: Nullable(Type.String()),
-
-    /** Minutes */
-    prepTime: Nullable(Type.Number({ description: 'Prep time in minutes' })),
-    /** Minutes */
-    cookTime: Nullable(Type.Number({ description: 'Cook time in minutes' })),
-    /** Minutes */
-    totalTime: Nullable(Type.Number({ description: 'Total time in minutes' })),
-
-    servings: Nullable(Type.Number()),
-
-    ingredientGroups: Nullable(
-      Type.Array(
-        Type.Object(
-          {
-            title: Type.String(),
-            ingredients: Type.Array(
-              Type.Object(
-                {
-                  name: Type.String(),
-                  unit: Nullable(Type.String()),
-                  quantity: Nullable(Type.Number()),
-                  notes: Nullable(Type.String()),
-                },
-                { additionalProperties: false },
-              ),
+const zodLlmRecipeSchema = z
+  .object({
+    name: z.string().nullable(),
+    description: z
+      .string()
+      .nullable()
+      .describe('Short, friendly description of the recipe'),
+    prepTime: z.number().nullable().describe('Prep time in minutes'),
+    cookTime: z.number().nullable().describe('Cook time in minutes'),
+    totalTime: z.number().nullable().describe('Total time in minutes'),
+    servings: z.number().nullable(),
+    ingredientGroups: z
+      .array(
+        z
+          .object({
+            title: z.string(),
+            ingredients: z.array(
+              z
+                .object({
+                  name: z.string(),
+                  unit: z.string().nullable(),
+                  quantity: z.number().nullable(),
+                  notes: z
+                    .string()
+                    .nullable()
+                    .describe(
+                      'Optional notes about the ingredient. Don\'t prefix with "Note: " or similar.',
+                    ),
+                })
+                .strict(),
             ),
-          },
-          { additionalProperties: false },
-        ),
-      ),
-    ),
-
-    instructionGroups: Nullable(
-      Type.Array(
-        Type.Object(
-          {
-            title: Nullable(Type.String()),
-            instructions: Type.Array(Type.String()),
-          },
-          { additionalProperties: false },
-        ),
-      ),
-    ),
-
-    nutrition: Nullable(
-      Type.Object(
-        {
-          calories: Nullable(Type.Number()),
-
-          totalFatG: Nullable(Type.Number()),
-          unsaturatedFatG: Nullable(Type.Number()),
-          saturatedFatG: Nullable(Type.Number()),
-          transFatG: Nullable(Type.Number()),
-
-          carbsG: Nullable(Type.Number()),
-          proteinG: Nullable(Type.Number()),
-          fiberG: Nullable(Type.Number()),
-          sugarG: Nullable(Type.Number()),
-
-          sodiumMg: Nullable(Type.Number()),
-          ironMg: Nullable(Type.Number()),
-          calciumMg: Nullable(Type.Number()),
-          potassiumMg: Nullable(Type.Number()),
-          cholesterolMg: Nullable(Type.Number()),
-        },
-        {
-          additionalProperties: false,
-        },
-      ),
-    ),
-  },
-  { additionalProperties: false },
-);
+          })
+          .strict(),
+      )
+      .nullable(),
+    instructionGroups: z
+      .array(
+        z
+          .object({
+            title: z.string().nullable(),
+            instructions: z.array(z.string()),
+          })
+          .strict(),
+      )
+      .nullable(),
+    nutrition: z
+      .object({
+        calories: z.number().nullable(),
+        totalFatG: z.number().nullable(),
+        unsaturatedFatG: z.number().nullable(),
+        saturatedFatG: z.number().nullable(),
+        transFatG: z.number().nullable(),
+        carbsG: z.number().nullable(),
+        proteinG: z.number().nullable(),
+        fiberG: z.number().nullable(),
+        sugarG: z.number().nullable(),
+        sodiumMg: z.number().nullable(),
+        ironMg: z.number().nullable(),
+        calciumMg: z.number().nullable(),
+        potassiumMg: z.number().nullable(),
+        cholesterolMg: z.number().nullable(),
+      })
+      .strict()
+      .nullable(),
+  })
+  .strict();
