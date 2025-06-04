@@ -1,17 +1,13 @@
 import { SignInPage } from '#src/features/auth/SignInPage';
-import { Type } from '@sinclair/typebox';
-import { Value } from '@sinclair/typebox/value';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { z } from 'zod/v4';
+
+const searchSchema = z.object({
+  redirect: z.string().optional(),
+});
 
 export const Route = createFileRoute('/sign-in')({
-  validateSearch: (search) => {
-    const res = Value.Parse(
-      Type.Object({ redirect: Type.Optional(Type.String()) }),
-      search,
-    );
-
-    return res;
-  },
+  validateSearch: searchSchema,
   beforeLoad: ({ context, search }) => {
     if (context.userId) {
       throw redirect({ to: search.redirect || '/app/recipes' });

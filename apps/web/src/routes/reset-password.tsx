@@ -1,14 +1,13 @@
 import { ResetPasswordPage } from '#src/features/auth/ResetPasswordPage';
-import { Type } from '@sinclair/typebox';
-import { Value } from '@sinclair/typebox/value';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { z } from 'zod/v4';
+
+const searchSchema = z.object({
+  token: z.string(),
+});
 
 export const Route = createFileRoute('/reset-password')({
-  validateSearch: (search) => {
-    const res = Value.Parse(Type.Object({ token: Type.String() }), search);
-
-    return res;
-  },
+  validateSearch: searchSchema,
   beforeLoad: ({ context }) => {
     if (context.userId) {
       throw redirect({ to: '/app/recipes' });
