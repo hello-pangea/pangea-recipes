@@ -26,7 +26,7 @@ export const positiveNumberOrNullSchema = z
 
     /* Numbers: enforce positivity */
     if (typeof value === 'number') {
-      if (value > 0) {
+      if (value >= 0) {
         return value;
       }
       ctx.addIssue({ code: 'custom', message: 'Must be a positive number' });
