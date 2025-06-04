@@ -47,7 +47,6 @@ export async function userRoutes(fastify: FastifyTypebox) {
   fastify.get(
     '/signed-in-user',
     {
-      preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get currently signed in user',
