@@ -29,6 +29,12 @@ export async function importedRecipeRoutes(fastify: FastifyTypebox) {
           }),
         },
       },
+      config: {
+        rateLimit: {
+          max: 10,
+          timeWindow: '1 minute',
+        },
+      },
     },
     async (request) => {
       const { url: urlString } = request.query;

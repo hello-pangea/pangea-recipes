@@ -2,6 +2,7 @@ import { auth } from '#src/features/auth/betterAuth.ts';
 import fastifyAuth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type { User } from '@open-zero/features/users';
@@ -53,6 +54,10 @@ export async function createServer() {
   await fastify.register(fastifyAuth);
 
   await fastify.register(fastifySensible);
+
+  await fastify.register(fastifyRateLimit, {
+    global: false,
+  });
 
   // -
   // Custom plugins
