@@ -12,8 +12,8 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@atlaskit/pragmatic-drag-and-drop": "^1.7.1",
-    "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "^2.1.0",
+    "@atlaskit/pragmatic-drag-and-drop": "^1.7.2",
+    "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "^2.1.1",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
@@ -23,9 +23,9 @@
     "@mui/material": "^7.1.1",
     "@open-zero/features": "workspace:*",
     "@sinclair/typebox": "^0.34.33",
-    "@tanstack/react-form": "^1.12.0",
-    "@tanstack/react-query": "^5.79.2",
-    "@tanstack/react-query-devtools": "^5.79.2",
+    "@tanstack/react-form": "^1.12.1",
+    "@tanstack/react-query": "^5.80.2",
+    "@tanstack/react-query-devtools": "^5.80.2",
     "@tanstack/react-router": "^1.120.15",
     "@tanstack/react-router-devtools": "^1.120.15",
     "@uppy/core": "^4.4.6",
@@ -41,7 +41,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-use": "^17.6.0",
-    "zod": "^3.25.49"
+    "zod": "^3.25.50"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
