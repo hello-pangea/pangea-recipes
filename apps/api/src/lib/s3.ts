@@ -15,8 +15,6 @@ export const s3Client = new S3Client({
     accessKeyId: config.CLOUDFLARE_R2_ACCESS_KEY_ID,
     secretAccessKey: config.CLOUDFLARE_R2_SECRET_ACCESS_KEY,
   },
-  requestChecksumCalculation: 'WHEN_REQUIRED',
-  responseChecksumValidation: 'WHEN_REQUIRED',
 });
 
 export function uploadFile(data: {
