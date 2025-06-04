@@ -257,7 +257,12 @@ export function HomePage() {
             textAlign: 'center',
           }}
         >
-          <img src="/assets/lil-guy.svg" width={64} height={64} />
+          <img
+            src="/assets/lil-guy.svg"
+            alt="Hello Recipes Logo"
+            width={64}
+            height={64}
+          />
           <Typography variant="h1" component={'p'} sx={{ mb: 2, mt: 4 }}>
             Start saving and sharing recipes.
           </Typography>

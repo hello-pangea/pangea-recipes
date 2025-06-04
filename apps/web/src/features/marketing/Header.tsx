@@ -18,6 +18,7 @@ export function Header() {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <img
           src="/assets/lil-guy.svg"
+          alt="Hello Recipes Logo"
           width={isSmall ? 24 : 32}
           height={isSmall ? 24 : 32}
         />
