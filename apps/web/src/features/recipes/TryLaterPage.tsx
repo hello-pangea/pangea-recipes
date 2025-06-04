@@ -1,6 +1,6 @@
 import { Page } from '#src/components/Page';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Box, Grid, InputBase, Typography } from '@mui/material';
+import { alpha, Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
@@ -69,7 +69,7 @@ export function TryLaterPage() {
               theme.applyStyles('dark', {
                 backgroundColor: searchFocused
                   ? theme.palette.background.paper
-                  : theme.palette.grey[900],
+                  : alpha(theme.palette.background.paper, 0.5),
               }),
           ]}
         >
