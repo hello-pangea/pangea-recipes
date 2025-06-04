@@ -1,6 +1,7 @@
 import { Copyright } from '#src/components/Copyright';
+import { EmphasizeText } from '#src/components/EmphasizeText';
 import { RouterButton } from '#src/components/RouterButton';
-import { alpha, Box, Container, Grid, Stack, Typography } from '@mui/material';
+import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
 import { useSignedInUser } from '@open-zero/features/users';
 import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
@@ -80,80 +81,22 @@ export function HomePage() {
                   fontWeight: 'normal',
                 }}
               >
-                <Typography
-                  component={'span'}
-                  variant="h1"
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontSize: 'inherit',
-                    fontFamily: 'inherit',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Organize
-                </Typography>{' '}
-                and{' '}
-                <Typography
-                  component={'span'}
-                  variant="h1"
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontSize: 'inherit',
-                    fontFamily: 'inherit',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  share
-                </Typography>{' '}
-                recipes online.
+                Never forget a recipe,
+              </Typography>
+              <Typography
+                variant="h1"
+                sx={{
+                  mb: 2,
+                  maxWidth: 600,
+                  fontWeight: 'normal',
+                }}
+              >
+                <EmphasizeText>Organize</EmphasizeText> and{' '}
+                <EmphasizeText>share</EmphasizeText> recipes online.
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <Box
-                  sx={{
-                    border: 1,
-                    borderColor: (theme) => theme.vars.palette.primary.main,
-                    borderRadius: '8px',
-                    backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
-                    display: 'flex',
-                    alignItems: 'center',
-                    px: 1,
-                    py: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 'bold',
-                      color: (theme) => theme.vars.palette.primary.main,
-                    }}
-                  >
-                    Free
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    border: 1,
-                    borderColor: (theme) => theme.vars.palette.primary.main,
-                    borderRadius: '8px',
-                    backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
-                    display: 'flex',
-                    alignItems: 'center',
-                    px: 1,
-                    py: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 'bold',
-                      color: (theme) => theme.vars.palette.primary.main,
-                    }}
-                  >
-                    No ads
-                  </Typography>
-                </Box>
+                <Chip label="Free" color="primary" />
+                <Chip label="No ads" color="primary" />
               </Box>
               <Typography
                 sx={{
@@ -198,17 +141,7 @@ export function HomePage() {
                 component={'h2'}
                 sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
               >
-                <Typography
-                  variant="h1"
-                  component={'span'}
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Import
-                </Typography>{' '}
-                your favorite recipes
+                <EmphasizeText>Save</EmphasizeText> your favorite recipes
               </Typography>
               <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
                 <b>Never forget</b> another recipe. Quickly add your favorites
@@ -248,17 +181,7 @@ export function HomePage() {
                 component="h2"
                 sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
               >
-                Collect and access{' '}
-                <Typography
-                  variant="h1"
-                  component={'span'}
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  anywhere
-                </Typography>
+                Collect and access <EmphasizeText>anywhere</EmphasizeText>
               </Typography>
               <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
                 All your favorite recipes, available on the web on all your
@@ -302,17 +225,8 @@ export function HomePage() {
                 component={'h2'}
                 sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
               >
-                <Typography
-                  variant="h1"
-                  component={'span'}
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Share
-                </Typography>{' '}
-                recipes with friends and family
+                <EmphasizeText>Share</EmphasizeText> recipes with friends and
+                family
               </Typography>
               <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
                 Collaborate with friends and family to make the perfect{' '}

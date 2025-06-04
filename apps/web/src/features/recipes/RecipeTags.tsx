@@ -102,7 +102,6 @@ export function RecipeTags({ recipeId, sx = [] }: Props) {
         <Chip
           key={tag.id}
           label={tag.name}
-          variant="outlined"
           size="small"
           deleteIcon={<ClearRoundedIcon />}
           onDelete={() => {

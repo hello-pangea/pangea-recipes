@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import { dataDisplayCustomizations } from './dataDisplay';
 import { colorSchemes } from './themePrimitives';
 
 const defaultTheme = createTheme();
@@ -147,13 +148,6 @@ export const theme = createTheme({
         },
       },
     },
-    MuiChip: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-        },
-      },
-    },
     MuiUseMediaQuery: {
       defaultProps: {
         noSsr: true,
@@ -188,5 +182,6 @@ export const theme = createTheme({
         useFlexGap: true,
       },
     },
+    ...dataDisplayCustomizations,
   },
 });
