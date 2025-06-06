@@ -1,13 +1,35 @@
-![Screenshot of Hello Recipes](/assets/hello-recipes.png)
+<p align="center">
+  <img alt="Hello Recipes" src="./assets/hello-recipes-banner.png" width="800" />
+</p>
+
+<p align="center">
+  A modern and open source recipe manager. Never forget another recipe.
+</p>
 
 # Hello Recipes
 
-A modern and open-source recipe manager, written 100% in TypeScript. Import and organize your favorite recipes.
-
 [Website](https://hellorecipes.com/)
+
+Hello Recipes is a modern, simple, open source recipe manager. The philosophy of this project is:
+
+1. UX is everything. This app should be as user friendly as possible
+2. Use a simple, sustainable tech stack
+3. Privacy and open source are essential
 
 > [!WARNING]
 > Hello Recipes is in early development, expect significant changes.
+
+![Screenshot of Hello Recipes](/assets/hello-recipes.png)
+
+## Key features
+
+- 🔗 Import recipes by url
+- 📖 Organize recipes into recipe book
+- 😊 Easy sharing for recipes and recipe books
+- 🤝 Collaborate on recipe books with friends and family
+- ⌚ Save for later
+- 💻 100% open source, 100% TypeScript
+- 🌐 Straightforward REST-ish api
 
 ## Built with
 
@@ -18,6 +40,18 @@ A modern and open-source recipe manager, written 100% in TypeScript. Import and 
 - [TanStack Query, Router, and Form](https://tanstack.com/)
 - [Better Auth](https://www.better-auth.com/)
 - [Turborepo](https://turbo.build/repo)
+
+## Acknowledgements
+
+Hello Recipes is a new project foccused on user-friendlyness. As such, it is lacking _many_ features which other amazing recipe managers provide (and which you should totally check out!)
+
+###### [Tandoor Recipes](https://github.com/TandoorRecipes/recipes)
+
+> Application for managing recipes, planning meals, building shopping lists and much much more!
+
+###### [Mealie](https://github.com/mealie-recipes/mealie)
+
+> Mealie is a self hosted recipe manager and meal planner with a RestAPI backend and a reactive frontend application built in Vue for a pleasant user experience for the whole family. Easily add recipes into your database by providing the url and mealie will automatically import the relevant data or add a family recipe with the UI editor
 
 ## Getting started
 
