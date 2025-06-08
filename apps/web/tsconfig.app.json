@@ -1,0 +1,12 @@
+{
+  "extends": "@open-zero/typescript-config/vite.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "noEmit": true,
+    "paths": {
+      "#src/*": ["./src/*"]
+    }
+  },
+  "include": ["src"],
+  "exclude": ["**/node_modules", "**/.*/"]
+}

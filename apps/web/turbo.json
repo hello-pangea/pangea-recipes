@@ -4,6 +4,9 @@
   "tasks": {
     "build": {
       "outputs": ["dist/**"]
+    },
+    "lint:type-check": {
+      "outputs": ["node_modules/.tmp/**"]
     }
   }
 }

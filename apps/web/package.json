@@ -9,7 +9,7 @@
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "vite",
     "lint:eslint": "eslint src/",
-    "lint:type-check": "tsc --noEmit"
+    "lint:type-check": "tsc -b"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.7.2",
