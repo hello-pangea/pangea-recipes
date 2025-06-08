@@ -31,11 +31,12 @@ A modern, open source recipe manager focused on privacy, collaboration, and ease
 ## Built with
 
 - [Fastify](https://fastify.dev/)
-- [React](https://react.dev/)
-- [MUI](https://mui.com/)
 - [Prisma and Postgres](https://www.prisma.io/)
+- [React and React Compiler](https://react.dev/)
+- [MUI](https://mui.com/)
 - [TanStack Query, Router, and Form](https://tanstack.com/)
 - [Better Auth](https://www.better-auth.com/)
+- [Vite](https://vite.dev/)
 - [Turborepo](https://turbo.build/repo)
 
 ## Getting started
