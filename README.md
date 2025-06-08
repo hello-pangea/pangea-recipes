@@ -3,18 +3,15 @@
 </p>
 
 <p align="center">
-  A modern and open source recipe manager. Never forget another recipe.
+  <a href="https://github.com/open-zero/hello-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/open-zero/hello-recipes" /></a>
+  <a href="https://hellorecipes.com/"><img src="https://img.shields.io/badge/demo-online-brightgreen" /></a>
 </p>
 
 # Hello Recipes
 
-[Website](https://hellorecipes.com/)
+A modern, open source recipe manager focused on privacy, collaboration, and ease of use.
 
-Hello Recipes is a modern, simple, open source recipe manager. The philosophy of this project is:
-
-1. UX is everything. This app should be as user friendly as possible
-2. Use a simple, sustainable tech stack
-3. Privacy and open source are essential
+[**Hosted Version →**](https://hellorecipes.com/)
 
 > [!WARNING]
 > Hello Recipes is in early development, expect significant changes.
@@ -41,18 +38,6 @@ Hello Recipes is a modern, simple, open source recipe manager. The philosophy of
 - [Better Auth](https://www.better-auth.com/)
 - [Turborepo](https://turbo.build/repo)
 
-## Acknowledgements
-
-Hello Recipes is a new project foccused on user-friendlyness. As such, it is lacking _many_ features which other amazing recipe managers provide (and which you should totally check out!)
-
-###### [Tandoor Recipes](https://github.com/TandoorRecipes/recipes)
-
-> Application for managing recipes, planning meals, building shopping lists and much much more!
-
-###### [Mealie](https://github.com/mealie-recipes/mealie)
-
-> Mealie is a self hosted recipe manager and meal planner with a RestAPI backend and a reactive frontend application built in Vue for a pleasant user experience for the whole family. Easily add recipes into your database by providing the url and mealie will automatically import the relevant data or add a family recipe with the UI editor
-
 ## Getting started
 
 ### Prerequisites
@@ -60,56 +45,17 @@ Hello Recipes is a new project foccused on user-friendlyness. As such, it is lac
 - Node.js >= 22.x
 - Docker (recommended) OR Postgres >= 17.x
 
-### Setup
-
-1. Clone the repo
+### Quick Start
 
 ```sh
 git clone https://github.com/open-zero/hello-recipes.git
-```
-
-2. Go to the project folder
-
-```sh
 cd hello-recipes
-```
-
-3. Check your Node.js version
-
-```sh
-node -v
-```
-
-This should print the correct version of node. If it doesn't, use [nvm](https://github.com/nvm-sh/nvm) or a similar tool to install the correct version of node.
-
-For [`nvm`](https://github.com/nvm-sh/nvm), run this from the project root to install the correct version of node.
-
-```sh
-nvm install && nvm use
-```
-
-4. Enable Corepack
-
-```sh
 corepack enable
+pnpm install
+# Setup your .env files
+pnpm dx # Start Postgres (requires Docker)
+pnpm dev # Start the app
 ```
-
-5. Install packages with pnpm
-
-```sh
-pnpm i
-```
-
-6. Setup your `.env` files
-
-   - Duplicate `apps/api/.env.example` to `/apps/api/.env`
-   - Duplicate `apps/web/.env.example` to `/apps/web/.env`
-   - Replace the example values in each `.env` file with real values
-
-7. Run `pnpm dx` to start a local postgres instance with some seed data
-
-   - **Requires Docker and Docker Compose to be installed**
-   - Will start a local Postgres instance
 
 ## Apps
 
@@ -120,3 +66,19 @@ REST-ish api made with Fastify
 ### [web](/apps/web/)
 
 Web app made with Vite, React, and MUI
+
+## Acknowledgements
+
+Hello Recipes is a new project focused on simplicity. As such, it is lacking _many_ features which other amazing recipe managers provide (and which you should totally check out!)
+
+###### [Tandoor Recipes](https://github.com/TandoorRecipes/recipes)
+
+> Application for managing recipes, planning meals, building shopping lists and much much more!
+
+###### [Mealie](https://github.com/mealie-recipes/mealie)
+
+> Mealie is a self hosted recipe manager and meal planner with a RestAPI backend and a reactive frontend application built in Vue for a pleasant user experience for the whole family. Easily add recipes into your database by providing the url and mealie will automatically import the relevant data or add a family recipe with the UI editor
+
+## License
+
+This project is licensed under the [GNU AGPLv3](./LICENSE).
