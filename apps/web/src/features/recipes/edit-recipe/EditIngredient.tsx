@@ -1,9 +1,9 @@
 import { DragPreview } from '#src/components/DragPreview';
 import { DropIndicator } from '#src/components/DropIndicator';
 import { withForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/lib/focusNextInput';
-import { getNumberFromInput } from '#src/lib/getNumberFromInput';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { focusNextInput } from '#src/utils/focusNextInput';
+import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import {
   attachClosestEdge,
   extractClosestEdge,

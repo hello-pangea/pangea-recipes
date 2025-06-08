@@ -1,6 +1,6 @@
 import { withForm } from '#src/hooks/form';
-import { isSxArray } from '#src/lib/isSxArray';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { isSxArray } from '#src/utils/isSxArray';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {
   Accordion,

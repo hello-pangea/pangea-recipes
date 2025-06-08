@@ -1,4 +1,4 @@
-import { isSxArray } from '#src/lib/isSxArray';
+import { isSxArray } from '#src/utils/isSxArray';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {
   Accordion,

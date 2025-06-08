@@ -1,6 +1,6 @@
 import { Page } from '#src/components/Page';
 import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/lib/focusNextInput';
+import { focusNextInput } from '#src/utils/focusNextInput';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';

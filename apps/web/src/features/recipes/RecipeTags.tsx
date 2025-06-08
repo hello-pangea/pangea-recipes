@@ -1,4 +1,4 @@
-import { isSxArray } from '#src/lib/isSxArray';
+import { isSxArray } from '#src/utils/isSxArray';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';

@@ -1,6 +1,6 @@
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/lib/focusNextInput';
+import { focusNextInput } from '#src/utils/focusNextInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';

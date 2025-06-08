@@ -1,5 +1,5 @@
 import { useWakeLock } from '#src/hooks/useWakeLock';
-import { getNumberFromInput } from '#src/lib/getNumberFromInput';
+import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
