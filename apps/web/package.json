@@ -22,6 +22,7 @@
     "@mui/icons-material": "^7.1.1",
     "@mui/material": "^7.1.1",
     "@open-zero/features": "workspace:*",
+    "@scalar/api-reference-react": "^0.7.13",
     "@sinclair/typebox": "^0.34.33",
     "@tanstack/react-form": "^1.12.2",
     "@tanstack/react-query": "^5.80.6",

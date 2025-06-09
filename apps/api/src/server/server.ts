@@ -6,7 +6,6 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type { User } from '@open-zero/features/users';
-import scalar from '@scalar/fastify-api-reference';
 import * as Sentry from '@sentry/node';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
@@ -66,10 +65,6 @@ export async function createServer() {
   await fastify.register(customOpenApi);
 
   await fastify.register(schemaPlugin);
-
-  await fastify.register(scalar, {
-    routePrefix: '/api-docs',
-  });
 
   // -
   // Decorators

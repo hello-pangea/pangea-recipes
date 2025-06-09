@@ -1,6 +1,7 @@
 packages:
   - apps/*
   - packages/*
+
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
@@ -10,3 +11,4 @@ onlyBuiltDependencies:
   - playwright-chromium
   - prisma
   - sharp
+  - vue-demi

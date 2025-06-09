@@ -30,7 +30,6 @@
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
     "@prisma/instrumentation": "^6.9.0",
-    "@scalar/fastify-api-reference": "^1.31.8",
     "@sentry/node": "^9.27.0",
     "@sentry/profiling-node": "^9.27.0",
     "@sinclair/typebox": "^0.34.33",

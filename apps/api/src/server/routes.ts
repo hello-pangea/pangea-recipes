@@ -21,4 +21,17 @@ export async function routes(fastify: FastifyTypebox) {
   await fastify.register(imageRoutes, { prefix: '/images' });
   await fastify.register(userRoutes, { prefix: '/users' });
   await fastify.register(authRoutes);
+
+  fastify.get(
+    '/openapi-spec',
+    {
+      schema: {
+        tags: ['Developer'],
+        summary: 'Get OpenAPI spec (json)',
+      },
+    },
+    () => {
+      return fastify.swagger();
+    },
+  );
 }

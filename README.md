@@ -5,6 +5,7 @@
 <p align="center">
   <a href="https://github.com/open-zero/hello-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/open-zero/hello-recipes" /></a>
   <a href="https://hellorecipes.com/"><img src="https://img.shields.io/badge/demo-online-brightgreen" /></a>
+  <a href="https://hellorecipes.com/openapi-docs"><img src="https://img.shields.io/badge/docs-OpenApi-blue" /></a>
 </p>
 
 # Hello Recipes
@@ -12,6 +13,8 @@
 A modern, open source recipe manager focused on privacy, collaboration, and ease of use.
 
 [**Hosted Version →**](https://hellorecipes.com/)
+
+[OpenApi Docs](https://hellorecipes.com/openapi-docs/)
 
 > [!WARNING]
 > Hello Recipes is in early development, expect significant changes.
@@ -26,7 +29,7 @@ A modern, open source recipe manager focused on privacy, collaboration, and ease
 - 🤝 Collaborate on recipe books with friends and family
 - ⌚ Save for later
 - 💻 100% open source, 100% TypeScript
-- 🌐 Straightforward REST-ish api
+- 🌐 [REST-ish api](https://hellorecipes.com/openapi-docs/)
 
 ## Built with
 

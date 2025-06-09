@@ -38,6 +38,7 @@ import { Route as AppAuthCanonicalIngredientsCanonicalIngredientIdEditImport } f
 // Create Virtual Routes
 
 const AppImport = createFileRoute('/app')()
+const OpenapiDocsLazyImport = createFileRoute('/openapi-docs')()
 const IndexLazyImport = createFileRoute('/')()
 
 // Create/Update Routes
@@ -47,6 +48,12 @@ const AppRoute = AppImport.update({
   path: '/app',
   getParentRoute: () => rootRoute,
 } as any)
+
+const OpenapiDocsLazyRoute = OpenapiDocsLazyImport.update({
+  id: '/openapi-docs',
+  path: '/openapi-docs',
+  getParentRoute: () => rootRoute,
+} as any).lazy(() => import('./routes/openapi-docs.lazy').then((d) => d.Route))
 
 const TermsOfServiceRoute = TermsOfServiceImport.update({
   id: '/terms-of-service',
@@ -239,6 +246,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsOfServiceImport
       parentRoute: typeof rootRoute
     }
+    '/openapi-docs': {
+      id: '/openapi-docs'
+      path: '/openapi-docs'
+      fullPath: '/openapi-docs'
+      preLoaderRoute: typeof OpenapiDocsLazyImport
+      parentRoute: typeof rootRoute
+    }
     '/app': {
       id: '/app'
       path: '/app'
@@ -414,6 +428,7 @@ export interface FileRoutesByFullPath {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/settings': typeof AppAuthSettingsRoute
@@ -439,6 +454,7 @@ export interface FileRoutesByTo {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppIndexRoute
   '/app/settings': typeof AppAuthSettingsRoute
   '/app/try-later': typeof AppAuthTryLaterRoute
@@ -464,6 +480,7 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
+  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppRouteWithChildren
   '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
@@ -492,6 +509,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
+    | '/openapi-docs'
     | '/app'
     | '/app/'
     | '/app/settings'
@@ -516,6 +534,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
+    | '/openapi-docs'
     | '/app'
     | '/app/settings'
     | '/app/try-later'
@@ -539,6 +558,7 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
+    | '/openapi-docs'
     | '/app'
     | '/app/_auth'
     | '/app/'
@@ -566,6 +586,7 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
+  OpenapiDocsLazyRoute: typeof OpenapiDocsLazyRoute
   AppRoute: typeof AppRouteWithChildren
 }
 
@@ -577,6 +598,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
+  OpenapiDocsLazyRoute: OpenapiDocsLazyRoute,
   AppRoute: AppRouteWithChildren,
 }
 
@@ -597,6 +619,7 @@ export const routeTree = rootRoute
         "/sign-in",
         "/sign-up",
         "/terms-of-service",
+        "/openapi-docs",
         "/app"
       ]
     },
@@ -620,6 +643,9 @@ export const routeTree = rootRoute
     },
     "/terms-of-service": {
       "filePath": "terms-of-service.tsx"
+    },
+    "/openapi-docs": {
+      "filePath": "openapi-docs.lazy.tsx"
     },
     "/app": {
       "filePath": "app/_auth",
