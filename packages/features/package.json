@@ -23,14 +23,14 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.34.33",
-    "@tanstack/react-query": "^5.80.6",
+    "@sinclair/typebox": "^0.34.35",
+    "@tanstack/react-query": "^5.80.7",
     "ky": "^1.8.1"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.15.30",
+    "@types/node": "^22.15.31",
     "decimal.js": "^10.5.0",
     "typescript": "~5.8.3"
   }
