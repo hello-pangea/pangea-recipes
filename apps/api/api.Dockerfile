@@ -17,10 +17,10 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && npm install -g corepack@latest
 
 # Global turborepo
-RUN pnpm install turbo@2.5.0 --global
+RUN pnpm install turbo@2.5.4 --global
 
 # Playwright setup (basically downloads chromium)
-RUN pnpm dlx playwright-chromium@1.52.0 install chromium --with-deps
+RUN pnpm dlx playwright-chromium@1.53.0 install chromium --with-deps
 
 # ---
 # - We download packages asap to avoid re-downloads on code changes

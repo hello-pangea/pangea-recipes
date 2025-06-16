@@ -131,7 +131,11 @@ export function SettingsPage() {
             color="primary"
             value={user.unitsPreference}
             exclusive
-            onChange={(_event, newValue: User['unitsPreference']) => {
+            onChange={(_event, newValue: User['unitsPreference'] | null) => {
+              if (newValue === null) {
+                return;
+              }
+
               updateUser.mutate({
                 unitsPreference: newValue,
                 id: user.id,
