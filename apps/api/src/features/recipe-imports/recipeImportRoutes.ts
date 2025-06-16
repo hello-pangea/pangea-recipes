@@ -5,7 +5,6 @@ import {
   importedRecipeSchema,
   recipeImportSchema,
 } from '@open-zero/features/recipe-imports';
-import { recipeSchema } from '@open-zero/features/recipes';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.ts';
 import { createRecipe } from '../recipes/recipeRepo.ts';
@@ -69,14 +68,12 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
-        summary: 'Import a recipe from a url (don\t await parsing)',
+        summary: "Import a recipe from a url (don't await parsing)",
         body: Type.Object({
           url: Type.String({ format: 'uri' }),
         }),
         response: {
-          200: Type.Object({
-            recipe: recipeSchema,
-          }),
+          202: Type.Null({ description: 'No content' }),
         },
       },
     },
@@ -105,7 +102,7 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
         },
       });
 
-      reply.code(202).send();
+      reply.code(202).send(null);
 
       const { parsedRecipe, websitePage } = await getLlmImportRecipe(url);
 
