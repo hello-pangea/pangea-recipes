@@ -535,8 +535,8 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             }),
           });
 
-          form.setFieldValue('recipeName', importedRecipe.name ?? '');
-          form.setFieldValue('description', importedRecipe.description ?? '');
+          form.setFieldValue('recipeName', importedRecipe.name);
+          form.setFieldValue('description', importedRecipe.description);
           form.setFieldValue(
             'cookTime',
             importedRecipe.cookTime?.toString() ?? '',
@@ -552,22 +552,22 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           form.setFieldValue('websitePageId', websitePageId);
           form.setFieldValue(
             'ingredientGroups',
-            importedRecipe.ingredientGroups?.map((ig) => ({
-              name: ig.title,
+            importedRecipe.ingredientGroups.map((ig) => ({
+              name: ig.name,
               ingredients: ig.ingredients.map((ingredient) => ({
                 name: ingredient.name,
                 unit: ingredient.unit ?? null,
                 quantity: ingredient.quantity ?? null,
                 notes: ingredient.notes ?? null,
               })),
-            })) ?? [],
+            })),
           );
           form.setFieldValue(
             'instructionGroups',
-            importedRecipe.instructionGroups?.map((ig) => ({
-              name: ig.title,
+            importedRecipe.instructionGroups.map((ig) => ({
+              name: ig.name,
               instructions: ig.instructions.map((i) => ({ text: i })),
-            })) ?? [],
+            })),
           );
           form.setFieldValue('usesRecipes', []);
           form.setFieldValue(

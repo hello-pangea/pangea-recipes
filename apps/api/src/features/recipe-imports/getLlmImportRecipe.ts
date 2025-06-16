@@ -169,8 +169,8 @@ export async function getLlmImportRecipe(urlString: string) {
     throw new Error('Failed to parse recipe with OpenAI response');
   }
 
-  llmRecipe.ingredientGroups?.map((ig) =>
-    ig.ingredients.map((i) => {
+  llmRecipe.ingredientGroups.forEach((ig) => {
+    ig.ingredients.forEach((i) => {
       if (i.unit === '' || i.unit === 'null') {
         i.unit = null;
       } else if (typeof i.unit === 'string') {
@@ -180,15 +180,15 @@ export async function getLlmImportRecipe(urlString: string) {
       if (i.notes === '' || i.notes === 'null') {
         i.notes = null;
       }
-    }),
-  );
+    });
+  });
 
   return { parsedRecipe: llmRecipe, websitePage };
 }
 
 const zodLlmRecipeSchema = z
   .object({
-    name: z.string().nullable(),
+    name: z.string(),
     description: z
       .string()
       .nullable()
@@ -197,40 +197,36 @@ const zodLlmRecipeSchema = z
     cookTime: z.number().nullable().describe('Cook time in minutes'),
     totalTime: z.number().nullable().describe('Total time in minutes'),
     servings: z.number().nullable(),
-    ingredientGroups: z
-      .array(
-        z
-          .object({
-            title: z.string(),
-            ingredients: z.array(
-              z
-                .object({
-                  name: z.string(),
-                  unit: z.string().nullable(),
-                  quantity: z.number().nullable(),
-                  notes: z
-                    .string()
-                    .nullable()
-                    .describe(
-                      'Optional notes about the ingredient. Don\'t prefix with "Note: " or similar.',
-                    ),
-                })
-                .strict(),
-            ),
-          })
-          .strict(),
-      )
-      .nullable(),
-    instructionGroups: z
-      .array(
-        z
-          .object({
-            title: z.string().nullable(),
-            instructions: z.array(z.string()),
-          })
-          .strict(),
-      )
-      .nullable(),
+    ingredientGroups: z.array(
+      z
+        .object({
+          name: z.string(),
+          ingredients: z.array(
+            z
+              .object({
+                name: z.string(),
+                unit: z.string().nullable(),
+                quantity: z.number().nullable(),
+                notes: z
+                  .string()
+                  .nullable()
+                  .describe(
+                    'Optional notes about the ingredient. Don\'t prefix with "Note: " or similar.',
+                  ),
+              })
+              .strict(),
+          ),
+        })
+        .strict(),
+    ),
+    instructionGroups: z.array(
+      z
+        .object({
+          name: z.string(),
+          instructions: z.array(z.string()),
+        })
+        .strict(),
+    ),
     nutrition: z
       .object({
         calories: z.number().nullable(),
