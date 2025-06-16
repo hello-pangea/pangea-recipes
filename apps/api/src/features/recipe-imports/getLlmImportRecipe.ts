@@ -169,8 +169,8 @@ export async function getLlmImportRecipe(urlString: string) {
     throw new Error('Failed to parse recipe with OpenAI response');
   }
 
-  llmRecipe.ingredientGroups.map((ig) =>
-    ig.ingredients.map((i) => {
+  llmRecipe.ingredientGroups.forEach((ig) => {
+    ig.ingredients.forEach((i) => {
       if (i.unit === '' || i.unit === 'null') {
         i.unit = null;
       } else if (typeof i.unit === 'string') {
@@ -180,8 +180,8 @@ export async function getLlmImportRecipe(urlString: string) {
       if (i.notes === '' || i.notes === 'null') {
         i.notes = null;
       }
-    }),
-  );
+    });
+  });
 
   return { parsedRecipe: llmRecipe, websitePage };
 }
