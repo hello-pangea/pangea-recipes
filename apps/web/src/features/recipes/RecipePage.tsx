@@ -1,5 +1,6 @@
 import { useWakeLock } from '#src/hooks/useWakeLock';
 import { getNumberFromInput } from '#src/utils/getNumberFromInput';
+import { secondsToTimeString } from '#src/utils/timeFormatting';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
@@ -267,7 +268,7 @@ export function RecipePage() {
                       <Stack spacing={2} direction="row" alignItems="center">
                         <BlenderRoundedIcon />
                         <Typography>
-                          {Math.round(recipe.prepTime / 60)}m
+                          {secondsToTimeString(recipe.prepTime)}
                         </Typography>
                       </Stack>
                     </Stack>
@@ -287,7 +288,7 @@ export function RecipePage() {
                       <Stack spacing={2} direction="row" alignItems="center">
                         <LocalFireDepartmentRoundedIcon />
                         <Typography>
-                          {Math.round(recipe.cookTime / 60)}m
+                          {secondsToTimeString(recipe.cookTime)}
                         </Typography>
                       </Stack>
                     </Stack>
