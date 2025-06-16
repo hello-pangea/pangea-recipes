@@ -7,6 +7,7 @@ onlyBuiltDependencies:
   - '@prisma/engines'
   - '@sentry-internal/node-cpu-profiler'
   - '@swc/core'
+  - '@tailwindcss/oxide'
   - esbuild
   - playwright-chromium
   - prisma
