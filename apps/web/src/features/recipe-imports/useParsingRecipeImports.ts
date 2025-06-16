@@ -23,6 +23,8 @@ export function useParsingRecipeImports({
     },
   });
 
+  // Refresh the main recipes list when a quick import finishes
+  const importingRecipesLength = recipeImports?.length ?? 0;
   useEffect(() => {
     if (!enableRecipeRefreshing) {
       return;
@@ -31,7 +33,7 @@ export function useParsingRecipeImports({
     void queryClient.invalidateQueries({
       queryKey: ['recipes'],
     });
-  }, [recipeImports?.length, queryClient, enableRecipeRefreshing]);
+  }, [importingRecipesLength, queryClient, enableRecipeRefreshing]);
 
   return recipeImports;
 }
