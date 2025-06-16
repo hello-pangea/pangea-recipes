@@ -13,6 +13,7 @@ import { getFileUrl } from '../../lib/s3.ts';
 import { noContentSchema } from '../../types/noContent.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.ts';
+import { createRecipe } from './recipeRepo.ts';
 import { updateIngredientGroups } from './updateIngredientGroups.ts';
 import { updateInstructionGroups } from './updateInstructionGroups.ts';
 
@@ -36,177 +37,15 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const {
-        name,
-        description,
-        cookTime,
-        prepTime,
-        servings,
-        imageIds,
-        ingredientGroups,
-        instructionGroups,
-        usesRecipes,
-        tags,
-        websitePageId,
-        nutrition,
-        tryLater,
-      } = request.body;
-
       const userId = request.session?.userId;
 
       if (!userId) {
         throw new Error('User not authenticated');
       }
 
-      let ingredientTerms = ingredientGroups.flatMap((group) =>
-        group.ingredients.map((ingredient) =>
-          ingredient.name.toLocaleLowerCase(),
-        ),
-      );
-
-      ingredientTerms.push(
-        ...ingredientTerms.map((term) => term.split(' ')).flat(),
-      );
-
-      ingredientTerms = [...new Set(ingredientTerms.filter(Boolean))];
-
-      const conditions: Prisma.CanonicalIngredientWhereInput[] =
-        ingredientTerms.flatMap((term) => [
-          { name: { contains: term, mode: 'insensitive' } },
-          {
-            aliases: {
-              some: { name: { contains: term, mode: 'insensitive' } },
-            },
-          },
-        ]);
-
-      const canonicalIngredients = await prisma.canonicalIngredient.findMany({
-        where: {
-          OR: conditions,
-        },
-        include: {
-          aliases: {
-            select: {
-              name: true,
-            },
-          },
-        },
-      });
-
-      const recipe = await prisma.recipe.create({
-        data: {
-          user: {
-            connect: {
-              id: userId,
-            },
-          },
-          name: name,
-          description: description ?? null,
-          prepTime: prepTime,
-          cookTime: cookTime,
-          servings: servings,
-          images: imageIds
-            ? {
-                create: imageIds.map((id) => ({
-                  imageId: id,
-                })),
-              }
-            : undefined,
-          tryLater: tryLater,
-          ingredientGroups: {
-            create: ingredientGroups.map((ingredientGroup, index) => ({
-              name: ingredientGroup.name ?? null,
-              order: index,
-              ingredients: {
-                create: ingredientGroup.ingredients.map((ingredient, index) => {
-                  const terms = ingredient.name
-                    .toLocaleLowerCase()
-                    .split(' ')
-                    .filter(Boolean);
-                  const matchingCanonicalIngredient =
-                    canonicalIngredients.find((canonicalIngredient) =>
-                      ingredient.name
-                        .toLocaleLowerCase()
-                        .includes(canonicalIngredient.name),
-                    ) ??
-                    canonicalIngredients.find(
-                      (canonicalIngredient) =>
-                        terms.includes(canonicalIngredient.name) ||
-                        canonicalIngredient.aliases.some((alias) =>
-                          terms.includes(alias.name),
-                        ),
-                    );
-
-                  return {
-                    ...ingredient,
-                    order: index,
-                    canonicalIngredientId:
-                      canonicalIngredients.find(
-                        (canonicalIngredient) =>
-                          canonicalIngredient.name ===
-                          ingredient.name.toLocaleLowerCase(),
-                      )?.id ??
-                      matchingCanonicalIngredient?.id ??
-                      null,
-                  };
-                }),
-              },
-            })),
-          },
-          instructionGroups: {
-            create: instructionGroups.map((instructionGroup, index) => ({
-              name: instructionGroup.name ?? null,
-              order: index,
-              instructions: {
-                create: instructionGroup.instructions.map(
-                  (instruction, index) => ({
-                    order: index,
-                    text: instruction.text,
-                  }),
-                ),
-              },
-            })),
-          },
-          usesRecipes: {
-            connect: usesRecipes?.map((id) => ({
-              id: id,
-            })),
-          },
-          tags: {
-            create: tags?.map((tag) => {
-              if ('id' in tag) {
-                return {
-                  tag: {
-                    connect: {
-                      id: tag.id,
-                    },
-                  },
-                };
-              } else {
-                return {
-                  tag: {
-                    create: {
-                      name: tag.name,
-                    },
-                  },
-                };
-              }
-            }),
-          },
-          sourceWebsitePage: websitePageId
-            ? {
-                connect: {
-                  id: websitePageId,
-                },
-              }
-            : undefined,
-          nutrition: nutrition
-            ? {
-                create: nutrition,
-              }
-            : undefined,
-        },
-        include: recipeInclude,
+      const recipe = await createRecipe({
+        ...request.body,
+        userId,
       });
 
       const recipeDto = await mapToRecipeDto(recipe);
