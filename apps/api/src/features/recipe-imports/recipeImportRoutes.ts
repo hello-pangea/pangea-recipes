@@ -5,6 +5,7 @@ import {
   importedRecipeSchema,
   recipeImportSchema,
 } from '@open-zero/features/recipe-imports';
+import * as Sentry from '@sentry/node';
 import { Type } from '@sinclair/typebox';
 import { verifySession } from '../auth/verifySession.ts';
 import { createRecipe } from '../recipes/recipeRepo.ts';
@@ -104,34 +105,48 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
 
       reply.code(202).send(null);
 
-      const { parsedRecipe, websitePage } = await getLlmImportRecipe(url);
+      try {
+        const { parsedRecipe, websitePage } = await getLlmImportRecipe(url);
 
-      await createRecipe({
-        userId,
-        name: parsedRecipe.name,
-        description: parsedRecipe.description,
-        cookTime: parsedRecipe.cookTime,
-        prepTime: parsedRecipe.prepTime,
-        servings: parsedRecipe.servings,
-        ingredientGroups: parsedRecipe.ingredientGroups,
-        instructionGroups: parsedRecipe.instructionGroups.map((group) => ({
-          name: group.name,
-          instructions: group.instructions.map((instruction) => ({
-            text: instruction,
+        await createRecipe({
+          userId,
+          name: parsedRecipe.name,
+          description: parsedRecipe.description,
+          cookTime: parsedRecipe.cookTime,
+          prepTime: parsedRecipe.prepTime,
+          servings: parsedRecipe.servings,
+          ingredientGroups: parsedRecipe.ingredientGroups,
+          instructionGroups: parsedRecipe.instructionGroups.map((group) => ({
+            name: group.name,
+            instructions: group.instructions.map((instruction) => ({
+              text: instruction,
+            })),
           })),
-        })),
-        nutrition: parsedRecipe.nutrition ?? undefined,
-        websitePageId: websitePage.id,
-      });
+          nutrition: parsedRecipe.nutrition ?? undefined,
+          websitePageId: websitePage.id,
+        });
 
-      await prisma.recipeImport.update({
-        where: {
-          id: recipeImport.id,
-        },
-        data: {
-          status: 'complete',
-        },
-      });
+        await prisma.recipeImport.update({
+          where: {
+            id: recipeImport.id,
+          },
+          data: {
+            status: 'complete',
+          },
+        });
+      } catch (error: unknown) {
+        Sentry.captureException(error);
+
+        await prisma.recipeImport.update({
+          where: {
+            id: recipeImport.id,
+          },
+          data: {
+            status: 'failed',
+            error: (error as Error).message,
+          },
+        });
+      }
     },
   );
 
