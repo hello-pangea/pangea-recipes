@@ -29,6 +29,7 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^6.10.0",
     "@prisma/client": "^6.10.0",
     "dotenv": "^16.5.0"
   },
