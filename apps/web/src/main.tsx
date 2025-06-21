@@ -5,6 +5,7 @@ import '@fontsource-variable/inter';
 import '@fontsource-variable/lora';
 
 import { updateApiOptions } from '@open-zero/features';
+import * as Sentry from '@sentry/react';
 import { QueryClient } from '@tanstack/react-query';
 import { createRouter } from '@tanstack/react-router';
 import { HTTPError } from 'ky';
@@ -18,6 +19,7 @@ import { routeTree } from './routeTree.gen';
 updateApiOptions({
   prefixUrl: config.VITE_API_URL,
 });
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -41,6 +43,22 @@ export const router = createRouter({
   defaultPreloadStaleTime: 0,
 });
 
+Sentry.init({
+  dsn: config.VITE_SENTRY_DSN,
+  sendDefaultPii: true,
+  integrations: [
+    Sentry.tanstackRouterBrowserTracingIntegration(router),
+    Sentry.httpClientIntegration({
+      failedRequestStatusCodes: [[400, 599]],
+      failedRequestTargets: [config.VITE_API_URL],
+    }),
+  ],
+  tracesSampleRate: 1,
+  tracePropagationTargets: [/^\//, 'localhost', config.VITE_API_URL],
+  replaysSessionSampleRate: 0,
+  replaysOnErrorSampleRate: 0,
+});
+
 // Register the router instance for type safety
 declare module '@tanstack/react-router' {
   interface Register {
@@ -55,7 +73,13 @@ if (!rootElement) {
 }
 
 if (!rootElement.innerHTML) {
-  const root = ReactDOM.createRoot(rootElement);
+  const root = ReactDOM.createRoot(rootElement, {
+    onUncaughtError: Sentry.reactErrorHandler((error, errorInfo) => {
+      console.warn('Uncaught error', error, errorInfo.componentStack);
+    }),
+    onCaughtError: Sentry.reactErrorHandler(),
+    onRecoverableError: Sentry.reactErrorHandler(),
+  });
 
   root.render(
     <StrictMode>
