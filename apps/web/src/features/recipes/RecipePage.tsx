@@ -68,6 +68,7 @@ export function RecipePage() {
 
   return (
     <Box sx={{ p: { xs: 2, sm: 3 }, mt: { xs: 0, sm: 2 } }}>
+      <title>{recipe.name}</title>
       <Grid container spacing={4} sx={{ mb: 2 }}>
         <Grid
           size={{
