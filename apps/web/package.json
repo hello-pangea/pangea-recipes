@@ -12,7 +12,7 @@
     "lint:type-check": "tsc -b"
   },
   "dependencies": {
-    "@atlaskit/pragmatic-drag-and-drop": "^1.7.3",
+    "@atlaskit/pragmatic-drag-and-drop": "^1.7.4",
     "@atlaskit/pragmatic-drag-and-drop-auto-scroll": "^2.1.1",
     "@atlaskit/pragmatic-drag-and-drop-hitbox": "^1.1.0",
     "@emotion/react": "^11.14.0",
@@ -22,14 +22,14 @@
     "@mui/icons-material": "^7.1.2",
     "@mui/material": "^7.1.2",
     "@open-zero/features": "workspace:*",
-    "@scalar/api-reference-react": "^0.7.23",
-    "@sentry/react": "^9.30.0",
-    "@sinclair/typebox": "^0.34.35",
+    "@scalar/api-reference-react": "^0.7.25",
+    "@sentry/react": "^9.32.0",
+    "@sinclair/typebox": "^0.34.37",
     "@tanstack/react-form": "^1.12.3",
-    "@tanstack/react-query": "^5.81.1",
-    "@tanstack/react-query-devtools": "^5.81.1",
-    "@tanstack/react-router": "^1.121.27",
-    "@tanstack/react-router-devtools": "^1.121.27",
+    "@tanstack/react-query": "^5.81.2",
+    "@tanstack/react-query-devtools": "^5.81.2",
+    "@tanstack/react-router": "^1.121.34",
+    "@tanstack/react-router-devtools": "^1.121.34",
     "@uppy/core": "^4.4.6",
     "@uppy/dashboard": "^4.3.4",
     "@uppy/drag-drop": "^4.1.3",
@@ -50,12 +50,12 @@
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@sentry/vite-plugin": "^3.5.0",
-    "@tanstack/router-plugin": "^1.121.29",
+    "@tanstack/router-plugin": "^1.121.37",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@vitejs/plugin-react": "^4.5.2",
+    "@vitejs/plugin-react": "^4.6.0",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "typescript": "~5.8.3",
-    "vite": "^6.3.5"
+    "vite": "^7.0.0"
   }
 }
