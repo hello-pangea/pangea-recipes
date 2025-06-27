@@ -22,21 +22,27 @@ import {
   useUsedRecipeTags,
 } from '@open-zero/features/recipes';
 import { useMemo, useRef, useState } from 'react';
-import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
 interface Props {
   recipeId: string;
+  readOnly?: boolean;
   sx?: SxProps<Theme>;
 }
 
-export function RecipeTags({ recipeId, sx = [] }: Props) {
-  const userId = useSignedInUserId();
+export function RecipeTags({ recipeId, readOnly, sx = [] }: Props) {
+  const userId = useMaybeSignedInUserId();
   const { data: recipe } = useRecipe({ recipeId });
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [search, setsSearch] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
   const updateRecipe = useUpdateRecipe();
-  const { data: usedTags } = useUsedRecipeTags({ userId: userId });
+  const { data: usedTags } = useUsedRecipeTags({
+    userId: userId ?? '',
+    queryConfig: {
+      enabled: !!userId,
+    },
+  });
 
   const tags = useMemo(() => recipe?.tags ?? [], [recipe?.tags]);
 
@@ -104,113 +110,123 @@ export function RecipeTags({ recipeId, sx = [] }: Props) {
           label={tag.name}
           size="small"
           deleteIcon={<ClearRoundedIcon />}
-          onDelete={() => {
-            handleRemoveTag(tag);
-          }}
+          onDelete={
+            readOnly
+              ? undefined
+              : () => {
+                  handleRemoveTag(tag);
+                }
+          }
         />
       ))}
-      <Chip
-        label="Add Tag"
-        color="primary"
-        variant="outlined"
-        size="small"
-        icon={<AddRoundedIcon />}
-        onClick={(event) => {
-          setAnchorEl(event.currentTarget);
+      {!readOnly && (
+        <>
+          <Chip
+            label="Add Tag"
+            color="primary"
+            variant="outlined"
+            size="small"
+            icon={<AddRoundedIcon />}
+            onClick={(event) => {
+              setAnchorEl(event.currentTarget);
 
-          setTimeout(() => {
-            inputRef.current?.focus();
-          }, 100);
-        }}
-      />
-      <Popover
-        anchorEl={anchorEl}
-        open={Boolean(anchorEl)}
-        onClose={handleClose}
-        slotProps={{
-          paper: {
-            sx: {
-              p: 1.5,
-              width: 250,
-            },
-          },
-        }}
-      >
-        <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Add tag</Typography>
-        <TextField
-          inputRef={inputRef}
-          variant="outlined"
-          size="small"
-          placeholder="Search"
-          value={search}
-          fullWidth
-          onChange={(event) => {
-            setsSearch(event.target.value);
-          }}
-          onKeyDown={(event) => {
-            if (event.key === 'Enter') {
-              handleAddTag(search);
-            }
-          }}
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchRoundedIcon
-                    sx={{ color: (theme) => theme.vars.palette.text.disabled }}
-                  />
-                </InputAdornment>
-              ),
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="clear search"
-                    size="small"
-                    onClick={() => {
-                      setsSearch('');
-                    }}
-                  >
-                    <ClearRoundedIcon fontSize="small" />
-                  </IconButton>
-                </InputAdornment>
-              ),
-              sx: {
-                pr: 0.5,
-                pl: 1,
-                mb: 1,
+              setTimeout(() => {
+                inputRef.current?.focus();
+              }, 100);
+            }}
+          />
+          <Popover
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            slotProps={{
+              paper: {
+                sx: {
+                  p: 1.5,
+                  width: 250,
+                },
               },
-            },
-          }}
-        />
-        <Stack
-          direction="column"
-          spacing={1}
-          sx={{
-            maxHeight: 200,
-            overflowY: 'auto',
-            alignItems: 'flex-start',
-            mb: 1,
-          }}
-        >
-          {filteredUsedTags.map((tag) => (
-            <Chip
+            }}
+          >
+            <Typography sx={{ fontWeight: 'bold', mb: 1 }}>Add tag</Typography>
+            <TextField
+              inputRef={inputRef}
+              variant="outlined"
               size="small"
-              key={tag.id}
-              label={tag.name}
-              onClick={() => {
-                handleAddTag(tag.name);
+              placeholder="Search"
+              value={search}
+              fullWidth
+              onChange={(event) => {
+                setsSearch(event.target.value);
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') {
+                  handleAddTag(search);
+                }
+              }}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchRoundedIcon
+                        sx={{
+                          color: (theme) => theme.vars.palette.text.disabled,
+                        }}
+                      />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        aria-label="clear search"
+                        size="small"
+                        onClick={() => {
+                          setsSearch('');
+                        }}
+                      >
+                        <ClearRoundedIcon fontSize="small" />
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                  sx: {
+                    pr: 0.5,
+                    pl: 1,
+                    mb: 1,
+                  },
+                },
               }}
             />
-          ))}
-        </Stack>
-        <Button
-          onClick={() => {
-            handleAddTag(search);
-          }}
-        >
-          Add
-        </Button>
-      </Popover>
+            <Stack
+              direction="column"
+              spacing={1}
+              sx={{
+                maxHeight: 200,
+                overflowY: 'auto',
+                alignItems: 'flex-start',
+                mb: 1,
+              }}
+            >
+              {filteredUsedTags.map((tag) => (
+                <Chip
+                  size="small"
+                  key={tag.id}
+                  label={tag.name}
+                  onClick={() => {
+                    handleAddTag(tag.name);
+                  }}
+                />
+              ))}
+            </Stack>
+            <Button
+              onClick={() => {
+                handleAddTag(search);
+              }}
+            >
+              Add
+            </Button>
+          </Popover>
+        </>
+      )}
     </Box>
   );
 }

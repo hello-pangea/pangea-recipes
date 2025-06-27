@@ -1,5 +1,6 @@
 import {
   Box,
+  Link,
   Stack,
   Typography,
   type SxProps,
@@ -23,7 +24,7 @@ export function Copyright({ sx = [] }: Props) {
         {'Copyright © Reece Carolan '}
         {new Date().getFullYear()}
       </Typography>
-      <Stack direction="row" spacing={1} justifyContent="center">
+      <Stack direction="row" spacing={1} justifyContent="center" sx={{ mb: 1 }}>
         <RouterLink variant="caption" to="/terms-of-service">
           Terms of service
         </RouterLink>
@@ -31,11 +32,11 @@ export function Copyright({ sx = [] }: Props) {
           Privacy policy
         </RouterLink>
       </Stack>
-      {/* <Typography variant="body2" color="text.secondary" align="center">
+      <Typography variant="body2" color="text.secondary" align="center">
         <Link href="https://github.com/open-zero/hello-recipes" target="_blank">
           ❤️ Open Source
         </Link>
-      </Typography> */}
+      </Typography>
     </Box>
   );
 }

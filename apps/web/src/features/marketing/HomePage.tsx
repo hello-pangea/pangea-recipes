@@ -14,7 +14,7 @@ export function HomePage() {
   const { data: user } = useSignedInUser();
 
   if (user) {
-    return <Navigate to="/app/recipes" />;
+    return <Navigate to="/app/recipes" replace />;
   }
 
   return (
