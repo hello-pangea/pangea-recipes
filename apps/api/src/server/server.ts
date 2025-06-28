@@ -6,7 +6,6 @@ import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
 import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
 import type { User } from '@open-zero/features/users';
-import * as Sentry from '@sentry/node';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
 import { enablePrettyLogs } from '../config/config.ts';
@@ -30,8 +29,6 @@ export async function createServer() {
         }
       : false,
   }).withTypeProvider<TypeBoxTypeProvider>();
-
-  Sentry.setupFastifyErrorHandler(fastify);
 
   // -
   // Fastify plugins
