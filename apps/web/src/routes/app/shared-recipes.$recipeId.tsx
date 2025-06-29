@@ -7,4 +7,11 @@ export const Route = createFileRoute('/app/shared-recipes/$recipeId')({
     return queryClient.ensureQueryData(getRecipeQueryOptions(recipeId));
   },
   component: SharedRecipePage,
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: loaderData?.name,
+      },
+    ],
+  }),
 });
