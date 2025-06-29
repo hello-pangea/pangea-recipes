@@ -14,6 +14,11 @@ export const recipeSchema = Type.Object(
       description: 'unique id',
     }),
 
+    userId: Type.String({
+      format: 'uuid',
+      description: 'id of the user who created the recipe',
+    }),
+
     createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
 
     name: Type.String(),
