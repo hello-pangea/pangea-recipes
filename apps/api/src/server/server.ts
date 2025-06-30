@@ -42,6 +42,7 @@ export async function createServer() {
       'http://localhost:3001',
       'https://hellorecipes.com',
       'https://api.hellorecipes.com',
+      'https://next.hellorecipes.com',
     ],
   });
 
