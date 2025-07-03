@@ -4,29 +4,22 @@ import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
 import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
 import { HTTPError } from 'ky';
 
-export const Route = createFileRoute('/app/_auth/recipe-books/$recipeBookId')(
-  {
-    loader: ({
-      context: { queryClient, userId },
-      params: { recipeBookId },
-    }) => {
-      if (!userId) {
-        return;
-      }
+export const Route = createFileRoute('/app/_auth/recipe-books/$recipeBookId')({
+  loader: ({ context: { queryClient, userId }, params: { recipeBookId } }) => {
+    if (!userId) {
+      return;
+    }
 
-      return queryClient.ensureQueryData(
-        getRecipeBookQueryOptions(recipeBookId),
-      );
-    },
-    component: RecipeBookPage,
-    errorComponent: ({ error }) => {
-      if (error instanceof HTTPError) {
-        if (error.response.status === 403) {
-          return <RequestAccessToRecipeBookPage />;
-        }
-      }
-
-      return <ErrorComponent error={error} />;
-    },
+    return queryClient.ensureQueryData(getRecipeBookQueryOptions(recipeBookId));
   },
-);
+  component: RecipeBookPage,
+  errorComponent: ({ error }) => {
+    if (error instanceof HTTPError) {
+      if (error.response.status === 403) {
+        return <RequestAccessToRecipeBookPage />;
+      }
+    }
+
+    return <ErrorComponent error={error} />;
+  },
+});

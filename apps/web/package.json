@@ -44,7 +44,7 @@
     "react-dom": "^19.1.0",
     "react-screen-wake-lock": "^3.1.1",
     "react-use": "^17.6.0",
-    "zod": "^3.25.67"
+    "zod": "^3.25.71"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
