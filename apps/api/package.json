@@ -29,9 +29,9 @@
     "@open-zero/database": "workspace:*",
     "@open-zero/email": "workspace:*",
     "@open-zero/features": "workspace:*",
-    "@prisma/instrumentation": "^6.11.0",
-    "@sentry/node": "^9.34.0",
-    "@sentry/profiling-node": "^9.34.0",
+    "@prisma/instrumentation": "^6.11.1",
+    "@sentry/node": "^9.35.0",
+    "@sentry/profiling-node": "^9.35.0",
     "@sinclair/typebox": "^0.34.37",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
@@ -48,8 +48,8 @@
     "resend": "^4.6.0",
     "sharp": "^0.34.2",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.588",
-    "zod": "^3.25.71"
+    "user-agents": "^1.1.590",
+    "zod": "^3.25.74"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",
