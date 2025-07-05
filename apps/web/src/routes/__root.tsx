@@ -74,7 +74,12 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       { rel: 'stylesheet', href: appCss },
       {
         rel: 'icon',
-        href: '/assets/lil-guy.svg',
+        href: '/favicon.svg',
+        type: 'image/svg+xml',
+      },
+      {
+        rel: 'apple-touch-icon',
+        href: '/apple-touch-icon.png',
       },
       {
         rel: 'preconnect',
@@ -109,7 +114,7 @@ function Providers({ children }: { children: React.ReactNode }) {
 
 function RootDocument({ children }: { children: React.ReactNode }) {
   return (
-    <html>
+    <html lang="en">
       <head>
         <HeadContent />
       </head>
