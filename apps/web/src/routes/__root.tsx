@@ -1,6 +1,7 @@
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { theme } from '#src/theme/theme';
 import appCss from '#src/theme/theme.css?url';
+import { getHasAuthCookie } from '#src/utils/getServerWebRequest';
 import { seo } from '#src/utils/seo';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
@@ -27,6 +28,21 @@ interface RouterContext {
 
 export const Route = createRootRouteWithContext<RouterContext>()({
   beforeLoad: async ({ context }) => {
+    const isBrowser = typeof window !== 'undefined';
+
+    if (!isBrowser) {
+      // This is not secure
+      // It is a convenience to let the server assume the user is NOT logged
+      // It avoids an http request if no cookie is present
+      const hasAuthCookie = await getHasAuthCookie();
+
+      if (!hasAuthCookie) {
+        return {
+          userId: null,
+        };
+      }
+    }
+
     const user = await context.queryClient.ensureQueryData(
       getSignedInUserQueryOptions(),
     );
