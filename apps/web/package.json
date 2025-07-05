@@ -23,7 +23,6 @@
     "@mui/icons-material": "^7.2.0",
     "@mui/material": "^7.2.0",
     "@open-zero/features": "workspace:*",
-    "@react-hookz/web": "^25.1.1",
     "@scalar/api-reference-react": "^0.7.25",
     "@sinclair/typebox": "^0.34.37",
     "@tanstack/react-form": "^1.12.4",
@@ -46,7 +45,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-screen-wake-lock": "^3.1.1",
-    "react-use": "^17.6.0",
+    "use-resize-observer": "^9.1.0",
     "zod": "^3.25.74"
   },
   "devDependencies": {

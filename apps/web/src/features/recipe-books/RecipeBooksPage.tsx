@@ -4,7 +4,7 @@ import { alpha, Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { useMeasure } from 'react-use';
+import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipeBooks } from './EmptyRecipeBooks';
 import { RecipeBookCard } from './RecipeBookCard';
@@ -16,7 +16,7 @@ export function RecipeBooksPage() {
   );
   const [search, setSearch] = useState('');
   const [searchFocused, setSearchFocused] = useState(false);
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipeBooks = useMemo(() => {
