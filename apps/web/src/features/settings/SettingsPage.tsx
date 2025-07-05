@@ -1,4 +1,5 @@
 import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
@@ -17,17 +18,13 @@ import {
   type User,
 } from '@open-zero/features/users';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
 import { authClient } from '../auth/authClient';
 
 export function SettingsPage() {
   const { data: user } = useSignedInUser();
   const updateUser = useUpdateUser();
-  const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
   const verifyEmail = useMutation({
     mutationFn: (data: { email: string; callbackURL: string }) => {
       return authClient.sendVerificationEmail(data, {
@@ -147,20 +144,13 @@ export function SettingsPage() {
             <ToggleButton value="metric">Metric</ToggleButton>
           </ToggleButtonGroup>
         </Box>
-        <Button
-          loading={isLoading}
+        <RouterButton
+          to="/log-out"
           color="error"
-          onClick={() => {
-            setIsLoading(true);
-
-            void authClient.signOut().then(() => {
-              void router.invalidate();
-            });
-          }}
           sx={{ alignSelf: 'flex-start' }}
         >
           Sign out
-        </Button>
+        </RouterButton>
       </Stack>
     </Page>
   );

@@ -14,11 +14,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { z } from 'zod/v4';
 import { authClient } from './authClient';
+import { useSignUp } from './useSignUp';
 
 const formSchema = z.object({
   name: z.string().transform((val) => (val === '' ? undefined : val)),
@@ -29,21 +28,9 @@ const formSchema = z.object({
     .max(128, { message: 'Password must be at most 128 characters long' }),
 });
 
-const route = getRouteApi('/sign-up');
-
 export function SignUpPage() {
-  const navigate = route.useNavigate();
-  const { redirect } = route.useSearch();
   const [showPassword, setShowPassword] = useState(false);
-  const signUp = useMutation({
-    mutationFn: (data: Parameters<typeof authClient.signUp.email>[0]) => {
-      return authClient.signUp.email(data, {
-        onError: (ctx) => {
-          throw ctx.error;
-        },
-      });
-    },
-  });
+  const signUp = useSignUp();
   const form = useAppForm({
     defaultValues: {
       name: '',
@@ -56,20 +43,11 @@ export function SignUpPage() {
     onSubmit: ({ value }) => {
       const parsed = formSchema.parse(value);
 
-      signUp.mutate(
-        {
-          email: parsed.email,
-          password: parsed.password,
-          name: parsed.name ?? '',
-        },
-        {
-          onSuccess: () => {
-            void navigate({
-              to: redirect || '/app/recipes',
-            });
-          },
-        },
-      );
+      signUp.mutate({
+        email: parsed.email,
+        password: parsed.password,
+        name: parsed.name ?? '',
+      });
     },
   });
 
