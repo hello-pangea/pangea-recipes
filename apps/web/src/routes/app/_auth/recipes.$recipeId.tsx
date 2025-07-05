@@ -7,4 +7,11 @@ export const Route = createFileRoute('/app/_auth/recipes/$recipeId')({
     return queryClient.ensureQueryData(getRecipeQueryOptions(recipeId));
   },
   component: RecipePage,
+  head: ({ loaderData }) => ({
+    meta: [
+      {
+        title: loaderData?.name || 'Recipe',
+      },
+    ],
+  }),
 });

@@ -73,7 +73,6 @@ export function Recipe({ readOnly, recipeId }: Props) {
 
   return (
     <>
-      <title>{recipe.name}</title>
       <Grid container spacing={4} sx={{ mb: 2 }}>
         <Grid
           size={{
