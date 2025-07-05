@@ -211,3 +211,8 @@ server/dist
 public/dist
 
 generated-prisma-client
+
+# Tanstack Start
+.nitro
+.vercel
+.tanstack

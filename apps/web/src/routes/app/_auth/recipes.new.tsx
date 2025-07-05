@@ -9,4 +9,11 @@ const searchSchema = z.object({
 export const Route = createFileRoute('/app/_auth/recipes/new')({
   validateSearch: searchSchema,
   component: CreateRecipePage,
+  head: () => ({
+    meta: [
+      {
+        title: 'New recipe',
+      },
+    ],
+  }),
 });

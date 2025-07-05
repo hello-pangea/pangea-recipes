@@ -1,3 +1,4 @@
+import { useIsMounted } from '#src/hooks/useIsMounted';
 import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import { secondsToTimeString } from '#src/utils/timeFormatting';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -56,6 +57,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
       enqueueSnackbar('Failed to keep screen awake', { variant: 'error' });
     },
   });
+  const isMounted = useIsMounted();
   const [servingsModifier, setServingsModifier] = useState(
     String(recipe.servings ?? 1),
   );
@@ -71,7 +73,6 @@ export function Recipe({ readOnly, recipeId }: Props) {
 
   return (
     <>
-      <title>{recipe.name}</title>
       <Grid container spacing={4} sx={{ mb: 2 }}>
         <Grid
           size={{
@@ -336,7 +337,8 @@ export function Recipe({ readOnly, recipeId }: Props) {
           </Grid>
         )}
       </Grid>
-      {isWakeLockSupported && (
+      {/* SSR fix */}
+      {isWakeLockSupported && isMounted && (
         <FormGroup sx={{ mb: 2 }}>
           <FormControlLabel
             control={

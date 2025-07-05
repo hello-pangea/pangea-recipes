@@ -9,7 +9,7 @@ import { useRecipes } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useMeasure } from 'react-use';
+import useResizeObserver from 'use-resize-observer';
 import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
@@ -24,7 +24,7 @@ export function RecipeBookPage() {
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useRecipes({ options: { recipeBookId } });
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);

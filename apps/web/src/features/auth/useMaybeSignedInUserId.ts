@@ -1,7 +1,7 @@
-import { authClient } from './authClient';
+import { useRouteContext } from '@tanstack/react-router';
 
 export function useMaybeSignedInUserId() {
-  const { data: session } = authClient.useSession();
+  const { userId } = useRouteContext({ strict: false });
 
-  return session?.user.id;
+  return userId ?? null;
 }

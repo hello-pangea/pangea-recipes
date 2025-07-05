@@ -4,7 +4,7 @@ import { alpha, Box, Grid, InputBase, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { useMeasure } from 'react-use';
+import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
 import { useParsingRecipeImports } from '../recipe-imports/useParsingRecipeImports';
@@ -21,7 +21,7 @@ export function RecipesPage() {
   const parsingRecipeImports = useParsingRecipeImports({
     enableRecipeRefreshing: true,
   });
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipes = useMemo(() => {

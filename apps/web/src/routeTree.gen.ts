@@ -16,6 +16,7 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as LogOutRouteImport } from './routes/log-out'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppAuthRouteRouteImport } from './routes/app/_auth/route'
@@ -71,6 +72,11 @@ const ResetPasswordRoute = ResetPasswordRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LogOutRoute = LogOutRouteImport.update({
+  id: '/log-out',
+  path: '/log-out',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
@@ -173,6 +179,7 @@ const AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/log-out': typeof LogOutRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/log-out': typeof LogOutRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
@@ -225,6 +233,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
+  '/log-out': typeof LogOutRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/forgot-password'
+    | '/log-out'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/forgot-password'
+    | '/log-out'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
@@ -305,6 +316,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/forgot-password'
+    | '/log-out'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
@@ -333,6 +345,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LogOutRoute: typeof LogOutRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignInRoute: typeof SignInRoute
@@ -391,6 +404,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/log-out': {
+      id: '/log-out'
+      path: '/log-out'
+      fullPath: '/log-out'
+      preLoaderRoute: typeof LogOutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -577,6 +597,7 @@ const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
+  LogOutRoute: LogOutRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignInRoute: SignInRoute,

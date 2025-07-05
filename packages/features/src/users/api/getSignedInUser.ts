@@ -16,6 +16,7 @@ export function getSignedInUserQueryOptions() {
   return queryOptions({
     queryKey: ['current_user'],
     queryFn: () => getSignedInUser(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 
