@@ -48,6 +48,7 @@ export const auth = betterAuth({
     'http://localhost:3000',
     'http://localhost:3001',
     'https://hellorecipes.com',
+    'https://next.hellorecipes.com',
     'https://api.hellorecipes.com',
   ],
   advanced: {
