@@ -5,11 +5,7 @@ import { createFileRoute, ErrorComponent } from '@tanstack/react-router';
 import { HTTPError } from 'ky';
 
 export const Route = createFileRoute('/app/_auth/recipe-books/$recipeBookId')({
-  loader: ({ context: { queryClient, userId }, params: { recipeBookId } }) => {
-    if (!userId) {
-      return;
-    }
-
+  loader: ({ context: { queryClient }, params: { recipeBookId } }) => {
     return queryClient.ensureQueryData(getRecipeBookQueryOptions(recipeBookId));
   },
   component: RecipeBookPage,
