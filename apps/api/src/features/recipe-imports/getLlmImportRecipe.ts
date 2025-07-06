@@ -5,10 +5,9 @@ import {
 } from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@open-zero/database';
-import { zodTextFormat } from 'openai/helpers/zod';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
-import { z } from 'zod/v3';
+import { z } from 'zod/v4';
 
 const turndownService = new TurndownService();
 turndownService.remove('script');
@@ -159,15 +158,16 @@ export async function getLlmImportRecipe(urlString: string) {
     input: recipeMarkdown,
     model: 'gpt-4.1-2025-04-14',
     text: {
-      format: zodTextFormat(zodLlmRecipeSchema, 'recipe'),
+      format: {
+        type: 'json_schema',
+        name: 'recipe',
+        strict: true,
+        schema: z.toJSONSchema(llmRecipeSchema, { target: 'draft-2020-12' }),
+      },
     },
   });
 
-  const llmRecipe = openAiRes.output_parsed;
-
-  if (!llmRecipe) {
-    throw new Error('Failed to parse recipe with OpenAI response');
-  }
+  const llmRecipe = llmRecipeSchema.parse(openAiRes.output_parsed as unknown);
 
   llmRecipe.ingredientGroups.forEach((ig) => {
     ig.ingredients.forEach((i) => {
@@ -186,7 +186,7 @@ export async function getLlmImportRecipe(urlString: string) {
   return { parsedRecipe: llmRecipe, websitePage };
 }
 
-const zodLlmRecipeSchema = z
+const llmRecipeSchema = z
   .object({
     name: z.string(),
     description: z
