@@ -262,7 +262,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
                     </Popover>
                   </Stack>
                 </Grid>
-                {recipe.prepTime && (
+                {recipe.prepTime !== null && (
                   <Grid
                     size={{
                       xs: 12,
@@ -282,7 +282,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
                     </Stack>
                   </Grid>
                 )}
-                {recipe.cookTime && (
+                {recipe.cookTime !== null && (
                   <Grid
                     size={{
                       xs: 12,
