@@ -18,6 +18,7 @@ export function getUsedRecipeTagsQueryOptions(filter: { userId: string }) {
   return queryOptions({
     queryKey: ['used_recipe_tags', filter],
     queryFn: () => getUsedRecipeTags(filter),
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

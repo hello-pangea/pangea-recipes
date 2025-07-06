@@ -14,6 +14,7 @@ export function getListCanonicalIngredientsQueryOptions() {
   return queryOptions({
     queryKey: ['canonicalIngredients'],
     queryFn: () => listCanonicalIngredients(),
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

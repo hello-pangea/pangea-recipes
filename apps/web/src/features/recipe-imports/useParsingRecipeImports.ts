@@ -1,6 +1,6 @@
 import { useRecipeImports } from '@open-zero/features/recipe-imports';
 import { useQueryClient } from '@tanstack/react-query';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
 interface Options {
@@ -25,14 +25,21 @@ export function useParsingRecipeImports({
 
   // Refresh the main recipes list when a quick import finishes
   const importingRecipesLength = recipeImports?.length ?? 0;
+  const prevLengthRef = useRef(importingRecipesLength);
+
   useEffect(() => {
     if (!enableRecipeRefreshing) {
+      prevLengthRef.current = importingRecipesLength;
       return;
     }
 
-    void queryClient.invalidateQueries({
-      queryKey: ['recipes'],
-    });
+    if (importingRecipesLength < prevLengthRef.current) {
+      void queryClient.invalidateQueries({
+        queryKey: ['recipes'],
+      });
+    }
+
+    prevLengthRef.current = importingRecipesLength;
   }, [importingRecipesLength, queryClient, enableRecipeRefreshing]);
 
   return recipeImports;

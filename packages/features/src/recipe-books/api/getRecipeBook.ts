@@ -14,6 +14,7 @@ export function getRecipeBookQueryOptions(recipeBookId: string) {
   return queryOptions({
     queryKey: ['recipeBooks', recipeBookId],
     queryFn: () => getRecipeBook(recipeBookId),
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

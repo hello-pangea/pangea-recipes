@@ -34,7 +34,10 @@ export function createRouter() {
     defaultOptions: {
       queries: {
         retry: (failureCount, error) => {
-          if (error instanceof HTTPError && error.response.status === 403) {
+          if (
+            error instanceof HTTPError &&
+            (error.response.status === 403 || error.response.status === 401)
+          ) {
             return false;
           }
 

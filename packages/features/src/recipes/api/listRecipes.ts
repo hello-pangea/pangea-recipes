@@ -25,6 +25,7 @@ export function getListRecipesQueryOptions(options: {
   return queryOptions({
     queryKey: ['recipes', options],
     queryFn: () => listRecipes(options),
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 
