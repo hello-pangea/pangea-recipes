@@ -14,6 +14,7 @@ export function getRecipeQueryOptions(recipeId: string) {
   return queryOptions({
     queryKey: ['recipes', recipeId],
     queryFn: () => getRecipe(recipeId),
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }
 

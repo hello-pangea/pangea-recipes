@@ -79,6 +79,10 @@ export function useCreateRecipe({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
 
+      void queryClient.invalidateQueries({
+        queryKey: ['recipes'],
+      });
+
       void onSuccess?.(...args);
     },
     ...restConfig,
