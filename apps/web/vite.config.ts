@@ -21,4 +21,7 @@ export default defineConfig({
       '#src': '/src',
     },
   },
+  ssr: {
+    noExternal: ['@atlaskit/pragmatic-drag-and-drop'],
+  },
 });
