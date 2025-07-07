@@ -21,4 +21,12 @@ export default defineConfig({
       '#src': '/src',
     },
   },
+  ssr: {
+    noExternal: [
+      // https://github.com/atlassian/pragmatic-drag-and-drop/issues/27#issuecomment-2615335498
+      '@atlaskit/pragmatic-drag-and-drop',
+      '@atlaskit/pragmatic-drag-and-drop-auto-scroll',
+      '@atlaskit/pragmatic-drag-and-drop-hitbox',
+    ],
+  },
 });
