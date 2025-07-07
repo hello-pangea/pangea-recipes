@@ -1,6 +1,6 @@
 import { Page } from '#src/components/Page';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { alpha, Box, Grid, InputBase, Typography } from '@mui/material';
+import { SearchTextField } from '#src/components/SearchTextField';
+import { Box, Grid, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
@@ -17,7 +17,6 @@ export function RecipesPage() {
     getListRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
-  const [searchFocused, setSearchFocused] = useState(false);
   const parsingRecipeImports = useParsingRecipeImports({
     enableRecipeRefreshing: true,
   });
@@ -54,49 +53,11 @@ export function RecipesPage() {
       <Box
         sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
       >
-        <Box
-          sx={[
-            {
-              maxWidth: 800,
-              borderRadius: 99,
-              backgroundColor: (theme) =>
-                searchFocused
-                  ? theme.vars.palette.background.paper
-                  : theme.vars.palette.grey[200],
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              px: 2,
-              py: 1,
-              gap: 2,
-              boxShadow: searchFocused
-                ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
-                : undefined,
-            },
-            (theme) =>
-              theme.applyStyles('dark', {
-                backgroundColor: searchFocused
-                  ? theme.vars.palette.background.paper
-                  : alpha(theme.palette.background.paper, 0.5),
-              }),
-          ]}
-        >
-          <SearchRoundedIcon />
-          <InputBase
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            placeholder="Search for a recipe..."
-            sx={{ flex: 1 }}
-            onFocus={() => {
-              setSearchFocused(true);
-            }}
-            onBlur={() => {
-              setSearchFocused(false);
-            }}
-          />
-        </Box>
+        <SearchTextField
+          value={search}
+          onChange={setSearch}
+          placeholder="Search for a recipe..."
+        />
       </Box>
       {(parsingRecipeImports?.length ?? 0) > 0 && (
         <Grid
