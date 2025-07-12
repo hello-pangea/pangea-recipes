@@ -53,6 +53,7 @@ export function createRouter() {
       context: { queryClient, userId: null },
       defaultPreload: 'intent',
       defaultNotFoundComponent: () => <NotFoundPage />,
+      scrollRestoration: true,
     }),
     queryClient,
   );
