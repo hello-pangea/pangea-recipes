@@ -93,8 +93,6 @@ function RootComponent() {
   return (
     <RootDocument>
       <Outlet />
-      <ReactQueryDevtools buttonPosition="top-right" />
-      <TanStackRouterDevtools position="bottom-right" />
     </RootDocument>
   );
 }
