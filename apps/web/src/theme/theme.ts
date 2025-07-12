@@ -35,6 +35,9 @@ export const theme = createTheme({
       fontWeight: 'bold',
       fontSize: 18,
       color: 'var(--mui-palette-text-heading)',
+      [defaultTheme.breakpoints.down('sm')]: {
+        fontSize: 16,
+      },
     },
     h6: {
       fontFamily: '"Lora Variable", serif',

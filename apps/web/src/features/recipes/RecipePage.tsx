@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Container } from '@mui/material';
 import { getRouteApi } from '@tanstack/react-router';
 import { Recipe } from './Recipe';
 
@@ -8,12 +8,13 @@ export function RecipePage() {
   const { recipeId } = route.useParams();
 
   return (
-    <Box
+    <Container
+      maxWidth="md"
       sx={{
         p: { xs: 2, sm: 3 },
       }}
     >
       <Recipe recipeId={recipeId} />
-    </Box>
+    </Container>
   );
 }
