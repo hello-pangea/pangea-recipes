@@ -82,21 +82,13 @@ export function HomePage() {
                 }}
               >
                 Never forget a recipe,
-              </Typography>
-              <Typography
-                variant="h1"
-                sx={{
-                  mb: 2,
-                  maxWidth: 600,
-                  fontWeight: 'normal',
-                }}
-              >
+                <br />
                 <EmphasizeText>Organize</EmphasizeText> and{' '}
                 <EmphasizeText>share</EmphasizeText> recipes online.
               </Typography>
               <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
                 <Chip label="Free" color="primary" />
-                <Chip label="No ads" color="primary" />
+                <Chip label="Open source" color="primary" />
               </Box>
               <Typography
                 sx={{
