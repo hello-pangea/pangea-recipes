@@ -1,4 +1,5 @@
 import { useIsMounted } from '#src/hooks/useIsMounted';
+import { useWakeLock } from '#src/hooks/useWakeLock';
 import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import { secondsToTimeString } from '#src/utils/timeFormatting';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -29,7 +30,6 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useWakeLock } from 'react-screen-wake-lock';
 import { Ingredient } from './Ingredient';
 import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
