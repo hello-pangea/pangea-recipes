@@ -162,7 +162,7 @@ export async function getLlmImportRecipe(urlString: string) {
         type: 'json_schema',
         name: 'recipe',
         strict: true,
-        schema: z.toJSONSchema(llmRecipeSchema, { target: 'draft-2020-12' }),
+        schema: z.toJSONSchema(llmRecipeSchema, { target: 'draft-7' }),
       },
     },
   });
