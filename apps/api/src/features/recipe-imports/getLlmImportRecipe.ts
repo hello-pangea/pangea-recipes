@@ -154,7 +154,7 @@ export async function getLlmImportRecipe(urlString: string) {
 
   const openAiRes = await openAi.responses.parse({
     instructions:
-      "Parse the given recipe into a structured recipe object. If you don't find nutrition info, make your best guess.",
+      'Parse the given recipe into a structured recipe object. Estimate nutrition info if not provided.',
     input: recipeMarkdown,
     model: 'gpt-4.1-2025-04-14',
     text: {
