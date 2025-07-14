@@ -1,6 +1,10 @@
 import { CarrotIcon } from '#src/components/CarrotIcon';
 import { RouterLink } from '#src/components/RouterLink';
 import { RouterListItemButton } from '#src/components/RouterListItemButton';
+import type {
+  DropTargetArgs,
+  ElementDragType,
+} from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 import {
   dropTargetForElements,
   monitorForElements,
@@ -18,7 +22,6 @@ import {
   Collapse,
   Drawer,
   IconButton,
-  Link,
   List,
   ListItemIcon,
   ListItemText,
@@ -29,16 +32,12 @@ import {
   useAddRecipeToRecipeBook,
   useRecipeBooks,
 } from '@open-zero/features/recipe-books';
+import { useUpdateRecipe } from '@open-zero/features/recipes';
 import { useSignedInUser } from '@open-zero/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { NewButton } from './NewButton';
-import { useUpdateRecipe } from '@open-zero/features/recipes';
-import type {
-  DropTargetArgs,
-  ElementDragType,
-} from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 
 const drawerWidth = 240;
 
@@ -237,23 +236,6 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           }}
           plainPath="/app/settings"
         />
-        <Box
-          sx={{
-            mt: 1,
-            mb: 2,
-            ml: 3.5,
-          }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            We're in beta!
-          </Typography>
-          <Typography variant="body2">
-            Contact us about anything:{' '}
-            <Link href="mailto:hello@hellorecipes.com">
-              hello@hellorecipes.com
-            </Link>
-          </Typography>
-        </Box>
       </Box>
     </>
   );
@@ -347,6 +329,9 @@ function ListItem({
             </IconButton>
           )
         }
+        sx={{
+          pl: isNested ? 2 : 0,
+        }}
       >
         <RouterListItemButton
           onClick={onClick}
@@ -354,7 +339,6 @@ function ListItem({
           sx={{
             mx: 1,
             borderRadius: 1,
-            pl: isNested ? 4 : undefined,
             py: small ? 0.5 : undefined,
             border: 2,
             borderColor: (theme) =>

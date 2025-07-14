@@ -7,6 +7,8 @@ import {
   Alert,
   Box,
   Button,
+  Card,
+  Link,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
@@ -47,7 +49,7 @@ export function SettingsPage() {
       {!user.emailVerified && (
         <Alert
           severity={!verifyEmail.isSuccess ? 'warning' : 'success'}
-          sx={{ mb: 2 }}
+          sx={{ mb: 2, maxWidth: 600 }}
         >
           <Box
             sx={{
@@ -89,10 +91,19 @@ export function SettingsPage() {
           </Box>
         </Alert>
       )}
-      <Stack spacing={6}>
-        <Box>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Theme preferences
+      <Stack
+        spacing={4}
+        sx={{
+          maxWidth: 600,
+        }}
+      >
+        <Card
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Appearance
           </Typography>
           <ToggleButtonGroup
             color="primary"
@@ -119,10 +130,14 @@ export function SettingsPage() {
               Dark
             </ToggleButton>
           </ToggleButtonGroup>
-        </Box>
-        <Box>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Units preferences
+        </Card>
+        <Card
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Units
           </Typography>
           <ToggleButtonGroup
             color="primary"
@@ -143,14 +158,37 @@ export function SettingsPage() {
             <ToggleButton value="imperial">Imperial</ToggleButton>
             <ToggleButton value="metric">Metric</ToggleButton>
           </ToggleButtonGroup>
-        </Box>
-        <RouterButton
-          to="/log-out"
-          color="error"
-          sx={{ alignSelf: 'flex-start' }}
+        </Card>
+        <Card
+          sx={{
+            p: 3,
+          }}
         >
-          Sign out
-        </RouterButton>
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Contact
+          </Typography>
+          <Typography>
+            Hello Recipes is in beta! Send any feedback to{' '}
+            <Link href="mailto:hello@hellorecipes.com">
+              hello@hellorecipes.com
+            </Link>
+            . I'd love to hear your thoughts 😊
+            <br />
+            <br />- Reece, Hello Recipes creator
+          </Typography>
+        </Card>
+        <Card
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Account
+          </Typography>
+          <RouterButton to="/log-out" color="error" sx={{ ml: -1 }}>
+            Sign out
+          </RouterButton>
+        </Card>
       </Stack>
     </Page>
   );
