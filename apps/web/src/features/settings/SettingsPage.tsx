@@ -42,14 +42,14 @@ export function SettingsPage() {
   }
 
   return (
-    <Page>
+    <Page maxWidth="md">
       <Typography variant="h1" sx={{ mb: 4 }}>
         Settings
       </Typography>
       {!user.emailVerified && (
         <Alert
           severity={!verifyEmail.isSuccess ? 'warning' : 'success'}
-          sx={{ mb: 2, maxWidth: 600 }}
+          sx={{ mb: 2 }}
         >
           <Box
             sx={{
@@ -91,12 +91,7 @@ export function SettingsPage() {
           </Box>
         </Alert>
       )}
-      <Stack
-        spacing={4}
-        sx={{
-          maxWidth: 600,
-        }}
-      >
+      <Stack spacing={4}>
         <Card
           sx={{
             p: 3,
