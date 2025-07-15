@@ -34,7 +34,7 @@ export function SearchTextField({
         </InputAdornment>
       }
       sx={[
-        {
+        (theme) => ({
           maxWidth: 800,
           borderRadius: 99,
           backgroundColor: (theme) =>
@@ -47,7 +47,12 @@ export function SearchTextField({
           boxShadow: focused
             ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
             : undefined,
-        },
+          ...theme.applyStyles('dark', {
+            backgroundColor: focused
+              ? theme.vars.palette.background.paper
+              : theme.vars.palette.grey[800],
+          }),
+        }),
         ...(isSxArray(sx) ? sx : [sx]),
       ]}
       {...inputProps}
