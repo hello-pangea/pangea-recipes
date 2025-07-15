@@ -142,7 +142,9 @@ export function Recipe({ readOnly, recipeId }: Props) {
               mb: 2,
             }}
           />
-          <Typography sx={{ maxWidth: 500, mb: { xs: 2, sm: 4 } }}>
+          <Typography
+            sx={{ maxWidth: 500, mb: { xs: 2, sm: 4 }, whiteSpace: 'pre-wrap' }}
+          >
             {recipe.description}
           </Typography>
           <Grid container spacing={2} columns={{ xs: 2, sm: 3 }}>
