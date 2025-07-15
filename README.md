@@ -10,21 +10,24 @@
 
 # Hello Recipes
 
-A modern, open source recipe manager focused on privacy, collaboration, and ease of use.
+A modern, open source recipe manager focused on privacy, collaboration, and ease of use. This app makes it easy to import, create, and organize your recipes. You can share recipes and collaborate on recipe books with friends and family. Never forget another recipe.
 
-[**Hosted Version →**](https://hellorecipes.com/)
+[**Website →**](https://hellorecipes.com/)
+
+[Demo recipe](https://hellorecipes.com/app/shared-recipes/d4dff988-6617-4aa0-800b-52eb03a6f4b6)
 
 [OpenApi Docs](https://hellorecipes.com/openapi-docs/)
 
-> [!WARNING]
-> Hello Recipes is in early development, expect significant changes.
-
 ![Screenshot of Hello Recipes](/assets/hello-recipes.png)
+
+## Project status
+
+Hello Recipes is in active development! It's ready for use if you're ok with a limited feature set. Developers should expect breaking changes to the api.
 
 ## Key features
 
 - 🔗 Import recipes by url
-- 📖 Organize recipes into recipe book
+- 📖 Organize recipes into recipe books
 - 😊 Easy sharing for recipes and recipe books
 - 🤝 Collaborate on recipe books with friends and family
 - ⌚ Save for later
@@ -37,7 +40,7 @@ A modern, open source recipe manager focused on privacy, collaboration, and ease
 - [Prisma and Postgres](https://www.prisma.io/)
 - [React and React Compiler](https://react.dev/)
 - [MUI](https://mui.com/)
-- [TanStack Query, Router, and Form](https://tanstack.com/)
+- [TanStack Query, Router, Start, and Form](https://tanstack.com/)
 - [Better Auth](https://www.better-auth.com/)
 - [Vite](https://vite.dev/)
 - [Turborepo](https://turbo.build/repo)
