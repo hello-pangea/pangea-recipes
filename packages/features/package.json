@@ -23,7 +23,7 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.34.37",
+    "@sinclair/typebox": "^0.34.38",
     "@tanstack/react-query": "^5.83.0",
     "ky": "^1.8.1"
   },

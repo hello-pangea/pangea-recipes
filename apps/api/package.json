@@ -16,8 +16,8 @@
     "start": "node --env-file=.env --experimental-strip-types --import ./src/instrument.ts src/index.ts"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.844.0",
-    "@aws-sdk/s3-request-presigner": "^3.844.0",
+    "@aws-sdk/client-s3": "^3.846.0",
+    "@aws-sdk/s3-request-presigner": "^3.846.0",
     "@fastify/auth": "^5.0.2",
     "@fastify/cors": "^11.0.1",
     "@fastify/helmet": "^13.0.1",
@@ -32,7 +32,7 @@
     "@prisma/instrumentation": "^6.12.0",
     "@sentry/node": "^9.39.0",
     "@sentry/profiling-node": "^9.39.0",
-    "@sinclair/typebox": "^0.34.37",
+    "@sinclair/typebox": "^0.34.38",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
     "better-auth": "^1.2.12",
@@ -42,7 +42,7 @@
     "fast-uri": "^3.0.6",
     "fastify": "^5.4.0",
     "fastify-plugin": "^5.0.1",
-    "openai": "^5.9.1",
+    "openai": "^5.9.2",
     "openapi-merge": "^1.3.3",
     "playwright-chromium": "^1.54.1",
     "resend": "^4.6.0",
