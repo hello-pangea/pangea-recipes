@@ -29,4 +29,11 @@ export const Route = createFileRoute('/app/_auth')({
     };
   },
   component: Layout,
+  head: () => ({
+    meta: [
+      {
+        title: 'Hello Recipes',
+      },
+    ],
+  }),
 });

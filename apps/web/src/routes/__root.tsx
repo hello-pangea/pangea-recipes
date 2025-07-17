@@ -64,9 +64,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title: 'Hello Recipes',
-        description: `Never forget another recipe. Modern recipe manager to organize and share recipes online.`,
-        image: '/assets/og-image.png',
+        title: 'Hello Recipes - Recipe Manager',
+        description: `Hello Recipes is a modern, ad-free recipe manager that makes it easy to save, share, and collaborate on your favorite dishes.`,
       }),
     ],
     links: [
@@ -80,7 +79,20 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       },
       {
         rel: 'apple-touch-icon',
+        sizes: '180x180',
         href: '/apple-touch-icon.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '32x32',
+        href: '/favicon-32x32.png',
+      },
+      {
+        rel: 'icon',
+        type: 'image/png',
+        sizes: '16x16',
+        href: '/favicon-16x16.png',
       },
       {
         rel: 'preconnect',
