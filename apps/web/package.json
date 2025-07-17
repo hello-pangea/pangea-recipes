@@ -51,6 +51,7 @@
     "@open-zero/eslint-config": "workspace:*",
     "@open-zero/typescript-config": "workspace:*",
     "@tanstack/router-plugin": "^1.127.9",
+    "@types/gtag.js": "^0.0.20",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "babel-plugin-react-compiler": "19.1.0-rc.2",

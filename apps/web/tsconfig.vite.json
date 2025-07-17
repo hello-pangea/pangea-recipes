@@ -5,7 +5,8 @@
     "module": "ESNext",
     "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true,
-    "strict": true
+    "strict": true,
+    "types": ["@types/gtag.js"]
   },
   "include": ["vite.config.ts"]
 }

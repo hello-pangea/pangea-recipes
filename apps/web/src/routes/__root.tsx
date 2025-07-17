@@ -1,4 +1,5 @@
 import { NotFoundPage } from '#src/components/NotFoundPage';
+import { config } from '#src/config/config';
 import { theme } from '#src/theme/theme';
 import appCss from '#src/theme/theme.css?url';
 import { getHasAuthCookie } from '#src/utils/getServerWebRequest';
@@ -85,6 +86,25 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         rel: 'preconnect',
         href: 'https://api.hellorecipes.com',
       },
+    ],
+    scripts: [
+      ...(config.VITE_GOOGLE_TAG_ID
+        ? [
+            {
+              src: `https://www.googletagmanager.com/gtag/js?id=${config.VITE_GOOGLE_TAG_ID}`,
+              async: true,
+            },
+            {
+              children: `
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);};
+                gtag('js', new Date());
+
+                gtag('config', '${config.VITE_GOOGLE_TAG_ID}', { send_page_view: false });
+              `,
+            },
+          ]
+        : []),
     ],
   }),
 });

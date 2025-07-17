@@ -13,6 +13,10 @@ export function useSignUp() {
         queryKey: getSignedInUserQueryOptions().queryKey,
       });
       await router.invalidate();
+
+      if ('gtag' in window) {
+        window.gtag('event', 'sign_up');
+      }
     },
     mutationFn: (data: Parameters<typeof authClient.signUp.email>[0]) => {
       return authClient.signUp.email(data, {
