@@ -42,13 +42,13 @@
     "fast-uri": "^3.0.6",
     "fastify": "^5.4.0",
     "fastify-plugin": "^5.0.1",
-    "openai": "^5.9.2",
+    "openai": "^5.10.1",
     "openapi-merge": "^1.3.3",
     "playwright-chromium": "^1.54.1",
     "resend": "^4.6.0",
     "sharp": "^0.34.3",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.601",
+    "user-agents": "^1.1.603",
     "zod": "^4.0.5"
   },
   "devDependencies": {
