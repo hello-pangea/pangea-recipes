@@ -1,3 +1,4 @@
+import { config } from '#src/config/config';
 import { getSignedInUserQueryOptions } from '@open-zero/features/users';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
@@ -16,6 +17,12 @@ export function useSignUp() {
 
       if ('gtag' in window) {
         window.gtag('event', 'sign_up');
+
+        if (config.VITE_GOOGLE_TAG_CONVERSION_DESTINATION) {
+          window.gtag('event', 'conversion', {
+            send_to: config.VITE_GOOGLE_TAG_CONVERSION_DESTINATION,
+          });
+        }
       }
     },
     mutationFn: (data: Parameters<typeof authClient.signUp.email>[0]) => {
