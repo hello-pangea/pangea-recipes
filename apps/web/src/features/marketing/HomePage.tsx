@@ -1,6 +1,7 @@
-import { Copyright } from '#src/components/Copyright';
 import { EmphasizeText } from '#src/components/EmphasizeText';
+import { Footer } from '#src/components/Footer';
 import { RouterButton } from '#src/components/RouterButton';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
 import { useSignedInUser } from '@open-zero/features/users';
 import { Navigate } from '@tanstack/react-router';
@@ -81,14 +82,12 @@ export function HomePage() {
                   fontWeight: 'normal',
                 }}
               >
-                Never forget a recipe,
-                <br />
-                <EmphasizeText>Organize</EmphasizeText> and{' '}
-                <EmphasizeText>share</EmphasizeText> recipes online.
+                A recipe manager you'll <EmphasizeText>love</EmphasizeText>
               </Typography>
-              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <Chip label="Free" color="primary" />
-                <Chip label="Open source" color="primary" />
+              <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                <Chip size="small" label="Free" color="primary" />
+                <Chip size="small" label="No ads" color="primary" />
+                <Chip size="small" label="Open source" color="primary" />
               </Box>
               <Typography
                 sx={{
@@ -97,11 +96,16 @@ export function HomePage() {
                   fontSize: { xs: 16, md: 18 },
                 }}
               >
-                All your recipes on all your devices. Create recipe books with
-                friends and family.
+                Hello Recipes is a modern, ad-free recipe manager that makes it
+                easy to save, share, organize, and collaborate on your favorite
+                dishes.
               </Typography>
-              <RouterButton to="/sign-up" variant="contained">
-                Sign up for free
+              <RouterButton
+                to="/sign-up"
+                variant="contained"
+                endIcon={<ArrowForwardRoundedIcon />}
+              >
+                Get started
               </RouterButton>
             </Box>
           </Grid>
@@ -272,7 +276,7 @@ export function HomePage() {
           </RouterButton>
         </Box>
       </Container>
-      <Copyright sx={{ pb: 2, pt: 6 }} />
+      <Footer sx={{ pb: 2, pt: 6 }} />
     </Box>
   );
 }

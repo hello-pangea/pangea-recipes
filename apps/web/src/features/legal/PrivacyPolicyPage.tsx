@@ -1,4 +1,4 @@
-import { Copyright } from '#src/components/Copyright';
+import { Footer } from '#src/components/Footer';
 import { Page } from '#src/components/Page';
 import { Container, Typography } from '@mui/material';
 import { Header } from '../marketing/Header';
@@ -490,7 +490,7 @@ export function PrivacyPolicyPage() {
             By email: hello@openzero.com
           </Typography>
         </Container>
-        <Copyright />
+        <Footer />
       </Page>
     </>
   );
