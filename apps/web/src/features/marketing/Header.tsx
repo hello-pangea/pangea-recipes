@@ -22,6 +22,7 @@ export function Header({ sx = [] }: Props) {
 
   return (
     <Container
+      component="header"
       maxWidth="lg"
       sx={[
         {
