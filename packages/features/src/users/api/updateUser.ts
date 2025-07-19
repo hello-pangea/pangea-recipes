@@ -19,7 +19,7 @@ interface Options {
 export function useUpdateUser({ mutationConfig }: Options = {}) {
   const queryClient = useQueryClient();
 
-  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+  const { onSuccess, onMutate, ...restConfig } = mutationConfig ?? {};
 
   return useMutation({
     onSuccess: (...args) => {
@@ -28,6 +28,20 @@ export function useUpdateUser({ mutationConfig }: Options = {}) {
       });
 
       void onSuccess?.(...args);
+    },
+    onMutate: (variables) => {
+      queryClient.setQueryData(
+        getSignedInUserQueryOptions().queryKey,
+        (oldUser) => {
+          if (!oldUser) {
+            return;
+          }
+
+          return { ...oldUser, ...variables };
+        },
+      );
+
+      void onMutate?.(variables);
     },
     ...restConfig,
     mutationFn: updateUser,

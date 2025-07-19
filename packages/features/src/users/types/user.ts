@@ -28,6 +28,26 @@ export const userSchema = Type.Object(
       Type.Literal('system'),
     ]),
 
+    accentColor: Type.Union([
+      Type.Literal('red'),
+      Type.Literal('orange'),
+      Type.Literal('amber'),
+      Type.Literal('yellow'),
+      Type.Literal('lime'),
+      Type.Literal('green'),
+      Type.Literal('emerald'),
+      Type.Literal('teal'),
+      Type.Literal('cyan'),
+      Type.Literal('sky'),
+      Type.Literal('blue'),
+      Type.Literal('indigo'),
+      Type.Literal('violet'),
+      Type.Literal('purple'),
+      Type.Literal('fuschia'),
+      Type.Literal('pink'),
+      Type.Literal('rose'),
+    ]),
+
     unitsPreference: Type.Union([
       Type.Literal('imperial'),
       Type.Literal('metric'),

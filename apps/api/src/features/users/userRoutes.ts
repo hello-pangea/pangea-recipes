@@ -97,7 +97,8 @@ export async function userRoutes(fastify: FastifyTypebox) {
       },
     },
     async (request) => {
-      const { themePreference, unitsPreference, name } = request.body;
+      const { themePreference, unitsPreference, name, accentColor } =
+        request.body;
       const { userId } = request.params;
 
       if (userId !== request.session?.userId) {
@@ -112,6 +113,7 @@ export async function userRoutes(fastify: FastifyTypebox) {
           themePreference: themePreference,
           unitsPreference: unitsPreference,
           name: name,
+          accentColor: accentColor,
         },
       });
 

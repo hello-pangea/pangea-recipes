@@ -1,6 +1,7 @@
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { config } from '#src/config/config';
-import { theme } from '#src/theme/theme';
+import { color } from '#src/theme/colors';
+import { getTheme } from '#src/theme/theme';
 import appCss from '#src/theme/theme.css?url';
 import { getHasAuthCookie } from '#src/utils/getServerWebRequest';
 import { seo } from '#src/utils/seo';
@@ -14,7 +15,10 @@ import {
   ThemeProvider,
 } from '@mui/material';
 import type {} from '@mui/material/themeCssVarsAugmentation';
-import { getSignedInUserQueryOptions } from '@open-zero/features/users';
+import {
+  getSignedInUserQueryOptions,
+  useSignedInUser,
+} from '@open-zero/features/users';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
@@ -135,10 +139,14 @@ function RootComponent() {
 
 function Providers({ children }: { children: React.ReactNode }) {
   const emotionCache = createCache({ key: 'css' });
+  const { data: user } = useSignedInUser();
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider theme={theme} forceThemeRerender>
+      <ThemeProvider
+        theme={getTheme(color[user?.accentColor ?? 'indigo'])}
+        forceThemeRerender
+      >
         <CssBaseline />
         <SnackbarProvider>{children}</SnackbarProvider>
       </ThemeProvider>

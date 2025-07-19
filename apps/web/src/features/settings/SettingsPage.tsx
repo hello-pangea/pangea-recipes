@@ -1,5 +1,7 @@
 import { Page } from '#src/components/Page';
 import { RouterButton } from '#src/components/RouterButton';
+import { color } from '#src/theme/colors';
+import { capitalizeFirstLetter } from '#src/utils/misc';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
@@ -7,11 +9,13 @@ import {
   Alert,
   Box,
   Button,
+  ButtonBase,
   Card,
   Link,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import {
@@ -22,6 +26,26 @@ import {
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { authClient } from '../auth/authClient';
+
+const accentColors = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuschia',
+  'pink',
+  'rose',
+] as const;
 
 export function SettingsPage() {
   const { data: user } = useSignedInUser();
@@ -111,6 +135,7 @@ export function SettingsPage() {
               });
             }}
             aria-label="Theme mode"
+            sx={{ mb: 4 }}
           >
             <ToggleButton value="light">
               <LightModeRoundedIcon sx={{ mr: 1 }} />
@@ -125,6 +150,49 @@ export function SettingsPage() {
               Dark
             </ToggleButton>
           </ToggleButtonGroup>
+          <Typography variant="h3" sx={{ mb: 1.5 }}>
+            Accent color
+          </Typography>
+          <Stack spacing={1} direction={'row'} flexWrap="wrap">
+            {accentColors.map((accentColor) => (
+              <Tooltip
+                title={capitalizeFirstLetter(accentColor)}
+                key={accentColor}
+                placement="bottom"
+              >
+                <ButtonBase
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: color[accentColor][500],
+                    border: 2,
+                    borderColor: color[accentColor][700],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onClick={() => {
+                    updateUser.mutate({
+                      accentColor: accentColor,
+                      id: user.id,
+                    });
+                  }}
+                >
+                  {user.accentColor === accentColor && (
+                    <Box
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        backgroundColor: color.white,
+                      }}
+                    />
+                  )}
+                </ButtonBase>
+              </Tooltip>
+            ))}
+          </Stack>
         </Card>
         <Card
           sx={{

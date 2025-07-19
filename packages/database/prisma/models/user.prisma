@@ -13,6 +13,7 @@ model User {
   accessRole AccessRole @default(user) @map("access_role")
 
   themePreference ThemePreference @default(system) @map("theme_preference")
+  accentColor     AccentColor     @default(indigo) @map("accent_color")
 
   unitsPreference UnitsPreference @default(imperial) @map("units_preference")
 
@@ -37,6 +38,26 @@ enum ThemePreference {
   light
   dark
   system
+}
+
+enum AccentColor {
+  red
+  orange
+  amber
+  yellow
+  lime
+  green
+  emerald
+  teal
+  cyan
+  sky
+  blue
+  indigo
+  violet
+  purple
+  fuschia
+  pink
+  rose
 }
 
 enum UnitsPreference {
