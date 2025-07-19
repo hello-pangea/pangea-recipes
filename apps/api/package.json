@@ -35,7 +35,7 @@
     "@sinclair/typebox": "^0.34.38",
     "ajv": "^8.17.1",
     "ajv-formats": "^3.0.1",
-    "better-auth": "^1.2.12",
+    "better-auth": "^1.3.0",
     "chalk": "^5.4.1",
     "close-with-grace": "^2.2.0",
     "date-fns": "^4.1.0",
@@ -48,7 +48,7 @@
     "resend": "^4.7.0",
     "sharp": "^0.34.3",
     "turndown": "^7.2.0",
-    "user-agents": "^1.1.604",
+    "user-agents": "^1.1.605",
     "zod": "^4.0.5"
   },
   "devDependencies": {
