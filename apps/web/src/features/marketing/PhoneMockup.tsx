@@ -16,6 +16,7 @@ export function PhoneMockup({ src }: Props) {
         borderRadius: 3,
         boxShadow: '0 25px 50px -12px rgb(0 0 0 / 0.25)',
         overflow: 'hidden',
+        backgroundColor: '#f9f5f3',
       }}
     >
       <img src={src} width="100%" height="100%" alt="" />
