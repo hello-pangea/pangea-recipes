@@ -8,7 +8,11 @@ import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import interFontCss from '@fontsource-variable/inter?url';
 import loraFontCss from '@fontsource-variable/lora?url';
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import {
+  CssBaseline,
+  InitColorSchemeScript,
+  ThemeProvider,
+} from '@mui/material';
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import { getSignedInUserQueryOptions } from '@open-zero/features/users';
 import type { QueryClient } from '@tanstack/react-query';
@@ -143,12 +147,15 @@ function Providers({ children }: { children: React.ReactNode }) {
 }
 
 function RootDocument({ children }: { children: React.ReactNode }) {
+  // suppressHydrationWarning
+  // https://mui.com/material-ui/customization/css-theme-variables/configuration/#next-js-app-router
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
       <body>
+        <InitColorSchemeScript attribute="class" />
         <Providers>{children}</Providers>
         <ReactQueryDevtools buttonPosition="top-right" />
         <TanStackRouterDevtools position="bottom-right" />
