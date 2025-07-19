@@ -55,7 +55,10 @@ export async function mapToRecipeDto(recipeData: RecipeData): Promise<Recipe> {
     images: await Promise.all(
       recipeData.images.map(async (image) => ({
         id: image.image.id,
-        url: await getFileUrl({ key: image.image.key, public: false }),
+        url: await getFileUrl({
+          key: image.image.key,
+          public: image.image.public,
+        }),
         favorite: image.favorite ?? false,
       })),
     ),

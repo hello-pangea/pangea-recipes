@@ -15,7 +15,7 @@ export async function processAndUploadImage(multipartFile: MultipartFile) {
     buffer: rotatedImage,
     key: originalImageKey,
     mimeType: multipartFile.mimetype,
-    public: false,
+    public: true,
   });
 
   const modifiedBuffer = await sharpInstance
@@ -30,18 +30,19 @@ export async function processAndUploadImage(multipartFile: MultipartFile) {
     buffer: modifiedBuffer,
     key: modifiedImageKey,
     mimeType: 'image/jpeg',
-    public: false,
+    public: true,
   });
 
   const modifiedImagePresignedUrl = await getFileUrl({
     key: modifiedImageKey,
-    public: false,
+    public: true,
   });
 
   const image = await prisma.image.create({
     data: {
       key: modifiedImageKey,
       originalKey: originalImageKey,
+      public: true,
     },
   });
 
