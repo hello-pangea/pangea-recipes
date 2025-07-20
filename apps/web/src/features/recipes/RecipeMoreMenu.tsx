@@ -34,6 +34,7 @@ import {
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
 interface Props
   extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
@@ -362,19 +363,7 @@ export function RecipeMoreMenu({
         </MenuItem>
         {filteredRecipeBooks.length > 0 && <Divider />}
         {filteredRecipeBooks.map((book) => (
-          <MenuItem
-            key={book.id}
-            onClick={() => {
-              addRecipeToRecipeBook.mutate({
-                recipeBookId: book.id,
-                recipeId: recipe.id,
-              });
-
-              handleClose();
-            }}
-          >
-            <ListItemText>{book.name}</ListItemText>
-          </MenuItem>
+          <RecipeBookMenuItem key={book.id} book={book} recipeId={recipe.id} />
         ))}
       </Menu>
     </>

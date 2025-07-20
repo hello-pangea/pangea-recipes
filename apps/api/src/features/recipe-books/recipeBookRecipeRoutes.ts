@@ -33,6 +33,26 @@ export async function recipeBookRecipeRoutes(fastify: FastifyTypebox) {
       const { recipeBookId } = request.params;
       const { recipeId } = request.body;
 
+      // Check if the recipe is already in the recipe book
+      const recipeBookWithRecipe = await prisma.recipeBook.findUnique({
+        where: {
+          id: recipeBookId,
+        },
+        select: {
+          recipes: {
+            where: {
+              recipeId: recipeId,
+            },
+          },
+        },
+      });
+
+      if (recipeBookWithRecipe?.recipes.length) {
+        throw fastify.httpErrors.conflict({
+          message: 'Recipe already exists in this recipe book',
+        });
+      }
+
       const recipeBook = await prisma.recipeBook.update({
         where: {
           id: recipeBookId,
