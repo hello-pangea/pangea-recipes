@@ -1,8 +1,8 @@
-import { TryLaterPage } from '#src/features/recipes/TryLaterPage';
+import { FavoritesPage } from '#src/features/recipes/FavoritesPage';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
 
-export const Route = createFileRoute('/app/_auth/try-later')({
+export const Route = createFileRoute('/app/_auth/favorites')({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
       getListRecipesQueryOptions({
@@ -10,11 +10,11 @@ export const Route = createFileRoute('/app/_auth/try-later')({
       }),
     );
   },
-  component: TryLaterPage,
+  component: FavoritesPage,
   head: () => ({
     meta: [
       {
-        title: 'Try later - Hello Recipes',
+        title: 'Favorites - Hello Recipes',
       },
     ],
   }),

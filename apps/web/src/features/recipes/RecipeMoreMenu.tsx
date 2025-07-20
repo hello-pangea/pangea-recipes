@@ -3,6 +3,8 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
@@ -155,7 +157,7 @@ export function RecipeMoreMenu({
           <ListItemIcon>
             <AddRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Add to recipe book</ListItemText>
+          <ListItemText>Add to book</ListItemText>
           <ListItemIcon
             sx={{
               justifyContent: 'flex-end',
@@ -163,6 +165,28 @@ export function RecipeMoreMenu({
           >
             <ChevronRightRoundedIcon fontSize="small" />
           </ListItemIcon>
+        </MenuItem>
+        <MenuItem
+          onMouseEnter={() => {
+            setBooksAnchorEl(null);
+          }}
+          onClick={() => {
+            updateRecipe.mutate({
+              id: recipe.id,
+              favorite: !recipe.favorite,
+            });
+          }}
+        >
+          <ListItemIcon>
+            {recipe.favorite ? (
+              <FavoriteRoundedIcon fontSize="small" />
+            ) : (
+              <FavoriteBorderRoundedIcon fontSize="small" />
+            )}
+          </ListItemIcon>
+          <ListItemText>
+            {recipe.favorite ? 'Remove from favorites' : 'Add to favorites'}
+          </ListItemText>
         </MenuItem>
         <MenuItem
           onMouseEnter={() => {
@@ -179,7 +203,7 @@ export function RecipeMoreMenu({
             <UpcomingRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {recipe.tryLater ? 'Remove from "Try Later"' : 'Add to "Try Later"'}
+            {recipe.tryLater ? 'Remove from try later' : 'Add to try later'}
           </ListItemText>
         </MenuItem>
         <Divider />
@@ -197,7 +221,7 @@ export function RecipeMoreMenu({
             <ListItemIcon>
               <RemoveCircleRoundedIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Remove from recipe book</ListItemText>
+            <ListItemText>Remove from book</ListItemText>
           </MenuItem>
         )}
         {onRemoveFromRecipeBook && <Divider />}
@@ -259,7 +283,7 @@ export function RecipeMoreMenu({
           <TextField
             variant="outlined"
             size="small"
-            placeholder="Find a recipe book"
+            placeholder="Find a book"
             value={search}
             fullWidth
             onChange={(event) => {
@@ -334,7 +358,7 @@ export function RecipeMoreMenu({
           <ListItemIcon>
             <AddRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>New recipe book</ListItemText>
+          <ListItemText>New book</ListItemText>
         </MenuItem>
         {filteredRecipeBooks.length > 0 && <Divider />}
         {filteredRecipeBooks.map((book) => (

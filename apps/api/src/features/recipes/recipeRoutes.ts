@@ -208,6 +208,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         imageIds,
         nutrition,
         tryLater,
+        favorite,
       } = request.body;
       const { recipeId } = request.params;
 
@@ -315,6 +316,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           cookTime: cookTime,
           servings: servings,
           tryLater: tryLater,
+          favorite: favorite,
           usesRecipes: !usesRecipes
             ? undefined
             : {

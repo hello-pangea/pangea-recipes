@@ -32,6 +32,8 @@ export const recipeSchema = Type.Object(
 
     tryLater: Type.Boolean(),
 
+    favorite: Type.Boolean(),
+
     websiteSource: Nullable(
       Type.Object({
         title: Nullable(Type.String()),

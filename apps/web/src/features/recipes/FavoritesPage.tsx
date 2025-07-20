@@ -4,33 +4,27 @@ import { Box, Grid, Typography } from '@mui/material';
 import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
-import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
-import { useParsingRecipeImports } from '../recipe-imports/useParsingRecipeImports';
 import { EmptyRecipes } from './EmptyRecipes';
 import { RecipeCard } from './RecipeCard';
 
-export function RecipesPage() {
+export function FavoritesPage() {
   const userId = useSignedInUserId();
   const { data: recipes, isError } = useSuspenseQuery(
     getListRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
-  const parsingRecipeImports = useParsingRecipeImports({
-    enableRecipeRefreshing: true,
-  });
-  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
-  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipes = useMemo(() => {
+    const favoriteRecipes = recipes.filter((recipe) => recipe.favorite);
+
     if (search) {
-      return recipes.filter((recipe) =>
+      return favoriteRecipes.filter((recipe) =>
         recipe.name.toLowerCase().includes(search.toLowerCase()),
       );
     }
 
-    return recipes;
+    return favoriteRecipes;
   }, [recipes, search]);
 
   return (
@@ -46,7 +40,7 @@ export function RecipesPage() {
           mt: { xs: 0, sm: 4 },
         }}
       >
-        My Recipes
+        Favorite Recipes
       </Typography>
       <Box
         sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
@@ -57,30 +51,19 @@ export function RecipesPage() {
           placeholder="Search for a recipe..."
         />
       </Box>
-      {(parsingRecipeImports?.length ?? 0) > 0 && (
-        <Grid
-          container
-          spacing={2}
-          columns={columns}
-          sx={{
-            mb: 2,
-          }}
-        >
-          {width !== 0 &&
-            parsingRecipeImports?.map((recipeImport) => (
-              <Grid key={recipeImport.id} size={1}>
-                <RecipeImportCard recipeImport={recipeImport} />
-              </Grid>
-            ))}
-        </Grid>
-      )}
-      <Grid ref={ref} container spacing={2} columns={columns}>
-        {width !== 0 &&
-          filteredRecipes.map((recipe) => (
-            <Grid key={recipe.id} size={1}>
-              <RecipeCard recipeId={recipe.id} />
-            </Grid>
-          ))}
+      <Grid container spacing={2}>
+        {filteredRecipes.map((recipe) => (
+          <Grid
+            key={recipe.id}
+            size={{
+              xs: 12,
+              sm: 6,
+              lg: 4,
+            }}
+          >
+            <RecipeCard recipeId={recipe.id} />
+          </Grid>
+        ))}
       </Grid>
       {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
     </Page>

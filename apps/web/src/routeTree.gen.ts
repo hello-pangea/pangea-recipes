@@ -23,6 +23,7 @@ import { Route as AppAuthRouteRouteImport } from './routes/app/_auth/route'
 import { Route as AppSharedRecipesRecipeIdRouteImport } from './routes/app/shared-recipes.$recipeId'
 import { Route as AppAuthTryLaterRouteImport } from './routes/app/_auth/try-later'
 import { Route as AppAuthSettingsRouteImport } from './routes/app/_auth/settings'
+import { Route as AppAuthFavoritesRouteImport } from './routes/app/_auth/favorites'
 import { Route as AppAuthRecipesIndexRouteImport } from './routes/app/_auth/recipes.index'
 import { Route as AppAuthRecipeBooksIndexRouteImport } from './routes/app/_auth/recipe-books.index'
 import { Route as AppAuthCanonicalIngredientsIndexRouteImport } from './routes/app/_auth/canonical-ingredients.index'
@@ -114,6 +115,11 @@ const AppAuthSettingsRoute = AppAuthSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppAuthRouteRoute,
 } as any)
+const AppAuthFavoritesRoute = AppAuthFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
 const AppAuthRecipesIndexRoute = AppAuthRecipesIndexRouteImport.update({
   id: '/recipes/',
   path: '/recipes/',
@@ -188,6 +194,7 @@ export interface FileRoutesByFullPath {
   '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/favorites': typeof AppAuthFavoritesRoute
   '/app/settings': typeof AppAuthSettingsRoute
   '/app/try-later': typeof AppAuthTryLaterRoute
   '/app/shared-recipes/$recipeId': typeof AppSharedRecipesRecipeIdRoute
@@ -214,6 +221,7 @@ export interface FileRoutesByTo {
   '/terms-of-service': typeof TermsOfServiceRoute
   '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppIndexRoute
+  '/app/favorites': typeof AppAuthFavoritesRoute
   '/app/settings': typeof AppAuthSettingsRoute
   '/app/try-later': typeof AppAuthTryLaterRoute
   '/app/shared-recipes/$recipeId': typeof AppSharedRecipesRecipeIdRoute
@@ -243,6 +251,7 @@ export interface FileRoutesById {
   '/app': typeof AppRouteWithChildren
   '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/_auth/favorites': typeof AppAuthFavoritesRoute
   '/app/_auth/settings': typeof AppAuthSettingsRoute
   '/app/_auth/try-later': typeof AppAuthTryLaterRoute
   '/app/shared-recipes/$recipeId': typeof AppSharedRecipesRecipeIdRoute
@@ -272,6 +281,7 @@ export interface FileRouteTypes {
     | '/openapi-docs'
     | '/app'
     | '/app/'
+    | '/app/favorites'
     | '/app/settings'
     | '/app/try-later'
     | '/app/shared-recipes/$recipeId'
@@ -298,6 +308,7 @@ export interface FileRouteTypes {
     | '/terms-of-service'
     | '/openapi-docs'
     | '/app'
+    | '/app/favorites'
     | '/app/settings'
     | '/app/try-later'
     | '/app/shared-recipes/$recipeId'
@@ -326,6 +337,7 @@ export interface FileRouteTypes {
     | '/app'
     | '/app/_auth'
     | '/app/'
+    | '/app/_auth/favorites'
     | '/app/_auth/settings'
     | '/app/_auth/try-later'
     | '/app/shared-recipes/$recipeId'
@@ -462,6 +474,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthSettingsRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
+    '/app/_auth/favorites': {
+      id: '/app/_auth/favorites'
+      path: '/favorites'
+      fullPath: '/app/favorites'
+      preLoaderRoute: typeof AppAuthFavoritesRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
     '/app/_auth/recipes/': {
       id: '/app/_auth/recipes/'
       path: '/recipes'
@@ -543,6 +562,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppAuthRouteRouteChildren {
+  AppAuthFavoritesRoute: typeof AppAuthFavoritesRoute
   AppAuthSettingsRoute: typeof AppAuthSettingsRoute
   AppAuthTryLaterRoute: typeof AppAuthTryLaterRoute
   AppAuthCanonicalIngredientsNewRoute: typeof AppAuthCanonicalIngredientsNewRoute
@@ -559,6 +579,7 @@ interface AppAuthRouteRouteChildren {
 }
 
 const AppAuthRouteRouteChildren: AppAuthRouteRouteChildren = {
+  AppAuthFavoritesRoute: AppAuthFavoritesRoute,
   AppAuthSettingsRoute: AppAuthSettingsRoute,
   AppAuthTryLaterRoute: AppAuthTryLaterRoute,
   AppAuthCanonicalIngredientsNewRoute: AppAuthCanonicalIngredientsNewRoute,

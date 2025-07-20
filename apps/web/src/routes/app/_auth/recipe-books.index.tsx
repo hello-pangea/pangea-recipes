@@ -11,4 +11,11 @@ export const Route = createFileRoute('/app/_auth/recipe-books/')({
     );
   },
   component: RecipeBooksPage,
+  head: () => ({
+    meta: [
+      {
+        title: 'Books - Hello Recipes',
+      },
+    ],
+  }),
 });

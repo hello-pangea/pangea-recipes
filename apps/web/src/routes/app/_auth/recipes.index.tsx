@@ -11,4 +11,11 @@ export const Route = createFileRoute('/app/_auth/recipes/')({
     );
   },
   component: RecipesPage,
+  head: () => ({
+    meta: [
+      {
+        title: 'My recipes - Hello Recipes',
+      },
+    ],
+  }),
 });

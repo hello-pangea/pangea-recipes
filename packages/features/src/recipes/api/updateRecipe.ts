@@ -18,6 +18,7 @@ export const updateRecipeDtoScema = Type.Partial(
       'cookTime',
       'servings',
       'tryLater',
+      'favorite',
     ]),
     Type.Pick(createRecipeDtoScema, ['usesRecipes', 'tags']),
     Type.Object({

@@ -111,7 +111,7 @@ export function CreateRecipeBookPage({
     <Page>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
-          {updateRecipeBookId ? 'Edit recipe book' : 'New recipe book'}
+          {updateRecipeBookId ? 'Edit book' : 'New book'}
         </Typography>
       </Box>
       <form
@@ -134,7 +134,8 @@ export function CreateRecipeBookPage({
               name="recipeBookName"
               children={(field) => (
                 <field.TextField
-                  label="Recipe book name"
+                  label="Name"
+                  autoComplete="off"
                   fullWidth
                   multiline
                   onKeyDown={(event) => {

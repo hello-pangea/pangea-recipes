@@ -109,7 +109,7 @@ export function NewButton({ onOptionClick, slotProps }: Props) {
             <ListItemIcon>
               <MenuBookRoundedIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Recipe book</ListItemText>
+            <ListItemText>Book</ListItemText>
           </Link>
         </MenuItem>
       </Menu>

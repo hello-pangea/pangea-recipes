@@ -12,6 +12,7 @@ import {
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
@@ -100,6 +101,16 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
             id: sourceRecipeId,
             tryLater: true,
           });
+        } else if (
+          sourceType === 'recipe' &&
+          targetType === 'favorites_sidebar'
+        ) {
+          const sourceRecipeId = source.data['recipeId'] as string;
+
+          updateRecipe.mutate({
+            id: sourceRecipeId,
+            favorite: true,
+          });
         }
       },
       canMonitor: ({ source }) =>
@@ -150,7 +161,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         <List>
           <DroppableListItem
             icon={<RestaurantMenuRoundedIcon />}
-            label="Recipes"
+            label="My recipes"
             onClick={onClose}
             linkProps={{
               to: '/app/recipes',
@@ -163,6 +174,23 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               return (
                 source.data['type'] === 'recipe' &&
                 Boolean(source.data['tryLater'])
+              );
+            }}
+          />
+          <DroppableListItem
+            icon={<FavoriteRoundedIcon />}
+            label="Favorites"
+            onClick={onClose}
+            linkProps={{
+              to: '/app/favorites',
+            }}
+            plainPath="/app/favorites"
+            data={{
+              type: 'favorites_sidebar',
+            }}
+            canDrop={({ source }) => {
+              return (
+                source.data['type'] === 'recipe' && !source.data['favorite']
               );
             }}
           />
@@ -185,7 +213,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           />
           <ListItem
             icon={<MenuBookRoundedIcon />}
-            label="Recipe books"
+            label="Books"
             onClick={onClose}
             linkProps={{
               to: '/app/recipe-books',
