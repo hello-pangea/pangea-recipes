@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { getRecipeQueryOptions } from '../../recipes/index.js';
+import {
+  getListRecipesQueryOptions,
+  getRecipeQueryOptions,
+} from '../../recipes/index.js';
 import type { RecipeBook } from '../types/recipeBook.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
@@ -43,6 +46,11 @@ export function useAddRecipeToRecipeBook({ mutationConfig }: Options = {}) {
       queryClient.setQueryData(
         getRecipeBookQueryOptions(data.id).queryKey,
         data,
+      );
+      void queryClient.invalidateQueries(
+        getListRecipesQueryOptions({
+          recipeBookId: data.id,
+        }),
       );
 
       void onSuccess?.(...args);
