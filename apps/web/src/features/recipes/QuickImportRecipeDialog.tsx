@@ -1,4 +1,4 @@
-import DownloadRoundedIcon from '@mui/icons-material/DownloadRounded';
+import SaveAltRoundedIcon from '@mui/icons-material/SaveAltRounded';
 import {
   Button,
   Dialog,
@@ -64,11 +64,14 @@ export function QuickImportRecipeDialog({ open, onClose }: Props) {
           onClose();
         }
       }}
+      maxWidth="xs"
+      fullWidth
     >
-      <DialogTitle>Quick import</DialogTitle>
+      <DialogTitle>Save from url</DialogTitle>
       <DialogContent>
         <Typography sx={{ mb: 2 }}>
-          Paste the url of the recipe you want to import
+          Paste the url of a recipe you want to save. It can be from any
+          website!
         </Typography>
         <TextField
           placeholder="Recipe url"
@@ -95,12 +98,12 @@ export function QuickImportRecipeDialog({ open, onClose }: Props) {
         <Button
           loading={importRecipeQuick.isPending}
           variant="contained"
-          startIcon={<DownloadRoundedIcon />}
+          startIcon={<SaveAltRoundedIcon />}
           onClick={() => {
             handleImportRecipe();
           }}
         >
-          Import
+          Save
         </Button>
       </DialogActions>
     </Dialog>

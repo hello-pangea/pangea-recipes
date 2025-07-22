@@ -8,7 +8,7 @@ import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
 import { useParsingRecipeImports } from '../recipe-imports/useParsingRecipeImports';
-import { EmptyRecipes } from './EmptyRecipes';
+import { EmptyRecipesIntro } from './EmptyRecipesIntro';
 import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {
@@ -82,7 +82,7 @@ export function RecipesPage() {
             </Grid>
           ))}
       </Grid>
-      {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      {!isError && !recipes.length && <EmptyRecipesIntro sx={{ my: 8 }} />}
     </Page>
   );
 }
