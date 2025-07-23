@@ -169,6 +169,16 @@ export async function getLlmImportRecipe(urlString: string) {
 
   const llmRecipe = llmRecipeSchema.parse(openAiRes.output_parsed as unknown);
 
+  if (llmRecipe.totalTime !== null) {
+    llmRecipe.totalTime = llmRecipe.totalTime * 60;
+  }
+  if (llmRecipe.prepTime !== null) {
+    llmRecipe.prepTime = llmRecipe.prepTime * 60;
+  }
+  if (llmRecipe.cookTime !== null) {
+    llmRecipe.cookTime = llmRecipe.cookTime * 60;
+  }
+
   llmRecipe.ingredientGroups.forEach((ig) => {
     ig.ingredients.forEach((i) => {
       if (i.unit === '' || i.unit === 'null') {

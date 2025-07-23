@@ -539,11 +539,15 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           form.setFieldValue('description', importedRecipe.description);
           form.setFieldValue(
             'cookTime',
-            importedRecipe.cookTime?.toString() ?? '',
+            importedRecipe.cookTime
+              ? Math.round(importedRecipe.cookTime / 60).toString()
+              : '',
           );
           form.setFieldValue(
             'prepTime',
-            importedRecipe.prepTime?.toString() ?? '',
+            importedRecipe.prepTime
+              ? Math.round(importedRecipe.prepTime / 60).toString()
+              : '',
           );
           form.setFieldValue(
             'servings',

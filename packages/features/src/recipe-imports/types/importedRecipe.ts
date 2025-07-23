@@ -12,12 +12,12 @@ export const importedRecipeSchema = Type.Object(
 
     description: Nullable(Type.String()),
 
-    /** Minutes */
-    prepTime: Nullable(Type.Number({ description: 'Minutes' })),
-    /** Minutes */
-    cookTime: Nullable(Type.Number({ description: 'Minutes' })),
-    /** Minutes */
-    totalTime: Nullable(Type.Number({ description: 'Minutes' })),
+    /** Seconds */
+    prepTime: Nullable(Type.Number({ description: 'Seconds' })),
+    /** Seconds */
+    cookTime: Nullable(Type.Number({ description: 'Seconds' })),
+    /** Seconds */
+    totalTime: Nullable(Type.Number({ description: 'Seconds' })),
 
     servings: Nullable(Type.Number()),
 
