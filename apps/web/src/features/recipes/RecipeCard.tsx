@@ -78,8 +78,9 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
           },
         });
       },
+      canDrag: () => ownsRecipe,
     });
-  }, [recipeId, recipe]);
+  }, [recipeId, recipe, ownsRecipe]);
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
