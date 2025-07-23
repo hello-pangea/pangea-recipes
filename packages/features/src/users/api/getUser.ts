@@ -3,8 +3,11 @@ import { api } from '../../lib/api.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import type { User } from '../types/user.js';
 
-function getUser(userId: string) {
-  return api.get(`users/${userId}`).then((res) => res.json<{ user: User }>());
+function getUser(userId: string): Promise<User> {
+  return api
+    .get(`users/${userId}`)
+    .then((res) => res.json<{ user: User }>())
+    .then((res) => res.user);
 }
 
 function getUserQueryOptions(userId: string) {

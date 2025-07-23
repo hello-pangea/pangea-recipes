@@ -12,6 +12,7 @@ import {
   Box,
   Button,
   Card,
+  Chip,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -25,7 +26,9 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { stepDownSnapped, stepUpSnapped } from '@open-zero/features';
+import { usePublicProfile } from '@open-zero/features/profiles';
 import { getRecipeQueryOptions } from '@open-zero/features/recipes';
+import { useSignedInUser } from '@open-zero/features/users';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
@@ -68,6 +71,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
     ? (getNumberFromInput(servingsModifier) ?? 1) / recipe.servings
     : (getNumberFromInput(servingsModifier) ?? 1);
   const isPhone = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const { data: user } = useSignedInUser();
+  const { data: sharedByProfile } = usePublicProfile({
+    userId: recipe.userId,
+    queryConfig: {
+      enabled: recipe.userId !== user?.id,
+    },
+  });
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
@@ -100,7 +110,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
               mb: 2,
             }}
           >
-            <Box>
+            <Stack spacing={0.5} sx={{ alignItems: 'flex-start' }}>
+              {sharedByProfile && (
+                <Chip
+                  size="small"
+                  label={`Shared by ${sharedByProfile.name}`}
+                />
+              )}
               <Typography variant="h1">{recipe.name}</Typography>
               {recipe.websiteSource && (
                 <Link
@@ -109,12 +125,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
                   target="_blank"
                   sx={{
                     color: (theme) => theme.vars.palette.text.secondary,
+                    display: 'block',
                   }}
                 >
                   {recipe.websiteSource.title}
                 </Link>
               )}
-            </Box>
+            </Stack>
             {!readOnly && (
               <IconButton
                 id="more-button"

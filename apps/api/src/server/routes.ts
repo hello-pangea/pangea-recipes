@@ -1,5 +1,6 @@
 import { authRoutes } from '#src/features/auth/authRoutes.ts';
 import { canonicalIngredientRoutes } from '#src/features/canonical-ingredients/canonicalIngredientRoutes.ts';
+import { profileRoutes } from '#src/features/profiles/profileRoutes.ts';
 import { recipeBookRequestRoutes } from '#src/features/recipe-book-requests/recipeBookRequestRoutes.ts';
 import { imageRoutes } from '../features/images/imageRoutes.ts';
 import { recipeBookRoutes } from '../features/recipe-books/recipeBookRoutes.ts';
@@ -12,6 +13,7 @@ export async function routes(fastify: FastifyTypebox) {
   await fastify.register(canonicalIngredientRoutes, {
     prefix: '/canonical-ingredients',
   });
+  await fastify.register(profileRoutes, { prefix: '/profiles' });
   await fastify.register(recipeRoutes, { prefix: '/recipes' });
   await fastify.register(recipeBookRoutes, { prefix: '/recipe-books' });
   await fastify.register(recipeImportRoutes, { prefix: '/recipe-imports' });

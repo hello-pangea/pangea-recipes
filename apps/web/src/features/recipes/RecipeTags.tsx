@@ -92,6 +92,10 @@ export function RecipeTags({ recipeId, readOnly, sx = [] }: Props) {
     });
   }
 
+  if (readOnly && !tags.length) {
+    return null;
+  }
+
   return (
     <Box
       sx={[
