@@ -10,7 +10,6 @@ import {
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
@@ -225,7 +224,6 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               ? recipeBooks?.map((recipeBook) => (
                   <DroppableRecipeBookListItem
                     key={recipeBook.id}
-                    icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}
                     label={recipeBook.name}
                     onClick={onClose}
                     isNested
