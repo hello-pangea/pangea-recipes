@@ -25,8 +25,8 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@eslint/js": "^9.31.0",
-    "eslint": "^9.31.0",
+    "@eslint/js": "^9.32.0",
+    "eslint": "^9.32.0",
     "prettier": "^3.6.2",
     "sort-package-json": "^3.4.0",
     "turbo": "^2.5.5"
