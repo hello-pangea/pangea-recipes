@@ -1,13 +1,13 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
-import { updateUserDtoSchema, userSchemaRef } from '@open-zero/features/users';
-import { Type } from '@sinclair/typebox';
+import { updateUserDtoSchema, userSchema } from '@open-zero/features/users';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Users';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function userRoutes(fastify: FastifyTypebox) {
+export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.get(
     '/:userId',
     {
@@ -15,12 +15,12 @@ export async function userRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Get a user',
-        params: Type.Object({
-          userId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          userId: z.uuidv4(),
         }),
         response: {
-          200: Type.Object({
-            user: userSchemaRef,
+          200: z.object({
+            user: userSchema,
           }),
         },
       },
@@ -51,8 +51,8 @@ export async function userRoutes(fastify: FastifyTypebox) {
         tags: [routeTag],
         summary: 'Get currently signed in user',
         response: {
-          200: Type.Object({
-            user: Type.Union([userSchemaRef, Type.Null()]),
+          200: z.object({
+            user: z.union([userSchema, z.null()]),
           }),
         },
       },
@@ -85,13 +85,13 @@ export async function userRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Update a user',
-        params: Type.Object({
-          userId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          userId: z.uuidv4(),
         }),
         body: updateUserDtoSchema,
         response: {
-          200: Type.Object({
-            user: userSchemaRef,
+          200: z.object({
+            user: userSchema,
           }),
         },
       },
@@ -122,4 +122,4 @@ export async function userRoutes(fastify: FastifyTypebox) {
       };
     },
   );
-}
+};

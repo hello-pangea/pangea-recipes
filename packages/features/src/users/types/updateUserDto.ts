@@ -1,12 +1,13 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { z } from 'zod/v4';
 import { userSchema } from './user.js';
 
-export type UpdateUserDto = Static<typeof updateUserDtoSchema>;
-export const updateUserDtoSchema = Type.Partial(
-  Type.Pick(userSchema, [
-    'themePreference',
-    'accentColor',
-    'unitsPreference',
-    'name',
-  ]),
-);
+export const updateUserDtoSchema = userSchema
+  .pick({
+    themePreference: true,
+    unitsPreference: true,
+    accentColor: true,
+    name: true,
+  })
+  .partial();
+
+export type UpdateUserDto = z.infer<typeof updateUserDtoSchema>;

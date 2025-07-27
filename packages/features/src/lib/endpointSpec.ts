@@ -1,7 +1,7 @@
-import type { TObject, TSchema } from '@sinclair/typebox';
+import type { ZodType } from 'zod/v4';
 
 export interface EndpointSpec {
-  body?: TSchema;
-  search?: TObject;
-  response?: TSchema;
+  body?: ZodType;
+  search?: ZodType;
+  response?: ZodType;
 }

@@ -23,9 +23,9 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@sinclair/typebox": "^0.34.38",
-    "@tanstack/react-query": "^5.83.0",
-    "ky": "^1.8.2"
+    "@tanstack/react-query": "^5.81.5",
+    "ky": "^1.8.1",
+    "zod": "^4.0.10"
   },
   "devDependencies": {
     "@open-zero/eslint-config": "workspace:*",

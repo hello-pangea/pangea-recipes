@@ -1,23 +1,24 @@
-import { Type, type Static } from '@sinclair/typebox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod/v4';
 import { api } from '../../lib/api.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
-type InviteMembersToRecipeBook = Static<
+export const inviteMembersToRecipeBookBodySchema = z
+  .object({
+    emails: z.array(z.email()).optional(),
+    userIds: z.array(z.uuidv4()).optional(),
+    role: z.enum(['owner', 'editor', 'viewer']),
+  })
+  .meta({
+    id: 'InviteMembersToRecipeBookBody',
+  });
+
+export type InviteMembersToRecipeBook = z.infer<
   typeof inviteMembersToRecipeBookBodySchema
 > & {
   recipeBookId: string;
 };
-export const inviteMembersToRecipeBookBodySchema = Type.Object({
-  emails: Type.Optional(Type.Array(Type.String({ format: 'email' }))),
-  userIds: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
-  role: Type.Union([
-    Type.Literal('owner'),
-    Type.Literal('editor'),
-    Type.Literal('viewer'),
-  ]),
-});
 
 function inviteMembersToRecipeBook(data: InviteMembersToRecipeBook) {
   return api.post(`recipe-books/${data.recipeBookId}/members`, {

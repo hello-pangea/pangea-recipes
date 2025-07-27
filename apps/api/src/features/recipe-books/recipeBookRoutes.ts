@@ -1,11 +1,11 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
 import {
   createRecipeBookDtoScema,
-  recipeBookSchemaRef,
+  recipeBookSchema,
   updateRecipeBookDtoScema,
 } from '@open-zero/features/recipe-books';
-import { Type } from '@sinclair/typebox';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { ApiError } from '../../lib/ApiError.ts';
 import { noContentSchema } from '../../types/noContent.ts';
 import { verifySession } from '../auth/verifySession.ts';
@@ -16,7 +16,9 @@ import { recipeBookRecipeRoutes } from './recipeBookRecipeRoutes.ts';
 const routeTag = 'Recipe books';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeBookRoutes(fastify: FastifyTypebox) {
+export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
+  fastify,
+) {
   fastify.post(
     '',
     {
@@ -26,8 +28,8 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
         summary: 'Create a recipe book',
         body: createRecipeBookDtoScema,
         response: {
-          200: Type.Object({
-            recipeBook: recipeBookSchemaRef,
+          200: z.object({
+            recipeBook: recipeBookSchema,
           }),
         },
       },
@@ -69,12 +71,12 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List recipe books',
-        querystring: Type.Object({
-          userId: Type.String({ format: 'uuid' }),
+        querystring: z.object({
+          userId: z.uuidv4(),
         }),
         response: {
-          200: Type.Object({
-            recipeBooks: Type.Array(recipeBookSchemaRef),
+          200: z.object({
+            recipeBooks: z.array(recipeBookSchema),
           }),
         },
       },
@@ -113,12 +115,12 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Get a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookId: z.uuidv4(),
         }),
         response: {
-          200: Type.Object({
-            recipeBook: recipeBookSchemaRef,
+          200: z.object({
+            recipeBook: recipeBookSchema,
           }),
         },
       },
@@ -158,13 +160,13 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Update a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookId: z.uuidv4(),
         }),
         body: updateRecipeBookDtoScema,
         response: {
-          200: Type.Object({
-            recipeBook: recipeBookSchemaRef,
+          200: z.object({
+            recipeBook: recipeBookSchema,
           }),
         },
       },
@@ -197,8 +199,8 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Delete a recipe',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookId: z.uuidv4(),
         }),
         response: {
           204: noContentSchema,
@@ -246,4 +248,4 @@ export async function recipeBookRoutes(fastify: FastifyTypebox) {
 
   fastify.register(recipeBookRecipeRoutes);
   fastify.register(recipeBookMemberRoutes);
-}
+};

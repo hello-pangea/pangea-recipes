@@ -1,27 +1,26 @@
-import type { Static } from '@sinclair/typebox';
-import { Type } from '@sinclair/typebox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod/v4';
 import { api } from '../../lib/api.js';
 import type { EndpointSpec } from '../../lib/endpointSpec.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import {
-  canonicalIngredientSchemaRef,
+  canonicalIngredientSchema,
   type CanonicalIngredient,
 } from '../types/canonicalIngredient.js';
 import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
 export const createCanonicalIngredientSpec = {
-  body: Type.Object({
-    name: Type.String({ minLength: 1 }),
-    iconId: Type.Optional(Type.String({ format: 'uuid' })),
-    aliases: Type.Optional(Type.Array(Type.String({ minLength: 1 }))),
+  body: z.object({
+    name: z.string().min(1),
+    iconId: z.uuidv4().optional(),
+    aliases: z.array(z.string().min(1)).optional(),
   }),
-  response: Type.Object({
-    canonicalIngredient: canonicalIngredientSchemaRef,
+  response: z.object({
+    canonicalIngredient: canonicalIngredientSchema,
   }),
 } satisfies EndpointSpec;
-type Body = Static<typeof createCanonicalIngredientSpec.body>;
-type Response = Static<typeof createCanonicalIngredientSpec.response>;
+type Body = z.infer<typeof createCanonicalIngredientSpec.body>;
+type Response = z.infer<typeof createCanonicalIngredientSpec.response>;
 
 function createCanonicalIngredient(body: Body): Promise<CanonicalIngredient> {
   return api

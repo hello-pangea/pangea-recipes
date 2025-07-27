@@ -1,29 +1,29 @@
-import { Type, type Static } from '@sinclair/typebox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod/v4';
 import { api } from '../../lib/api.js';
 import type { EndpointSpec } from '../../lib/endpointSpec.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import {
-  canonicalIngredientSchemaRef,
+  canonicalIngredientSchema,
   type CanonicalIngredient,
 } from '../types/canonicalIngredient.js';
 import { createCanonicalIngredientSpec } from './createCanonicalIngredient.js';
 import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
 export const updateCanonicalIngredientSpec = {
-  body: Type.Partial(
-    Type.Pick(createCanonicalIngredientSpec.body, [
-      'name',
-      'iconId',
-      'aliases',
-    ]),
-  ),
-  response: Type.Object({
-    canonicalIngredient: canonicalIngredientSchemaRef,
+  body: createCanonicalIngredientSpec.body
+    .pick({
+      name: true,
+      iconId: true,
+      aliases: true,
+    })
+    .partial(),
+  response: z.object({
+    canonicalIngredient: canonicalIngredientSchema,
   }),
 } satisfies EndpointSpec;
-type Body = Static<typeof updateCanonicalIngredientSpec.body>;
-type Response = Static<typeof updateCanonicalIngredientSpec.response>;
+type Body = z.infer<typeof updateCanonicalIngredientSpec.body>;
+type Response = z.infer<typeof updateCanonicalIngredientSpec.response>;
 
 function updateCanonicalIngredient(
   data: Body & { id: string },

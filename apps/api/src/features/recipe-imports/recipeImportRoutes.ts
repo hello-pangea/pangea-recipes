@@ -1,12 +1,13 @@
 import { ApiError } from '#src/lib/ApiError.ts';
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
+import { noContentSchema } from '#src/types/noContent.ts';
 import { prisma } from '@open-zero/database';
 import {
   importedRecipeSchema,
   recipeImportSchema,
 } from '@open-zero/features/recipe-imports';
 import * as Sentry from '@sentry/node';
-import { Type } from '@sinclair/typebox';
+import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 import { createRecipe } from '../recipes/recipeRepo.ts';
 import { getLlmImportRecipe } from './getLlmImportRecipe.ts';
@@ -15,7 +16,9 @@ import { isValidHttpUrl } from './isValidHttpUrl.ts';
 const routeTag = 'Recipe imports';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeImportRoutes(fastify: FastifyTypebox) {
+export const recipeImportRoutes: FastifyPluginAsyncZod = async function (
+  fastify,
+) {
   fastify.post(
     '',
     {
@@ -23,15 +26,13 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Import a recipe from a url',
-        body: Type.Object({
-          url: Type.String({
-            format: 'uri',
-          }),
+        body: z.object({
+          url: z.url(),
         }),
         response: {
-          200: Type.Object({
+          200: z.object({
             recipe: importedRecipeSchema,
-            websitePageId: Type.String(),
+            websitePageId: z.uuidv4(),
           }),
         },
       },
@@ -70,11 +71,11 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: "Import a recipe from a url (don't await parsing)",
-        body: Type.Object({
-          url: Type.String({ format: 'uri' }),
+        body: z.object({
+          url: z.url(),
         }),
         response: {
-          202: Type.Null({ description: 'No content' }),
+          202: noContentSchema,
         },
       },
     },
@@ -157,21 +158,13 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List recipe imports',
-        querystring: Type.Object({
-          userId: Type.String({
-            format: 'uuid',
-          }),
-          status: Type.Optional(
-            Type.Union([
-              Type.Literal('parsing'),
-              Type.Literal('complete'),
-              Type.Literal('failed'),
-            ]),
-          ),
+        querystring: z.object({
+          userId: z.uuidv4(),
+          status: z.enum(['parsing', 'complete', 'failed']).optional(),
         }),
         response: {
-          200: Type.Object({
-            recipeImports: Type.Array(recipeImportSchema),
+          200: z.object({
+            recipeImports: z.array(recipeImportSchema),
           }),
         },
       },
@@ -198,4 +191,4 @@ export async function recipeImportRoutes(fastify: FastifyTypebox) {
       };
     },
   );
-}
+};

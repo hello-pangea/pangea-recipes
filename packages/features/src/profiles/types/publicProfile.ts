@@ -1,17 +1,15 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
+import { z } from 'zod/v4';
 
-export type PublicProfile = Static<typeof publicProfileSchema>;
-export const publicProfileSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
+export const publicProfileSchema = z
+  .object({
+    id: z.uuidv4(),
 
-    name: Type.String(),
+    name: z.string(),
 
-    image: Nullable(Type.String()),
-  },
-  { $id: 'PublicProfile' },
-);
+    image: z.string().nullable(),
+  })
+  .meta({
+    id: 'PublicProfile',
+  });
+
+export type PublicProfile = z.infer<typeof publicProfileSchema>;

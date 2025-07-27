@@ -1,12 +1,12 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
 import {
-  canonicalIngredientSchemaRef,
+  canonicalIngredientSchema,
   createCanonicalIngredientSpec,
   updateCanonicalIngredientSpec,
   type CanonicalIngredient,
 } from '@open-zero/features/canonical-ingredients';
-import { Type } from '@sinclair/typebox';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { getFileUrl } from '../../lib/s3.ts';
 import { noContentSchema } from '../../types/noContent.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
@@ -15,7 +15,9 @@ import { verifySession } from '../auth/verifySession.ts';
 const routeTag = 'Canonical ingredients';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
+export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
+  fastify,
+) {
   fastify.post(
     '',
     {
@@ -79,8 +81,8 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
         tags: [routeTag],
         summary: 'List canonical ingredients',
         response: {
-          200: Type.Object({
-            canonicalIngredients: Type.Array(canonicalIngredientSchemaRef),
+          200: z.object({
+            canonicalIngredients: z.array(canonicalIngredientSchema),
           }),
         },
       },
@@ -130,12 +132,12 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Get a canonical ingredient',
-        params: Type.Object({
-          canonicalIngredientId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          canonicalIngredientId: z.uuidv4(),
         }),
         response: {
-          200: Type.Object({
-            canonicalIngredient: canonicalIngredientSchemaRef,
+          200: z.object({
+            canonicalIngredient: canonicalIngredientSchema,
           }),
         },
       },
@@ -185,8 +187,8 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Update a canonical ingredient',
-        params: Type.Object({
-          canonicalIngredientId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          canonicalIngredientId: z.uuidv4(),
         }),
         body: updateCanonicalIngredientSpec.body,
         response: {
@@ -247,8 +249,8 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Delete a canonical ingredient',
-        params: Type.Object({
-          canonicalIngredientId: Type.String(),
+        params: z.object({
+          canonicalIngredientId: z.uuidv4(),
         }),
         response: {
           204: noContentSchema,
@@ -267,4 +269,4 @@ export async function canonicalIngredientRoutes(fastify: FastifyTypebox) {
       return reply.code(204).send();
     },
   );
-}
+};

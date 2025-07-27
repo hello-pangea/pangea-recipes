@@ -1,4 +1,3 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma, type Prisma } from '@open-zero/database';
 import { tagSchema, type CreateTagDto } from '@open-zero/features';
 import {
@@ -7,7 +6,8 @@ import {
   recipeSchema,
   updateRecipeDtoScema,
 } from '@open-zero/features/recipes';
-import { Type } from '@sinclair/typebox';
+import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { ApiError } from '../../lib/ApiError.ts';
 import { getFileUrl } from '../../lib/s3.ts';
 import { noContentSchema } from '../../types/noContent.ts';
@@ -20,7 +20,7 @@ import { updateInstructionGroups } from './updateInstructionGroups.ts';
 const routeTag = 'Recipes';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeRoutes(fastify: FastifyTypebox) {
+export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',
     {
@@ -30,7 +30,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         summary: 'Create a recipe',
         body: createRecipeDtoScema,
         response: {
-          200: Type.Object({
+          200: z.object({
             recipe: recipeSchema,
           }),
         },
@@ -63,13 +63,13 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List recipes',
-        querystring: Type.Object({
-          userId: Type.Optional(Type.String({ format: 'uuid' })),
-          recipeBookId: Type.Optional(Type.String({ format: 'uuid' })),
+        querystring: z.object({
+          userId: z.uuidv4().optional(),
+          recipeBookId: z.uuidv4().optional(),
         }),
         response: {
-          200: Type.Object({
-            recipes: Type.Array(recipeProjectedSchema),
+          200: z.object({
+            recipes: z.array(recipeProjectedSchema),
           }),
         },
       },
@@ -149,11 +149,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Get a recipe',
-        params: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeId: z.uuidv4(),
         }),
         response: {
-          200: Type.Object({
+          200: z.object({
             recipe: recipeSchema,
           }),
         },
@@ -183,12 +183,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Update a recipe',
-        params: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeId: z.uuidv4(),
         }),
         body: updateRecipeDtoScema,
         response: {
-          200: Type.Object({
+          200: z.object({
             recipe: recipeSchema,
           }),
         },
@@ -385,8 +385,8 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Delete a recipe',
-        params: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeId: z.uuidv4(),
         }),
         response: {
           204: noContentSchema,
@@ -430,12 +430,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List used recipe tags',
-        querystring: Type.Object({
-          userId: Type.Optional(Type.String({ format: 'uuid' })),
+        querystring: z.object({
+          userId: z.uuidv4().optional(),
         }),
         response: {
-          200: Type.Object({
-            tags: Type.Array(tagSchema),
+          200: z.object({
+            tags: z.array(tagSchema),
           }),
         },
       },
@@ -469,4 +469,4 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       };
     },
   );
-}
+};

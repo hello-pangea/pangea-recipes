@@ -1,31 +1,24 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { z } from 'zod/v4';
 
-const canonicalIngredientSchemaId = 'CanonicalIngredient';
+export const canonicalIngredientSchema = z
+  .object({
+    id: z.uuidv4(),
 
-export type CanonicalIngredient = Static<typeof canonicalIngredientSchema>;
-export const canonicalIngredientSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
+    createdAt: z.date(),
 
-    createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
+    name: z.string(),
 
-    name: Type.String(),
+    icon: z
+      .object({
+        id: z.uuidv4(),
+        url: z.string(),
+      })
+      .optional(),
 
-    icon: Type.Optional(
-      Type.Object({
-        id: Type.String({ format: 'uri' }),
-        url: Type.String(),
-      }),
-    ),
+    aliases: z.array(z.string()),
+  })
+  .meta({
+    id: 'CanonicalIngredient',
+  });
 
-    aliases: Type.Array(Type.String()),
-  },
-  { $id: canonicalIngredientSchemaId },
-);
-
-export const canonicalIngredientSchemaRef = Type.Unsafe<CanonicalIngredient>(
-  Type.Ref(canonicalIngredientSchemaId),
-);
+export type CanonicalIngredient = z.infer<typeof canonicalIngredientSchema>;

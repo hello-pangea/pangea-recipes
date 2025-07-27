@@ -1,17 +1,19 @@
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { noContentSchema } from '#src/types/noContent.ts';
 import { prisma } from '@open-zero/database';
 import { InviteToRecipeBook } from '@open-zero/email';
 import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipe-books';
-import { Type } from '@sinclair/typebox';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe books';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
+export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
+  fastify,
+) {
   fastify.post(
     '/:recipeBookId/members',
     {
@@ -19,8 +21,8 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Invite or add new members to a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookId: z.uuidv4(),
         }),
         body: inviteMembersToRecipeBookBodySchema,
       },
@@ -114,9 +116,9 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Delete a member from a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
-          userId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookId: z.uuidv4(),
+          userId: z.uuidv4(),
         }),
         response: {
           200: noContentSchema,
@@ -146,11 +148,11 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Delete an invite from a recipe book',
-        params: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookId: z.uuidv4(),
         }),
-        body: Type.Object({
-          inviteeEmail: Type.String({ format: 'email' }),
+        body: z.object({
+          inviteeEmail: z.uuidv4(),
         }),
         response: {
           200: noContentSchema,
@@ -173,4 +175,4 @@ export async function recipeBookMemberRoutes(fastify: FastifyTypebox) {
       return null;
     },
   );
-}
+};

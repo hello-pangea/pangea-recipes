@@ -1,7 +1,12 @@
-import { Type, type Static } from '@sinclair/typebox';
+import type { z } from 'zod/v4';
 import { createRecipeBookDtoScema } from './createRecipeBookDto.js';
 
-export type UpdateRecipeBookDto = Static<typeof updateRecipeBookDtoScema>;
-export const updateRecipeBookDtoScema = Type.Partial(
-  Type.Pick(createRecipeBookDtoScema, ['name', 'description', 'access']),
-);
+export const updateRecipeBookDtoScema = createRecipeBookDtoScema
+  .pick({
+    name: true,
+    description: true,
+    access: true,
+  })
+  .partial();
+
+export type UpdateRecipeBookDto = z.infer<typeof updateRecipeBookDtoScema>;

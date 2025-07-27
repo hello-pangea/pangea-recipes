@@ -1,16 +1,18 @@
 import { resend } from '#src/lib/resend.ts';
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { noContentSchema } from '#src/types/noContent.ts';
 import { prisma } from '@open-zero/database';
 import { RequestToJoinRecipeBookEmail } from '@open-zero/email';
-import { recipeBookRequestSchemaRef } from '@open-zero/features/recipe-book-requests';
-import { Type } from '@sinclair/typebox';
+import { recipeBookRequestSchema } from '@open-zero/features/recipe-book-requests';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe book requests';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
+export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
+  fastify,
+) {
   fastify.post(
     '',
     {
@@ -20,8 +22,8 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
         summary: 'Request access to a recipe book',
         description:
           'Uses the auth token in the request to determin who is making the request.',
-        body: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
+        body: z.object({
+          recipeBookId: z.uuidv4(),
         }),
         response: {
           200: noContentSchema,
@@ -117,14 +119,14 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
         summary: 'List recipe book requests',
         description:
           'For privacy reasons, the user can only check for requests that they made.',
-        querystring: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
-          userId: Type.String({ format: 'uuid' }),
+        querystring: z.object({
+          recipeBookId: z.uuidv4(),
+          userId: z.uuidv4(),
         }),
         response: {
-          200: {
-            recipeBookRequests: Type.Array(recipeBookRequestSchemaRef),
-          },
+          200: z.object({
+            recipeBookRequests: z.array(recipeBookRequestSchema),
+          }),
         },
       },
     },
@@ -142,10 +144,19 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
           acceptedAt: null,
           declinedAt: null,
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
 
       return {
-        recipeBookRequests: recipeBookRequest ? [recipeBookRequest] : [],
+        recipeBookRequests: recipeBookRequest
+          ? [{ ...recipeBookRequest, name: recipeBookRequest.user.name }]
+          : [],
       };
     },
   );
@@ -156,15 +167,11 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Accept a recipe book request',
-        params: Type.Object({
-          recipeBookRequestId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookRequestId: z.uuidv4(),
         }),
-        body: Type.Object({
-          role: Type.Union([
-            Type.Literal('owner'),
-            Type.Literal('editor'),
-            Type.Literal('viewer'),
-          ]),
+        body: z.object({
+          role: z.enum(['owner', 'editor', 'viewer']),
         }),
         response: {
           200: noContentSchema,
@@ -204,8 +211,8 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Accept a recipe book request',
-        params: Type.Object({
-          recipeBookRequestId: Type.String({ format: 'uuid' }),
+        params: z.object({
+          recipeBookRequestId: z.uuidv4(),
         }),
         response: {
           200: noContentSchema,
@@ -229,4 +236,4 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
       return null;
     },
   );
-}
+};
