@@ -68,16 +68,20 @@ export function CreateCanonicalIngredientPage({
 
       if (updateCanonicalIngredientId) {
         canonicalIngredientUpdater.mutate({
-          id: updateCanonicalIngredientId,
-          name: parsed.name,
-          iconId: parsed.icon?.id ?? undefined,
-          aliases: parsed.aliases.map((alias) => alias.name),
+          params: { id: updateCanonicalIngredientId },
+          body: {
+            name: parsed.name,
+            iconId: parsed.icon?.id ?? undefined,
+            aliases: parsed.aliases.map((alias) => alias.name),
+          },
         });
       } else {
         canonicalIngredientCreator.mutate({
-          name: parsed.name,
-          iconId: parsed.icon?.id ?? undefined,
-          aliases: parsed.aliases.map((alias) => alias.name),
+          body: {
+            name: parsed.name,
+            iconId: parsed.icon?.id ?? undefined,
+            aliases: parsed.aliases.map((alias) => alias.name),
+          },
         });
       }
     },

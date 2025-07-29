@@ -1,38 +1,43 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod/v4';
-import { api } from '../../lib/api.js';
-import type { EndpointSpec } from '../../lib/endpointSpec.js';
+import { defineContract, makeRequest } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import {
-  canonicalIngredientSchema,
-  type CanonicalIngredient,
-} from '../types/canonicalIngredient.js';
-import { createCanonicalIngredientSpec } from './createCanonicalIngredient.js';
+import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
+import { createCanonicalIngredientContract } from './createCanonicalIngredient.js';
 import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
-export const updateCanonicalIngredientSpec = {
-  body: createCanonicalIngredientSpec.body
-    .pick({
-      name: true,
-      iconId: true,
-      aliases: true,
-    })
-    .partial(),
-  response: z.object({
-    canonicalIngredient: canonicalIngredientSchema,
-  }),
-} satisfies EndpointSpec;
-type Body = z.infer<typeof updateCanonicalIngredientSpec.body>;
-type Response = z.infer<typeof updateCanonicalIngredientSpec.response>;
+export const updateCanonicalIngredientContract = defineContract(
+  'canonical-ingredients/:id',
+  {
+    path: 'canonical-ingredients/:id',
+    method: 'patch',
+    params: z.object({
+      id: z.uuidv4(),
+    }),
+    body: createCanonicalIngredientContract.body
+      .pick({
+        name: true,
+        iconId: true,
+        aliases: true,
+      })
+      .partial(),
+    response: {
+      200: z.object({
+        canonicalIngredient: canonicalIngredientSchema,
+      }),
+    },
+    search: z.object({
+      thing: z.string(),
+    }),
+  },
+);
 
-function updateCanonicalIngredient(
-  data: Body & { id: string },
-): Promise<CanonicalIngredient> {
-  return api
-    .patch(`canonical-ingredients/${data.id}`, { json: data })
-    .json<Response>()
-    .then((res) => res.canonicalIngredient);
-}
+const updateCanonicalIngredient = makeRequest(
+  updateCanonicalIngredientContract,
+  {
+    select: (res) => res.canonicalIngredient,
+  },
+);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof updateCanonicalIngredient>;

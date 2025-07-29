@@ -1,8 +1,8 @@
 import { prisma } from '@open-zero/database';
 import {
   canonicalIngredientSchema,
-  createCanonicalIngredientSpec,
-  updateCanonicalIngredientSpec,
+  createCanonicalIngredientContract,
+  updateCanonicalIngredientContract,
   type CanonicalIngredient,
 } from '@open-zero/features/canonical-ingredients';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
@@ -25,10 +25,7 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'Create a canonical ingredient',
-        body: createCanonicalIngredientSpec.body,
-        response: {
-          200: createCanonicalIngredientSpec.response,
-        },
+        ...createCanonicalIngredientContract,
       },
     },
     async (request) => {
@@ -181,28 +178,22 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.patch(
-    '/:canonicalIngredientId',
+    '/:id',
     {
       preHandler: fastify.auth([verifyIsAdmin]),
       schema: {
         tags: [routeTag],
         summary: 'Update a canonical ingredient',
-        params: z.object({
-          canonicalIngredientId: z.uuidv4(),
-        }),
-        body: updateCanonicalIngredientSpec.body,
-        response: {
-          200: updateCanonicalIngredientSpec.response,
-        },
+        ...updateCanonicalIngredientContract,
       },
     },
     async (request) => {
-      const { canonicalIngredientId } = request.params;
+      const { id } = request.params;
       const { name, iconId, aliases } = request.body;
 
       const canonicalIngredient = await prisma.canonicalIngredient.update({
         where: {
-          id: canonicalIngredientId,
+          id: id,
         },
         data: {
           name: name,
