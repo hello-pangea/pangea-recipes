@@ -1,14 +1,14 @@
 import { prisma } from '@open-zero/database';
 import {
-  canonicalIngredientSchema,
   createCanonicalIngredientContract,
+  deleteCanonicalIngredientContract,
+  getCanonicalIngredientContract,
+  listCanonicalIngredientsContract,
   updateCanonicalIngredientContract,
   type CanonicalIngredient,
 } from '@open-zero/features/canonical-ingredients';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { getFileUrl } from '../../lib/s3.ts';
-import { noContentSchema } from '../../types/noContent.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
 import { verifySession } from '../auth/verifySession.ts';
 
@@ -77,11 +77,7 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'List canonical ingredients',
-        response: {
-          200: z.object({
-            canonicalIngredients: z.array(canonicalIngredientSchema),
-          }),
-        },
+        ...listCanonicalIngredientsContract,
       },
     },
     async () => {
@@ -123,29 +119,22 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.get(
-    '/:canonicalIngredientId',
+    '/:id',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get a canonical ingredient',
-        params: z.object({
-          canonicalIngredientId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            canonicalIngredient: canonicalIngredientSchema,
-          }),
-        },
+        ...getCanonicalIngredientContract,
       },
     },
     async (request) => {
-      const { canonicalIngredientId } = request.params;
+      const { id } = request.params;
 
       const canonicalIngredient =
         await prisma.canonicalIngredient.findUniqueOrThrow({
           where: {
-            id: canonicalIngredientId,
+            id: id,
           },
           include: {
             icon: true,
@@ -234,30 +223,25 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.delete(
-    '/:canonicalIngredientId',
+    '/:id',
     {
       preHandler: fastify.auth([verifyIsAdmin]),
       schema: {
         tags: [routeTag],
         summary: 'Delete a canonical ingredient',
-        params: z.object({
-          canonicalIngredientId: z.uuidv4(),
-        }),
-        response: {
-          204: noContentSchema,
-        },
+        ...deleteCanonicalIngredientContract,
       },
     },
-    async (request, reply) => {
-      const { canonicalIngredientId } = request.params;
+    async (request) => {
+      const { id } = request.params;
 
       await prisma.canonicalIngredient.delete({
         where: {
-          id: canonicalIngredientId,
+          id: id,
         },
       });
 
-      return reply.code(204).send();
+      return null;
     },
   );
 };

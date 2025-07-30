@@ -1,14 +1,25 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { CanonicalIngredient } from '../types/canonicalIngredient.js';
+import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 
-function listCanonicalIngredients(): Promise<CanonicalIngredient[]> {
-  return api
-    .get(`canonical-ingredients`)
-    .json<{ canonicalIngredients: CanonicalIngredient[] }>()
-    .then((res) => res.canonicalIngredients);
-}
+export const listCanonicalIngredientsContract = defineContract(
+  'canonical-ingredients',
+  {
+    method: 'get',
+    response: {
+      200: z.object({
+        canonicalIngredients: z.array(canonicalIngredientSchema),
+      }),
+    },
+  },
+);
+
+const listCanonicalIngredients = makeRequest(listCanonicalIngredientsContract, {
+  select: (res) => res.canonicalIngredients,
+});
 
 export function getListCanonicalIngredientsQueryOptions() {
   return queryOptions({
