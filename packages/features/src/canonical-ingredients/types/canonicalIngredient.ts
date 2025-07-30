@@ -11,7 +11,7 @@ export const canonicalIngredientSchema = z
     icon: z
       .object({
         id: z.uuidv4(),
-        url: z.string(),
+        url: z.url(),
       })
       .optional(),
 

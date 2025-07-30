@@ -18,14 +18,14 @@ export const recipeSchema = z
     websiteSource: z
       .object({
         title: z.string().nullable(),
-        url: z.string(),
+        url: z.url(),
       })
       .nullable(),
     images: z
       .array(
         z.object({
           id: z.string(),
-          url: z.string(),
+          url: z.url(),
           favorite: z.boolean(),
         }),
       )

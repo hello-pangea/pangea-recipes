@@ -5,7 +5,7 @@ export const recipeImportSchema = z
     id: z.uuidv4(),
     createdAt: z.coerce.date(),
     userId: z.uuidv4(),
-    url: z.uuidv4(),
+    url: z.url(),
     error: z.string().nullable(),
     status: z.enum(['parsing', 'complete', 'failed']),
   })

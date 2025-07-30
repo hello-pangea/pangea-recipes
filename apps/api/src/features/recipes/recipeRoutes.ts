@@ -360,7 +360,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         ...deleteRecipeContract,
       },
     },
-    async (request, reply) => {
+    async (request) => {
       const { id } = request.params;
 
       const recipe = await prisma.recipe.findUniqueOrThrow({
@@ -386,7 +386,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         },
       });
 
-      return reply.code(204).send();
+      return null;
     },
   );
 
