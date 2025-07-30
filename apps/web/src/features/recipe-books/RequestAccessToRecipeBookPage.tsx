@@ -61,7 +61,7 @@ export function RequestAccessToRecipeBookPage() {
                   return;
                 }
 
-                requestAccessToRecipeBook.mutate(recipeBookId);
+                requestAccessToRecipeBook.mutate({ body: { recipeBookId } });
               }}
               loading={requestAccessToRecipeBook.isPending}
             >
@@ -78,7 +78,7 @@ export function RequestAccessToRecipeBookPage() {
         onClose={() => {
           setAddNameDialogOpen(false);
 
-          requestAccessToRecipeBook.mutate(recipeBookId);
+          requestAccessToRecipeBook.mutate({ body: { recipeBookId } });
         }}
       />
     </Box>

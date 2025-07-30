@@ -1,34 +1,42 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
+import { recipeBookRequestSchema } from '../types/recipeBookRequest.js';
 
-function listRecipeBookRequests(options: {
-  userId: string;
-  recipeBookId: string;
-}): Promise<{ userId: string }[]> {
-  return api
-    .get(`recipe-book-requests`, {
-      searchParams: {
-        userId: options.userId,
-        recipeBookId: options.recipeBookId,
-      },
-    })
-    .json<{ recipeBookRequests: { userId: string }[] }>()
-    .then((res) => res.recipeBookRequests);
-}
+export const listRecipeBookRequestsContract = defineContract(
+  'recipe-book-requests',
+  {
+    method: 'get',
+    querystring: z.object({
+      userId: z.uuidv4(),
+      recipeBookId: z.uuidv4(),
+    }),
+    response: {
+      200: z.object({
+        recipeBookRequests: recipeBookRequestSchema.array(),
+      }),
+    },
+  },
+);
 
-export function getListRecipeBookRequestsQueryOptions(options: {
+const listRecipeBookRequests = makeRequest(listRecipeBookRequestsContract, {
+  select: (res) => res.recipeBookRequests,
+});
+
+export function listRecipeBookRequestsQueryOptions(options: {
   userId: string;
   recipeBookId: string;
 }) {
   return queryOptions({
     queryKey: ['recipeBookRequests', options],
-    queryFn: () => listRecipeBookRequests(options),
+    queryFn: () => listRecipeBookRequests({ querystring: options }),
   });
 }
 
 interface Options {
-  queryConfig?: QueryConfig<typeof getListRecipeBookRequestsQueryOptions>;
+  queryConfig?: QueryConfig<typeof listRecipeBookRequestsQueryOptions>;
   options: {
     userId: string;
     recipeBookId: string;
@@ -37,7 +45,7 @@ interface Options {
 
 export function useRecipeBookRequests({ queryConfig, options }: Options) {
   return useQuery({
-    ...getListRecipeBookRequestsQueryOptions(options),
+    ...listRecipeBookRequestsQueryOptions(options),
     ...queryConfig,
   });
 }

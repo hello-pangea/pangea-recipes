@@ -555,11 +555,14 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 return;
               }
 
-              declineRecipeBookRequest.mutate(reviewRequestId, {
-                onSuccess: () => {
-                  setReviewRequestId(null);
+              declineRecipeBookRequest.mutate(
+                { params: { id: reviewRequestId } },
+                {
+                  onSuccess: () => {
+                    setReviewRequestId(null);
+                  },
                 },
-              });
+              );
             }}
             disabled={acceptRecipeBookRequest.isPending}
             loading={declineRecipeBookRequest.isPending}
@@ -574,7 +577,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               }
 
               acceptRecipeBookRequest.mutate(
-                { recipeBookRequestId: reviewRequestId, role: inviteRole },
+                { params: { id: reviewRequestId }, body: { role: inviteRole } },
                 {
                   onSuccess: () => {
                     setReviewRequestId(null);

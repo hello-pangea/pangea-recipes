@@ -1,10 +1,13 @@
 import { resend } from '#src/lib/resend.ts';
-import { noContentSchema } from '#src/types/noContent.ts';
 import { prisma } from '@open-zero/database';
 import { RequestToJoinRecipeBookEmail } from '@open-zero/email';
-import { recipeBookRequestSchema } from '@open-zero/features/recipe-book-requests';
+import {
+  acceptRecipeBookRequestContract,
+  declineRecipeBookRequestContract,
+  listRecipeBookRequestsContract,
+  requestAccessToRecipeBookContract,
+} from '@open-zero/features/recipe-book-requests';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe book requests';
@@ -22,12 +25,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
         summary: 'Request access to a recipe book',
         description:
           'Uses the auth token in the request to determin who is making the request.',
-        body: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...requestAccessToRecipeBookContract,
       },
     },
     async (request) => {
@@ -119,15 +117,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
         summary: 'List recipe book requests',
         description:
           'For privacy reasons, the user can only check for requests that they made.',
-        querystring: z.object({
-          recipeBookId: z.uuidv4(),
-          userId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            recipeBookRequests: z.array(recipeBookRequestSchema),
-          }),
-        },
+        ...listRecipeBookRequestsContract,
       },
     },
     async (request) => {
@@ -162,29 +152,21 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.post(
-    '/:recipeBookRequestId/accept',
+    '/:id/accept',
     {
       schema: {
         tags: [routeTag],
         summary: 'Accept a recipe book request',
-        params: z.object({
-          recipeBookRequestId: z.uuidv4(),
-        }),
-        body: z.object({
-          role: z.enum(['owner', 'editor', 'viewer']),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...acceptRecipeBookRequestContract,
       },
     },
     async (request) => {
-      const { recipeBookRequestId } = request.params;
+      const { id } = request.params;
       const { role } = request.body;
 
       const recipeBookRequest = await prisma.recipeBookRequest.update({
         where: {
-          id: recipeBookRequestId,
+          id: id,
           acceptedAt: null,
           declinedAt: null,
         },
@@ -206,25 +188,20 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.post(
-    '/:recipeBookRequestId/decline',
+    '/:id/decline',
     {
       schema: {
         tags: [routeTag],
         summary: 'Accept a recipe book request',
-        params: z.object({
-          recipeBookRequestId: z.uuidv4(),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...declineRecipeBookRequestContract,
       },
     },
     async (request) => {
-      const { recipeBookRequestId } = request.params;
+      const { id } = request.params;
 
       await prisma.recipeBookRequest.update({
         where: {
-          id: recipeBookRequestId,
+          id: id,
           acceptedAt: null,
           declinedAt: null,
         },
