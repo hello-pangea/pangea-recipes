@@ -30,7 +30,10 @@ import { z } from 'zod/v4';
 
 const formSchema = z.object({
   recipeBookName: z.string().min(1, { message: 'Name is required' }),
-  description: z.string().transform((val) => (val === '' ? null : val)),
+  description: z
+    .string()
+    .nullable()
+    .transform((val) => (val === '' ? null : val)),
   access: z.enum(['public', 'private']),
 });
 type RecipeBookFormInputs = z.infer<typeof formSchema>;
