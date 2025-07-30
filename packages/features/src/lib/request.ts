@@ -1,3 +1,4 @@
+import type { Options as KyOptions } from 'ky';
 import { z } from 'zod';
 import { api } from './api.js';
 import type { Contract, DefaultSuccessStatus } from './routeContracts.js';
@@ -49,8 +50,8 @@ type HeadersField<C> = C extends { headers: z.ZodType }
   : EmptyObject;
 
 /** query-string object (always optional for callers when present) */
-type SearchField<C> = C extends { search: z.ZodType }
-  ? { search?: In<C['search']> }
+type SearchField<C> = C extends { querystring: z.ZodType }
+  ? { querystring?: In<C['querystring']> }
   : EmptyObject;
 
 /** Put it all together — now callers get the right IntelliSense & errors */
@@ -58,8 +59,8 @@ export type RequestOptions<C> = ParamsField<C> &
   BodyField<C> &
   HeadersField<C> &
   SearchField<C> & {
-    /** vanilla fetch overrides */
-    fetch?: Omit<RequestInit, 'method' | 'body' | 'headers'>;
+    /** ky overrides (includes everything you’d need) */
+    ky?: KyOptions;
   };
 
 /** Return type for a given status in a contract’s response map */
@@ -99,47 +100,6 @@ export async function request<
     validateParams(contract, options?.params),
   );
 
-  //   /* ---------- NEW: validate & serialize search params ---------- */
-  //   let url = path;
-  //   if (contract.search) {
-  //     const parsedSearch = contract.search.parse(options?.search ?? {}) as Record<
-  //       string,
-  //       any
-  //     >;
-
-  //     const qs = new URLSearchParams();
-  //     for (const [k, v] of Object.entries(parsedSearch)) {
-  //       if (v == null) continue;
-  //       if (Array.isArray(v)) {
-  //         v.forEach((i) => qs.append(k, String(i)));
-  //       } else {
-  //         qs.append(k, String(v));
-  //       }
-  //     }
-  //     const query = qs.toString();
-  //     if (query) url += (url.includes('?') ? '&' : '?') + query;
-  //   }
-
-  //   /* ------------------------------------------------------------- */
-
-  //   // Validate headers if schema provided
-  //   let headers: RequestInit['headers'] | undefined;
-  //   if (contract.headers) {
-  //     const safe = contract.headers.parse(options?.headers ?? {});
-  //     headers = safe as Record<string, string>;
-  //   } else {
-  //     headers =
-  //       (options?.headers as Record<string, string> | undefined) ?? undefined;
-  //   }
-
-  //   // Validate & serialize body if present
-  //   let body: RequestInit['body'] | undefined;
-  //   if (contract.body) {
-  //     const parsedBody = contract.body.parse(options?.body);
-  //     body = JSON.stringify(parsedBody);
-  //     headers = { 'content-type': 'application/json', ...(headers ?? {}) };
-  //   }
-
   const res = await api(path, {
     method: contract.method,
     headers:
@@ -148,10 +108,10 @@ export async function request<
         : undefined,
     json: options?.body,
     searchParams:
-      options && 'search' in options
-        ? (options.search as URLSearchParams)
+      options && 'querystring' in options
+        ? (options.querystring as URLSearchParams)
         : undefined,
-    ...options?.fetch,
+    ...options?.ky,
   });
 
   return res.json();
@@ -224,27 +184,39 @@ type RequiredKeys<T> = {
   [K in keyof T]-?: undefined extends T[K] ? never : K;
 }[keyof T];
 
-// no selector –> full response
+// no selector  –→ full response
 export function makeRequest<C extends Contract<string>>(
   contract: C,
 ): RequiredKeys<RequestOptions<C>> extends never
   ? (opts?: RequestOptions<C>) => Promise<DefaultResponse<C>>
   : (opts: RequestOptions<C>) => Promise<DefaultResponse<C>>;
 
-// with selector –> projected response
-export function makeRequest<C extends Contract<string>, R>(
+// selector / ky options –→ maybe-projected response
+export function makeRequest<
+  C extends Contract<string>,
+  R = DefaultResponse<C>, // ← default when no selector
+>(
   contract: C,
-  makeOptions: { select: (data: DefaultResponse<C>) => R },
+  makeOptions?: {
+    select?: (data: DefaultResponse<C>) => R;
+    ky?: KyOptions; // default ky options
+  },
 ): RequiredKeys<RequestOptions<C>> extends never
   ? (opts?: RequestOptions<C>) => Promise<R>
   : (opts: RequestOptions<C>) => Promise<R>;
 
 export function makeRequest<C extends Contract<string>, R>(
   contract: C,
-  makeOptions?: { select?: (data: DefaultResponse<C>) => R },
+  makeOptions?: {
+    select?: (data: DefaultResponse<C>) => R;
+    ky?: KyOptions;
+  },
 ) {
-  return async (options: RequestOptions<C>) => {
-    const res = await request(contract, options);
+  return async (options: RequestOptions<C> = {} as RequestOptions<C>) => {
+    const res = await request(contract, {
+      ...options,
+      ky: options.ky ?? makeOptions?.ky, // merge default/per-call ky opts
+    });
     return makeOptions?.select
       ? makeOptions.select(res as DefaultResponse<C>)
       : res;

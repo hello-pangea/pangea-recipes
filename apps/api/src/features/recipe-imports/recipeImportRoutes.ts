@@ -1,13 +1,12 @@
 import { ApiError } from '#src/lib/ApiError.ts';
-import { noContentSchema } from '#src/types/noContent.ts';
 import { prisma } from '@open-zero/database';
 import {
-  importedRecipeSchema,
-  recipeImportSchema,
+  importRecipeContract,
+  importRecipeQuickContract,
+  listRecipeImportsContract,
 } from '@open-zero/features/recipe-imports';
 import * as Sentry from '@sentry/node';
 import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 import { createRecipe } from '../recipes/recipeRepo.ts';
 import { getLlmImportRecipe } from './getLlmImportRecipe.ts';
@@ -26,15 +25,7 @@ export const recipeImportRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'Import a recipe from a url',
-        body: z.object({
-          url: z.url(),
-        }),
-        response: {
-          200: z.object({
-            recipe: importedRecipeSchema,
-            websitePageId: z.uuidv4(),
-          }),
-        },
+        ...importRecipeContract,
       },
       config: {
         rateLimit: {
@@ -71,12 +62,7 @@ export const recipeImportRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: "Import a recipe from a url (don't await parsing)",
-        body: z.object({
-          url: z.url(),
-        }),
-        response: {
-          202: noContentSchema,
-        },
+        ...importRecipeQuickContract,
       },
     },
     async (request, reply) => {
@@ -158,15 +144,7 @@ export const recipeImportRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'List recipe imports',
-        querystring: z.object({
-          userId: z.uuidv4(),
-          status: z.enum(['parsing', 'complete', 'failed']).optional(),
-        }),
-        response: {
-          200: z.object({
-            recipeImports: z.array(recipeImportSchema),
-          }),
-        },
+        ...listRecipeImportsContract,
       },
     },
     async (request) => {

@@ -52,7 +52,7 @@ export function QuickImportRecipeDialog({ open, onClose }: Props) {
       return;
     }
 
-    importRecipeQuick.mutate(url);
+    importRecipeQuick.mutate({ body: { url } });
   }
 
   return (

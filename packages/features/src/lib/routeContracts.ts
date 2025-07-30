@@ -47,7 +47,7 @@ interface BaseContractConfig {
   // optional headers schema if you want to validate your own header map
   headers?: z.ZodType;
   // optional query-string schema
-  search?: z.ZodType;
+  querystring?: z.ZodType;
   // response map is required
   response: ResponseMap;
 }
