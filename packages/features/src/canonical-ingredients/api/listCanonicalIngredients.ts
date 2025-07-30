@@ -21,7 +21,7 @@ const listCanonicalIngredients = makeRequest(listCanonicalIngredientsContract, {
   select: (res) => res.canonicalIngredients,
 });
 
-export function getListCanonicalIngredientsQueryOptions() {
+export function listCanonicalIngredientsQueryOptions() {
   return queryOptions({
     queryKey: ['canonicalIngredients'],
     queryFn: () => listCanonicalIngredients(),
@@ -30,12 +30,12 @@ export function getListCanonicalIngredientsQueryOptions() {
 }
 
 interface Options {
-  queryConfig?: QueryConfig<typeof getListCanonicalIngredientsQueryOptions>;
+  queryConfig?: QueryConfig<typeof listCanonicalIngredientsQueryOptions>;
 }
 
 export function useCanonicalIngredients({ queryConfig }: Options = {}) {
   return useQuery({
-    ...getListCanonicalIngredientsQueryOptions(),
+    ...listCanonicalIngredientsQueryOptions(),
     ...queryConfig,
   });
 }

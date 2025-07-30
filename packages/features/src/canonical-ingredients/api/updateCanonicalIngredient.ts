@@ -5,7 +5,7 @@ import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 import { createCanonicalIngredientContract } from './createCanonicalIngredient.js';
-import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
+import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
 export const updateCanonicalIngredientContract = defineContract(
   'canonical-ingredients/:id',
@@ -51,7 +51,7 @@ export function useUpdateCanonicalIngredient({ mutationConfig }: Options = {}) {
   return useMutation({
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({
-        queryKey: getListCanonicalIngredientsQueryOptions().queryKey,
+        queryKey: listCanonicalIngredientsQueryOptions().queryKey,
       });
 
       void onSuccess?.(...args);
