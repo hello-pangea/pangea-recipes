@@ -91,15 +91,19 @@ export function CreateRecipeBookPage({
 
       if (updateRecipeBookId) {
         recipeBookUpdater.mutate({
-          id: updateRecipeBookId,
-          name: parsed.recipeBookName,
-          description: emptyStringToUndefined(parsed.description),
+          params: { id: updateRecipeBookId },
+          body: {
+            name: parsed.recipeBookName,
+            description: emptyStringToUndefined(parsed.description),
+          },
         });
       } else {
         recipeBookCreator.mutate({
-          name: parsed.recipeBookName,
-          description: emptyStringToUndefined(parsed.description),
-          access: parsed.access,
+          body: {
+            name: parsed.recipeBookName,
+            description: emptyStringToUndefined(parsed.description),
+            access: parsed.access,
+          },
         });
       }
     },

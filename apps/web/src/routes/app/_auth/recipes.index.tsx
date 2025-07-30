@@ -1,11 +1,11 @@
 import { RecipesPage } from '#src/features/recipes/RecipesPage';
-import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
+import { listRecipesQueryOptions } from '@open-zero/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/_auth/recipes/')({
   loader: async ({ context }) => {
     await context.queryClient.ensureQueryData(
-      getListRecipesQueryOptions({
+      listRecipesQueryOptions({
         userId: context.userId,
       }),
     );

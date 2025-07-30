@@ -1,16 +1,16 @@
 import { prisma, type Prisma } from '@open-zero/database';
-import { tagSchema, type CreateTagDto } from '@open-zero/features';
+import { type CreateTagDto } from '@open-zero/features';
 import {
-  createRecipeDtoScema,
-  recipeProjectedSchema,
-  recipeSchema,
-  updateRecipeDtoScema,
+  createRecipeContract,
+  deleteRecipeContract,
+  getRecipeContract,
+  getUsedRecipeTagsContract,
+  listRecipesContract,
+  updateRecipeContract,
 } from '@open-zero/features/recipes';
 import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { ApiError } from '../../lib/ApiError.ts';
 import { getFileUrl } from '../../lib/s3.ts';
-import { noContentSchema } from '../../types/noContent.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.ts';
 import { createRecipe } from './recipeRepo.ts';
@@ -28,12 +28,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
       schema: {
         tags: [routeTag],
         summary: 'Create a recipe',
-        body: createRecipeDtoScema,
-        response: {
-          200: z.object({
-            recipe: recipeSchema,
-          }),
-        },
+        ...createRecipeContract,
       },
     },
     async (request) => {
@@ -63,15 +58,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
       schema: {
         tags: [routeTag],
         summary: 'List recipes',
-        querystring: z.object({
-          userId: z.uuidv4().optional(),
-          recipeBookId: z.uuidv4().optional(),
-        }),
-        response: {
-          200: z.object({
-            recipes: z.array(recipeProjectedSchema),
-          }),
-        },
+        ...listRecipesContract,
       },
     },
     async (request) => {
@@ -144,27 +131,20 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   );
 
   fastify.get(
-    '/:recipeId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Get a recipe',
-        params: z.object({
-          recipeId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            recipe: recipeSchema,
-          }),
-        },
+        ...getRecipeContract,
       },
     },
     async (request) => {
-      const { recipeId } = request.params;
+      const { id } = request.params;
 
       const recipe = await prisma.recipe.findUniqueOrThrow({
         where: {
-          id: recipeId,
+          id: id,
         },
         include: recipeInclude,
       });
@@ -178,20 +158,12 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   );
 
   fastify.patch(
-    '/:recipeId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Update a recipe',
-        params: z.object({
-          recipeId: z.uuidv4(),
-        }),
-        body: updateRecipeDtoScema,
-        response: {
-          200: z.object({
-            recipe: recipeSchema,
-          }),
-        },
+        ...updateRecipeContract,
       },
     },
     async (request) => {
@@ -210,12 +182,12 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         tryLater,
         favorite,
       } = request.body;
-      const { recipeId } = request.params;
+      const { id } = request.params;
 
       const recipeDto = await prisma.$transaction(async (prisma) => {
         const oldRecipe = await prisma.recipe.findUniqueOrThrow({
           where: {
-            id: recipeId,
+            id: id,
           },
           select: {
             userId: true,
@@ -295,14 +267,14 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
           tx: prisma,
           newInstructionGroups: instructionGroups,
           oldInstructionGroups: oldRecipe.instructionGroups,
-          recipeId: recipeId,
+          recipeId: id,
         });
 
         await updateIngredientGroups({
           tx: prisma,
           newIngredientGroups: ingredientGroups,
           oldIngredientGroups: oldRecipe.ingredientGroups,
-          recipeId: recipeId,
+          recipeId: id,
         });
 
         // -
@@ -341,7 +313,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
                     connectOrCreate: imageIds.map((id) => ({
                       where: {
                         recipeId_imageId: {
-                          recipeId: recipeId,
+                          recipeId: id,
                           imageId: id,
                         },
                       },
@@ -362,7 +334,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
 
         const recipe = await prisma.recipe.update({
           where: {
-            id: recipeId,
+            id: id,
           },
           data: recipeUpdate,
           include: recipeInclude,
@@ -380,25 +352,20 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   );
 
   fastify.delete(
-    '/:recipeId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Delete a recipe',
-        params: z.object({
-          recipeId: z.uuidv4(),
-        }),
-        response: {
-          204: noContentSchema,
-        },
+        ...deleteRecipeContract,
       },
     },
     async (request, reply) => {
-      const { recipeId } = request.params;
+      const { id } = request.params;
 
       const recipe = await prisma.recipe.findUniqueOrThrow({
         where: {
-          id: recipeId,
+          id: id,
         },
         select: {
           userId: true,
@@ -415,7 +382,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
 
       await prisma.recipe.delete({
         where: {
-          id: recipeId,
+          id: id,
         },
       });
 
@@ -430,14 +397,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
       schema: {
         tags: [routeTag],
         summary: 'List used recipe tags',
-        querystring: z.object({
-          userId: z.uuidv4().optional(),
-        }),
-        response: {
-          200: z.object({
-            tags: z.array(tagSchema),
-          }),
-        },
+        ...getUsedRecipeTagsContract,
       },
     },
     async (request) => {

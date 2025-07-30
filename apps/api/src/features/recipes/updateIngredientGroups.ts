@@ -1,9 +1,12 @@
 import { type Prisma } from '@open-zero/database';
-import { type UpdateRecipeDto } from '@open-zero/features/recipes';
+import { updateRecipeContract } from '@open-zero/features/recipes';
+import type z from 'zod';
 
 export async function updateIngredientGroups(data: {
   tx: Prisma.TransactionClient;
-  newIngredientGroups: UpdateRecipeDto['ingredientGroups'];
+  newIngredientGroups: z.infer<
+    typeof updateRecipeContract.body.shape.ingredientGroups
+  >;
   oldIngredientGroups: {
     recipeId: string;
     name: string | null;

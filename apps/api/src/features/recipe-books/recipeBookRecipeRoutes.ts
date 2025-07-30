@@ -1,7 +1,9 @@
 import { prisma } from '@open-zero/database';
-import { recipeBookSchema } from '@open-zero/features/recipe-books';
+import {
+  addRecipeToRecipeBookContract,
+  removeRecipeFromRecipeBookContract,
+} from '@open-zero/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.ts';
 
@@ -12,33 +14,23 @@ export const recipeBookRecipeRoutes: FastifyPluginAsyncZod = async function (
   fastify,
 ) {
   fastify.post(
-    '/:recipeBookId/recipes',
+    '/:id/recipes',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Add a recipe to a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        body: z.object({
-          recipeId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            recipeBook: recipeBookSchema,
-          }),
-        },
+        ...addRecipeToRecipeBookContract,
       },
     },
     async (request) => {
-      const { recipeBookId } = request.params;
+      const { id } = request.params;
       const { recipeId } = request.body;
 
       // Check if the recipe is already in the recipe book
       const recipeBookWithRecipe = await prisma.recipeBook.findUnique({
         where: {
-          id: recipeBookId,
+          id: id,
         },
         select: {
           recipes: {
@@ -57,7 +49,7 @@ export const recipeBookRecipeRoutes: FastifyPluginAsyncZod = async function (
 
       const recipeBook = await prisma.recipeBook.update({
         where: {
-          id: recipeBookId,
+          id: id,
         },
         data: {
           recipes: {
@@ -80,29 +72,21 @@ export const recipeBookRecipeRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.delete(
-    '/:recipeBookId/recipes/:recipeId',
+    '/:id/recipes/:recipeId',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Remove a recipe from a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-          recipeId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            recipeBook: recipeBookSchema,
-          }),
-        },
+        ...removeRecipeFromRecipeBookContract,
       },
     },
     async (request) => {
-      const { recipeBookId, recipeId } = request.params;
+      const { id, recipeId } = request.params;
 
       const recipeBook = await prisma.recipeBook.update({
         where: {
-          id: recipeBookId,
+          id: id,
         },
         data: {
           recipes: {

@@ -1,7 +1,7 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
 import { Box, Grid, Typography } from '@mui/material';
-import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
+import { listRecipesQueryOptions } from '@open-zero/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import useResizeObserver from 'use-resize-observer';
@@ -14,7 +14,7 @@ import { RecipeCard } from './RecipeCard';
 export function RecipesPage() {
   const userId = useSignedInUserId();
   const { data: recipes, isError } = useSuspenseQuery(
-    getListRecipesQueryOptions({ userId: userId }),
+    listRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
   const parsingRecipeImports = useParsingRecipeImports({

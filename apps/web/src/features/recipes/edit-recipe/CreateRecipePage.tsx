@@ -112,35 +112,39 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
 
       if (updateRecipeId) {
         updateRecipe.mutate({
-          id: updateRecipeId,
-          name: parsed.recipeName,
-          description: emptyStringToNull(parsed.description),
-          prepTime: parsed.prepTime,
-          cookTime: parsed.cookTime,
-          servings: parsed.servings ? parseInt(parsed.servings) : null,
-          tryLater: parsed.tryLater,
-          ingredientGroups: parsed.ingredientGroups,
-          instructionGroups: parsed.instructionGroups.map((ig) => ({
-            id: ig.id ?? undefined,
-            name: ig.name,
-            instructions: ig.instructions,
-          })),
-          imageIds: parsed.image ? [parsed.image.id] : null,
-          nutrition: parsed.nutrition,
+          params: { id: updateRecipeId },
+          body: {
+            name: parsed.recipeName,
+            description: emptyStringToNull(parsed.description),
+            prepTime: parsed.prepTime,
+            cookTime: parsed.cookTime,
+            servings: parsed.servings ? parseInt(parsed.servings) : null,
+            tryLater: parsed.tryLater,
+            ingredientGroups: parsed.ingredientGroups,
+            instructionGroups: parsed.instructionGroups.map((ig) => ({
+              id: ig.id ?? undefined,
+              name: ig.name,
+              instructions: ig.instructions,
+            })),
+            imageIds: parsed.image ? [parsed.image.id] : null,
+            nutrition: parsed.nutrition,
+          },
         });
       } else {
         createRecipe.mutate({
-          name: parsed.recipeName,
-          description: emptyStringToUndefined(parsed.description),
-          websitePageId: parsed.websitePageId,
-          prepTime: parsed.prepTime,
-          cookTime: parsed.cookTime,
-          servings: parsed.servings ? parseInt(parsed.servings) : undefined,
-          imageIds: parsed.image ? [parsed.image.id] : undefined,
-          tryLater: parsed.tryLater,
-          ingredientGroups: parsed.ingredientGroups,
-          instructionGroups: parsed.instructionGroups,
-          nutrition: parsed.nutrition,
+          body: {
+            name: parsed.recipeName,
+            description: emptyStringToUndefined(parsed.description),
+            websitePageId: parsed.websitePageId,
+            prepTime: parsed.prepTime,
+            cookTime: parsed.cookTime,
+            servings: parsed.servings ? parseInt(parsed.servings) : undefined,
+            imageIds: parsed.image ? [parsed.image.id] : undefined,
+            tryLater: parsed.tryLater,
+            ingredientGroups: parsed.ingredientGroups,
+            instructionGroups: parsed.instructionGroups,
+            nutrition: parsed.nutrition,
+          },
         });
       }
     },
@@ -174,7 +178,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
         void navigate({
           to: `/app/recipes/$recipeId`,
           params: {
-            recipeId: data.recipe.id,
+            recipeId: data.id,
           },
         });
       },

@@ -1,11 +1,13 @@
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
-import { noContentSchema } from '#src/types/noContent.ts';
 import { prisma } from '@open-zero/database';
 import { InviteToRecipeBook } from '@open-zero/email';
-import { inviteMembersToRecipeBookBodySchema } from '@open-zero/features/recipe-books';
+import {
+  deleteRecipeBookInviteContract,
+  deleteRecipeBookMemberContract,
+  inviteMembersToRecipeBookContract,
+} from '@open-zero/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe books';
@@ -15,20 +17,17 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
   fastify,
 ) {
   fastify.post(
-    '/:recipeBookId/members',
+    '/:id/members',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Invite or add new members to a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        body: inviteMembersToRecipeBookBodySchema,
+        ...inviteMembersToRecipeBookContract,
       },
     },
     async (request) => {
-      const { recipeBookId } = request.params;
+      const { id } = request.params;
       const { emails, userIds, role } = request.body;
 
       if (!request.session?.userId) {
@@ -41,7 +40,7 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
 
       const recipeBook = await prisma.recipeBook.findUniqueOrThrow({
         where: {
-          id: recipeBookId,
+          id: id,
         },
       });
 
@@ -86,7 +85,7 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
 
           await prisma.recipeBookInvite.create({
             data: {
-              recipeBookId: recipeBookId,
+              recipeBookId: id,
               inviteeEmail: email,
               invitedByUserId: request.session.userId,
               role: role,
@@ -99,7 +98,7 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
         await prisma.recipeBookMember.create({
           data: {
             userId: user.id,
-            recipeBookId: recipeBookId,
+            recipeBookId: id,
             role: role,
           },
         });
@@ -110,29 +109,23 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.delete(
-    '/:recipeBookId/members/:userId',
+    '/:id/members/:userId',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Delete a member from a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-          userId: z.uuidv4(),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...deleteRecipeBookMemberContract,
       },
     },
     async (request) => {
-      const { recipeBookId, userId } = request.params;
+      const { id, userId } = request.params;
 
       await prisma.recipeBookMember.delete({
         where: {
           userId_recipeBookId: {
             userId: userId,
-            recipeBookId: recipeBookId,
+            recipeBookId: id,
           },
         },
       });
@@ -142,31 +135,23 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.delete(
-    '/:recipeBookId/invitations',
+    '/:id/invitations',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Delete an invite from a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        body: z.object({
-          inviteeEmail: z.uuidv4(),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...deleteRecipeBookInviteContract,
       },
     },
     async (request) => {
-      const { recipeBookId } = request.params;
+      const { id } = request.params;
       const { inviteeEmail } = request.body;
 
       await prisma.recipeBookInvite.delete({
         where: {
           inviteeEmail_recipeBookId: {
-            recipeBookId: recipeBookId,
+            recipeBookId: id,
             inviteeEmail: inviteeEmail,
           },
         },

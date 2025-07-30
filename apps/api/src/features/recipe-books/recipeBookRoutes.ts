@@ -1,13 +1,13 @@
 import { prisma } from '@open-zero/database';
 import {
-  createRecipeBookDtoScema,
-  recipeBookSchema,
-  updateRecipeBookDtoScema,
+  createRecipeBookContract,
+  deleteRecipeBookContract,
+  getRecipeBookContract,
+  listRecipeBooksContract,
+  updateRecipeBookContract,
 } from '@open-zero/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { ApiError } from '../../lib/ApiError.ts';
-import { noContentSchema } from '../../types/noContent.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.ts';
 import { recipeBookMemberRoutes } from './recipeBookMemberRoutes.ts';
@@ -26,12 +26,7 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'Create a recipe book',
-        body: createRecipeBookDtoScema,
-        response: {
-          200: z.object({
-            recipeBook: recipeBookSchema,
-          }),
-        },
+        ...createRecipeBookContract,
       },
     },
     async (request) => {
@@ -71,14 +66,7 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'List recipe books',
-        querystring: z.object({
-          userId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            recipeBooks: z.array(recipeBookSchema),
-          }),
-        },
+        ...listRecipeBooksContract,
       },
     },
     async (request) => {
@@ -110,23 +98,16 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.get(
-    '/:recipeBookId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Get a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            recipeBook: recipeBookSchema,
-          }),
-        },
+        ...getRecipeBookContract,
       },
     },
     async (request) => {
-      const { recipeBookId } = request.params;
+      const { id } = request.params;
 
       const userId = request.session?.userId;
 
@@ -136,7 +117,7 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
 
       const recipeBook = await prisma.recipeBook.findUniqueOrThrow({
         where: {
-          id: recipeBookId,
+          id: id,
         },
         include: recipeBookInclude,
       });
@@ -155,29 +136,21 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.patch(
-    '/:recipeBookId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Update a recipe book',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        body: updateRecipeBookDtoScema,
-        response: {
-          200: z.object({
-            recipeBook: recipeBookSchema,
-          }),
-        },
+        ...updateRecipeBookContract,
       },
     },
     async (request) => {
       const { name, description, access } = request.body;
-      const { recipeBookId } = request.params;
+      const { id } = request.params;
 
       const recipeBook = await prisma.recipeBook.update({
         where: {
-          id: recipeBookId,
+          id: id,
         },
         data: {
           name: name,
@@ -199,20 +172,15 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'Delete a recipe',
-        params: z.object({
-          recipeBookId: z.uuidv4(),
-        }),
-        response: {
-          204: noContentSchema,
-        },
+        ...deleteRecipeBookContract,
       },
     },
-    async (request, reply) => {
-      const { recipeBookId } = request.params;
+    async (request) => {
+      const { id } = request.params;
 
       const recipeBook = await prisma.recipeBook.findUniqueOrThrow({
         where: {
-          id: recipeBookId,
+          id: id,
         },
         include: {
           members: {
@@ -238,11 +206,11 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
 
       await prisma.recipeBook.delete({
         where: {
-          id: recipeBookId,
+          id: id,
         },
       });
 
-      return reply.code(204).send();
+      return null;
     },
   );
 
