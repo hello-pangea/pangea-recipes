@@ -1,7 +1,10 @@
 import { prisma } from '@open-zero/database';
-import { updateUserDtoSchema, userSchema } from '@open-zero/features/users';
+import {
+  getSignedInUserContract,
+  getUserContract,
+  updateUserContract,
+} from '@open-zero/features/users';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Users';
@@ -9,32 +12,25 @@ const routeTag = 'Users';
 // eslint-disable-next-line @typescript-eslint/require-await
 export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.get(
-    '/:userId',
+    '/:id',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Get a user',
-        params: z.object({
-          userId: z.uuidv4(),
-        }),
-        response: {
-          200: z.object({
-            user: userSchema,
-          }),
-        },
+        ...getUserContract,
       },
     },
     async (request) => {
-      const { userId } = request.params;
+      const { id } = request.params;
 
-      if (userId !== request.session?.userId) {
+      if (id !== request.session?.userId) {
         throw fastify.httpErrors.forbidden();
       }
 
       const user = await prisma.user.findUniqueOrThrow({
         where: {
-          id: userId,
+          id: id,
         },
       });
 
@@ -50,11 +46,7 @@ export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
       schema: {
         tags: [routeTag],
         summary: 'Get currently signed in user',
-        response: {
-          200: z.object({
-            user: z.union([userSchema, z.null()]),
-          }),
-        },
+        ...getSignedInUserContract,
       },
     },
     async (request) => {
@@ -79,35 +71,27 @@ export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
   );
 
   fastify.patch(
-    '/:userId',
+    '/:id',
     {
       preHandler: fastify.auth([verifySession]),
       schema: {
         tags: [routeTag],
         summary: 'Update a user',
-        params: z.object({
-          userId: z.uuidv4(),
-        }),
-        body: updateUserDtoSchema,
-        response: {
-          200: z.object({
-            user: userSchema,
-          }),
-        },
+        ...updateUserContract,
       },
     },
     async (request) => {
       const { themePreference, unitsPreference, name, accentColor } =
         request.body;
-      const { userId } = request.params;
+      const { id } = request.params;
 
-      if (userId !== request.session?.userId) {
+      if (id !== request.session?.userId) {
         throw fastify.httpErrors.forbidden();
       }
 
       const user = await prisma.user.update({
         where: {
-          id: userId,
+          id: id,
         },
         data: {
           themePreference: themePreference,

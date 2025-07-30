@@ -73,7 +73,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
   const isPhone = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { data: user } = useSignedInUser();
   const { data: sharedByProfile } = usePublicProfile({
-    userId: recipe.userId,
+    id: recipe.userId,
     queryConfig: {
       enabled: recipe.userId !== user?.id,
     },

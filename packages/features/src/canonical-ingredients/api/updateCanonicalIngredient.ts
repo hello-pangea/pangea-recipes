@@ -26,9 +26,6 @@ export const updateCanonicalIngredientContract = defineContract(
         canonicalIngredient: canonicalIngredientSchema,
       }),
     },
-    search: z.object({
-      thing: z.string(),
-    }),
   },
 );
 

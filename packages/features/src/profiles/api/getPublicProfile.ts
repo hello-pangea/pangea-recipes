@@ -1,30 +1,41 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { PublicProfile } from '../types/publicProfile.js';
+import { publicProfileSchema } from '../types/publicProfile.js';
 
-function getPublicProfile(userId: string): Promise<PublicProfile> {
-  return api
-    .get(`profiles/${userId}`)
-    .then((res) => res.json<{ profile: PublicProfile }>())
-    .then((res) => res.profile);
-}
+export const getPublicProfileContract = defineContract('profiles/:id', {
+  method: 'get',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  response: {
+    200: z.object({
+      profile: publicProfileSchema,
+    }),
+  },
+});
 
-function getPublicProfileQueryOptions(userId: string) {
+const getPublicProfile = makeRequest(getPublicProfileContract, {
+  select: (res) => res.profile,
+});
+
+function getPublicProfileQueryOptions(id: string) {
   return queryOptions({
-    queryKey: ['profiles', userId],
-    queryFn: () => getPublicProfile(userId),
+    queryKey: ['profiles', id],
+    queryFn: () => getPublicProfile({ params: { id } }),
   });
 }
 
 interface Options {
-  userId: string;
+  id: string;
   queryConfig?: QueryConfig<typeof getPublicProfileQueryOptions>;
 }
 
-export function usePublicProfile({ userId, queryConfig }: Options) {
+export function usePublicProfile({ id, queryConfig }: Options) {
   return useQuery({
-    ...getPublicProfileQueryOptions(userId),
+    ...getPublicProfileQueryOptions(id),
     ...queryConfig,
   });
 }

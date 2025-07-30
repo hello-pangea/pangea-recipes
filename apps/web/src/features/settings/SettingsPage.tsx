@@ -130,8 +130,12 @@ export function SettingsPage() {
             exclusive
             onChange={(_event, newValue: User['themePreference']) => {
               updateUser.mutate({
-                themePreference: newValue,
-                id: user.id,
+                params: {
+                  id: user.id,
+                },
+                body: {
+                  themePreference: newValue,
+                },
               });
             }}
             aria-label="Theme mode"
@@ -174,8 +178,12 @@ export function SettingsPage() {
                   }}
                   onClick={() => {
                     updateUser.mutate({
-                      accentColor: accentColor,
-                      id: user.id,
+                      params: {
+                        id: user.id,
+                      },
+                      body: {
+                        accentColor: accentColor,
+                      },
                     });
                   }}
                 >
@@ -212,8 +220,12 @@ export function SettingsPage() {
               }
 
               updateUser.mutate({
-                unitsPreference: newValue,
-                id: user.id,
+                params: {
+                  id: user.id,
+                },
+                body: {
+                  unitsPreference: newValue,
+                },
               });
             }}
             aria-label="Theme mode"

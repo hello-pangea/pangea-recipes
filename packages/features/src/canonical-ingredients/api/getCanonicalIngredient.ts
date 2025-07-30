@@ -24,27 +24,21 @@ const getCanonicalIngredient = makeRequest(getCanonicalIngredientContract, {
   select: (res) => res.canonicalIngredient,
 });
 
-export function getCanonicalIngredientQueryOptions(
-  canonicalIngredientId: string,
-) {
+export function getCanonicalIngredientQueryOptions(id: string) {
   return queryOptions({
-    queryKey: ['canonicalIngredients', canonicalIngredientId],
-    queryFn: () =>
-      getCanonicalIngredient({ params: { id: canonicalIngredientId } }),
+    queryKey: ['canonicalIngredients', id],
+    queryFn: () => getCanonicalIngredient({ params: { id } }),
   });
 }
 
 interface Options {
-  canonicalIngredientId: string;
+  id: string;
   queryConfig?: QueryConfig<typeof getCanonicalIngredientQueryOptions>;
 }
 
-export function useCanonicalIngredient({
-  canonicalIngredientId,
-  queryConfig,
-}: Options) {
+export function useCanonicalIngredient({ id, queryConfig }: Options) {
   return useQuery({
-    ...getCanonicalIngredientQueryOptions(canonicalIngredientId),
+    ...getCanonicalIngredientQueryOptions(id),
     ...queryConfig,
   });
 }
