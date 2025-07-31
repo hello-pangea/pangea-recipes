@@ -36,8 +36,8 @@ export function AddNameDialog({ open, onClose }: Props) {
 
       updateUser.mutate(
         {
-          id: userId,
-          name: parsed.name,
+          params: { id: userId },
+          body: { name: parsed.name },
         },
         {
           onSuccess: () => {

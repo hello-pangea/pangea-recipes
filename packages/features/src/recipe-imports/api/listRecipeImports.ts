@@ -1,26 +1,34 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { RecipeImport } from '../types/recipeImport.js';
+import { recipeImportSchema } from '../types/recipeImport.js';
 
-function listRecipeImports(options: {
-  userId: string;
-}): Promise<RecipeImport[]> {
-  return api
-    .get(`recipe-imports`, {
-      searchParams: {
-        userId: options.userId,
-        status: 'parsing',
-      },
-    })
-    .json<{ recipeImports: RecipeImport[] }>()
-    .then((res) => res.recipeImports);
-}
+export const listRecipeImportsContract = defineContract('recipe-imports', {
+  method: 'get',
+  querystring: z.object({
+    userId: z.uuidv4(),
+    status: z.enum(['parsing', 'complete', 'failed']).optional(),
+  }),
+  response: {
+    200: z.object({
+      recipeImports: recipeImportSchema.array(),
+    }),
+  },
+});
+
+const listRecipeImports = makeRequest(listRecipeImportsContract, {
+  select: (res) => res.recipeImports,
+});
 
 export function listRecipeImportsQueryOptions(options: { userId: string }) {
   return queryOptions({
     queryKey: ['recipeImports', options],
-    queryFn: () => listRecipeImports(options),
+    queryFn: () =>
+      listRecipeImports({
+        querystring: { userId: options.userId, status: 'parsing' },
+      }),
   });
 }
 

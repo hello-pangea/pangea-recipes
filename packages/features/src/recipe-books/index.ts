@@ -1,7 +1,5 @@
 // Types
-export * from './types/createRecipeBookDto.js';
 export * from './types/recipeBook.js';
-export * from './types/updateRecipeBookDto.js';
 
 // Api
 export * from './api/addRecipeToRecipeBook.js';

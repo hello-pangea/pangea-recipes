@@ -1,12 +1,26 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-function requestAccessToRecipeBook(recipeBookId: string) {
-  return api.post(`recipe-book-requests`, {
-    json: { recipeBookId },
-  });
-}
+export const requestAccessToRecipeBookContract = defineContract(
+  'recipe-book-requests',
+  {
+    method: 'post',
+    body: z.object({
+      recipeBookId: z.uuidv4(),
+    }),
+    response: {
+      200: noContent,
+    },
+  },
+);
+
+const requestAccessToRecipeBook = makeRequest(
+  requestAccessToRecipeBookContract,
+);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof requestAccessToRecipeBook>;

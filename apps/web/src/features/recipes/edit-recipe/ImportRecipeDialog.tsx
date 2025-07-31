@@ -48,7 +48,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
       return;
     }
 
-    importRecipe.mutate(url);
+    importRecipe.mutate({ body: { url } });
   }
 
   return (

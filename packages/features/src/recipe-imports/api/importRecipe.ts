@@ -1,18 +1,28 @@
 import { useMutation } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import type { ImportedRecipe } from '../types/importedRecipe.js';
+import { importedRecipeSchema } from '../types/importedRecipe.js';
 
-function importRecipe(url: string) {
-  return api
-    .post(`recipe-imports`, {
-      json: {
-        url: url,
-      },
-      timeout: 60000,
-    })
-    .json<{ recipe: ImportedRecipe; websitePageId: string }>();
-}
+export const importRecipeContract = defineContract('recipe-imports', {
+  method: 'post',
+  body: z.object({
+    url: z.url(),
+  }),
+  response: {
+    200: z.object({
+      websitePageId: z.uuidv4(),
+      recipe: importedRecipeSchema,
+    }),
+  },
+});
+
+const importRecipe = makeRequest(importRecipeContract, {
+  ky: {
+    timeout: 60000,
+  },
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof importRecipe>;

@@ -1,19 +1,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import { type MutationConfig } from '../../lib/tanstackQuery.js';
-import { getListCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
+import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
-export interface DeleteCanonicalIngredientDTO {
-  canonicalIngredientId: string;
-}
+export const deleteCanonicalIngredientContract = defineContract(
+  'canonical-ingredients/:id',
+  {
+    method: 'delete',
+    params: z.object({
+      id: z.uuidv4(),
+    }),
+    response: {
+      200: noContent,
+    },
+  },
+);
 
-function deleteCanonicalIngredient({
-  canonicalIngredientId,
-}: DeleteCanonicalIngredientDTO) {
-  return api
-    .delete(`canonical-ingredients/${canonicalIngredientId}`)
-    .then(() => null);
-}
+const deleteCanonicalIngredient = makeRequest(
+  deleteCanonicalIngredientContract,
+);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof deleteCanonicalIngredient>;
@@ -27,7 +35,7 @@ export function useDeleteCanonicalIngredient({ mutationConfig }: Options = {}) {
   return useMutation({
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({
-        queryKey: getListCanonicalIngredientsQueryOptions().queryKey,
+        queryKey: listCanonicalIngredientsQueryOptions().queryKey,
       });
 
       void onSuccess?.(...args);

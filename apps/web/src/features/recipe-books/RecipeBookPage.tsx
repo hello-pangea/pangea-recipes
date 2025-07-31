@@ -90,8 +90,10 @@ export function RecipeBookPage() {
                 recipeId={recipe.id}
                 onRemoveFromRecipeBook={() => {
                   removeRecipeFromRecipeBook.mutate({
-                    recipeId: recipe.id,
-                    recipeBookId,
+                    params: {
+                      id: recipeBookId,
+                      recipeId: recipe.id,
+                    },
                   });
                 }}
               />

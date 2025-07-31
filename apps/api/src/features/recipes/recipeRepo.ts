@@ -1,8 +1,11 @@
 import { Prisma, prisma } from '@open-zero/database';
-import type { CreateRecipeDto } from '@open-zero/features/recipes';
+import type { createRecipeContract } from '@open-zero/features/recipes';
+import type z from 'zod';
 import { recipeInclude } from './recipeDtoUtils.ts';
 
-export async function createRecipe(data: CreateRecipeDto & { userId: string }) {
+export async function createRecipe(
+  data: z.infer<typeof createRecipeContract.body> & { userId: string },
+) {
   const {
     name,
     description,

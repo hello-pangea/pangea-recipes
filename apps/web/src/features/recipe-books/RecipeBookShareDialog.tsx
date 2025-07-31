@@ -311,8 +311,10 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         <IconButton
                           onClick={() => {
                             deleteRecipeBookMember.mutate({
-                              recipeBookId,
-                              userId: member.userId,
+                              params: {
+                                id: recipeBookId,
+                                userId: member.userId,
+                              },
                             });
                           }}
                         >
@@ -359,8 +361,12 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     <IconButton
                       onClick={() => {
                         deleteRecipeBookInvite.mutate({
-                          recipeBookId,
-                          inviteeEmail: invitee.inviteeEmail,
+                          params: {
+                            id: recipeBookId,
+                          },
+                          body: {
+                            inviteeEmail: invitee.inviteeEmail,
+                          },
                         });
                       }}
                     >
@@ -474,14 +480,18 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               onClick={() => {
                 inviteMembersToRecipeBook.mutate(
                   {
-                    emails: invites
-                      .map((invite) => invite.email)
-                      .filter((email) => email !== undefined),
-                    userIds: invites
-                      .map((invite) => invite.userId)
-                      .filter((userId) => userId !== undefined),
-                    recipeBookId,
-                    role: inviteRole,
+                    params: {
+                      id: recipeBookId,
+                    },
+                    body: {
+                      emails: invites
+                        .map((invite) => invite.email)
+                        .filter((email) => email !== undefined),
+                      userIds: invites
+                        .map((invite) => invite.userId)
+                        .filter((userId) => userId !== undefined),
+                      role: inviteRole,
+                    },
                   },
                   {
                     onSuccess: () => {
@@ -555,11 +565,14 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 return;
               }
 
-              declineRecipeBookRequest.mutate(reviewRequestId, {
-                onSuccess: () => {
-                  setReviewRequestId(null);
+              declineRecipeBookRequest.mutate(
+                { params: { id: reviewRequestId } },
+                {
+                  onSuccess: () => {
+                    setReviewRequestId(null);
+                  },
                 },
-              });
+              );
             }}
             disabled={acceptRecipeBookRequest.isPending}
             loading={declineRecipeBookRequest.isPending}
@@ -574,7 +587,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               }
 
               acceptRecipeBookRequest.mutate(
-                { recipeBookRequestId: reviewRequestId, role: inviteRole },
+                { params: { id: reviewRequestId }, body: { role: inviteRole } },
                 {
                   onSuccess: () => {
                     setReviewRequestId(null);
@@ -608,8 +621,12 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           selected={recipeBook.access === 'private'}
           onClick={() => {
             updateRecipeBook.mutate({
-              id: recipeBookId,
-              access: 'private',
+              params: {
+                id: recipeBookId,
+              },
+              body: {
+                access: 'private',
+              },
             });
 
             setGeneralAccessMenuAnchorEl(null);
@@ -624,8 +641,12 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
           selected={recipeBook.access === 'public'}
           onClick={() => {
             updateRecipeBook.mutate({
-              id: recipeBookId,
-              access: 'public',
+              params: {
+                id: recipeBookId,
+              },
+              body: {
+                access: 'public',
+              },
             });
 
             setGeneralAccessMenuAnchorEl(null);

@@ -77,8 +77,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const targetRecipeBookId = target.data['recipeBookId'] as string;
 
           addRecipeToRecipeBook.mutate({
-            recipeId: sourceRecipeId,
-            recipeBookId: targetRecipeBookId,
+            params: { id: targetRecipeBookId },
+            body: {
+              recipeId: sourceRecipeId,
+            },
           });
         } else if (
           sourceType === 'recipe' &&
@@ -87,8 +89,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const sourceRecipeId = source.data['recipeId'] as string;
 
           updateRecipe.mutate({
-            id: sourceRecipeId,
-            tryLater: false,
+            params: { id: sourceRecipeId },
+            body: {
+              tryLater: false,
+            },
           });
         } else if (
           sourceType === 'recipe' &&
@@ -97,8 +101,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const sourceRecipeId = source.data['recipeId'] as string;
 
           updateRecipe.mutate({
-            id: sourceRecipeId,
-            tryLater: true,
+            params: { id: sourceRecipeId },
+            body: {
+              tryLater: true,
+            },
           });
         } else if (
           sourceType === 'recipe' &&
@@ -107,8 +113,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const sourceRecipeId = source.data['recipeId'] as string;
 
           updateRecipe.mutate({
-            id: sourceRecipeId,
-            favorite: true,
+            params: { id: sourceRecipeId },
+            body: {
+              favorite: true,
+            },
           });
         }
       },

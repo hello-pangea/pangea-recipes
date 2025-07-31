@@ -1,35 +1,27 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import { prisma } from '@open-zero/database';
-import { publicProfileSchema } from '@open-zero/features/profiles';
-import { Type } from '@sinclair/typebox';
+import { getPublicProfileContract } from '@open-zero/features/profiles';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 
 const routeTag = 'Profiles';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function profileRoutes(fastify: FastifyTypebox) {
+export const profileRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.get(
-    '/:userId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Get a public profile',
         security: [],
-        params: Type.Object({
-          userId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: Type.Object({
-            profile: publicProfileSchema,
-          }),
-        },
+        ...getPublicProfileContract,
       },
     },
     async (request) => {
-      const { userId } = request.params;
+      const { id } = request.params;
 
       const user = await prisma.user.findUniqueOrThrow({
         where: {
-          id: userId,
+          id: id,
         },
       });
 
@@ -42,4 +34,4 @@ export async function profileRoutes(fastify: FastifyTypebox) {
       };
     },
   );
-}
+};

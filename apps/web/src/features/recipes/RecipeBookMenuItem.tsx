@@ -41,13 +41,14 @@ export function RecipeBookMenuItem({ book, recipeId }: Props) {
 
     if (isRecipeInBook) {
       removeRecipeFromRecipeBook.mutate({
-        recipeBookId: book.id,
-        recipeId: recipe.id,
+        params: { id: book.id, recipeId: recipe.id },
       });
     } else {
       addRecipeToRecipeBook.mutate({
-        recipeBookId: book.id,
-        recipeId: recipe.id,
+        params: { id: book.id },
+        body: {
+          recipeId: recipe.id,
+        },
       });
     }
   };

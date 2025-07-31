@@ -1,32 +1,23 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
+import { z } from 'zod/v4';
 
-const nutritionSchemaId = 'Nutrition';
+export const nutritionSchema = z.object({
+  calories: z.number().nullable(),
 
-export type Nutrition = Static<typeof nutritionSchema>;
-export const nutritionSchema = Type.Object(
-  {
-    calories: Nullable(Type.Number()),
+  totalFatG: z.number().nullable(),
+  unsaturatedFatG: z.number().nullable(),
+  saturatedFatG: z.number().nullable(),
+  transFatG: z.number().nullable(),
 
-    totalFatG: Nullable(Type.Unsafe<number>(Type.Number())),
-    unsaturatedFatG: Nullable(Type.Unsafe<number>(Type.Number())),
-    saturatedFatG: Nullable(Type.Unsafe<number>(Type.Number())),
-    transFatG: Nullable(Type.Unsafe<number>(Type.Number())),
+  carbsG: z.number().nullable(),
+  proteinG: z.number().nullable(),
+  fiberG: z.number().nullable(),
+  sugarG: z.number().nullable(),
 
-    carbsG: Nullable(Type.Unsafe<number>(Type.Number())),
-    proteinG: Nullable(Type.Unsafe<number>(Type.Number())),
-    fiberG: Nullable(Type.Unsafe<number>(Type.Number())),
-    sugarG: Nullable(Type.Unsafe<number>(Type.Number())),
+  sodiumMg: z.number().nullable(),
+  ironMg: z.number().nullable(),
+  calciumMg: z.number().nullable(),
+  potassiumMg: z.number().nullable(),
+  cholesterolMg: z.number().nullable(),
+});
 
-    sodiumMg: Nullable(Type.Unsafe<number>(Type.Number())),
-    ironMg: Nullable(Type.Unsafe<number>(Type.Number())),
-    calciumMg: Nullable(Type.Unsafe<number>(Type.Number())),
-    potassiumMg: Nullable(Type.Unsafe<number>(Type.Number())),
-    cholesterolMg: Nullable(Type.Unsafe<number>(Type.Number())),
-  },
-  { $id: nutritionSchemaId },
-);
-
-export const nutritionSchemaRef = Type.Unsafe<Nutrition>(
-  Type.Ref(nutritionSchemaId),
-);
+export type Nutrition = z.infer<typeof nutritionSchema>;

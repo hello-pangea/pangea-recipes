@@ -1,19 +1,14 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { z } from 'zod/v4';
 
-export type Tag = Static<typeof tagSchema>;
-export const tagSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
-
-    name: Type.String({ minLength: 1 }),
-  },
-  { $id: 'Tag' },
-);
-
-export type CreateTagDto = Static<typeof createTagDtoSchema>;
-export const createTagDtoSchema = Type.Object({
-  name: Type.String({ minLength: 1 }),
+export const tagSchema = z.object({
+  id: z.uuidv4().describe('unique id'),
+  name: z.string().min(1),
 });
+
+export type Tag = z.infer<typeof tagSchema>;
+
+export const createTagDtoSchema = z.object({
+  name: z.string().min(1),
+});
+
+export type CreateTagDto = z.infer<typeof createTagDtoSchema>;

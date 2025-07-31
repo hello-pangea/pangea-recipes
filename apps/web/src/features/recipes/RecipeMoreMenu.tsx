@@ -173,8 +173,8 @@ export function RecipeMoreMenu({
           }}
           onClick={() => {
             updateRecipe.mutate({
-              id: recipe.id,
-              favorite: !recipe.favorite,
+              params: { id: recipe.id },
+              body: { favorite: !recipe.favorite },
             });
           }}
         >
@@ -195,8 +195,10 @@ export function RecipeMoreMenu({
           }}
           onClick={() => {
             updateRecipe.mutate({
-              id: recipe.id,
-              tryLater: !recipe.tryLater,
+              params: { id: recipe.id },
+              body: {
+                tryLater: !recipe.tryLater,
+              },
             });
           }}
         >
@@ -228,7 +230,7 @@ export function RecipeMoreMenu({
         {onRemoveFromRecipeBook && <Divider />}
         <MenuItem
           onClick={() => {
-            deleteRecipe.mutate({ recipeId: recipe.id });
+            deleteRecipe.mutate({ params: { id: recipe.id } });
 
             if (onDelete) {
               onDelete();
@@ -301,8 +303,12 @@ export function RecipeMoreMenu({
                 }
 
                 addRecipeToRecipeBook.mutate({
-                  recipeBookId: firstRecipeBook.id,
-                  recipeId: recipe.id,
+                  params: {
+                    id: firstRecipeBook.id,
+                  },
+                  body: {
+                    recipeId: recipe.id,
+                  },
                 });
 
                 handleClose();
@@ -344,12 +350,16 @@ export function RecipeMoreMenu({
         <MenuItem
           onClick={() => {
             createRecipeBook.mutate(
-              { name: recipe.name },
+              { body: { name: recipe.name } },
               {
                 onSuccess: (newRecipeBook) => {
                   addRecipeToRecipeBook.mutate({
-                    recipeBookId: newRecipeBook.id,
-                    recipeId: recipe.id,
+                    params: {
+                      id: newRecipeBook.id,
+                    },
+                    body: {
+                      recipeId: recipe.id,
+                    },
                   });
                 },
               },

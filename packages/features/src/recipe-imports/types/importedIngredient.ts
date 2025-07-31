@@ -1,19 +1,14 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
+import { z } from 'zod/v4';
 
-const importedIngredientSchemaId = 'ImportedIngredient';
+export const importedIngredientSchema = z
+  .object({
+    name: z.string(),
+    unit: z.string().nullable(),
+    quantity: z.number().nullable(),
+    notes: z.string().nullable(),
+  })
+  .meta({
+    id: 'ImportedIngredient',
+  });
 
-export type ImportedIngredient = Static<typeof importedIngredientSchema>;
-export const importedIngredientSchema = Type.Object(
-  {
-    name: Type.String(),
-    unit: Nullable(Type.String()),
-    quantity: Nullable(Type.Number()),
-    notes: Nullable(Type.String()),
-  },
-  { $id: importedIngredientSchemaId },
-);
-
-export const importedIngredientSchemaRef = Type.Unsafe<ImportedIngredient>(
-  Type.Ref(importedIngredientSchemaId),
-);
+export type ImportedIngredient = z.infer<typeof importedIngredientSchema>;

@@ -1,9 +1,10 @@
-import { Type, type Static } from '@sinclair/typebox';
+import { z } from 'zod/v4';
 import { recipeSchema } from './recipe.js';
 
-export type RecipeProjected = Static<typeof recipeProjectedSchema>;
-export const recipeProjectedSchema = Type.Omit(recipeSchema, [
-  'ingredientGroups',
-  'instructionGroups',
-  'nutrition',
-]);
+export const recipeProjectedSchema = recipeSchema.omit({
+  ingredientGroups: true,
+  instructionGroups: true,
+  nutrition: true,
+});
+
+export type RecipeProjected = z.infer<typeof recipeProjectedSchema>;

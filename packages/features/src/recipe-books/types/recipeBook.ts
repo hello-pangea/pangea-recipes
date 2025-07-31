@@ -1,53 +1,31 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
-import { recipeBookRequestSchemaRef } from '../../recipe-book-requests/index.js';
+import { z } from 'zod/v4';
+import { recipeBookRequestSchema } from '../../recipe-book-requests/index.js';
 
-const recipeBookSchemaId = 'RecipeBook';
-
-export type RecipeBook = Static<typeof recipeBookSchema>;
-export const recipeBookSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
-
-    createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
-
-    name: Type.String(),
-
-    description: Nullable(Type.String()),
-
-    access: Type.Union([Type.Literal('public'), Type.Literal('private')]),
-
-    recipeIds: Type.Array(Type.String({ format: 'uuid' })),
-
-    members: Type.Array(
-      Type.Object({
-        userId: Type.String({ format: 'uuid' }),
-        name: Type.String(),
-        role: Type.Union([
-          Type.Literal('owner'),
-          Type.Literal('editor'),
-          Type.Literal('viewer'),
-        ]),
+export const recipeBookSchema = z
+  .object({
+    id: z.uuidv4(),
+    createdAt: z.date(),
+    name: z.string(),
+    description: z.string().nullable(),
+    access: z.enum(['public', 'private']),
+    recipeIds: z.array(z.uuidv4()),
+    members: z.array(
+      z.object({
+        userId: z.uuidv4(),
+        name: z.string(),
+        role: z.enum(['owner', 'editor', 'viewer']),
       }),
     ),
-    invites: Type.Array(
-      Type.Object({
-        inviteeEmail: Type.String({ format: 'email' }),
-        role: Type.Union([
-          Type.Literal('owner'),
-          Type.Literal('editor'),
-          Type.Literal('viewer'),
-        ]),
+    invites: z.array(
+      z.object({
+        inviteeEmail: z.email(),
+        role: z.enum(['owner', 'editor', 'viewer']),
       }),
     ),
-    requests: Type.Array(recipeBookRequestSchemaRef),
-  },
-  { $id: recipeBookSchemaId },
-);
+    requests: z.array(recipeBookRequestSchema),
+  })
+  .meta({
+    id: 'RecipeBook',
+  });
 
-export const recipeBookSchemaRef = Type.Unsafe<RecipeBook>(
-  Type.Ref(recipeBookSchemaId),
-);
+export type RecipeBook = z.infer<typeof recipeBookSchema>;

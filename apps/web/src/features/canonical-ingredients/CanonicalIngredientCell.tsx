@@ -107,7 +107,7 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
         <MenuItem
           onClick={() => {
             deleteCanonicalIngredient.mutate({
-              canonicalIngredientId: canonicalIngredient.id,
+              params: { id: canonicalIngredient.id },
             });
 
             handleMoreMenuClose();

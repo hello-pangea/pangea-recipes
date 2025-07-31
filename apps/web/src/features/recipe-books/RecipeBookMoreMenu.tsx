@@ -67,8 +67,7 @@ export function RecipeBookMoreMenu({
         <MenuItem
           onClick={() => {
             deleteRecipeBookMember.mutate({
-              recipeBookId: recipeBookId,
-              userId: userId,
+              params: { id: recipeBookId, userId: userId },
             });
 
             onClose();
@@ -138,7 +137,7 @@ export function RecipeBookMoreMenu({
         {myRole === 'owner' && (
           <MenuItem
             onClick={() => {
-              deleteRecipeBook.mutate({ recipeBookId: recipeBookId });
+              deleteRecipeBook.mutate({ params: { id: recipeBookId } });
 
               if (onDelete) {
                 onDelete();
