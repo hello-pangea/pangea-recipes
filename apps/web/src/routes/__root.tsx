@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       },
       {
         rel: 'preconnect',
-        href: 'https://api.hellorecipes.com',
+        href: 'https://api.pangearecipes.com',
       },
     ],
     scripts: [

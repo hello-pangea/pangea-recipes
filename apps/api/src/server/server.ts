@@ -46,8 +46,8 @@ export async function createServer() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://hellorecipes.com',
-      'https://api.hellorecipes.com',
+      'https://pangearecipes.com',
+      'https://api.pangearecipes.com',
       'https://next.hellorecipes.com',
     ],
   });

@@ -1,24 +1,24 @@
 <p align="center">
-  <img alt="Pangea Recipes" src="./assets/hello-recipes-banner.png" width="800" />
+  <img alt="Pangea Recipes" src="./assets/pangea-recipes-banner.png" width="800" />
 </p>
 
 <p align="center">
-  <a href="https://github.com/open-zero/hello-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/open-zero/hello-recipes" /></a>
-  <a href="https://hellorecipes.com/"><img src="https://img.shields.io/badge/demo-online-brightgreen" /></a>
-  <a href="https://hellorecipes.com/openapi-docs"><img src="https://img.shields.io/badge/docs-OpenApi-blue" /></a>
+  <a href="https://github.com/open-zero/pangea-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/open-zero/pangea-recipes" /></a>
+  <a href="https://pangearecipes.com/"><img src="https://img.shields.io/badge/demo-online-brightgreen" /></a>
+  <a href="https://pangearecipes.com/openapi-docs"><img src="https://img.shields.io/badge/docs-OpenApi-blue" /></a>
 </p>
 
 # Pangea Recipes
 
 A modern, open source recipe manager focused on privacy, collaboration, and ease of use. This app makes it easy to import, create, and organize your recipes. You can share recipes and collaborate on recipe books with friends and family. Never forget another recipe.
 
-[**Website →**](https://hellorecipes.com/)
+[**Website →**](https://pangearecipes.com/)
 
-[Demo recipe](https://hellorecipes.com/app/shared-recipes/d4dff988-6617-4aa0-800b-52eb03a6f4b6)
+[Demo recipe](https://pangearecipes.com/app/shared-recipes/d4dff988-6617-4aa0-800b-52eb03a6f4b6)
 
-[OpenApi Docs](https://hellorecipes.com/openapi-docs/)
+[OpenApi Docs](https://pangearecipes.com/openapi-docs/)
 
-![Screenshot of Pangea Recipes](/assets/hello-recipes.png)
+![Screenshot of Pangea Recipes](/assets/pangea-recipes.png)
 
 ## Project status
 
@@ -32,7 +32,7 @@ Pangea Recipes is in active development! It's ready for use if you're ok with a 
 - 🤝 Collaborate on recipe books with friends and family
 - ⌚ Save for later
 - 💻 100% open source, 100% TypeScript
-- 🌐 [REST-ish api](https://hellorecipes.com/openapi-docs/)
+- 🌐 [REST-ish api](https://pangearecipes.com/openapi-docs/)
 
 ## Built with
 
@@ -55,8 +55,8 @@ Pangea Recipes is in active development! It's ready for use if you're ok with a 
 ### Quick Start
 
 ```sh
-git clone https://github.com/open-zero/hello-recipes.git
-cd hello-recipes
+git clone https://github.com/open-zero/pangea-recipes.git
+cd pangea-recipes
 corepack enable
 pnpm install
 # Setup your .env files

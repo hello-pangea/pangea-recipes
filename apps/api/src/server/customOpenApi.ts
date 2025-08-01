@@ -28,7 +28,7 @@ export const customOpenApi = fastifyPlugin(async (fastify) => {
 
   const openApiServers = [
     {
-      url: 'https://api.hellorecipes.com',
+      url: 'https://api.pangearecipes.com',
       description: 'Production',
     },
     {

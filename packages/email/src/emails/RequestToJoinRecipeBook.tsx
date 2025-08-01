@@ -23,7 +23,7 @@ interface EmailProps {
 
 export function RequestToJoinRecipeBookEmail({
   recipeBookName = 'Amazing Recipes',
-  managerLink = 'https://hellorecipes.com',
+  managerLink = 'https://pangearecipes.com',
   ownerName = 'Wolfgang',
   requesterName = 'Gordon',
 }: EmailProps): ReactNode {

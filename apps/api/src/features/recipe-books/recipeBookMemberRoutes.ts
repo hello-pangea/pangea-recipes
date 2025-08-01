@@ -69,7 +69,7 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
         const signUpUrl =
           config.NODE_ENV === 'development'
             ? `http://localhost:3000/sign-up`
-            : `https://hellorecipes.com/sign-up`;
+            : `https://pangearecipes.com/sign-up`;
 
         for (const email of emailsWithNoUser) {
           await resend.emails.send({

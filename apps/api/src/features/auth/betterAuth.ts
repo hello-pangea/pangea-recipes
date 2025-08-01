@@ -42,14 +42,14 @@ export const auth = betterAuth({
   basePath: '/auth',
   baseURL:
     config.NODE_ENV === 'production'
-      ? 'https://api.hellorecipes.com'
+      ? 'https://api.pangearecipes.com'
       : 'http://localhost:3001',
   trustedOrigins: [
     'http://localhost:3000',
     'http://localhost:3001',
-    'https://hellorecipes.com',
+    'https://pangearecipes.com',
     'https://next.hellorecipes.com',
-    'https://api.hellorecipes.com',
+    'https://api.pangearecipes.com',
   ],
   advanced: {
     crossSubDomainCookies: {

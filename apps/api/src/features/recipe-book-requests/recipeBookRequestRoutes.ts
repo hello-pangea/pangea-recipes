@@ -97,7 +97,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
             react: RequestToJoinRecipeBookEmail({
               ownerName: owner.user.name || undefined,
               requesterName: requestingUser.name || 'Guest',
-              managerLink: `https://hellorecipes.com/recipe-books/${recipeBookId}`,
+              managerLink: `https://pangearecipes.com/recipe-books/${recipeBookId}`,
               recipeBookName: recipeBook.name,
             }),
           });

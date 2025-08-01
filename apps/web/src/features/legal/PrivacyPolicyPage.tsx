@@ -96,7 +96,7 @@ export function PrivacyPolicyPage() {
             <br />
             <br />
             Website refers to Pangea Recipes, accessible from
-            https://hellorecipes.com
+            https://pangearecipes.com
             <br />
             <br />
             You means the individual accessing or using the Service, or the

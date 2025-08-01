@@ -45,7 +45,7 @@ export function Footer({ sx = [] }: Props) {
         Made with ❤️ |{' '}
         <Link
           variant="body2"
-          href="https://github.com/open-zero/hello-recipes"
+          href="https://github.com/hello-pangea/pangea-recipes"
           target="_blank"
         >
           GitHub
