@@ -1,6 +1,6 @@
 import { SharedRecipePage } from '#src/features/recipes/SharedRecipePage';
 import { seo } from '#src/utils/seo';
-import { getRecipeQueryOptions } from '@open-zero/features/recipes';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/shared-recipes/$recipeId')({

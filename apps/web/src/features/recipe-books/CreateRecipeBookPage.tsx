@@ -17,11 +17,11 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
-import { emptyStringToUndefined } from '@open-zero/features';
+import { emptyStringToUndefined } from '@repo/features';
 import {
   useCreateRecipeBook,
   useUpdateRecipeBook,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';

@@ -1,12 +1,12 @@
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
-import { prisma } from '@open-zero/database';
-import { InviteToRecipeBook } from '@open-zero/email';
+import { prisma } from '@repo/database';
+import { InviteToRecipeBook } from '@repo/email';
 import {
   deleteRecipeBookInviteContract,
   deleteRecipeBookMemberContract,
   inviteMembersToRecipeBookContract,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 

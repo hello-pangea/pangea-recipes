@@ -11,7 +11,7 @@ import {
 import {
   useImportRecipe,
   type ImportedRecipe,
-} from '@open-zero/features/recipe-imports';
+} from '@repo/features/recipe-imports';
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {

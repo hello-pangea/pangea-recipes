@@ -1,7 +1,7 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
 import { Box, Grid, Typography } from '@mui/material';
-import { listRecipesQueryOptions } from '@open-zero/features/recipes';
+import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';

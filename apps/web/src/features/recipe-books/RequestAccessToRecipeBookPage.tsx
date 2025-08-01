@@ -3,8 +3,8 @@ import { Box, Button, Container, Typography } from '@mui/material';
 import {
   useRecipeBookRequests,
   useRequestAccessToRecipeBook,
-} from '@open-zero/features/recipe-book-requests';
-import { useSignedInUser } from '@open-zero/features/users';
+} from '@repo/features/recipe-book-requests';
+import { useSignedInUser } from '@repo/features/users';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';

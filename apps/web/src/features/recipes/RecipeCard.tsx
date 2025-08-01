@@ -12,7 +12,7 @@ import {
   Link as MuiLink,
   Typography,
 } from '@mui/material';
-import { useRecipe } from '@open-zero/features/recipes';
+import { useRecipe } from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

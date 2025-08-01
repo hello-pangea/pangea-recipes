@@ -1,7 +1,7 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
 import { Box, Grid, Typography } from '@mui/material';
-import { listRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
+import { listRecipeBooksQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
 import useResizeObserver from 'use-resize-observer';

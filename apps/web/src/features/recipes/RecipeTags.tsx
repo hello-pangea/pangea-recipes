@@ -15,12 +15,12 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
-import type { Tag } from '@open-zero/features';
+import type { Tag } from '@repo/features';
 import {
   useRecipe,
   useUpdateRecipe,
   useUsedRecipeTags,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
 import { useMemo, useRef, useState } from 'react';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 

@@ -15,7 +15,7 @@ import {
 import {
   useCreateCanonicalIngredient,
   useUpdateCanonicalIngredient,
-} from '@open-zero/features/canonical-ingredients';
+} from '@repo/features/canonical-ingredients';
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';

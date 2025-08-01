@@ -25,12 +25,12 @@ import {
   useAddRecipeToRecipeBook,
   useCreateRecipeBook,
   useRecipeBooks,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import {
   useDeleteRecipe,
   useRecipe,
   useUpdateRecipe,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';

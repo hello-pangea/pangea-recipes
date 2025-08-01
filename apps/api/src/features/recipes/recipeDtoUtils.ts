@@ -1,6 +1,6 @@
 import { getFileUrl } from '#src/lib/s3.ts';
-import type { prisma, Prisma } from '@open-zero/database';
-import type { Recipe } from '@open-zero/features/recipes';
+import type { prisma, Prisma } from '@repo/database';
+import type { Recipe } from '@repo/features/recipes';
 
 export const recipeInclude = {
   ingredientGroups: {

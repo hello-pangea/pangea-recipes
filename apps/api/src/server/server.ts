@@ -4,7 +4,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
-import type { User } from '@open-zero/features/users';
+import type { User } from '@repo/features/users';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
 import {

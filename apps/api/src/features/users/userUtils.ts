@@ -1,4 +1,4 @@
-import { prisma } from '@open-zero/database';
+import { prisma } from '@repo/database';
 
 export async function claimRecipeBookInvites(user: {
   email: string;

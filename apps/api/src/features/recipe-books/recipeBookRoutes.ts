@@ -1,11 +1,11 @@
-import { prisma } from '@open-zero/database';
+import { prisma } from '@repo/database';
 import {
   createRecipeBookContract,
   deleteRecipeBookContract,
   getRecipeBookContract,
   listRecipeBooksContract,
   updateRecipeBookContract,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { ApiError } from '../../lib/ApiError.ts';
 import { verifySession } from '../auth/verifySession.ts';

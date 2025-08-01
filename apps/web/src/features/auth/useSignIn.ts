@@ -1,4 +1,4 @@
-import { getSignedInUserQueryOptions } from '@open-zero/features/users';
+import { getSignedInUserQueryOptions } from '@repo/features/users';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
 import { authClient } from './authClient';

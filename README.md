@@ -3,7 +3,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/open-zero/pangea-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/open-zero/pangea-recipes" /></a>
+  <a href="https://github.com/hello-pangea/pangea-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/hello-pangea/pangea-recipes" /></a>
   <a href="https://pangearecipes.com/"><img src="https://img.shields.io/badge/demo-online-brightgreen" /></a>
   <a href="https://pangearecipes.com/openapi-docs"><img src="https://img.shields.io/badge/docs-OpenApi-blue" /></a>
 </p>
@@ -55,7 +55,7 @@ Pangea Recipes is in active development! It's ready for use if you're ok with a 
 ### Quick Start
 
 ```sh
-git clone https://github.com/open-zero/pangea-recipes.git
+git clone https://github.com/hello-pangea/pangea-recipes.git
 cd pangea-recipes
 corepack enable
 pnpm install

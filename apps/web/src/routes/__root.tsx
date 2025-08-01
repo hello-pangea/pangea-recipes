@@ -18,7 +18,7 @@ import type {} from '@mui/material/themeCssVarsAugmentation';
 import {
   getSignedInUserQueryOptions,
   useSignedInUser,
-} from '@open-zero/features/users';
+} from '@repo/features/users';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {

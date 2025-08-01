@@ -9,7 +9,7 @@ import {
   DialogTitle,
   Stack,
 } from '@mui/material';
-import { useUpdateUser } from '@open-zero/features/users';
+import { useUpdateUser } from '@repo/features/users';
 import { z } from 'zod/v4';
 
 const formSchema = z.object({

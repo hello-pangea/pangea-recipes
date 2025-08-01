@@ -1,4 +1,4 @@
-import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
+import { getRecipeBookQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipeBookPage } from './CreateRecipeBookPage';

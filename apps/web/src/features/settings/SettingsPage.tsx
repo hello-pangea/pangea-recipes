@@ -22,7 +22,7 @@ import {
   useSignedInUser,
   useUpdateUser,
   type User,
-} from '@open-zero/features/users';
+} from '@repo/features/users';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { authClient } from '../auth/authClient';

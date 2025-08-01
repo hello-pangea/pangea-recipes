@@ -1,7 +1,7 @@
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
-import { prisma } from '@open-zero/database';
-import { ResetPassword, VerifyEmail } from '@open-zero/email';
+import { prisma } from '@repo/database';
+import { ResetPassword, VerifyEmail } from '@repo/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { openAPI } from 'better-auth/plugins';

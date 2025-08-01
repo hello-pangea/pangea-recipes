@@ -5,7 +5,7 @@ import mockupImage from '#src/images/hero-mockup.png';
 import screenshotImage from '#src/images/screenshot-1.png';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
-import { useSignedInUser } from '@open-zero/features/users';
+import { useSignedInUser } from '@repo/features/users';
 import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
 import { FeatureHighlights } from './FeatureHighlights';

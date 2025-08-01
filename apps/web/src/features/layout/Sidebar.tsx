@@ -31,9 +31,9 @@ import {
 import {
   useAddRecipeToRecipeBook,
   useRecipeBooks,
-} from '@open-zero/features/recipe-books';
-import { useUpdateRecipe } from '@open-zero/features/recipes';
-import { useSignedInUser } from '@open-zero/features/users';
+} from '@repo/features/recipe-books';
+import { useUpdateRecipe } from '@repo/features/recipes';
+import { useSignedInUser } from '@repo/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';

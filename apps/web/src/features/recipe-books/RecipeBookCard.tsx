@@ -9,7 +9,7 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
-import { useRecipeBook } from '@open-zero/features/recipe-books';
+import { useRecipeBook } from '@repo/features/recipe-books';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
