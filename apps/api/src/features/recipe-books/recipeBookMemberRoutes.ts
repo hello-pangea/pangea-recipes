@@ -1,12 +1,12 @@
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
-import { prisma } from '@open-zero/database';
-import { InviteToRecipeBook } from '@open-zero/email';
+import { prisma } from '@repo/database';
+import { InviteToRecipeBook } from '@repo/email';
 import {
   deleteRecipeBookInviteContract,
   deleteRecipeBookMemberContract,
   inviteMembersToRecipeBookContract,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 
@@ -69,14 +69,14 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
         const signUpUrl =
           config.NODE_ENV === 'development'
             ? `http://localhost:3000/sign-up`
-            : `https://hellorecipes.com/sign-up`;
+            : `https://pangearecipes.com/sign-up`;
 
         for (const email of emailsWithNoUser) {
           await resend.emails.send({
-            from: 'Hello Recipes <invites@notify.hellorecipes.com>',
+            from: 'Pangea Recipes <invites@notify.pangearecipes.com>',
             to: email,
-            subject: `You've been invited to join a recipe book on Hello Recipes`,
-            replyTo: 'hello@hellorecipes.com',
+            subject: `You've been invited to join a recipe book on Pangea Recipes`,
+            replyTo: 'hello@pangearecipes.com',
             react: InviteToRecipeBook({
               url: signUpUrl,
               recipeBookName: recipeBook.name,

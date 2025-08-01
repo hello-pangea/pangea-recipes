@@ -1,5 +1,5 @@
 import { RecipeBooksPage } from '#src/features/recipe-books/RecipeBooksPage';
-import { listRecipeBooksQueryOptions } from '@open-zero/features/recipe-books';
+import { listRecipeBooksQueryOptions } from '@repo/features/recipe-books';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/_auth/recipe-books/')({
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/app/_auth/recipe-books/')({
   head: () => ({
     meta: [
       {
-        title: 'Books - Hello Recipes',
+        title: 'Books - Pangea Recipes',
       },
     ],
   }),

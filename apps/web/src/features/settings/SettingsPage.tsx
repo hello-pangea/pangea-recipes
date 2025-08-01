@@ -22,7 +22,7 @@ import {
   useSignedInUser,
   useUpdateUser,
   type User,
-} from '@open-zero/features/users';
+} from '@repo/features/users';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { authClient } from '../auth/authClient';
@@ -243,13 +243,13 @@ export function SettingsPage() {
             Contact
           </Typography>
           <Typography>
-            Hello Recipes is in beta! Send any feedback to{' '}
-            <Link href="mailto:hello@hellorecipes.com">
-              hello@hellorecipes.com
+            Pangea Recipes is in beta! Send any feedback to{' '}
+            <Link href="mailto:hello@pangearecipes.com">
+              hello@pangearecipes.com
             </Link>
             . I'd love to hear your thoughts 😊
             <br />
-            <br />- Reece, Hello Recipes creator
+            <br />- Reece, Pangea Recipes creator
           </Typography>
         </Card>
         <Card

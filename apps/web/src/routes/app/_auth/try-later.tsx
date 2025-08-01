@@ -1,5 +1,5 @@
 import { TryLaterPage } from '#src/features/recipes/TryLaterPage';
-import { listRecipesQueryOptions } from '@open-zero/features/recipes';
+import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/_auth/try-later')({
@@ -14,7 +14,7 @@ export const Route = createFileRoute('/app/_auth/try-later')({
   head: () => ({
     meta: [
       {
-        title: 'Try later - Hello Recipes',
+        title: 'Try later - Pangea Recipes',
       },
     ],
   }),

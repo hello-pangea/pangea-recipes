@@ -1,5 +1,5 @@
-import { prisma } from '@open-zero/database';
-import { getPublicProfileContract } from '@open-zero/features/profiles';
+import { prisma } from '@repo/database';
+import { getPublicProfileContract } from '@repo/features/profiles';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 
 const routeTag = 'Profiles';

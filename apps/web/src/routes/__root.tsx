@@ -18,7 +18,7 @@ import type {} from '@mui/material/themeCssVarsAugmentation';
 import {
   getSignedInUserQueryOptions,
   useSignedInUser,
-} from '@open-zero/features/users';
+} from '@repo/features/users';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import {
@@ -72,8 +72,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title: 'Hello Recipes - Recipe Manager',
-        description: `Hello Recipes is a modern, ad-free recipe manager that makes it easy to save, share, and collaborate on your favorite dishes.`,
+        title: 'Pangea Recipes - Recipe Manager',
+        description: `Pangea Recipes is a modern, ad-free recipe manager that makes it easy to save, share, and collaborate on your favorite dishes.`,
       }),
     ],
     links: [
@@ -104,7 +104,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       },
       {
         rel: 'preconnect',
-        href: 'https://api.hellorecipes.com',
+        href: 'https://api.pangearecipes.com',
       },
     ],
     scripts: [

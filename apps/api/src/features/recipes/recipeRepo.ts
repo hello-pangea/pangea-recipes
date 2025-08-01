@@ -1,5 +1,5 @@
-import { Prisma, prisma } from '@open-zero/database';
-import type { createRecipeContract } from '@open-zero/features/recipes';
+import { Prisma, prisma } from '@repo/database';
+import type { createRecipeContract } from '@repo/features/recipes';
 import type z from 'zod';
 import { recipeInclude } from './recipeDtoUtils.ts';
 

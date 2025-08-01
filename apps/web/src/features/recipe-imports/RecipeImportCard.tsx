@@ -1,5 +1,5 @@
 import { Card, CircularProgress, Typography } from '@mui/material';
-import type { RecipeImport } from '@open-zero/features/recipe-imports';
+import type { RecipeImport } from '@repo/features/recipe-imports';
 
 interface Props {
   recipeImport: RecipeImport;

@@ -1,5 +1,5 @@
 import { Page } from '#src/components/Page';
-import { useRecipe } from '@open-zero/features/recipes';
+import { useRecipe } from '@repo/features/recipes';
 import { getRouteApi } from '@tanstack/react-router';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { Recipe } from './Recipe';

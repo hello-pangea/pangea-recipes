@@ -15,7 +15,7 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
-import { getRecipeBookQueryOptions } from '@open-zero/features/recipe-books';
+import { getRecipeBookQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

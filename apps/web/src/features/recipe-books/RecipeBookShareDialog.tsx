@@ -35,7 +35,7 @@ import {
 import {
   useAcceptRecipeBookRequest,
   useDeclineRecipeBookRequest,
-} from '@open-zero/features/recipe-book-requests';
+} from '@repo/features/recipe-book-requests';
 import {
   useDeleteRecipeBookInvite,
   useDeleteRecipeBookMember,
@@ -43,7 +43,7 @@ import {
   useRecipeBook,
   useRecipeBooks,
   useUpdateRecipeBook,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import { useEffect, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 

@@ -14,7 +14,7 @@ import {
 import {
   useDeleteCanonicalIngredient,
   type CanonicalIngredient,
-} from '@open-zero/features/canonical-ingredients';
+} from '@repo/features/canonical-ingredients';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 

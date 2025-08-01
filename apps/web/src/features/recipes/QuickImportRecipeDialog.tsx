@@ -8,7 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { useImportRecipeQuick } from '@open-zero/features/recipe-imports';
+import { useImportRecipeQuick } from '@repo/features/recipe-imports';
 import { useSnackbar } from 'notistack';
 import { useEffect, useRef, useState } from 'react';
 

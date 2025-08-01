@@ -31,9 +31,9 @@ import {
 import {
   useAddRecipeToRecipeBook,
   useRecipeBooks,
-} from '@open-zero/features/recipe-books';
-import { useUpdateRecipe } from '@open-zero/features/recipes';
-import { useSignedInUser } from '@open-zero/features/users';
+} from '@repo/features/recipe-books';
+import { useUpdateRecipe } from '@repo/features/recipes';
+import { useSignedInUser } from '@repo/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -141,14 +141,15 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           <img src="/assets/lil-guy.svg" width={32} height={32} />
           <Typography
             variant="h1"
+            component={'span'}
             sx={{
-              fontSize: 18,
+              fontSize: '1rem !important',
               lineHeight: 1,
               ml: 1.5,
               pt: '0.3rem',
             }}
           >
-            Hello Recipes
+            Pangea Recipes
           </Typography>
         </Box>
       </RouterLink>

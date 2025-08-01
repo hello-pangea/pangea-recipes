@@ -1,5 +1,5 @@
-import { prisma, type Prisma } from '@open-zero/database';
-import { type CreateTagDto } from '@open-zero/features';
+import { prisma, type Prisma } from '@repo/database';
+import { type CreateTagDto } from '@repo/features';
 import {
   createRecipeContract,
   deleteRecipeContract,
@@ -7,7 +7,7 @@ import {
   getUsedRecipeTagsContract,
   listRecipesContract,
   updateRecipeContract,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
 import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { ApiError } from '../../lib/ApiError.ts';
 import { getFileUrl } from '../../lib/s3.ts';

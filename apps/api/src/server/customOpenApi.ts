@@ -28,7 +28,7 @@ export const customOpenApi = fastifyPlugin(async (fastify) => {
 
   const openApiServers = [
     {
-      url: 'https://api.hellorecipes.com',
+      url: 'https://api.pangearecipes.com',
       description: 'Production',
     },
     {
@@ -45,7 +45,7 @@ export const customOpenApi = fastifyPlugin(async (fastify) => {
     openapi: {
       openapi: '3.1.1',
       info: {
-        title: 'Hello Recipes',
+        title: 'Pangea Recipes',
         description: 'A recipe management app by Open Zero',
         version: '1.0.0',
       },

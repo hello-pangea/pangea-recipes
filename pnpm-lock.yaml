@@ -53,13 +53,13 @@ importers:
       '@fastify/swagger':
         specifier: ^9.5.1
         version: 9.5.1
-      '@open-zero/database':
+      '@repo/database':
         specifier: workspace:*
         version: link:../../packages/database
-      '@open-zero/email':
+      '@repo/email':
         specifier: workspace:*
         version: link:../../packages/email
-      '@open-zero/features':
+      '@repo/features':
         specifier: workspace:*
         version: link:../../packages/features
       '@prisma/instrumentation':
@@ -117,10 +117,10 @@ importers:
         specifier: ^4.0.14
         version: 4.0.14
     devDependencies:
-      '@open-zero/eslint-config':
+      '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@open-zero/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@types/node':
@@ -171,7 +171,7 @@ importers:
       '@mui/material':
         specifier: ^7.2.0
         version: 7.2.0(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@emotion/styled@11.14.1(@emotion/react@11.14.0(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react@19.1.1))(@types/react@19.1.9)(react-dom@19.1.1(react@19.1.1))(react@19.1.1)
-      '@open-zero/features':
+      '@repo/features':
         specifier: workspace:*
         version: link:../../packages/features
       '@scalar/api-reference-react':
@@ -244,10 +244,10 @@ importers:
         specifier: ^4.0.14
         version: 4.0.14
     devDependencies:
-      '@open-zero/eslint-config':
+      '@repo/eslint-config':
         specifier: workspace:*
         version: link:../../packages/eslint-config
-      '@open-zero/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../../packages/typescript-config
       '@tanstack/router-plugin':
@@ -284,10 +284,10 @@ importers:
         specifier: ^17.2.1
         version: 17.2.1
     devDependencies:
-      '@open-zero/eslint-config':
+      '@repo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@open-zero/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -318,10 +318,10 @@ importers:
         specifier: ^19.1.1
         version: 19.1.1(react@19.1.1)
     devDependencies:
-      '@open-zero/eslint-config':
+      '@repo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@open-zero/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':
@@ -379,10 +379,10 @@ importers:
         specifier: ^4.0.14
         version: 4.0.14
     devDependencies:
-      '@open-zero/eslint-config':
+      '@repo/eslint-config':
         specifier: workspace:*
         version: link:../eslint-config
-      '@open-zero/typescript-config':
+      '@repo/typescript-config':
         specifier: workspace:*
         version: link:../typescript-config
       '@types/node':

@@ -11,8 +11,8 @@ import {
   useAddRecipeToRecipeBook,
   useRemoveRecipeFromRecipeBook,
   type RecipeBook,
-} from '@open-zero/features/recipe-books';
-import { useRecipe } from '@open-zero/features/recipes';
+} from '@repo/features/recipe-books';
+import { useRecipe } from '@repo/features/recipes';
 import { AnimatePresence, motion } from 'motion/react';
 
 interface Props {

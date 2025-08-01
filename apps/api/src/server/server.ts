@@ -4,7 +4,7 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
-import type { User } from '@open-zero/features/users';
+import type { User } from '@repo/features/users';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
 import {
@@ -46,9 +46,9 @@ export async function createServer() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://hellorecipes.com',
-      'https://api.hellorecipes.com',
-      'https://next.hellorecipes.com',
+      'https://pangearecipes.com',
+      'https://api.pangearecipes.com',
+      'https://next.pangearecipes.com',
     ],
   });
 

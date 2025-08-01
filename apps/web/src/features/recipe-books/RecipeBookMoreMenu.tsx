@@ -13,7 +13,7 @@ import {
   useDeleteRecipeBook,
   useDeleteRecipeBookMember,
   useRecipeBook,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';

@@ -1,4 +1,4 @@
-import { prisma } from '@open-zero/database';
+import { prisma } from '@repo/database';
 import {
   createCanonicalIngredientContract,
   deleteCanonicalIngredientContract,
@@ -6,7 +6,7 @@ import {
   listCanonicalIngredientsContract,
   updateCanonicalIngredientContract,
   type CanonicalIngredient,
-} from '@open-zero/features/canonical-ingredients';
+} from '@repo/features/canonical-ingredients';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { getFileUrl } from '../../lib/s3.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';

@@ -25,10 +25,10 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { stepDownSnapped, stepUpSnapped } from '@open-zero/features';
-import { usePublicProfile } from '@open-zero/features/profiles';
-import { getRecipeQueryOptions } from '@open-zero/features/recipes';
-import { useSignedInUser } from '@open-zero/features/users';
+import { stepDownSnapped, stepUpSnapped } from '@repo/features';
+import { usePublicProfile } from '@repo/features/profiles';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
+import { useSignedInUser } from '@repo/features/users';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';

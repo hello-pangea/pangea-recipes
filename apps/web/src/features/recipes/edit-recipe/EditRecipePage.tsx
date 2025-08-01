@@ -1,4 +1,4 @@
-import { getRecipeQueryOptions } from '@open-zero/features/recipes';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipePage } from './CreateRecipePage';

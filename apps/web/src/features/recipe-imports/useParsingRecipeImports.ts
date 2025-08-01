@@ -1,4 +1,4 @@
-import { useRecipeImports } from '@open-zero/features/recipe-imports';
+import { useRecipeImports } from '@repo/features/recipe-imports';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';

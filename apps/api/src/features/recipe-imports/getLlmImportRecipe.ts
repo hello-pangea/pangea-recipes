@@ -4,7 +4,7 @@ import {
   initializeBrowser,
 } from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
-import { prisma } from '@open-zero/database';
+import { prisma } from '@repo/database';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 import { z } from 'zod/v4';

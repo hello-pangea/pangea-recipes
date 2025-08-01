@@ -10,10 +10,10 @@
       "dependsOn": ["^transit"]
     },
     "lint:eslint": {
-      "dependsOn": ["transit", "@open-zero/database#db:generate"]
+      "dependsOn": ["transit", "@repo/database#db:generate"]
     },
     "lint:type-check": {
-      "dependsOn": ["transit", "@open-zero/database#db:generate"]
+      "dependsOn": ["transit", "@repo/database#db:generate"]
     },
     "dev": {
       "dependsOn": ["^build"],

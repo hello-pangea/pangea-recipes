@@ -1,12 +1,12 @@
 import { resend } from '#src/lib/resend.ts';
-import { prisma } from '@open-zero/database';
-import { RequestToJoinRecipeBookEmail } from '@open-zero/email';
+import { prisma } from '@repo/database';
+import { RequestToJoinRecipeBookEmail } from '@repo/email';
 import {
   acceptRecipeBookRequestContract,
   declineRecipeBookRequestContract,
   listRecipeBookRequestsContract,
   requestAccessToRecipeBookContract,
-} from '@open-zero/features/recipe-book-requests';
+} from '@repo/features/recipe-book-requests';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 
@@ -90,14 +90,14 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
       if (recipeBookOwners.length) {
         for (const owner of recipeBookOwners) {
           await resend.emails.send({
-            from: 'Hello Recipes <invites@notify.hellorecipes.com>',
+            from: 'Pangea Recipes <invites@notify.pangearecipes.com>',
             to: owner.user.email,
             subject: `Share request for recipe book`,
-            replyTo: 'hello@hellorecipes.com',
+            replyTo: 'hello@pangearecipes.com',
             react: RequestToJoinRecipeBookEmail({
               ownerName: owner.user.name || undefined,
               requesterName: requestingUser.name || 'Guest',
-              managerLink: `https://hellorecipes.com/recipe-books/${recipeBookId}`,
+              managerLink: `https://pangearecipes.com/recipe-books/${recipeBookId}`,
               recipeBookName: recipeBook.name,
             }),
           });

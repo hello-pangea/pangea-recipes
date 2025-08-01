@@ -1,5 +1,5 @@
-import { type Prisma } from '@open-zero/database';
-import { updateRecipeContract } from '@open-zero/features/recipes';
+import { type Prisma } from '@repo/database';
+import { updateRecipeContract } from '@repo/features/recipes';
 import type z from 'zod';
 
 export async function updateIngredientGroups(data: {

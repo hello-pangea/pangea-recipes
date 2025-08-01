@@ -67,7 +67,7 @@ export function ForgotPasswordPage() {
             ml: 1.5,
           }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Card

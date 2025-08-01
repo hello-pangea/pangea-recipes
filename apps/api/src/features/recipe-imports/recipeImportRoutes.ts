@@ -1,10 +1,10 @@
 import { ApiError } from '#src/lib/ApiError.ts';
-import { prisma } from '@open-zero/database';
+import { prisma } from '@repo/database';
 import {
   importRecipeContract,
   importRecipeQuickContract,
   listRecipeImportsContract,
-} from '@open-zero/features/recipe-imports';
+} from '@repo/features/recipe-imports';
 import * as Sentry from '@sentry/node';
 import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';

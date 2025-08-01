@@ -17,12 +17,12 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { emptyStringToNull, emptyStringToUndefined } from '@open-zero/features';
+import { emptyStringToNull, emptyStringToUndefined } from '@repo/features';
 import {
   useCreateRecipe,
   useRecipes,
   useUpdateRecipe,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';

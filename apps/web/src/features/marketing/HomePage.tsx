@@ -5,7 +5,7 @@ import mockupImage from '#src/images/hero-mockup.png';
 import screenshotImage from '#src/images/screenshot-1.png';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
-import { useSignedInUser } from '@open-zero/features/users';
+import { useSignedInUser } from '@repo/features/users';
 import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
 import { FeatureHighlights } from './FeatureHighlights';
@@ -112,7 +112,7 @@ export function HomePage() {
                     fontSize: { xs: 16, md: 18 },
                   }}
                 >
-                  Hello Recipes is a modern, ad-free recipe manager that makes
+                  Pangea Recipes is a modern, ad-free recipe manager that makes
                   it easy to save, share, organize, and collaborate on your
                   favorite dishes.
                 </Typography>
@@ -289,7 +289,7 @@ export function HomePage() {
           >
             <img
               src="/assets/lil-guy.svg"
-              alt="Hello Recipes Logo"
+              alt="Pangea Recipes Logo"
               width={64}
               height={64}
             />
@@ -302,8 +302,9 @@ export function HomePage() {
                 maxWidth: 600,
               }}
             >
-              Hello Recipes is free to use. We don't have ads, trackers, popups,
-              or distractions. We never sell data. Enjoy your recipes, your way.
+              Pangea Recipes is free to use. We don't have ads, trackers,
+              popups, or distractions. We never sell data. Enjoy your recipes,
+              your way.
             </Typography>
             <RouterButton to="/sign-up" variant="contained">
               Sign up
