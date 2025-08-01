@@ -244,8 +244,8 @@ export function SettingsPage() {
           </Typography>
           <Typography>
             Pangea Recipes is in beta! Send any feedback to{' '}
-            <Link href="mailto:hello@hellorecipes.com">
-              hello@hellorecipes.com
+            <Link href="mailto:hello@pangearecipes.com">
+              hello@pangearecipes.com
             </Link>
             . I'd love to hear your thoughts 😊
             <br />

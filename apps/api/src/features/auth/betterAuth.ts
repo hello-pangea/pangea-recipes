@@ -15,10 +15,10 @@ export const auth = betterAuth({
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
       await resend.emails.send({
-        from: 'Pangea Recipes <auth@notify.hellorecipes.com>',
+        from: 'Pangea Recipes <auth@notify.pangearecipes.com>',
         to: user.email,
         subject: `Reset your password`,
-        replyTo: 'hello@hellorecipes.com',
+        replyTo: 'hello@pangearecipes.com',
         react: ResetPassword({
           url: url,
         }),
@@ -28,10 +28,10 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ url, user }) => {
       await resend.emails.send({
-        from: 'Pangea Recipes <auth@notify.hellorecipes.com>',
+        from: 'Pangea Recipes <auth@notify.pangearecipes.com>',
         to: user.email,
         subject: `Verify your email address`,
-        replyTo: 'hello@hellorecipes.com',
+        replyTo: 'hello@pangearecipes.com',
         react: VerifyEmail({
           url: url,
         }),
@@ -48,14 +48,14 @@ export const auth = betterAuth({
     'http://localhost:3000',
     'http://localhost:3001',
     'https://pangearecipes.com',
-    'https://next.hellorecipes.com',
+    'https://next.pangearecipes.com',
     'https://api.pangearecipes.com',
   ],
   advanced: {
     crossSubDomainCookies: {
       enabled: true,
       domain:
-        config.NODE_ENV === 'production' ? '.hellorecipes.com' : 'localhost',
+        config.NODE_ENV === 'production' ? '.pangearecipes.com' : 'localhost',
     },
     defaultCookieAttributes: {
       secure: true,
