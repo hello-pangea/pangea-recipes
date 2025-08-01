@@ -14,7 +14,7 @@ export const Route = createFileRoute('/app/_auth/recipes/')({
   head: () => ({
     meta: [
       {
-        title: 'My recipes - Hello Recipes',
+        title: 'My recipes - Pangea Recipes',
       },
     ],
   }),

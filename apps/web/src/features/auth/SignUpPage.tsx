@@ -74,7 +74,7 @@ export function SignUpPage() {
             ml: 1.5,
           }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Card
@@ -231,7 +231,7 @@ export function SignUpPage() {
               Sign up
             </Button>
             <Typography variant="caption">
-              Signing up for a Hello Recipes account means you agree to the{' '}
+              Signing up for a Pangea Recipes account means you agree to the{' '}
               <RouterLink to="/privacy-policy">Privacy Policy</RouterLink> and{' '}
               <RouterLink to="/terms-of-service">Terms of Service</RouterLink>
             </Typography>

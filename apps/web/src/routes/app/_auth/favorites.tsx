@@ -14,7 +14,7 @@ export const Route = createFileRoute('/app/_auth/favorites')({
   head: () => ({
     meta: [
       {
-        title: 'Favorites - Hello Recipes',
+        title: 'Favorites - Pangea Recipes',
       },
     ],
   }),

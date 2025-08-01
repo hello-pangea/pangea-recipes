@@ -72,8 +72,8 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       ...seo({
-        title: 'Hello Recipes - Recipe Manager',
-        description: `Hello Recipes is a modern, ad-free recipe manager that makes it easy to save, share, and collaborate on your favorite dishes.`,
+        title: 'Pangea Recipes - Recipe Manager',
+        description: `Pangea Recipes is a modern, ad-free recipe manager that makes it easy to save, share, and collaborate on your favorite dishes.`,
       }),
     ],
     links: [

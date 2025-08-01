@@ -148,7 +148,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               pt: '0.3rem',
             }}
           >
-            Hello Recipes
+            Pangea Recipes
           </Typography>
         </Box>
       </RouterLink>

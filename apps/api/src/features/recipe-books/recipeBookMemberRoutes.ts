@@ -73,9 +73,9 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
 
         for (const email of emailsWithNoUser) {
           await resend.emails.send({
-            from: 'Hello Recipes <invites@notify.hellorecipes.com>',
+            from: 'Pangea Recipes <invites@notify.hellorecipes.com>',
             to: email,
-            subject: `You've been invited to join a recipe book on Hello Recipes`,
+            subject: `You've been invited to join a recipe book on Pangea Recipes`,
             replyTo: 'hello@hellorecipes.com',
             react: InviteToRecipeBook({
               url: signUpUrl,

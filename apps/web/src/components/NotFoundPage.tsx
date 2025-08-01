@@ -19,7 +19,7 @@ export function NotFoundPage() {
           variant="h1"
           sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Typography variant="h1" sx={{ mb: 1 }}>

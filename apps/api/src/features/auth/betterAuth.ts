@@ -15,7 +15,7 @@ export const auth = betterAuth({
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
       await resend.emails.send({
-        from: 'Hello Recipes <auth@notify.hellorecipes.com>',
+        from: 'Pangea Recipes <auth@notify.hellorecipes.com>',
         to: user.email,
         subject: `Reset your password`,
         replyTo: 'hello@hellorecipes.com',
@@ -28,7 +28,7 @@ export const auth = betterAuth({
   emailVerification: {
     sendVerificationEmail: async ({ url, user }) => {
       await resend.emails.send({
-        from: 'Hello Recipes <auth@notify.hellorecipes.com>',
+        from: 'Pangea Recipes <auth@notify.hellorecipes.com>',
         to: user.email,
         subject: `Verify your email address`,
         replyTo: 'hello@hellorecipes.com',

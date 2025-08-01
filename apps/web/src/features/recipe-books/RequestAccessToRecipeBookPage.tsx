@@ -38,7 +38,7 @@ export function RequestAccessToRecipeBookPage() {
               pt: '0.4rem',
             }}
           >
-            Hello Recipes
+            Pangea Recipes
           </Typography>
         </Box>
         {requests && requests.length > 0 ? (

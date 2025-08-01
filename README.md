@@ -1,5 +1,5 @@
 <p align="center">
-  <img alt="Hello Recipes" src="./assets/hello-recipes-banner.png" width="800" />
+  <img alt="Pangea Recipes" src="./assets/hello-recipes-banner.png" width="800" />
 </p>
 
 <p align="center">
@@ -8,7 +8,7 @@
   <a href="https://hellorecipes.com/openapi-docs"><img src="https://img.shields.io/badge/docs-OpenApi-blue" /></a>
 </p>
 
-# Hello Recipes
+# Pangea Recipes
 
 A modern, open source recipe manager focused on privacy, collaboration, and ease of use. This app makes it easy to import, create, and organize your recipes. You can share recipes and collaborate on recipe books with friends and family. Never forget another recipe.
 
@@ -18,11 +18,11 @@ A modern, open source recipe manager focused on privacy, collaboration, and ease
 
 [OpenApi Docs](https://hellorecipes.com/openapi-docs/)
 
-![Screenshot of Hello Recipes](/assets/hello-recipes.png)
+![Screenshot of Pangea Recipes](/assets/hello-recipes.png)
 
 ## Project status
 
-Hello Recipes is in active development! It's ready for use if you're ok with a limited feature set. Developers should expect breaking changes to the api.
+Pangea Recipes is in active development! It's ready for use if you're ok with a limited feature set. Developers should expect breaking changes to the api.
 
 ## Key features
 
@@ -76,7 +76,7 @@ Web app made with Vite, React, and MUI
 
 ## Acknowledgements
 
-Hello Recipes is a new project focused on simplicity. As such, it is lacking _many_ features which other amazing recipe managers provide (and which you should totally check out!)
+Pangea Recipes is a new project focused on simplicity. As such, it is lacking _many_ features which other amazing recipe managers provide (and which you should totally check out!)
 
 ###### [Tandoor Recipes](https://github.com/TandoorRecipes/recipes)
 

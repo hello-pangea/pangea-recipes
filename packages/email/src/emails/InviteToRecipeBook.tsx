@@ -37,7 +37,7 @@ export function InviteToRecipeBook({
                 src={'https://assets.hellorecipes.com/assets/logo-128.png'}
                 width="32"
                 height="32"
-                alt="Hello Recipes"
+                alt="Pangea Recipes"
                 className="my-0 mx-auto"
               />
             </Section>
@@ -49,7 +49,7 @@ export function InviteToRecipeBook({
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
               You've been invited to join the recipe book "{recipeBookName}" on
-              Hello Recipes.
+              Pangea Recipes.
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button

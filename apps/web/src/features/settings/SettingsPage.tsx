@@ -243,13 +243,13 @@ export function SettingsPage() {
             Contact
           </Typography>
           <Typography>
-            Hello Recipes is in beta! Send any feedback to{' '}
+            Pangea Recipes is in beta! Send any feedback to{' '}
             <Link href="mailto:hello@hellorecipes.com">
               hello@hellorecipes.com
             </Link>
             . I'd love to hear your thoughts 😊
             <br />
-            <br />- Reece, Hello Recipes creator
+            <br />- Reece, Pangea Recipes creator
           </Typography>
         </Card>
         <Card

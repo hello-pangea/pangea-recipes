@@ -37,7 +37,7 @@ export function Header({ sx = [] }: Props) {
       <Box sx={{ display: 'flex', alignItems: 'center' }}>
         <img
           src="/assets/lil-guy.svg"
-          alt="Hello Recipes Logo"
+          alt="Pangea Recipes Logo"
           width={isSmall ? 24 : 28}
           height={isSmall ? 24 : 28}
         />
@@ -52,7 +52,7 @@ export function Header({ sx = [] }: Props) {
           }}
         >
           <RouterLink to="/" color="inherit" underline="none">
-            Hello Recipes
+            Pangea Recipes
           </RouterLink>
         </Typography>
       </Box>

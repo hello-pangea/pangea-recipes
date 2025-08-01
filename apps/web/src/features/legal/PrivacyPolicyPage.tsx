@@ -55,7 +55,7 @@ export function PrivacyPolicyPage() {
             <br />
             <br />
             Company (referred to as either "the Company", "We", "Us" or "Our" in
-            this Agreement) refers to Hello Recipes.
+            this Agreement) refers to Pangea Recipes.
             <br />
             <br />
             Cookies are small files that are placed on Your computer, mobile
@@ -95,7 +95,7 @@ export function PrivacyPolicyPage() {
             (for example, the duration of a page visit).
             <br />
             <br />
-            Website refers to Hello Recipes, accessible from
+            Website refers to Pangea Recipes, accessible from
             https://hellorecipes.com
             <br />
             <br />

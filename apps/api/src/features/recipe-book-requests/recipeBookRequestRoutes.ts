@@ -90,7 +90,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
       if (recipeBookOwners.length) {
         for (const owner of recipeBookOwners) {
           await resend.emails.send({
-            from: 'Hello Recipes <invites@notify.hellorecipes.com>',
+            from: 'Pangea Recipes <invites@notify.hellorecipes.com>',
             to: owner.user.email,
             subject: `Share request for recipe book`,
             replyTo: 'hello@hellorecipes.com',

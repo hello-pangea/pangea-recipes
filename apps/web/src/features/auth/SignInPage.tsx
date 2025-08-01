@@ -70,7 +70,7 @@ export function SignInPage() {
             ml: 1.5,
           }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Card
