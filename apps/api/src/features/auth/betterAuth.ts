@@ -48,6 +48,7 @@ export const auth = betterAuth({
     'http://localhost:3000',
     'http://localhost:3001',
     'https://pangearecipes.com',
+    'https://www.pangearecipes.com',
     'https://next.pangearecipes.com',
     'https://api.pangearecipes.com',
   ],

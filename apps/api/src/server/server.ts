@@ -46,9 +46,8 @@ export async function createServer() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://pangearecipes.com',
-      'https://api.pangearecipes.com',
-      'https://next.pangearecipes.com',
+      // any sub-domain (or the apex) of pangearecipes.com
+      /^https?:\/\/([a-z0-9-]+\.)*pangearecipes\.com$/i,
     ],
   });
 
