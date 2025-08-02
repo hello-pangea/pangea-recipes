@@ -1,7 +1,7 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
 import multipart, { type MultipartFile } from '@fastify/multipart';
-import { prisma } from '@open-zero/database';
-import { Type } from '@sinclair/typebox';
+import { prisma } from '@repo/database';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { z } from 'zod/v4';
 import { getFileUrl, uploadFile } from '../../lib/s3.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
 import { verifySession } from '../auth/verifySession.ts';
@@ -10,7 +10,7 @@ import { processAndUploadImage } from './processAndUploadImage.ts';
 const routeTag = 'Images';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function imageRoutes(fastify: FastifyTypebox) {
+export const imageRoutes: FastifyPluginAsyncZod = async function (fastify) {
   void fastify.register(multipart, {
     attachFieldsToBody: true,
     limits: {
@@ -26,15 +26,15 @@ export async function imageRoutes(fastify: FastifyTypebox) {
         tags: [routeTag],
         summary: 'Get params to authenticate an upload with Transloadit',
         consumes: ['multipart/form-data'],
-        body: Type.Object({
-          file: Type.Unsafe<MultipartFile>({
+        body: z.object({
+          file: z.custom<MultipartFile>().meta({
             isFile: true,
           }),
         }),
         response: {
-          200: Type.Object({
-            imageId: Type.String({ format: 'uuid' }),
-            imageUrl: Type.String(),
+          200: z.object({
+            imageId: z.uuidv4(),
+            imageUrl: z.string(),
           }),
         },
       },
@@ -58,15 +58,15 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         consumes: ['multipart/form-data'],
-        body: Type.Object({
-          file: Type.Unsafe<MultipartFile>({
+        body: z.object({
+          file: z.custom<MultipartFile>().meta({
             isFile: true,
           }),
         }),
         response: {
-          200: Type.Object({
-            imageId: Type.String({ format: 'uuid' }),
-            imageUrl: Type.String(),
+          200: z.object({
+            imageId: z.uuidv4(),
+            imageUrl: z.string(),
           }),
         },
       },
@@ -99,4 +99,4 @@ export async function imageRoutes(fastify: FastifyTypebox) {
       };
     },
   );
-}
+};

@@ -3,6 +3,8 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
@@ -23,15 +25,16 @@ import {
   useAddRecipeToRecipeBook,
   useCreateRecipeBook,
   useRecipeBooks,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import {
   useDeleteRecipe,
   useRecipe,
   useUpdateRecipe,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
 interface Props
   extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
@@ -155,7 +158,7 @@ export function RecipeMoreMenu({
           <ListItemIcon>
             <AddRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Add to recipe book</ListItemText>
+          <ListItemText>Add to book</ListItemText>
           <ListItemIcon
             sx={{
               justifyContent: 'flex-end',
@@ -170,8 +173,32 @@ export function RecipeMoreMenu({
           }}
           onClick={() => {
             updateRecipe.mutate({
-              id: recipe.id,
-              tryLater: !recipe.tryLater,
+              params: { id: recipe.id },
+              body: { favorite: !recipe.favorite },
+            });
+          }}
+        >
+          <ListItemIcon>
+            {recipe.favorite ? (
+              <FavoriteRoundedIcon fontSize="small" />
+            ) : (
+              <FavoriteBorderRoundedIcon fontSize="small" />
+            )}
+          </ListItemIcon>
+          <ListItemText>
+            {recipe.favorite ? 'Remove from favorites' : 'Add to favorites'}
+          </ListItemText>
+        </MenuItem>
+        <MenuItem
+          onMouseEnter={() => {
+            setBooksAnchorEl(null);
+          }}
+          onClick={() => {
+            updateRecipe.mutate({
+              params: { id: recipe.id },
+              body: {
+                tryLater: !recipe.tryLater,
+              },
             });
           }}
         >
@@ -179,7 +206,7 @@ export function RecipeMoreMenu({
             <UpcomingRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {recipe.tryLater ? 'Remove from "Try Later"' : 'Add to "Try Later"'}
+            {recipe.tryLater ? 'Remove from try later' : 'Add to try later'}
           </ListItemText>
         </MenuItem>
         <Divider />
@@ -197,13 +224,13 @@ export function RecipeMoreMenu({
             <ListItemIcon>
               <RemoveCircleRoundedIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Remove from recipe book</ListItemText>
+            <ListItemText>Remove from book</ListItemText>
           </MenuItem>
         )}
         {onRemoveFromRecipeBook && <Divider />}
         <MenuItem
           onClick={() => {
-            deleteRecipe.mutate({ recipeId: recipe.id });
+            deleteRecipe.mutate({ params: { id: recipe.id } });
 
             if (onDelete) {
               onDelete();
@@ -259,7 +286,7 @@ export function RecipeMoreMenu({
           <TextField
             variant="outlined"
             size="small"
-            placeholder="Find a recipe book"
+            placeholder="Find a book"
             value={search}
             fullWidth
             onChange={(event) => {
@@ -276,8 +303,12 @@ export function RecipeMoreMenu({
                 }
 
                 addRecipeToRecipeBook.mutate({
-                  recipeBookId: firstRecipeBook.id,
-                  recipeId: recipe.id,
+                  params: {
+                    id: firstRecipeBook.id,
+                  },
+                  body: {
+                    recipeId: recipe.id,
+                  },
                 });
 
                 handleClose();
@@ -319,12 +350,16 @@ export function RecipeMoreMenu({
         <MenuItem
           onClick={() => {
             createRecipeBook.mutate(
-              { name: recipe.name },
+              { body: { name: recipe.name } },
               {
                 onSuccess: (newRecipeBook) => {
                   addRecipeToRecipeBook.mutate({
-                    recipeBookId: newRecipeBook.id,
-                    recipeId: recipe.id,
+                    params: {
+                      id: newRecipeBook.id,
+                    },
+                    body: {
+                      recipeId: recipe.id,
+                    },
                   });
                 },
               },
@@ -334,23 +369,11 @@ export function RecipeMoreMenu({
           <ListItemIcon>
             <AddRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>New recipe book</ListItemText>
+          <ListItemText>New book</ListItemText>
         </MenuItem>
         {filteredRecipeBooks.length > 0 && <Divider />}
         {filteredRecipeBooks.map((book) => (
-          <MenuItem
-            key={book.id}
-            onClick={() => {
-              addRecipeToRecipeBook.mutate({
-                recipeBookId: book.id,
-                recipeId: recipe.id,
-              });
-
-              handleClose();
-            }}
-          >
-            <ListItemText>{book.name}</ListItemText>
-          </MenuItem>
+          <RecipeBookMenuItem key={book.id} book={book} recipeId={recipe.id} />
         ))}
       </Menu>
     </>

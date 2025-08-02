@@ -19,7 +19,7 @@ interface EmailProps {
 }
 
 export function VerifyEmail({
-  url = 'https://hellorecipes.com',
+  url = 'https://pangearecipes.com',
 }: EmailProps): ReactNode {
   const previewText = `Verify your email address`;
 
@@ -35,7 +35,7 @@ export function VerifyEmail({
                 src={'https://assets.hellorecipes.com/assets/logo-128.png'}
                 width="32"
                 height="32"
-                alt="Hello Recipes"
+                alt="Pangea Recipes"
                 className="my-0 mx-auto"
               />
             </Section>

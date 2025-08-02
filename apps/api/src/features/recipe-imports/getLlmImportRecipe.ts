@@ -4,7 +4,7 @@ import {
   initializeBrowser,
 } from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
-import { prisma } from '@open-zero/database';
+import { prisma } from '@repo/database';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 import { z } from 'zod/v4';
@@ -154,7 +154,7 @@ export async function getLlmImportRecipe(urlString: string) {
 
   const openAiRes = await openAi.responses.parse({
     instructions:
-      "Parse the given recipe into a structured recipe object. If you don't find nutrition info, make your best guess.",
+      'Parse the given recipe into a structured recipe object. Estimate nutrition info if not provided.',
     input: recipeMarkdown,
     model: 'gpt-4.1-2025-04-14',
     text: {
@@ -162,12 +162,22 @@ export async function getLlmImportRecipe(urlString: string) {
         type: 'json_schema',
         name: 'recipe',
         strict: true,
-        schema: z.toJSONSchema(llmRecipeSchema, { target: 'draft-2020-12' }),
+        schema: z.toJSONSchema(llmRecipeSchema, { target: 'draft-7' }),
       },
     },
   });
 
   const llmRecipe = llmRecipeSchema.parse(openAiRes.output_parsed as unknown);
+
+  if (llmRecipe.totalTime !== null) {
+    llmRecipe.totalTime = llmRecipe.totalTime * 60;
+  }
+  if (llmRecipe.prepTime !== null) {
+    llmRecipe.prepTime = llmRecipe.prepTime * 60;
+  }
+  if (llmRecipe.cookTime !== null) {
+    llmRecipe.cookTime = llmRecipe.cookTime * 60;
+  }
 
   llmRecipe.ingredientGroups.forEach((ig) => {
     ig.ingredients.forEach((i) => {

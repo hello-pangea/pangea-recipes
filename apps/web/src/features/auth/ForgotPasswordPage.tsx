@@ -67,7 +67,7 @@ export function ForgotPasswordPage() {
             ml: 1.5,
           }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Card
@@ -75,7 +75,8 @@ export function ForgotPasswordPage() {
         sx={{
           p: 2,
           mb: 2,
-          width: 400,
+          maxWidth: 400,
+          width: '100%',
           border: 0,
           boxShadow:
             '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',

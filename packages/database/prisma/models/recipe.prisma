@@ -17,6 +17,8 @@ model Recipe {
 
   tryLater Boolean @default(false) @map("try_later")
 
+  favorite Boolean @default(false)
+
   sourceWebsitePageId String?      @map("source_website_page_id") @db.Uuid
   sourceWebsitePage   WebsitePage? @relation(fields: [sourceWebsitePageId], references: [id])
 

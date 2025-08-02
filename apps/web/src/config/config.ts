@@ -1,10 +1,12 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Value } from '@sinclair/typebox/value';
+import { z } from 'zod/v4';
 
-export type Env = Static<typeof envSchema>;
-export const envSchema = Type.Object({
-  VITE_API_URL: Type.String(),
-  PROD: Type.Boolean(),
+const envSchema = z.object({
+  VITE_API_URL: z.string(),
+  VITE_GOOGLE_TAG_ID: z.string().optional(),
+  VITE_GOOGLE_TAG_CONVERSION_DESTINATION: z.string().optional(),
+  PROD: z.boolean(),
 });
 
-export const config = Value.Parse(envSchema, import.meta.env);
+export type Env = z.infer<typeof envSchema>;
+
+export const config = envSchema.parse(import.meta.env);

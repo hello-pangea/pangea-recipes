@@ -12,14 +12,16 @@ interface Props {
   sx?: SxProps<Theme>;
 }
 
-export function Copyright({ sx = [] }: Props) {
+export function Footer({ sx = [] }: Props) {
   return (
-    <Box sx={sx}>
+    <Box component={'footer'} sx={sx}>
       <Typography
         variant="body2"
-        color="text.secondary"
-        align="center"
-        sx={{ mb: 1 }}
+        sx={{
+          mb: 1,
+          textAlign: 'center',
+          color: (theme) => theme.palette.text.secondary,
+        }}
       >
         {'Copyright © Reece Carolan '}
         {new Date().getFullYear()}
@@ -32,9 +34,21 @@ export function Copyright({ sx = [] }: Props) {
           Privacy policy
         </RouterLink>
       </Stack>
-      <Typography variant="body2" color="text.secondary" align="center">
-        <Link href="https://github.com/open-zero/hello-recipes" target="_blank">
-          ❤️ Open Source
+      <Typography
+        variant="body2"
+        sx={{
+          mb: 1,
+          textAlign: 'center',
+          color: (theme) => theme.palette.text.secondary,
+        }}
+      >
+        Made with ❤️ |{' '}
+        <Link
+          variant="body2"
+          href="https://github.com/hello-pangea/pangea-recipes"
+          target="_blank"
+        >
+          GitHub
         </Link>
       </Typography>
     </Box>

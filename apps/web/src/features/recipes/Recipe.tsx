@@ -1,4 +1,5 @@
 import { useIsMounted } from '#src/hooks/useIsMounted';
+import { useWakeLock } from '#src/hooks/useWakeLock';
 import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import { secondsToTimeString } from '#src/utils/timeFormatting';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
@@ -11,6 +12,7 @@ import {
   Box,
   Button,
   Card,
+  Chip,
   FormControlLabel,
   FormGroup,
   Grid,
@@ -21,14 +23,16 @@ import {
   Switch,
   TextField,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
-import { stepDownSnapped, stepUpSnapped } from '@open-zero/features';
-import { getRecipeQueryOptions } from '@open-zero/features/recipes';
+import { stepDownSnapped, stepUpSnapped } from '@repo/features';
+import { usePublicProfile } from '@repo/features/profiles';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
+import { useSignedInUser } from '@repo/features/users';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { useWakeLock } from 'react-screen-wake-lock';
 import { Ingredient } from './Ingredient';
 import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
@@ -66,277 +70,274 @@ export function Recipe({ readOnly, recipeId }: Props) {
   const servingsMultiplier = recipe.servings
     ? (getNumberFromInput(servingsModifier) ?? 1) / recipe.servings
     : (getNumberFromInput(servingsModifier) ?? 1);
+  const isPhone = useMediaQuery((theme) => theme.breakpoints.down('sm'));
+  const { data: user } = useSignedInUser();
+  const { data: sharedByProfile } = usePublicProfile({
+    id: recipe.userId,
+    queryConfig: {
+      enabled: recipe.userId !== user?.id,
+    },
+  });
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
-  const hasCoverImage = (recipe.images?.length ?? 0) > 0;
+  const coverImageUrl = recipe.images?.at(0)?.url;
 
   return (
     <>
-      <Grid container spacing={4} sx={{ mb: 2 }}>
-        <Grid
-          size={{
-            xs: 12,
-            md: hasCoverImage ? 6 : 12,
+      <Stack
+        spacing={4}
+        sx={{
+          mb: 4,
+        }}
+      >
+        <Card
+          sx={{
+            p: { xs: 2, sm: 4 },
+            border: 0,
+            mx: { xs: -1, sm: 0 },
+            borderRadius: 2,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
           }}
         >
-          <Stack spacing={4}>
-            <Card
-              sx={{
-                p: { xs: 2, sm: 4 },
-                border: 0,
-                mx: { xs: -1, sm: 0 },
-                borderRadius: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Box
-                sx={{
-                  display: 'flex',
-                  alignItems: 'flex-start',
-                  justifyContent: 'space-between',
-                  mb: 2,
-                }}
-              >
-                <Box>
-                  <Typography variant="h1">{recipe.name}</Typography>
-                  {recipe.websiteSource && (
-                    <Link
-                      href={recipe.websiteSource.url}
-                      rel="nofollow"
-                      target="_blank"
-                      sx={{
-                        color: (theme) => theme.vars.palette.text.secondary,
-                      }}
-                    >
-                      {recipe.websiteSource.title}
-                    </Link>
-                  )}
-                </Box>
-                {!readOnly && (
-                  <IconButton
-                    id="more-button"
-                    aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={moreMenuOpen ? 'true' : undefined}
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      event.preventDefault();
-                      setMoreMenuAnchorEl(event.currentTarget);
-                    }}
-                    onMouseDown={(event) => {
-                      event.stopPropagation();
-                      event.preventDefault();
-                    }}
-                  >
-                    <MoreVertRoundedIcon />
-                  </IconButton>
-                )}
-              </Box>
-              <RecipeTags
-                recipeId={recipe.id}
-                readOnly={readOnly}
-                sx={{
-                  mb: 2,
-                }}
-              />
-              <Typography sx={{ maxWidth: 500 }}>
-                {recipe.description}
-              </Typography>
-              <Grid container spacing={2} sx={{ mt: 4 }}>
-                <Grid
-                  size={{
-                    xs: 12,
-                    sm: 4,
-                    md: 6,
-                    lg: 4,
-                  }}
-                >
-                  <Stack spacing={2} alignItems={'flex-start'}>
-                    <Stack spacing={1} direction="row" alignItems="center">
-                      <Typography variant="h3">Servings</Typography>
-                      <Button
-                        size="small"
-                        onClick={(event) => {
-                          setServingsAnchorEl(event.currentTarget);
-                        }}
-                        aria-describedby="servings-popover"
-                      >
-                        Scale
-                      </Button>
-                    </Stack>
-                    <Stack spacing={2} direction="row" alignItems="center">
-                      <GroupsRoundedIcon />
-                      <Typography>
-                        {recipe.servings === null ? (
-                          servingsMultiplier === 1 ? (
-                            '--'
-                          ) : (
-                            <b>({servingsMultiplier}x)</b>
-                          )
-                        ) : (
-                          <>
-                            {recipe.servings * servingsMultiplier}
-                            {servingsMultiplier !== 1 ? (
-                              <b> ({Number(servingsMultiplier.toFixed(3))}x)</b>
-                            ) : (
-                              ''
-                            )}
-                          </>
-                        )}
-                      </Typography>
-                    </Stack>
-                    <Popover
-                      id="servings-popover"
-                      open={Boolean(servingsAnchorEl)}
-                      anchorEl={servingsAnchorEl}
-                      onClose={() => {
-                        setServingsAnchorEl(null);
-                      }}
-                      anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                      }}
-                      transformOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                      }}
-                      slotProps={{
-                        paper: {
-                          sx: {
-                            p: 1,
-                            mt: '-4px',
-                          },
-                        },
-                      }}
-                    >
-                      <Stack
-                        spacing={1}
-                        direction={'row'}
-                        alignItems={'center'}
-                      >
-                        <TextField
-                          size="small"
-                          value={servingsModifier}
-                          onChange={(event) => {
-                            setServingsModifier(event.target.value);
-                          }}
-                        />
-                        <IconButton
-                          onClick={() => {
-                            const value = getNumberFromInput(servingsModifier);
-
-                            if (value !== null && !isNaN(value)) {
-                              setServingsModifier(
-                                stepDownSnapped({
-                                  value: value,
-                                  steps: [0.125, 0.25, 0.5, 0.75, 1, 1.5, 2],
-                                  stepDownBy: 1,
-                                }).toString(),
-                              );
-                            }
-                          }}
-                        >
-                          <RemoveRoundedIcon />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            const value = getNumberFromInput(servingsModifier);
-
-                            if (value !== null && !isNaN(value)) {
-                              setServingsModifier(
-                                stepUpSnapped({
-                                  value: value,
-                                  steps: [0.125, 0.25, 0.5, 0.75, 1, 1.5, 2],
-                                  stepUpBy: 1,
-                                }).toString(),
-                              );
-                            }
-                          }}
-                        >
-                          <AddRoundedIcon />
-                        </IconButton>
-                      </Stack>
-                    </Popover>
-                  </Stack>
-                </Grid>
-                {recipe.prepTime !== null && (
-                  <Grid
-                    size={{
-                      xs: 12,
-                      sm: 4,
-                      md: 6,
-                      lg: 4,
-                    }}
-                  >
-                    <Stack spacing={2}>
-                      <Typography variant="h3">Prep Time</Typography>
-                      <Stack spacing={2} direction="row" alignItems="center">
-                        <BlenderRoundedIcon />
-                        <Typography>
-                          {secondsToTimeString(recipe.prepTime)}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Grid>
-                )}
-                {recipe.cookTime !== null && (
-                  <Grid
-                    size={{
-                      xs: 12,
-                      sm: 4,
-                      md: 6,
-                      lg: 4,
-                    }}
-                  >
-                    <Stack spacing={2}>
-                      <Typography variant="h3">Cook Time</Typography>
-                      <Stack spacing={2} direction="row" alignItems="center">
-                        <LocalFireDepartmentRoundedIcon />
-                        <Typography>
-                          {secondsToTimeString(recipe.cookTime)}
-                        </Typography>
-                      </Stack>
-                    </Stack>
-                  </Grid>
-                )}
-              </Grid>
-            </Card>
-          </Stack>
-        </Grid>
-        {hasCoverImage && (
-          <Grid
-            size={{
-              xs: 12,
-              md: 6,
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              justifyContent: 'space-between',
+              mb: 2,
             }}
           >
-            <Box
-              sx={{
-                borderRadius: 2,
-                position: 'relative',
-                width: '100%',
-                overflow: 'hidden',
-                height: 400,
-                boxShadow:
-                  '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
-              }}
-            >
-              <img
-                src={recipe.images?.at(0)?.url}
-                style={{
-                  objectFit: 'cover',
-                  width: '100%',
-                  height: '100%',
-                  objectPosition: 'center',
+            <Stack spacing={0.5} sx={{ alignItems: 'flex-start' }}>
+              {sharedByProfile && (
+                <Chip
+                  size="small"
+                  label={`Shared by ${sharedByProfile.name}`}
+                />
+              )}
+              <Typography variant="h1">{recipe.name}</Typography>
+              {recipe.websiteSource && (
+                <Link
+                  href={recipe.websiteSource.url}
+                  rel="nofollow"
+                  target="_blank"
+                  sx={{
+                    color: (theme) => theme.vars.palette.text.secondary,
+                    display: 'block',
+                  }}
+                >
+                  {recipe.websiteSource.title}
+                </Link>
+              )}
+            </Stack>
+            {!readOnly && (
+              <IconButton
+                id="more-button"
+                aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+                aria-haspopup="true"
+                aria-expanded={moreMenuOpen ? 'true' : undefined}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                  setMoreMenuAnchorEl(event.currentTarget);
                 }}
-              />
-            </Box>
+                onMouseDown={(event) => {
+                  event.stopPropagation();
+                  event.preventDefault();
+                }}
+              >
+                <MoreVertRoundedIcon />
+              </IconButton>
+            )}
+          </Box>
+          <RecipeTags
+            recipeId={recipe.id}
+            readOnly={readOnly}
+            sx={{
+              mb: 2,
+            }}
+          />
+          <Typography
+            sx={{ maxWidth: 500, mb: { xs: 2, sm: 4 }, whiteSpace: 'pre-wrap' }}
+          >
+            {recipe.description}
+          </Typography>
+          <Grid container spacing={2} columns={{ xs: 2, sm: 3 }}>
+            <Grid size={1}>
+              <Stack spacing={1} alignItems={'flex-start'}>
+                <Stack
+                  spacing={1}
+                  direction="row"
+                  alignItems="center"
+                  sx={{ height: 30 }}
+                >
+                  <GroupsRoundedIcon fontSize="small" />
+                  <Typography variant="h3">Servings</Typography>
+                  <Button
+                    size="small"
+                    onClick={(event) => {
+                      setServingsAnchorEl(event.currentTarget);
+                    }}
+                    aria-describedby="servings-popover"
+                    sx={{
+                      minWidth: { xs: 32, sm: 48 },
+                    }}
+                  >
+                    {isPhone ? '+/-' : 'Scale'}
+                  </Button>
+                </Stack>
+                <Typography>
+                  {recipe.servings === null ? (
+                    servingsMultiplier === 1 ? (
+                      '--'
+                    ) : (
+                      <b>({servingsMultiplier}x)</b>
+                    )
+                  ) : (
+                    <>
+                      {recipe.servings * servingsMultiplier}
+                      {servingsMultiplier !== 1 ? (
+                        <b> ({Number(servingsMultiplier.toFixed(3))}x)</b>
+                      ) : (
+                        ''
+                      )}
+                    </>
+                  )}
+                </Typography>
+                <Popover
+                  id="servings-popover"
+                  open={Boolean(servingsAnchorEl)}
+                  anchorEl={servingsAnchorEl}
+                  onClose={() => {
+                    setServingsAnchorEl(null);
+                  }}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'left',
+                  }}
+                  transformOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left',
+                  }}
+                  slotProps={{
+                    paper: {
+                      sx: {
+                        p: 1,
+                        mt: '-4px',
+                      },
+                    },
+                  }}
+                >
+                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                    <TextField
+                      size="small"
+                      value={servingsModifier}
+                      onChange={(event) => {
+                        setServingsModifier(event.target.value);
+                      }}
+                    />
+                    <IconButton
+                      onClick={() => {
+                        const value = getNumberFromInput(servingsModifier);
+
+                        if (value !== null && !isNaN(value)) {
+                          setServingsModifier(
+                            stepDownSnapped({
+                              value: value,
+                              steps: [0.125, 0.25, 0.5, 0.75, 1, 1.5, 2],
+                              stepDownBy: 1,
+                            }).toString(),
+                          );
+                        }
+                      }}
+                    >
+                      <RemoveRoundedIcon />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        const value = getNumberFromInput(servingsModifier);
+
+                        if (value !== null && !isNaN(value)) {
+                          setServingsModifier(
+                            stepUpSnapped({
+                              value: value,
+                              steps: [0.125, 0.25, 0.5, 0.75, 1, 1.5, 2],
+                              stepUpBy: 1,
+                            }).toString(),
+                          );
+                        }
+                      }}
+                    >
+                      <AddRoundedIcon />
+                    </IconButton>
+                  </Stack>
+                </Popover>
+              </Stack>
+            </Grid>
+            {recipe.prepTime !== null && (
+              <Grid size={1}>
+                <Stack spacing={1}>
+                  <Stack
+                    spacing={1}
+                    direction="row"
+                    alignItems="center"
+                    sx={{ height: 30 }}
+                  >
+                    <BlenderRoundedIcon fontSize="small" />
+                    <Typography variant="h3">Prep Time</Typography>
+                  </Stack>
+                  <Typography>
+                    {secondsToTimeString(recipe.prepTime)}
+                  </Typography>
+                </Stack>
+              </Grid>
+            )}
+            {recipe.cookTime !== null && (
+              <Grid size={1}>
+                <Stack spacing={1}>
+                  <Stack
+                    spacing={1}
+                    direction="row"
+                    alignItems="center"
+                    sx={{ height: 30 }}
+                  >
+                    <LocalFireDepartmentRoundedIcon fontSize="small" />
+                    <Typography variant="h3">Cook Time</Typography>
+                  </Stack>
+                  <Typography>
+                    {secondsToTimeString(recipe.cookTime)}
+                  </Typography>
+                </Stack>
+              </Grid>
+            )}
           </Grid>
+        </Card>
+        {coverImageUrl && (
+          <Box
+            sx={{
+              borderRadius: 2,
+              position: 'relative',
+              width: '100%',
+              overflow: 'hidden',
+              boxShadow:
+                '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+            }}
+          >
+            <img
+              src={coverImageUrl}
+              style={{
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%',
+                objectPosition: 'center',
+                display: 'block',
+              }}
+            />
+          </Box>
         )}
-      </Grid>
+      </Stack>
       {/* SSR fix */}
       {isWakeLockSupported && isMounted && (
         <FormGroup sx={{ mb: 2 }}>
@@ -416,7 +417,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
                       >
                         <Typography
                           sx={{
-                            color: (theme) => theme.vars.palette.primary.main,
+                            color: (theme) => theme.vars.palette.text.heading,
                             fontWeight: 'bold',
                             fontFamily: '"Lora Variable", serif',
                             fontSize: 22,

@@ -1,39 +1,46 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
+import { z } from 'zod/v4';
 
-const userSchemaId = 'User';
+export const userSchema = z
+  .object({
+    id: z.uuidv4(),
 
-export type User = Static<typeof userSchema>;
-export const userSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
+    createdAt: z.date(),
 
-    createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
+    name: z.string(),
 
-    name: Type.String(),
+    email: z.string(),
+    emailVerified: z.boolean(),
 
-    email: Type.String(),
-    emailVerified: Type.Boolean(),
+    image: z.string().nullable(),
 
-    image: Nullable(Type.String()),
+    accessRole: z.enum(['admin', 'user']),
 
-    accessRole: Type.Union([Type.Literal('admin'), Type.Literal('user')]),
+    themePreference: z.enum(['light', 'dark', 'system']),
 
-    themePreference: Type.Union([
-      Type.Literal('light'),
-      Type.Literal('dark'),
-      Type.Literal('system'),
+    unitsPreference: z.enum(['imperial', 'metric']),
+
+    accentColor: z.enum([
+      'red',
+      'orange',
+      'amber',
+      'yellow',
+      'lime',
+      'green',
+      'emerald',
+      'teal',
+      'cyan',
+      'sky',
+      'blue',
+      'indigo',
+      'violet',
+      'purple',
+      'fuschia',
+      'pink',
+      'rose',
     ]),
+  })
+  .meta({
+    id: 'User',
+  });
 
-    unitsPreference: Type.Union([
-      Type.Literal('imperial'),
-      Type.Literal('metric'),
-    ]),
-  },
-  { $id: userSchemaId },
-);
-
-export const userSchemaRef = Type.Unsafe<User>(Type.Ref(userSchemaId));
+export type User = z.infer<typeof userSchema>;

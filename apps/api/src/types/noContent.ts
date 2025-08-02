@@ -1,3 +1,3 @@
-import { Type } from '@sinclair/typebox';
+import { z } from 'zod/v4';
 
-export const noContentSchema = Type.Null({ description: 'No content' });
+export const noContentSchema = z.null().describe('No content');

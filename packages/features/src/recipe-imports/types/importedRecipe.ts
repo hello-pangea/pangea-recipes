@@ -1,45 +1,40 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
-import { nutritionSchemaRef } from '../../recipes/types/nutrition.js';
+import { z } from 'zod/v4';
+import { nutritionSchema } from '../../recipes/types/nutrition.js';
 import { importedIngredientSchema } from './importedIngredient.js';
 
-const importedRecipeSchemaId = 'ImportedRecipe';
+export const importedRecipeSchema = z
+  .object({
+    name: z.string(),
 
-export type ImportedRecipe = Static<typeof importedRecipeSchema>;
-export const importedRecipeSchema = Type.Object(
-  {
-    name: Type.String(),
+    description: z.string().nullable(),
 
-    description: Nullable(Type.String()),
+    /** Seconds */
+    prepTime: z.number().nullable(),
+    /** Seconds */
+    cookTime: z.number().nullable(),
+    /** Seconds */
+    totalTime: z.number().nullable(),
 
-    /** Minutes */
-    prepTime: Nullable(Type.Number({ description: 'Minutes' })),
-    /** Minutes */
-    cookTime: Nullable(Type.Number({ description: 'Minutes' })),
-    /** Minutes */
-    totalTime: Nullable(Type.Number({ description: 'Minutes' })),
+    servings: z.number().nullable(),
 
-    servings: Nullable(Type.Number()),
-
-    ingredientGroups: Type.Array(
-      Type.Object({
-        name: Type.String(),
-        ingredients: Type.Array(importedIngredientSchema),
+    ingredientGroups: z.array(
+      z.object({
+        name: z.string(),
+        ingredients: z.array(importedIngredientSchema),
       }),
     ),
 
-    instructionGroups: Type.Array(
-      Type.Object({
-        name: Type.String(),
-        instructions: Type.Array(Type.String()),
+    instructionGroups: z.array(
+      z.object({
+        name: z.string(),
+        instructions: z.array(z.string()),
       }),
     ),
 
-    nutrition: Nullable(nutritionSchemaRef),
-  },
-  { $id: importedRecipeSchemaId },
-);
+    nutrition: nutritionSchema.nullable(),
+  })
+  .meta({
+    id: 'ImportedRecipe',
+  });
 
-export const importedRecipeSchemaRef = Type.Unsafe<ImportedRecipe>(
-  Type.Ref(importedRecipeSchemaId),
-);
+export type ImportedRecipe = z.infer<typeof importedRecipeSchema>;

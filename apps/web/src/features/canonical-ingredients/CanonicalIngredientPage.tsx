@@ -2,7 +2,7 @@ import { Page } from '#src/components/Page';
 import { RouterButton } from '#src/components/RouterButton';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Divider, Stack, Typography } from '@mui/material';
-import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
+import { useCanonicalIngredients } from '@repo/features/canonical-ingredients';
 import { CanonicalIngredientCell } from './CanonicalIngredientCell';
 
 export function CanonicalIngredientsPage() {

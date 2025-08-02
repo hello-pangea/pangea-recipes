@@ -15,7 +15,7 @@ import {
 import {
   useCreateCanonicalIngredient,
   useUpdateCanonicalIngredient,
-} from '@open-zero/features/canonical-ingredients';
+} from '@repo/features/canonical-ingredients';
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';
@@ -68,16 +68,20 @@ export function CreateCanonicalIngredientPage({
 
       if (updateCanonicalIngredientId) {
         canonicalIngredientUpdater.mutate({
-          id: updateCanonicalIngredientId,
-          name: parsed.name,
-          iconId: parsed.icon?.id ?? undefined,
-          aliases: parsed.aliases.map((alias) => alias.name),
+          params: { id: updateCanonicalIngredientId },
+          body: {
+            name: parsed.name,
+            iconId: parsed.icon?.id ?? undefined,
+            aliases: parsed.aliases.map((alias) => alias.name),
+          },
         });
       } else {
         canonicalIngredientCreator.mutate({
-          name: parsed.name,
-          iconId: parsed.icon?.id ?? undefined,
-          aliases: parsed.aliases.map((alias) => alias.name),
+          body: {
+            name: parsed.name,
+            iconId: parsed.icon?.id ?? undefined,
+            aliases: parsed.aliases.map((alias) => alias.name),
+          },
         });
       }
     },

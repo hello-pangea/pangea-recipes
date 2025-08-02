@@ -1,13 +1,17 @@
 import { CarrotIcon } from '#src/components/CarrotIcon';
 import { RouterLink } from '#src/components/RouterLink';
 import { RouterListItemButton } from '#src/components/RouterListItemButton';
+import type {
+  DropTargetArgs,
+  ElementDragType,
+} from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 import {
   dropTargetForElements,
   monitorForElements,
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
-import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import RestaurantMenuRoundedIcon from '@mui/icons-material/RestaurantMenuRounded';
 import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
@@ -18,7 +22,6 @@ import {
   Collapse,
   Drawer,
   IconButton,
-  Link,
   List,
   ListItemIcon,
   ListItemText,
@@ -28,17 +31,13 @@ import {
 import {
   useAddRecipeToRecipeBook,
   useRecipeBooks,
-} from '@open-zero/features/recipe-books';
-import { useSignedInUser } from '@open-zero/features/users';
+} from '@repo/features/recipe-books';
+import { useUpdateRecipe } from '@repo/features/recipes';
+import { useSignedInUser } from '@repo/features/users';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { NewButton } from './NewButton';
-import { useUpdateRecipe } from '@open-zero/features/recipes';
-import type {
-  DropTargetArgs,
-  ElementDragType,
-} from '@atlaskit/pragmatic-drag-and-drop/dist/types/internal-types';
 
 const drawerWidth = 240;
 
@@ -78,8 +77,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const targetRecipeBookId = target.data['recipeBookId'] as string;
 
           addRecipeToRecipeBook.mutate({
-            recipeId: sourceRecipeId,
-            recipeBookId: targetRecipeBookId,
+            params: { id: targetRecipeBookId },
+            body: {
+              recipeId: sourceRecipeId,
+            },
           });
         } else if (
           sourceType === 'recipe' &&
@@ -88,8 +89,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const sourceRecipeId = source.data['recipeId'] as string;
 
           updateRecipe.mutate({
-            id: sourceRecipeId,
-            tryLater: false,
+            params: { id: sourceRecipeId },
+            body: {
+              tryLater: false,
+            },
           });
         } else if (
           sourceType === 'recipe' &&
@@ -98,8 +101,22 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           const sourceRecipeId = source.data['recipeId'] as string;
 
           updateRecipe.mutate({
-            id: sourceRecipeId,
-            tryLater: true,
+            params: { id: sourceRecipeId },
+            body: {
+              tryLater: true,
+            },
+          });
+        } else if (
+          sourceType === 'recipe' &&
+          targetType === 'favorites_sidebar'
+        ) {
+          const sourceRecipeId = source.data['recipeId'] as string;
+
+          updateRecipe.mutate({
+            params: { id: sourceRecipeId },
+            body: {
+              favorite: true,
+            },
           });
         }
       },
@@ -124,14 +141,15 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           <img src="/assets/lil-guy.svg" width={32} height={32} />
           <Typography
             variant="h1"
+            component={'span'}
             sx={{
-              fontSize: 18,
+              fontSize: '1rem !important',
               lineHeight: 1,
               ml: 1.5,
               pt: '0.3rem',
             }}
           >
-            Hello Recipes
+            Pangea Recipes
           </Typography>
         </Box>
       </RouterLink>
@@ -151,7 +169,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         <List>
           <DroppableListItem
             icon={<RestaurantMenuRoundedIcon />}
-            label="Recipes"
+            label="My recipes"
             onClick={onClose}
             linkProps={{
               to: '/app/recipes',
@@ -164,6 +182,23 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               return (
                 source.data['type'] === 'recipe' &&
                 Boolean(source.data['tryLater'])
+              );
+            }}
+          />
+          <DroppableListItem
+            icon={<FavoriteRoundedIcon />}
+            label="Favorites"
+            onClick={onClose}
+            linkProps={{
+              to: '/app/favorites',
+            }}
+            plainPath="/app/favorites"
+            data={{
+              type: 'favorites_sidebar',
+            }}
+            canDrop={({ source }) => {
+              return (
+                source.data['type'] === 'recipe' && !source.data['favorite']
               );
             }}
           />
@@ -186,7 +221,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           />
           <ListItem
             icon={<MenuBookRoundedIcon />}
-            label="Recipe books"
+            label="Books"
             onClick={onClose}
             linkProps={{
               to: '/app/recipe-books',
@@ -198,7 +233,6 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               ? recipeBooks?.map((recipeBook) => (
                   <DroppableRecipeBookListItem
                     key={recipeBook.id}
-                    icon={<CircleRoundedIcon sx={{ fontSize: 14 }} />}
                     label={recipeBook.name}
                     onClick={onClose}
                     isNested
@@ -237,23 +271,6 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           }}
           plainPath="/app/settings"
         />
-        <Box
-          sx={{
-            mt: 1,
-            mb: 2,
-            ml: 3.5,
-          }}
-        >
-          <Typography variant="body2" sx={{ fontWeight: 'bold' }}>
-            We're in beta!
-          </Typography>
-          <Typography variant="body2">
-            Contact us about anything:{' '}
-            <Link href="mailto:hello@hellorecipes.com">
-              hello@hellorecipes.com
-            </Link>
-          </Typography>
-        </Box>
       </Box>
     </>
   );
@@ -347,6 +364,9 @@ function ListItem({
             </IconButton>
           )
         }
+        sx={{
+          pl: isNested ? 2 : 0,
+        }}
       >
         <RouterListItemButton
           onClick={onClick}
@@ -354,7 +374,6 @@ function ListItem({
           sx={{
             mx: 1,
             borderRadius: 1,
-            pl: isNested ? 4 : undefined,
             py: small ? 0.5 : undefined,
             border: 2,
             borderColor: (theme) =>

@@ -1,20 +1,28 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
-interface DeleteRecipeBookInvite {
-  recipeBookId: string;
-  inviteeEmail: string;
-}
-
-function deleteRecipeBookInvite(data: DeleteRecipeBookInvite) {
-  return api.delete(`recipe-books/${data.recipeBookId}/invitations`, {
-    json: {
-      inviteeEmail: data.inviteeEmail,
+export const deleteRecipeBookInviteContract = defineContract(
+  'recipe-books/:id/invitations',
+  {
+    method: 'delete',
+    params: z.object({
+      id: z.uuidv4(),
+    }),
+    body: z.object({
+      inviteeEmail: z.email(),
+    }),
+    response: {
+      200: noContent,
     },
-  });
-}
+  },
+);
+
+const deleteRecipeBookInvite = makeRequest(deleteRecipeBookInviteContract);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof deleteRecipeBookInvite>;
@@ -30,7 +38,7 @@ export function useDeleteRecipeBookInvite({ mutationConfig }: Options = {}) {
       const [_data, input] = args;
 
       void queryClient.invalidateQueries({
-        queryKey: getRecipeBookQueryOptions(input.recipeBookId).queryKey,
+        queryKey: getRecipeBookQueryOptions(input.params.id).queryKey,
       });
 
       void onSuccess?.(...args);

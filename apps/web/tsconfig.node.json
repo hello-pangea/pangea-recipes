@@ -1,5 +1,5 @@
 {
-  "extends": "@open-zero/typescript-config/node.json",
+  "extends": "@repo/typescript-config/node.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "noEmit": true

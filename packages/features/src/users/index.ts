@@ -1,4 +1,3 @@
-export * from './types/updateUserDto.js';
 export * from './types/user.js';
 
 export * from './api/getSignedInUser.js';

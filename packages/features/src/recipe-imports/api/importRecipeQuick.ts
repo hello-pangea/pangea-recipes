@@ -1,15 +1,28 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-function importRecipeQuick(url: string) {
-  return api.post(`recipe-imports/quick`, {
-    json: {
-      url,
+export const importRecipeQuickContract = defineContract(
+  'recipe-imports/quick',
+  {
+    method: 'post',
+    body: z.object({
+      url: z.url(),
+    }),
+    response: {
+      202: noContent,
     },
+  },
+);
+
+const importRecipeQuick = makeRequest(importRecipeQuickContract, {
+  ky: {
     timeout: 60000,
-  });
-}
+  },
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof importRecipeQuick>;

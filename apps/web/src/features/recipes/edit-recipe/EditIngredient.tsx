@@ -34,10 +34,10 @@ import {
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { numberToFraction } from '@open-zero/features';
-import { useCanonicalIngredients } from '@open-zero/features/canonical-ingredients';
-import { defaultUnitOptions } from '@open-zero/features/units';
-import { useSignedInUser } from '@open-zero/features/users';
+import { numberToFraction } from '@repo/features';
+import { useCanonicalIngredients } from '@repo/features/canonical-ingredients';
+import { defaultUnitOptions } from '@repo/features/units';
+import { useSignedInUser } from '@repo/features/users';
 import { useStore } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';

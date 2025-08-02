@@ -4,8 +4,8 @@ import { Box, Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
   useRemoveRecipeFromRecipeBook,
-} from '@open-zero/features/recipe-books';
-import { useRecipes } from '@open-zero/features/recipes';
+} from '@repo/features/recipe-books';
+import { useRecipes } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
@@ -90,8 +90,10 @@ export function RecipeBookPage() {
                 recipeId={recipe.id}
                 onRemoveFromRecipeBook={() => {
                   removeRecipeFromRecipeBook.mutate({
-                    recipeId: recipe.id,
-                    recipeBookId,
+                    params: {
+                      id: recipeBookId,
+                      recipeId: recipe.id,
+                    },
                   });
                 }}
               />

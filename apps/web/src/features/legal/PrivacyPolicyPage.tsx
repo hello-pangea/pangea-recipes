@@ -1,4 +1,4 @@
-import { Copyright } from '#src/components/Copyright';
+import { Footer } from '#src/components/Footer';
 import { Page } from '#src/components/Page';
 import { Container, Typography } from '@mui/material';
 import { Header } from '../marketing/Header';
@@ -55,7 +55,7 @@ export function PrivacyPolicyPage() {
             <br />
             <br />
             Company (referred to as either "the Company", "We", "Us" or "Our" in
-            this Agreement) refers to Hello Recipes.
+            this Agreement) refers to Pangea Recipes.
             <br />
             <br />
             Cookies are small files that are placed on Your computer, mobile
@@ -95,8 +95,8 @@ export function PrivacyPolicyPage() {
             (for example, the duration of a page visit).
             <br />
             <br />
-            Website refers to Hello Recipes, accessible from
-            https://hellorecipes.com
+            Website refers to Pangea Recipes, accessible from
+            https://pangearecipes.com
             <br />
             <br />
             You means the individual accessing or using the Service, or the
@@ -490,7 +490,7 @@ export function PrivacyPolicyPage() {
             By email: hello@openzero.com
           </Typography>
         </Container>
-        <Copyright />
+        <Footer />
       </Page>
     </>
   );

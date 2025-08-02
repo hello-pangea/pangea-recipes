@@ -17,11 +17,11 @@ import {
   MenuItem,
   Typography,
 } from '@mui/material';
-import { emptyStringToUndefined } from '@open-zero/features';
+import { emptyStringToUndefined } from '@repo/features';
 import {
   useCreateRecipeBook,
   useUpdateRecipeBook,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
@@ -30,7 +30,10 @@ import { z } from 'zod/v4';
 
 const formSchema = z.object({
   recipeBookName: z.string().min(1, { message: 'Name is required' }),
-  description: z.string().transform((val) => (val === '' ? null : val)),
+  description: z
+    .string()
+    .nullable()
+    .transform((val) => (val === '' ? null : val)),
   access: z.enum(['public', 'private']),
 });
 type RecipeBookFormInputs = z.infer<typeof formSchema>;
@@ -91,15 +94,19 @@ export function CreateRecipeBookPage({
 
       if (updateRecipeBookId) {
         recipeBookUpdater.mutate({
-          id: updateRecipeBookId,
-          name: parsed.recipeBookName,
-          description: emptyStringToUndefined(parsed.description),
+          params: { id: updateRecipeBookId },
+          body: {
+            name: parsed.recipeBookName,
+            description: emptyStringToUndefined(parsed.description),
+          },
         });
       } else {
         recipeBookCreator.mutate({
-          name: parsed.recipeBookName,
-          description: emptyStringToUndefined(parsed.description),
-          access: parsed.access,
+          body: {
+            name: parsed.recipeBookName,
+            description: emptyStringToUndefined(parsed.description),
+            access: parsed.access,
+          },
         });
       }
     },
@@ -111,7 +118,7 @@ export function CreateRecipeBookPage({
     <Page>
       <Box sx={{ mb: 2 }}>
         <Typography variant="h1">
-          {updateRecipeBookId ? 'Edit recipe book' : 'New recipe book'}
+          {updateRecipeBookId ? 'Edit book' : 'New book'}
         </Typography>
       </Box>
       <form
@@ -134,7 +141,8 @@ export function CreateRecipeBookPage({
               name="recipeBookName"
               children={(field) => (
                 <field.TextField
-                  label="Recipe book name"
+                  label="Name"
+                  autoComplete="off"
                   fullWidth
                   multiline
                   onKeyDown={(event) => {

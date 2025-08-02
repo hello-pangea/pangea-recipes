@@ -12,10 +12,11 @@ import {
   Link as MuiLink,
   Typography,
 } from '@mui/material';
-import { useRecipe } from '@open-zero/features/recipes';
+import { useRecipe } from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
 interface Props {
@@ -25,6 +26,7 @@ interface Props {
 
 export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
   const { data: recipe } = useRecipe({ recipeId: recipeId });
+  const userId = useSignedInUserId();
   const ref = useRef<null | HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
@@ -45,6 +47,8 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
   const moreMenuOpen = Boolean(moreMenuAnchor);
   const isTouchDevice = matchMedia('(hover: none)').matches;
 
+  const ownsRecipe = recipe?.userId === userId;
+
   useEffect(() => {
     const element = ref.current;
 
@@ -56,6 +60,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       type: 'recipe',
       recipeId: recipeId,
       tryLater: recipe.tryLater,
+      favorite: recipe.favorite,
     };
 
     return draggable({
@@ -73,8 +78,9 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
           },
         });
       },
+      canDrag: () => ownsRecipe,
     });
-  }, [recipeId, recipe]);
+  }, [recipeId, recipe, ownsRecipe]);
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -118,7 +124,9 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
           },
         }}
-        onContextMenu={isTouchDevice ? undefined : handleContextMenu}
+        onContextMenu={
+          isTouchDevice || !ownsRecipe ? undefined : handleContextMenu
+        }
         onMouseEnter={
           isTouchDevice
             ? undefined
@@ -212,46 +220,50 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
               </Typography>
             )}
           </Box>
-          <IconButton
-            id="more-button"
-            aria-controls={moreMenuOpen ? 'more-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={moreMenuOpen ? 'true' : undefined}
-            onClick={(event) => {
-              setMoreMenuAnchor({
-                type: 'more',
-                anchorEl: event.currentTarget,
-              });
-            }}
-            sx={{
-              visibility:
-                isHovering || moreMenuAnchor || isTouchDevice
-                  ? 'visible'
-                  : 'hidden',
-            }}
-          >
-            <MoreVertRoundedIcon />
-          </IconButton>
+          {ownsRecipe && (
+            <IconButton
+              id="more-button"
+              aria-controls={moreMenuOpen ? 'more-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={moreMenuOpen ? 'true' : undefined}
+              onClick={(event) => {
+                setMoreMenuAnchor({
+                  type: 'more',
+                  anchorEl: event.currentTarget,
+                });
+              }}
+              sx={{
+                visibility:
+                  isHovering || moreMenuAnchor || isTouchDevice
+                    ? 'visible'
+                    : 'hidden',
+              }}
+            >
+              <MoreVertRoundedIcon />
+            </IconButton>
+          )}
         </Box>
       </Card>
-      <RecipeMoreMenu
-        recipeId={recipeId}
-        anchorEl={
-          moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
-        }
-        onClose={() => {
-          setMoreMenuAnchor(null);
-        }}
-        anchorReference={
-          moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'
-        }
-        onRemoveFromRecipeBook={onRemoveFromRecipeBook}
-        anchorPosition={
-          moreMenuAnchor?.type === 'context'
-            ? { top: moreMenuAnchor.mouseY, left: moreMenuAnchor.mouseX }
-            : undefined
-        }
-      />
+      {ownsRecipe && (
+        <RecipeMoreMenu
+          recipeId={recipeId}
+          anchorEl={
+            moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
+          }
+          onClose={() => {
+            setMoreMenuAnchor(null);
+          }}
+          anchorReference={
+            moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'
+          }
+          onRemoveFromRecipeBook={onRemoveFromRecipeBook}
+          anchorPosition={
+            moreMenuAnchor?.type === 'context'
+              ? { top: moreMenuAnchor.mouseY, left: moreMenuAnchor.mouseX }
+              : undefined
+          }
+        />
+      )}
       {previewContainer
         ? createPortal(<DragPreview text={recipe.name} />, previewContainer)
         : null}

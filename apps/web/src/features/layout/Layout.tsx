@@ -10,7 +10,7 @@ import {
   useMediaQuery,
   type Theme,
 } from '@mui/material';
-import { useSignedInUser } from '@open-zero/features/users';
+import { useSignedInUser } from '@repo/features/users';
 import { Outlet } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
 import { NewButton } from './NewButton';

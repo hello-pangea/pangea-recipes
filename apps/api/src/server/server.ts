@@ -4,14 +4,16 @@ import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
 import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
-import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import type { User } from '@open-zero/features/users';
+import type { User } from '@repo/features/users';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from 'fastify-type-provider-zod';
 import { enablePrettyLogs } from '../config/config.ts';
 import { customOpenApi } from './customOpenApi.ts';
 import { routes } from './routes.ts';
-import schemaPlugin from './schemaPlugin.ts';
 
 export async function createServer() {
   console.log('\n🛠️ Setup: fastify server');
@@ -28,7 +30,11 @@ export async function createServer() {
           },
         }
       : false,
-  }).withTypeProvider<TypeBoxTypeProvider>();
+  });
+
+  fastify.setValidatorCompiler(validatorCompiler);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  fastify.setSerializerCompiler(serializerCompiler);
 
   // -
   // Fastify plugins
@@ -40,9 +46,8 @@ export async function createServer() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://hellorecipes.com',
-      'https://api.hellorecipes.com',
-      'https://next.hellorecipes.com',
+      // any sub-domain (or the apex) of pangearecipes.com
+      /^https?:\/\/([a-z0-9-]+\.)*pangearecipes\.com$/i,
     ],
   });
 
@@ -61,8 +66,6 @@ export async function createServer() {
   // -
 
   await fastify.register(customOpenApi);
-
-  await fastify.register(schemaPlugin);
 
   // -
   // Decorators

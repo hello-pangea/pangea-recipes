@@ -1,16 +1,16 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
-import { prisma, type Prisma } from '@open-zero/database';
-import { tagSchema, type CreateTagDto } from '@open-zero/features';
+import { prisma, type Prisma } from '@repo/database';
+import { type CreateTagDto } from '@repo/features';
 import {
-  createRecipeDtoScema,
-  recipeProjectedSchema,
-  recipeSchema,
-  updateRecipeDtoScema,
-} from '@open-zero/features/recipes';
-import { Type } from '@sinclair/typebox';
+  createRecipeContract,
+  deleteRecipeContract,
+  getRecipeContract,
+  getUsedRecipeTagsContract,
+  listRecipesContract,
+  updateRecipeContract,
+} from '@repo/features/recipes';
+import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { ApiError } from '../../lib/ApiError.ts';
 import { getFileUrl } from '../../lib/s3.ts';
-import { noContentSchema } from '../../types/noContent.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.ts';
 import { createRecipe } from './recipeRepo.ts';
@@ -20,7 +20,7 @@ import { updateInstructionGroups } from './updateInstructionGroups.ts';
 const routeTag = 'Recipes';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeRoutes(fastify: FastifyTypebox) {
+export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',
     {
@@ -28,12 +28,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'Create a recipe',
-        body: createRecipeDtoScema,
-        response: {
-          200: Type.Object({
-            recipe: recipeSchema,
-          }),
-        },
+        ...createRecipeContract,
       },
     },
     async (request) => {
@@ -63,15 +58,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List recipes',
-        querystring: Type.Object({
-          userId: Type.Optional(Type.String({ format: 'uuid' })),
-          recipeBookId: Type.Optional(Type.String({ format: 'uuid' })),
-        }),
-        response: {
-          200: Type.Object({
-            recipes: Type.Array(recipeProjectedSchema),
-          }),
-        },
+        ...listRecipesContract,
       },
     },
     async (request) => {
@@ -117,7 +104,10 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           images: await Promise.all(
             recipe.images.map(async (image) => ({
               id: image.image.id,
-              url: await getFileUrl({ key: image.image.key, public: false }),
+              url: await getFileUrl({
+                key: image.image.key,
+                public: image.image.public,
+              }),
               favorite: image.favorite ?? false,
             })),
           ),
@@ -141,27 +131,20 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.get(
-    '/:recipeId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Get a recipe',
-        params: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: Type.Object({
-            recipe: recipeSchema,
-          }),
-        },
+        ...getRecipeContract,
       },
     },
     async (request) => {
-      const { recipeId } = request.params;
+      const { id } = request.params;
 
       const recipe = await prisma.recipe.findUniqueOrThrow({
         where: {
-          id: recipeId,
+          id: id,
         },
         include: recipeInclude,
       });
@@ -175,20 +158,12 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.patch(
-    '/:recipeId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Update a recipe',
-        params: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
-        }),
-        body: updateRecipeDtoScema,
-        response: {
-          200: Type.Object({
-            recipe: recipeSchema,
-          }),
-        },
+        ...updateRecipeContract,
       },
     },
     async (request) => {
@@ -205,13 +180,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
         imageIds,
         nutrition,
         tryLater,
+        favorite,
       } = request.body;
-      const { recipeId } = request.params;
+      const { id } = request.params;
 
       const recipeDto = await prisma.$transaction(async (prisma) => {
         const oldRecipe = await prisma.recipe.findUniqueOrThrow({
           where: {
-            id: recipeId,
+            id: id,
           },
           select: {
             userId: true,
@@ -291,14 +267,14 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           tx: prisma,
           newInstructionGroups: instructionGroups,
           oldInstructionGroups: oldRecipe.instructionGroups,
-          recipeId: recipeId,
+          recipeId: id,
         });
 
         await updateIngredientGroups({
           tx: prisma,
           newIngredientGroups: ingredientGroups,
           oldIngredientGroups: oldRecipe.ingredientGroups,
-          recipeId: recipeId,
+          recipeId: id,
         });
 
         // -
@@ -312,6 +288,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
           cookTime: cookTime,
           servings: servings,
           tryLater: tryLater,
+          favorite: favorite,
           usesRecipes: !usesRecipes
             ? undefined
             : {
@@ -336,7 +313,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
                     connectOrCreate: imageIds.map((id) => ({
                       where: {
                         recipeId_imageId: {
-                          recipeId: recipeId,
+                          recipeId: id,
                           imageId: id,
                         },
                       },
@@ -357,7 +334,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
 
         const recipe = await prisma.recipe.update({
           where: {
-            id: recipeId,
+            id: id,
           },
           data: recipeUpdate,
           include: recipeInclude,
@@ -375,25 +352,20 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.delete(
-    '/:recipeId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],
         summary: 'Delete a recipe',
-        params: Type.Object({
-          recipeId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          204: noContentSchema,
-        },
+        ...deleteRecipeContract,
       },
     },
-    async (request, reply) => {
-      const { recipeId } = request.params;
+    async (request) => {
+      const { id } = request.params;
 
       const recipe = await prisma.recipe.findUniqueOrThrow({
         where: {
-          id: recipeId,
+          id: id,
         },
         select: {
           userId: true,
@@ -410,11 +382,11 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
 
       await prisma.recipe.delete({
         where: {
-          id: recipeId,
+          id: id,
         },
       });
 
-      return reply.code(204).send();
+      return null;
     },
   );
 
@@ -425,14 +397,7 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       schema: {
         tags: [routeTag],
         summary: 'List used recipe tags',
-        querystring: Type.Object({
-          userId: Type.Optional(Type.String({ format: 'uuid' })),
-        }),
-        response: {
-          200: Type.Object({
-            tags: Type.Array(tagSchema),
-          }),
-        },
+        ...getUsedRecipeTagsContract,
       },
     },
     async (request) => {
@@ -464,4 +429,4 @@ export async function recipeRoutes(fastify: FastifyTypebox) {
       };
     },
   );
-}
+};

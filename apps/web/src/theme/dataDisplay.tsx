@@ -50,22 +50,22 @@ export const dataDisplayCustomizations: Components<Theme> = {
             },
             style: {
               border: '1px solid',
-              borderColor: color.indigo[200],
-              backgroundColor: color.indigo[50],
+              borderColor: theme.vars.palette.accent[200],
+              backgroundColor: theme.vars.palette.accent[50],
               [`& .${chipClasses.label}`]: {
-                color: color.indigo[700],
+                color: theme.vars.palette.accent[700],
               },
               [`& .${chipClasses.icon}`]: {
-                color: color.indigo[700],
+                color: theme.vars.palette.accent[700],
               },
               ...theme.applyStyles('dark', {
-                borderColor: color.indigo[800],
-                backgroundColor: color.indigo[900],
+                borderColor: theme.vars.palette.accent[800],
+                backgroundColor: theme.vars.palette.accent[900],
                 [`& .${chipClasses.label}`]: {
-                  color: color.indigo[200],
+                  color: theme.vars.palette.accent[200],
                 },
                 [`& .${chipClasses.icon}`]: {
-                  color: color.indigo[300],
+                  color: theme.vars.palette.accent[300],
                 },
               }),
             },
@@ -76,9 +76,9 @@ export const dataDisplayCustomizations: Components<Theme> = {
               variant: 'outlined',
             },
             style: {
-              borderColor: color.indigo[200],
+              borderColor: theme.vars.palette.accent[200],
               ...theme.applyStyles('dark', {
-                borderColor: color.indigo[800],
+                borderColor: theme.vars.palette.accent[800],
               }),
             },
           },

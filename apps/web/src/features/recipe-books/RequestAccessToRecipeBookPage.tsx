@@ -3,8 +3,8 @@ import { Box, Button, Container, Typography } from '@mui/material';
 import {
   useRecipeBookRequests,
   useRequestAccessToRecipeBook,
-} from '@open-zero/features/recipe-book-requests';
-import { useSignedInUser } from '@open-zero/features/users';
+} from '@repo/features/recipe-book-requests';
+import { useSignedInUser } from '@repo/features/users';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -38,7 +38,7 @@ export function RequestAccessToRecipeBookPage() {
               pt: '0.4rem',
             }}
           >
-            Hello Recipes
+            Pangea Recipes
           </Typography>
         </Box>
         {requests && requests.length > 0 ? (
@@ -61,7 +61,7 @@ export function RequestAccessToRecipeBookPage() {
                   return;
                 }
 
-                requestAccessToRecipeBook.mutate(recipeBookId);
+                requestAccessToRecipeBook.mutate({ body: { recipeBookId } });
               }}
               loading={requestAccessToRecipeBook.isPending}
             >
@@ -78,7 +78,7 @@ export function RequestAccessToRecipeBookPage() {
         onClose={() => {
           setAddNameDialogOpen(false);
 
-          requestAccessToRecipeBook.mutate(recipeBookId);
+          requestAccessToRecipeBook.mutate({ body: { recipeBookId } });
         }}
       />
     </Box>

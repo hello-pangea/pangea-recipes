@@ -1,4 +1,4 @@
-import { Copyright } from '#src/components/Copyright';
+import { Footer } from '#src/components/Footer';
 import { Container } from '@mui/material';
 import { getRouteApi } from '@tanstack/react-router';
 import { Header } from '../marketing/Header';
@@ -20,7 +20,7 @@ export function SharedRecipePage() {
       >
         <Recipe recipeId={recipeId} readOnly />
       </Container>
-      <Copyright sx={{ pb: 2, pt: 6 }} />
+      <Footer sx={{ pb: 2, pt: 6 }} />
     </>
   );
 }

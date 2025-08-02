@@ -15,12 +15,12 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
-import type { Tag } from '@open-zero/features';
+import type { Tag } from '@repo/features';
 import {
   useRecipe,
   useUpdateRecipe,
   useUsedRecipeTags,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
 import { useMemo, useRef, useState } from 'react';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
@@ -76,8 +76,12 @@ export function RecipeTags({ recipeId, readOnly, sx = [] }: Props) {
     const newTags = [...tags, { name: tag }];
 
     updateRecipe.mutate({
-      id: recipeId,
-      tags: newTags,
+      params: {
+        id: recipeId,
+      },
+      body: {
+        tags: newTags,
+      },
     });
 
     handleClose();
@@ -87,9 +91,17 @@ export function RecipeTags({ recipeId, readOnly, sx = [] }: Props) {
     const newTags = tags.filter((t) => t.id !== tag.id);
 
     updateRecipe.mutate({
-      id: recipeId,
-      tags: newTags,
+      params: {
+        id: recipeId,
+      },
+      body: {
+        tags: newTags,
+      },
     });
+  }
+
+  if (readOnly && !tags.length) {
+    return null;
   }
 
   return (

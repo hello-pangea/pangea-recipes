@@ -1,4 +1,4 @@
-import { type User } from '@open-zero/features/users';
+import { type User } from '@repo/features/users';
 import { type Env } from './src/config/config.js';
 
 declare global {

@@ -54,6 +54,18 @@ export function NewButton({ onOptionClick, slotProps }: Props) {
           horizontal: 'left',
         }}
       >
+        <MenuItem
+          onClick={() => {
+            setQuickImportDialogOpen(true);
+            setNewMenuAnchorEl(null);
+            onOptionClick?.();
+          }}
+        >
+          <ListItemIcon>
+            <LinkRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Save from url</ListItemText>
+        </MenuItem>
         <MenuItem sx={{ p: 0 }}>
           <Link
             to="/app/recipes/new"
@@ -77,18 +89,6 @@ export function NewButton({ onOptionClick, slotProps }: Props) {
             <ListItemText>Recipe</ListItemText>
           </Link>
         </MenuItem>
-        <MenuItem
-          onClick={() => {
-            setQuickImportDialogOpen(true);
-            setNewMenuAnchorEl(null);
-            onOptionClick?.();
-          }}
-        >
-          <ListItemIcon>
-            <LinkRoundedIcon fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Quick import</ListItemText>
-        </MenuItem>
         <MenuItem sx={{ p: 0 }}>
           <Link
             to="/app/recipe-books/new"
@@ -109,7 +109,7 @@ export function NewButton({ onOptionClick, slotProps }: Props) {
             <ListItemIcon>
               <MenuBookRoundedIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Recipe book</ListItemText>
+            <ListItemText>Book</ListItemText>
           </Link>
         </MenuItem>
       </Menu>

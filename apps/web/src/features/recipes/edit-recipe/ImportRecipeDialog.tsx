@@ -11,7 +11,7 @@ import {
 import {
   useImportRecipe,
   type ImportedRecipe,
-} from '@open-zero/features/recipe-imports';
+} from '@repo/features/recipe-imports';
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
@@ -48,7 +48,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
       return;
     }
 
-    importRecipe.mutate(url);
+    importRecipe.mutate({ body: { url } });
   }
 
   return (

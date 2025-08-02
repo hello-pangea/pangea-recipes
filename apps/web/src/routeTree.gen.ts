@@ -16,6 +16,7 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as OpenapiDocsRouteImport } from './routes/openapi-docs'
 import { Route as LogOutRouteImport } from './routes/log-out'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppIndexRouteImport } from './routes/app/index'
@@ -23,6 +24,7 @@ import { Route as AppAuthRouteRouteImport } from './routes/app/_auth/route'
 import { Route as AppSharedRecipesRecipeIdRouteImport } from './routes/app/shared-recipes.$recipeId'
 import { Route as AppAuthTryLaterRouteImport } from './routes/app/_auth/try-later'
 import { Route as AppAuthSettingsRouteImport } from './routes/app/_auth/settings'
+import { Route as AppAuthFavoritesRouteImport } from './routes/app/_auth/favorites'
 import { Route as AppAuthRecipesIndexRouteImport } from './routes/app/_auth/recipes.index'
 import { Route as AppAuthRecipeBooksIndexRouteImport } from './routes/app/_auth/recipe-books.index'
 import { Route as AppAuthCanonicalIngredientsIndexRouteImport } from './routes/app/_auth/canonical-ingredients.index'
@@ -36,7 +38,6 @@ import { Route as AppAuthRecipeBooksRecipeBookIdEditRouteImport } from './routes
 import { Route as AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport } from './routes/app/_auth/canonical-ingredients_.$canonicalIngredientId.edit'
 
 const AppRouteImport = createFileRoute('/app')()
-const OpenapiDocsLazyRouteImport = createFileRoute('/openapi-docs')()
 const IndexLazyRouteImport = createFileRoute('/')()
 
 const AppRoute = AppRouteImport.update({
@@ -44,11 +45,6 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OpenapiDocsLazyRoute = OpenapiDocsLazyRouteImport.update({
-  id: '/openapi-docs',
-  path: '/openapi-docs',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/openapi-docs.lazy').then((d) => d.Route))
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
@@ -74,6 +70,11 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpenapiDocsRoute = OpenapiDocsRouteImport.update({
+  id: '/openapi-docs',
+  path: '/openapi-docs',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/openapi-docs.lazy').then((d) => d.Route))
 const LogOutRoute = LogOutRouteImport.update({
   id: '/log-out',
   path: '/log-out',
@@ -112,6 +113,11 @@ const AppAuthTryLaterRoute = AppAuthTryLaterRouteImport.update({
 const AppAuthSettingsRoute = AppAuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
+const AppAuthFavoritesRoute = AppAuthFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
   getParentRoute: () => AppAuthRouteRoute,
 } as any)
 const AppAuthRecipesIndexRoute = AppAuthRecipesIndexRouteImport.update({
@@ -180,14 +186,15 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log-out': typeof LogOutRoute
+  '/openapi-docs': typeof OpenapiDocsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/favorites': typeof AppAuthFavoritesRoute
   '/app/settings': typeof AppAuthSettingsRoute
   '/app/try-later': typeof AppAuthTryLaterRoute
   '/app/shared-recipes/$recipeId': typeof AppSharedRecipesRecipeIdRoute
@@ -207,13 +214,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log-out': typeof LogOutRoute
+  '/openapi-docs': typeof OpenapiDocsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppIndexRoute
+  '/app/favorites': typeof AppAuthFavoritesRoute
   '/app/settings': typeof AppAuthSettingsRoute
   '/app/try-later': typeof AppAuthTryLaterRoute
   '/app/shared-recipes/$recipeId': typeof AppSharedRecipesRecipeIdRoute
@@ -234,15 +242,16 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log-out': typeof LogOutRoute
+  '/openapi-docs': typeof OpenapiDocsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppRouteWithChildren
   '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
+  '/app/_auth/favorites': typeof AppAuthFavoritesRoute
   '/app/_auth/settings': typeof AppAuthSettingsRoute
   '/app/_auth/try-later': typeof AppAuthTryLaterRoute
   '/app/shared-recipes/$recipeId': typeof AppSharedRecipesRecipeIdRoute
@@ -264,14 +273,15 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/log-out'
+    | '/openapi-docs'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/openapi-docs'
     | '/app'
     | '/app/'
+    | '/app/favorites'
     | '/app/settings'
     | '/app/try-later'
     | '/app/shared-recipes/$recipeId'
@@ -291,13 +301,14 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/log-out'
+    | '/openapi-docs'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/openapi-docs'
     | '/app'
+    | '/app/favorites'
     | '/app/settings'
     | '/app/try-later'
     | '/app/shared-recipes/$recipeId'
@@ -317,15 +328,16 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/log-out'
+    | '/openapi-docs'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/openapi-docs'
     | '/app'
     | '/app/_auth'
     | '/app/'
+    | '/app/_auth/favorites'
     | '/app/_auth/settings'
     | '/app/_auth/try-later'
     | '/app/shared-recipes/$recipeId'
@@ -346,12 +358,12 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LogOutRoute: typeof LogOutRoute
+  OpenapiDocsRoute: typeof OpenapiDocsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
-  OpenapiDocsLazyRoute: typeof OpenapiDocsLazyRoute
   AppRoute: typeof AppRouteWithChildren
 }
 
@@ -362,13 +374,6 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/openapi-docs': {
-      id: '/openapi-docs'
-      path: '/openapi-docs'
-      fullPath: '/openapi-docs'
-      preLoaderRoute: typeof OpenapiDocsLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms-of-service': {
@@ -404,6 +409,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/openapi-docs': {
+      id: '/openapi-docs'
+      path: '/openapi-docs'
+      fullPath: '/openapi-docs'
+      preLoaderRoute: typeof OpenapiDocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/log-out': {
@@ -460,6 +472,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/app/settings'
       preLoaderRoute: typeof AppAuthSettingsRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/favorites': {
+      id: '/app/_auth/favorites'
+      path: '/favorites'
+      fullPath: '/app/favorites'
+      preLoaderRoute: typeof AppAuthFavoritesRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
     '/app/_auth/recipes/': {
@@ -543,6 +562,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AppAuthRouteRouteChildren {
+  AppAuthFavoritesRoute: typeof AppAuthFavoritesRoute
   AppAuthSettingsRoute: typeof AppAuthSettingsRoute
   AppAuthTryLaterRoute: typeof AppAuthTryLaterRoute
   AppAuthCanonicalIngredientsNewRoute: typeof AppAuthCanonicalIngredientsNewRoute
@@ -559,6 +579,7 @@ interface AppAuthRouteRouteChildren {
 }
 
 const AppAuthRouteRouteChildren: AppAuthRouteRouteChildren = {
+  AppAuthFavoritesRoute: AppAuthFavoritesRoute,
   AppAuthSettingsRoute: AppAuthSettingsRoute,
   AppAuthTryLaterRoute: AppAuthTryLaterRoute,
   AppAuthCanonicalIngredientsNewRoute: AppAuthCanonicalIngredientsNewRoute,
@@ -598,12 +619,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LogOutRoute: LogOutRoute,
+  OpenapiDocsRoute: OpenapiDocsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
-  OpenapiDocsLazyRoute: OpenapiDocsLazyRoute,
   AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport

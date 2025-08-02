@@ -1,27 +1,41 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { User } from '../types/user.js';
+import { userSchema } from '../types/user.js';
 
-function getUser(userId: string) {
-  return api.get(`users/${userId}`).then((res) => res.json<{ user: User }>());
-}
+export const getUserContract = defineContract('users/:id', {
+  method: 'get',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  response: {
+    200: z.object({
+      user: userSchema,
+    }),
+  },
+});
+
+const getUser = makeRequest(getUserContract, {
+  select: (res) => res.user,
+});
 
 function getUserQueryOptions(userId: string) {
   return queryOptions({
     queryKey: ['users', userId],
-    queryFn: () => getUser(userId),
+    queryFn: () => getUser({ params: { id: userId } }),
   });
 }
 
 interface Options {
-  userId: string;
+  id: string;
   queryConfig?: QueryConfig<typeof getUserQueryOptions>;
 }
 
-export function useUser({ userId, queryConfig }: Options) {
+export function useUser({ id, queryConfig }: Options) {
   return useQuery({
-    ...getUserQueryOptions(userId),
+    ...getUserQueryOptions(id),
     ...queryConfig,
   });
 }

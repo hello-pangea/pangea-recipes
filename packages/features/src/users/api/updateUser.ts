@@ -1,16 +1,34 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod/v4';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import type { UpdateUserDto } from '../types/updateUserDto.js';
-import type { User } from '../types/user.js';
+import { userSchema } from '../types/user.js';
 import { getSignedInUserQueryOptions } from './getSignedInUser.js';
 
-function updateUser(data: UpdateUserDto & { id: string }): Promise<User> {
-  return api
-    .patch(`users/${data.id}`, { json: data })
-    .json<{ user: User }>()
-    .then((res) => res.user);
-}
+export const updateUserContract = defineContract('users/:id', {
+  method: 'patch',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  body: userSchema
+    .pick({
+      themePreference: true,
+      unitsPreference: true,
+      accentColor: true,
+      name: true,
+    })
+    .partial(),
+  response: {
+    200: z.object({
+      user: userSchema,
+    }),
+  },
+});
+
+const updateUser = makeRequest(updateUserContract, {
+  select: (res) => res.user,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof updateUser>;
@@ -19,7 +37,7 @@ interface Options {
 export function useUpdateUser({ mutationConfig }: Options = {}) {
   const queryClient = useQueryClient();
 
-  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+  const { onSuccess, onMutate, ...restConfig } = mutationConfig ?? {};
 
   return useMutation({
     onSuccess: (...args) => {
@@ -28,6 +46,20 @@ export function useUpdateUser({ mutationConfig }: Options = {}) {
       });
 
       void onSuccess?.(...args);
+    },
+    onMutate: (variables) => {
+      queryClient.setQueryData(
+        getSignedInUserQueryOptions().queryKey,
+        (oldUser) => {
+          if (!oldUser) {
+            return;
+          }
+
+          return { ...oldUser, ...variables };
+        },
+      );
+
+      void onMutate?.(variables);
     },
     ...restConfig,
     mutationFn: updateUser,
