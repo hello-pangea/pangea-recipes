@@ -16,6 +16,7 @@ import { Route as SignUpRouteImport } from './routes/sign-up'
 import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as OpenapiDocsRouteImport } from './routes/openapi-docs'
 import { Route as LogOutRouteImport } from './routes/log-out'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as AppIndexRouteImport } from './routes/app/index'
@@ -37,7 +38,6 @@ import { Route as AppAuthRecipeBooksRecipeBookIdEditRouteImport } from './routes
 import { Route as AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport } from './routes/app/_auth/canonical-ingredients_.$canonicalIngredientId.edit'
 
 const AppRouteImport = createFileRoute('/app')()
-const OpenapiDocsLazyRouteImport = createFileRoute('/openapi-docs')()
 const IndexLazyRouteImport = createFileRoute('/')()
 
 const AppRoute = AppRouteImport.update({
@@ -45,11 +45,6 @@ const AppRoute = AppRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OpenapiDocsLazyRoute = OpenapiDocsLazyRouteImport.update({
-  id: '/openapi-docs',
-  path: '/openapi-docs',
-  getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/openapi-docs.lazy').then((d) => d.Route))
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
@@ -75,6 +70,11 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const OpenapiDocsRoute = OpenapiDocsRouteImport.update({
+  id: '/openapi-docs',
+  path: '/openapi-docs',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/openapi-docs.lazy').then((d) => d.Route))
 const LogOutRoute = LogOutRouteImport.update({
   id: '/log-out',
   path: '/log-out',
@@ -186,12 +186,12 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log-out': typeof LogOutRoute
+  '/openapi-docs': typeof OpenapiDocsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/favorites': typeof AppAuthFavoritesRoute
@@ -214,12 +214,12 @@ export interface FileRoutesByTo {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log-out': typeof LogOutRoute
+  '/openapi-docs': typeof OpenapiDocsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppIndexRoute
   '/app/favorites': typeof AppAuthFavoritesRoute
   '/app/settings': typeof AppAuthSettingsRoute
@@ -242,12 +242,12 @@ export interface FileRoutesById {
   '/': typeof IndexLazyRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/log-out': typeof LogOutRoute
+  '/openapi-docs': typeof OpenapiDocsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/reset-password': typeof ResetPasswordRoute
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/openapi-docs': typeof OpenapiDocsLazyRoute
   '/app': typeof AppRouteWithChildren
   '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
@@ -273,12 +273,12 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/log-out'
+    | '/openapi-docs'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/openapi-docs'
     | '/app'
     | '/app/'
     | '/app/favorites'
@@ -301,12 +301,12 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/log-out'
+    | '/openapi-docs'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/openapi-docs'
     | '/app'
     | '/app/favorites'
     | '/app/settings'
@@ -328,12 +328,12 @@ export interface FileRouteTypes {
     | '/'
     | '/forgot-password'
     | '/log-out'
+    | '/openapi-docs'
     | '/privacy-policy'
     | '/reset-password'
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/openapi-docs'
     | '/app'
     | '/app/_auth'
     | '/app/'
@@ -358,12 +358,12 @@ export interface RootRouteChildren {
   IndexLazyRoute: typeof IndexLazyRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LogOutRoute: typeof LogOutRoute
+  OpenapiDocsRoute: typeof OpenapiDocsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
-  OpenapiDocsLazyRoute: typeof OpenapiDocsLazyRoute
   AppRoute: typeof AppRouteWithChildren
 }
 
@@ -374,13 +374,6 @@ declare module '@tanstack/react-router' {
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/openapi-docs': {
-      id: '/openapi-docs'
-      path: '/openapi-docs'
-      fullPath: '/openapi-docs'
-      preLoaderRoute: typeof OpenapiDocsLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/terms-of-service': {
@@ -416,6 +409,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/openapi-docs': {
+      id: '/openapi-docs'
+      path: '/openapi-docs'
+      fullPath: '/openapi-docs'
+      preLoaderRoute: typeof OpenapiDocsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/log-out': {
@@ -619,12 +619,12 @@ const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LogOutRoute: LogOutRoute,
+  OpenapiDocsRoute: OpenapiDocsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ResetPasswordRoute: ResetPasswordRoute,
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
-  OpenapiDocsLazyRoute: OpenapiDocsLazyRoute,
   AppRoute: AppRouteWithChildren,
 }
 export const routeTree = rootRouteImport
