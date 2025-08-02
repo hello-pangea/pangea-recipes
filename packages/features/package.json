@@ -23,7 +23,7 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.83.0",
+    "@tanstack/react-query": "^5.84.1",
     "ky": "^1.8.2",
     "zod": "^4.0.14"
   },

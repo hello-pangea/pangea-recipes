@@ -20,7 +20,7 @@ RUN corepack enable && npm install -g corepack@latest
 RUN pnpm install turbo@2.5.4 --global
 
 # Playwright setup (basically downloads chromium)
-RUN pnpm dlx playwright-chromium@1.54.1 install chromium --with-deps
+RUN pnpm dlx playwright-chromium@1.54.2 install chromium --with-deps
 
 # ---
 # - We download packages asap to avoid re-downloads on code changes
