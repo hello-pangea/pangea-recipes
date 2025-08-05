@@ -1,19 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
   "compilerOptions": {
-    "composite": false,
-
-    "sourceMap": true,
-    "inlineSources": false,
-
-    "verbatimModuleSyntax": true,
-    "noUncheckedSideEffectImports": true,
-    "noFallthroughCasesInSwitch": true,
-
-    "exactOptionalPropertyTypes": false,
-
-    "jsx": "react-jsx"
+    "types": ["node"]
   },
   "exclude": ["node_modules", "dist"],
-  "extends": ["./bases/node22.json", "./bases/strictest.json"]
+  "extends": ["./base.json"]
 }
