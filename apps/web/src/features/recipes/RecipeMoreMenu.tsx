@@ -22,15 +22,16 @@ import {
   type MenuProps,
 } from '@mui/material';
 import {
+  listRecipeBooksQueryOptions,
   useAddRecipeToRecipeBook,
   useCreateRecipeBook,
-  useRecipeBooks,
 } from '@repo/features/recipe-books';
 import {
+  getRecipeQueryOptions,
   useDeleteRecipe,
-  useRecipe,
   useUpdateRecipe,
 } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -54,12 +55,10 @@ export function RecipeMoreMenu({
   onRemoveFromRecipeBook,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipe } = useRecipe({ recipeId: recipeId });
-  const { data: recipeBooks } = useRecipeBooks({
-    options: {
-      userId,
-    },
-  });
+  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
+  const { data: recipeBooks } = useQuery(
+    listRecipeBooksQueryOptions({ userId }),
+  );
   const deleteRecipe = useDeleteRecipe();
   const createRecipeBook = useCreateRecipeBook();
   const updateRecipe = useUpdateRecipe();

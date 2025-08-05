@@ -17,10 +17,11 @@ import {
 } from '@mui/material';
 import type { Tag } from '@repo/features';
 import {
-  useRecipe,
+  getRecipeQueryOptions,
+  getUsedRecipeTagsQueryOptions,
   useUpdateRecipe,
-  useUsedRecipeTags,
 } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
@@ -32,16 +33,16 @@ interface Props {
 
 export function RecipeTags({ recipeId, readOnly, sx = [] }: Props) {
   const userId = useMaybeSignedInUserId();
-  const { data: recipe } = useRecipe({ recipeId });
+  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [search, setsSearch] = useState('');
   const inputRef = useRef<HTMLInputElement | null>(null);
   const updateRecipe = useUpdateRecipe();
-  const { data: usedTags } = useUsedRecipeTags({
-    userId: userId ?? '',
-    queryConfig: {
-      enabled: !!userId,
-    },
+  const { data: usedTags } = useQuery({
+    ...getUsedRecipeTagsQueryOptions({
+      userId: userId ?? '',
+    }),
+    enabled: !!userId,
   });
 
   const tags = useMemo(() => recipe?.tags ?? [], [recipe?.tags]);

@@ -12,7 +12,8 @@ import {
   Link as MuiLink,
   Typography,
 } from '@mui/material';
-import { useRecipe } from '@repo/features/recipes';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -25,7 +26,7 @@ interface Props {
 }
 
 export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
-  const { data: recipe } = useRecipe({ recipeId: recipeId });
+  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
   const userId = useSignedInUserId();
   const ref = useRef<null | HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);

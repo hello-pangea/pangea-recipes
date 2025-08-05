@@ -26,10 +26,10 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { stepDownSnapped, stepUpSnapped } from '@repo/features';
-import { usePublicProfile } from '@repo/features/profiles';
+import { getPublicProfileQueryOptions } from '@repo/features/profiles';
 import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useSignedInUser } from '@repo/features/users';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -72,11 +72,9 @@ export function Recipe({ readOnly, recipeId }: Props) {
     : (getNumberFromInput(servingsModifier) ?? 1);
   const isPhone = useMediaQuery((theme) => theme.breakpoints.down('sm'));
   const { data: user } = useSignedInUser();
-  const { data: sharedByProfile } = usePublicProfile({
-    id: recipe.userId,
-    queryConfig: {
-      enabled: recipe.userId !== user?.id,
-    },
+  const { data: sharedByProfile } = useQuery({
+    ...getPublicProfileQueryOptions(recipe.userId),
+    enabled: recipe.userId !== user?.id,
   });
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);

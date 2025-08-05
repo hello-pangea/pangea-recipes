@@ -1,8 +1,7 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
+import { queryOptions } from '@tanstack/react-query';
 import { z } from 'zod/v4';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import { recipeSchema } from '../types/recipe.js';
 
 export const getRecipeContract = defineContract('recipes/:id', {
@@ -26,17 +25,5 @@ export function getRecipeQueryOptions(recipeId: string) {
     queryKey: ['recipes', recipeId],
     queryFn: () => getRecipe({ params: { id: recipeId } }),
     staleTime: 1000 * 60 * 60, // 1 hour
-  });
-}
-
-interface Options {
-  recipeId: string;
-  queryConfig?: QueryConfig<typeof getRecipeQueryOptions>;
-}
-
-export function useRecipe({ recipeId, queryConfig }: Options) {
-  return useQuery({
-    ...getRecipeQueryOptions(recipeId),
-    ...queryConfig,
   });
 }

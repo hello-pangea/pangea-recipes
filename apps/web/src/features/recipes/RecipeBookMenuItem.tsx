@@ -12,7 +12,8 @@ import {
   useRemoveRecipeFromRecipeBook,
   type RecipeBook,
 } from '@repo/features/recipe-books';
-import { useRecipe } from '@repo/features/recipes';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { AnimatePresence, motion } from 'motion/react';
 
 interface Props {
@@ -21,7 +22,7 @@ interface Props {
 }
 
 export function RecipeBookMenuItem({ book, recipeId }: Props) {
-  const { data: recipe } = useRecipe({ recipeId: recipeId });
+  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
 

@@ -29,11 +29,12 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  listRecipeBooksQueryOptions,
   useAddRecipeToRecipeBook,
-  useRecipeBooks,
 } from '@repo/features/recipe-books';
 import { useUpdateRecipe } from '@repo/features/recipes';
 import { useSignedInUser } from '@repo/features/users';
+import { useQuery } from '@tanstack/react-query';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -50,9 +51,9 @@ interface Props {
 export function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const { data: user } = useSignedInUser();
   const userId = useSignedInUserId();
-  const { data: recipeBooks } = useRecipeBooks({
-    options: { userId: userId },
-  });
+  const { data: recipeBooks } = useQuery(
+    listRecipeBooksQueryOptions({ userId }),
+  );
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const updateRecipe = useUpdateRecipe();
 

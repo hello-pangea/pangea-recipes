@@ -19,10 +19,11 @@ import {
 } from '@mui/material';
 import { emptyStringToNull, emptyStringToUndefined } from '@repo/features';
 import {
+  listRecipesQueryOptions,
   useCreateRecipe,
-  useRecipes,
   useUpdateRecipe,
 } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -151,11 +152,11 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
   });
   const userId = useSignedInUserId();
 
-  const { data: recipes } = useRecipes({
-    options: {
-      userId: userId,
-    },
-  });
+  const { data: recipes } = useQuery(
+    listRecipesQueryOptions({
+      userId,
+    }),
+  );
 
   const createRecipe = useCreateRecipe({
     mutationConfig: {

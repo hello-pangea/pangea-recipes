@@ -37,13 +37,14 @@ import {
   useDeclineRecipeBookRequest,
 } from '@repo/features/recipe-book-requests';
 import {
+  getRecipeBookQueryOptions,
+  listRecipeBooksQueryOptions,
   useDeleteRecipeBookInvite,
   useDeleteRecipeBookMember,
   useInviteMembersToRecipeBook,
-  useRecipeBook,
-  useRecipeBooks,
   useUpdateRecipeBook,
 } from '@repo/features/recipe-books';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
@@ -64,7 +65,9 @@ interface Props {
 
 export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
+  const { data: recipeBook } = useQuery(
+    getRecipeBookQueryOptions(recipeBookId),
+  );
   const [invites, setInvites] = useState<InviteOption[]>([]);
   const [inviteRole, setInviteRole] = useState<'editor' | 'viewer'>('viewer');
   const inviteMembersToRecipeBook = useInviteMembersToRecipeBook();
@@ -73,11 +76,9 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const acceptRecipeBookRequest = useAcceptRecipeBookRequest();
   const declineRecipeBookRequest = useDeclineRecipeBookRequest();
   const updateRecipeBook = useUpdateRecipeBook();
-  const { data: recipeBooks } = useRecipeBooks({
-    options: {
-      userId: userId,
-    },
-  });
+  const { data: recipeBooks } = useQuery(
+    listRecipeBooksQueryOptions({ userId }),
+  );
   const [linkCopied, setLinkCopied] = useState(false);
   const [reviewRequestId, setReviewRequestId] = useState<string | null>(null);
   const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] =
