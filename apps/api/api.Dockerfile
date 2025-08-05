@@ -83,4 +83,4 @@ ENV PORT=${PORT}
 
 EXPOSE ${PORT}
 
-CMD ["node", "--experimental-strip-types", "--import", "./apps/api/src/instrument.ts", "apps/api/src/index.ts"]
+CMD ["node", "--import", "./apps/api/src/instrument.ts", "apps/api/src/index.ts"]

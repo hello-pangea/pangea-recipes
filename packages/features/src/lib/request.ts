@@ -163,7 +163,7 @@ function insertParamsIntoPath(
   return path.replace(/:([A-Za-z0-9_]+)/g, (_, key: string) => {
     const v = params[key];
     if (v == null) throw new Error(`Missing value for path param "${key}"`);
-    return encodeURIComponent(String(v));
+    return encodeURIComponent(v);
   });
 }
 
