@@ -3,7 +3,7 @@ import { SearchTextField } from '#src/components/SearchTextField';
 import { Box, Grid, Typography } from '@mui/material';
 import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
@@ -23,15 +23,12 @@ export function RecipesPage() {
   const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
-  const filteredRecipes = useMemo(() => {
-    if (search) {
-      return recipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(search.toLowerCase()),
-      );
-    }
-
-    return recipes;
-  }, [recipes, search]);
+  const filteredRecipes = recipes
+    .slice()
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .filter((recipe) =>
+      search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
+    );
 
   return (
     <Page>
