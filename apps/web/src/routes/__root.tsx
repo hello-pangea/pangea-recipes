@@ -103,6 +103,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         href: '/favicon-16x16.png',
       },
       {
+        rel: 'manifest',
+        href: '/site.webmanifest',
+      },
+      {
         rel: 'preconnect',
         href: 'https://api.pangearecipes.com',
       },
