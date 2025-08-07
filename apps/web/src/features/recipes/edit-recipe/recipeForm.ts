@@ -1,7 +1,7 @@
 import { minutesToSecondsSchema } from '#src/utils/zod/minutesToSecondsSchema';
 import { positiveNumberOrNullSchema } from '#src/utils/zod/positiveNumberOrNullSchema';
 import { formOptions } from '@tanstack/react-form';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const recipeFormSchema = z.object({
   recipeName: z.string().min(1, { message: 'Recipe name is required' }),

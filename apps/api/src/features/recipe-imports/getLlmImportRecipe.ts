@@ -7,7 +7,7 @@ import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@repo/database';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const turndownService = new TurndownService();
 turndownService.remove('script');

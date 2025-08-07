@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { recipeBookRequestSchema } from '../../recipe-book-requests/index.js';
 
 export const recipeBookSchema = z

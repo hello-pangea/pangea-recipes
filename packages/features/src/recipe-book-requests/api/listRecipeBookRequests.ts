@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
 import { recipeBookRequestSchema } from '../types/recipeBookRequest.js';

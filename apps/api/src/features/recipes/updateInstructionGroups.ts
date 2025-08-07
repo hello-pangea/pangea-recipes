@@ -1,6 +1,6 @@
 import { type Prisma } from '@repo/database';
 import { updateRecipeContract } from '@repo/features/recipes';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export async function updateInstructionGroups(data: {
   tx: Prisma.TransactionClient;

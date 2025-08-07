@@ -1,5 +1,5 @@
 import { queryOptions } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { tagSchema } from '../../common/tag.js';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';

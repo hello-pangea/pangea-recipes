@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 // ".5" or "12" etc.
 const numericString = /^(?:\d*\.\d+|\d+)$/;

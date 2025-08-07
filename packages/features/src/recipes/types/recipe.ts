@@ -1,5 +1,5 @@
 import type { Decimal } from 'decimal.js';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { tagSchema } from '../../common/tag.js';
 import { nutritionSchema } from './nutrition.js';
 
