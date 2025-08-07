@@ -20,11 +20,11 @@
     "@emotion/styled": "^11.14.1",
     "@fontsource-variable/inter": "^5.2.6",
     "@fontsource-variable/lora": "^5.2.6",
-    "@mui/icons-material": "^7.2.0",
-    "@mui/material": "^7.2.0",
+    "@mui/icons-material": "^7.3.1",
+    "@mui/material": "^7.3.1",
     "@repo/features": "workspace:*",
     "@scalar/api-reference-react": "^0.7.38",
-    "@tanstack/react-form": "^1.17.0",
+    "@tanstack/react-form": "^1.18.0",
     "@tanstack/react-query": "^5.84.1",
     "@tanstack/react-query-devtools": "^5.84.1",
     "@tanstack/react-router": "^1.130.12",
@@ -32,7 +32,7 @@
     "@tanstack/react-router-with-query": "^1.130.12",
     "@tanstack/react-start": "^1.130.15",
     "@uppy/core": "^4.5.2",
-    "@uppy/dashboard": "^4.4.2",
+    "@uppy/dashboard": "^4.4.3",
     "@uppy/drag-drop": "^4.2.2",
     "@uppy/file-input": "^4.2.2",
     "@uppy/progress-bar": "^4.3.2",
@@ -45,7 +45,7 @@
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
     "use-resize-observer": "^9.1.0",
-    "zod": "^4.0.14"
+    "zod": "^4.0.15"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
@@ -57,6 +57,6 @@
     "@types/react-dom": "^19.1.7",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
     "typescript": "~5.9.2",
-    "vite": "^7.0.6"
+    "vite": "^7.1.0"
   }
 }
