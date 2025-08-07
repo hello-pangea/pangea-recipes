@@ -45,7 +45,7 @@ interface Props {
 }
 
 export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
-  const { importFromUrl } = useSearch({ strict: false });
+  const { importFromUrl, tryLater, favorite } = useSearch({ strict: false });
   const [importDialogOpen, setImportDialogOpen] = useState(
     importFromUrl ?? false,
   );
@@ -62,7 +62,8 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
         cookTime: '',
         servings: '',
         image: null,
-        tryLater: false,
+        tryLater: tryLater ?? false,
+        favorite: favorite ?? false,
         ingredientGroups: [
           {
             id: null,
@@ -121,6 +122,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             cookTime: parsed.cookTime,
             servings: parsed.servings ? parseInt(parsed.servings) : null,
             tryLater: parsed.tryLater,
+            favorite: parsed.favorite,
             ingredientGroups: parsed.ingredientGroups,
             instructionGroups: parsed.instructionGroups.map((ig) => ({
               id: ig.id ?? undefined,
@@ -142,6 +144,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             servings: parsed.servings ? parseInt(parsed.servings) : undefined,
             imageIds: parsed.image ? [parsed.image.id] : undefined,
             tryLater: parsed.tryLater,
+            favorite: parsed.favorite,
             ingredientGroups: parsed.ingredientGroups,
             instructionGroups: parsed.instructionGroups,
             nutrition: parsed.nutrition,
@@ -347,6 +350,27 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           name="tryLater"
           children={({ state, handleChange, handleBlur }) => {
             return (
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={(e) => {
+                        handleChange(e.target.checked);
+                      }}
+                      onBlur={handleBlur}
+                      checked={state.value}
+                    />
+                  }
+                  label="Try later"
+                />
+              </FormGroup>
+            );
+          }}
+        />
+        <form.Field
+          name="favorite"
+          children={({ state, handleChange, handleBlur }) => {
+            return (
               <FormGroup
                 sx={{
                   mb: 2,
@@ -362,7 +386,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
                       checked={state.value}
                     />
                   }
-                  label="Try later"
+                  label="Favorite"
                 />
               </FormGroup>
             );

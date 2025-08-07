@@ -18,11 +18,12 @@ export const createRecipeContract = defineContract('recipes', {
         servings: true,
         usesRecipes: true,
         nutrition: true,
-        tryLater: true,
       })
       .partial().shape,
     imageIds: z.array(z.uuidv4()).optional(),
     websitePageId: z.uuidv4().optional(),
+    tryLater: z.boolean().optional(),
+    favorite: z.boolean().optional(),
     ingredientGroups: z.array(
       z.object({
         name: z.string().min(1).nullable().optional(),

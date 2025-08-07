@@ -173,19 +173,19 @@ export function RecipeMoreMenu({
           onClick={() => {
             updateRecipe.mutate({
               params: { id: recipe.id },
-              body: { favorite: !recipe.favorite },
+              body: { favorite: !recipe.favoritedAt },
             });
           }}
         >
           <ListItemIcon>
-            {recipe.favorite ? (
+            {recipe.favoritedAt ? (
               <FavoriteRoundedIcon fontSize="small" />
             ) : (
               <FavoriteBorderRoundedIcon fontSize="small" />
             )}
           </ListItemIcon>
           <ListItemText>
-            {recipe.favorite ? 'Remove from favorites' : 'Add to favorites'}
+            {recipe.favoritedAt ? 'Remove from favorites' : 'Add to favorites'}
           </ListItemText>
         </MenuItem>
         <MenuItem
@@ -196,7 +196,7 @@ export function RecipeMoreMenu({
             updateRecipe.mutate({
               params: { id: recipe.id },
               body: {
-                tryLater: !recipe.tryLater,
+                tryLater: !recipe.tryLaterAt,
               },
             });
           }}
@@ -205,7 +205,7 @@ export function RecipeMoreMenu({
             <UpcomingRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {recipe.tryLater ? 'Remove from try later' : 'Add to try later'}
+            {recipe.tryLaterAt ? 'Remove from try later' : 'Add to try later'}
           </ListItemText>
         </MenuItem>
         <Divider />

@@ -21,13 +21,13 @@ export const updateRecipeContract = defineContract('recipes/:id', {
         prepTime: true,
         cookTime: true,
         servings: true,
-        tryLater: true,
-        favorite: true,
       }).shape,
       ...createRecipeContract.body.pick({
         usesRecipes: true,
         tags: true,
       }).shape,
+      tryLater: z.boolean().optional(),
+      favorite: z.boolean().optional(),
       imageIds: z.array(z.uuidv4()).nullable().optional(),
       ingredientGroups: z.array(
         z.object({

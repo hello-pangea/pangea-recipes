@@ -114,7 +114,13 @@ export async function request<
     ...options?.ky,
   });
 
-  return res.json();
+  const status = res.status;
+  const data = await res.json();
+
+  const schema = contract.response[status];
+
+  // @ts-expect-error I'm lazy and don't want to fix the type here. The function is properly typed anyways
+  return schema ? schema.parse(data) : data;
 }
 
 /* ===============

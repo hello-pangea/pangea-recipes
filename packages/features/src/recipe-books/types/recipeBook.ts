@@ -4,7 +4,7 @@ import { recipeBookRequestSchema } from '../../recipe-book-requests/index.js';
 export const recipeBookSchema = z
   .object({
     id: z.uuidv4(),
-    createdAt: z.date(),
+    createdAt: z.coerce.date(),
     name: z.string(),
     description: z.string().nullable(),
     access: z.enum(['public', 'private']),

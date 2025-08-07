@@ -10,6 +10,7 @@ export const recipeFormSchema = z.object({
   cookTime: minutesToSecondsSchema,
   servings: z.string().optional(),
   tryLater: z.boolean().default(false),
+  favorite: z.boolean().default(false),
   image: z
     .object({
       id: z.string(),

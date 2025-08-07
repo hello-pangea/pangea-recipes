@@ -4,7 +4,7 @@ export const recipeBookRequestSchema = z
   .object({
     id: z.uuidv4(),
 
-    createdAt: z.date(),
+    createdAt: z.coerce.date(),
 
     userId: z.uuidv4(),
     name: z.string().nullable(),

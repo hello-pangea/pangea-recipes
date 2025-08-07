@@ -25,7 +25,7 @@ export function RecipesPage() {
 
   const filteredRecipes = recipes
     .slice()
-    .sort((a, b) => a.name.localeCompare(b.name))
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .filter((recipe) =>
       search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
     );
