@@ -11,6 +11,7 @@ import {
   IconButton,
   Link as MuiLink,
   Typography,
+  useMediaQuery,
 } from '@mui/material';
 import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
@@ -46,7 +47,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
     | null
   >(null);
   const moreMenuOpen = Boolean(moreMenuAnchor);
-  const isTouchDevice = matchMedia('(hover: none)').matches;
+  const isTouchDevice = useMediaQuery('(hover: none)');
 
   const ownsRecipe = recipe?.userId === userId;
 
