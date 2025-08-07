@@ -1,24 +1,26 @@
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import viteReact from '@vitejs/plugin-react';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
     tanstackStart({
+      customViteReactPlugin: true,
       target: 'vercel',
-      react: {
-        babel: {
-          plugins: [['babel-plugin-react-compiler']],
-        },
+    }),
+    viteReact({
+      babel: {
+        plugins: [['babel-plugin-react-compiler']],
       },
     }),
   ],
   server: {
     port: 3000,
   },
-  clearScreen: false,
   resolve: {
     alias: {
-      '#src': '/src',
+      '#src': path.resolve(__dirname, '/src'),
     },
   },
   ssr: {

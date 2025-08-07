@@ -42,7 +42,8 @@ export const authRoutes: FastifyPluginAsyncZod = async function (fastify) {
           reply.header(key, value);
         });
         reply.send(response.body ? await response.text() : null);
-      } catch (error) {
+      } catch (error: unknown) {
+        // @ts-expect-error error handling
         fastify.log.error('Authentication Error:', error);
         reply.status(500).send({
           error: 'Internal authentication error',
