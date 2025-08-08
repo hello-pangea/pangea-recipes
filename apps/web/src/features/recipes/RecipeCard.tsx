@@ -7,14 +7,12 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import {
   Box,
   Card,
-  CircularProgress,
   IconButton,
   Link as MuiLink,
   Typography,
   useMediaQuery,
 } from '@mui/material';
-import { getRecipeQueryOptions } from '@repo/features/recipes';
-import { useQuery } from '@tanstack/react-query';
+import { type RecipeProjected } from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
@@ -22,12 +20,11 @@ import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
 interface Props {
-  recipeId: string;
+  recipe: RecipeProjected;
   onRemoveFromRecipeBook?: () => void;
 }
 
-export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
-  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
+export function RecipeCard({ recipe, onRemoveFromRecipeBook }: Props) {
   const userId = useSignedInUserId();
   const ref = useRef<null | HTMLDivElement>(null);
   const [isHovering, setIsHovering] = useState(false);
@@ -49,18 +46,18 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
   const moreMenuOpen = Boolean(moreMenuAnchor);
   const isTouchDevice = useMediaQuery('(hover: none)');
 
-  const ownsRecipe = recipe?.userId === userId;
+  const ownsRecipe = recipe.userId === userId;
 
   useEffect(() => {
     const element = ref.current;
 
-    if (!element || !recipe) {
+    if (!element) {
       return;
     }
 
     const data = {
       type: 'recipe',
-      recipeId: recipeId,
+      recipeId: recipe.id,
       tryLater: Boolean(recipe.tryLaterAt),
       favorite: Boolean(recipe.favoritedAt),
     };
@@ -82,7 +79,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       },
       canDrag: () => ownsRecipe,
     });
-  }, [recipeId, recipe, ownsRecipe]);
+  }, [recipe.id, recipe, ownsRecipe]);
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -110,10 +107,6 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       });
     }
   };
-
-  if (!recipe) {
-    return <CircularProgress />;
-  }
 
   return (
     <>
@@ -148,7 +141,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
           <Link
             to="/app/recipes/$recipeId"
             params={{
-              recipeId: recipeId,
+              recipeId: recipe.id,
             }}
             draggable={false}
             tabIndex={-1}
@@ -165,7 +158,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
           <Link
             to="/app/recipes/$recipeId"
             params={{
-              recipeId: recipeId,
+              recipeId: recipe.id,
             }}
             draggable={false}
             tabIndex={-1}
@@ -191,7 +184,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
             <RouterLink
               to="/app/recipes/$recipeId"
               params={{
-                recipeId: recipeId,
+                recipeId: recipe.id,
               }}
               draggable={false}
               sx={{
@@ -248,7 +241,7 @@ export function RecipeCard({ recipeId, onRemoveFromRecipeBook }: Props) {
       </Card>
       {ownsRecipe && (
         <RecipeMoreMenu
-          recipeId={recipeId}
+          recipe={recipe}
           anchorEl={
             moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
           }

@@ -443,7 +443,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
       )}
       {!readOnly && (
         <RecipeMoreMenu
-          recipeId={recipe.id}
+          recipe={recipe}
           anchorEl={moreMenuAnchorEl}
           onClose={() => {
             setMoreMenuAnchorEl(null);

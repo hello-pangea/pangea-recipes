@@ -10,7 +10,6 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
 import {
   Box,
-  CircularProgress,
   Divider,
   IconButton,
   InputAdornment,
@@ -27,9 +26,9 @@ import {
   useCreateRecipeBook,
 } from '@repo/features/recipe-books';
 import {
-  getRecipeQueryOptions,
   useDeleteRecipe,
   useUpdateRecipe,
+  type RecipeProjected,
 } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
@@ -39,14 +38,14 @@ import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
 interface Props
   extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
-  recipeId: string;
+  recipe: RecipeProjected;
   onClose: () => void;
   onDelete?: () => void;
   onRemoveFromRecipeBook?: () => void;
 }
 
 export function RecipeMoreMenu({
-  recipeId,
+  recipe,
   anchorEl,
   anchorPosition,
   anchorReference,
@@ -55,7 +54,6 @@ export function RecipeMoreMenu({
   onRemoveFromRecipeBook,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
   const { data: recipeBooks } = useQuery(
     listRecipeBooksQueryOptions({ userId }),
   );
@@ -91,10 +89,6 @@ export function RecipeMoreMenu({
   function handleClose() {
     setBooksAnchorEl(null);
     onClose();
-  }
-
-  if (!recipe) {
-    return <CircularProgress />;
   }
 
   return (

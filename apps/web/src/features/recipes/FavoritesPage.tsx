@@ -88,7 +88,7 @@ export function FavoritesPage() {
               lg: 4,
             }}
           >
-            <RecipeCard recipeId={recipe.id} />
+            <RecipeCard recipe={recipe} />
           </Grid>
         ))}
       </Grid>

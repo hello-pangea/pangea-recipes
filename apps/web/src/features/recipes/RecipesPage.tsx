@@ -75,7 +75,7 @@ export function RecipesPage() {
         {width !== 0 &&
           filteredRecipes.map((recipe) => (
             <Grid key={recipe.id} size={1}>
-              <RecipeCard recipeId={recipe.id} />
+              <RecipeCard recipe={recipe} />
             </Grid>
           ))}
       </Grid>

@@ -87,7 +87,7 @@ export function RecipeBookPage() {
           recipes?.map((recipe) => (
             <Grid key={recipe.id} size={1}>
               <RecipeCard
-                recipeId={recipe.id}
+                recipe={recipe}
                 onRemoveFromRecipeBook={() => {
                   removeRecipeFromRecipeBook.mutate({
                     params: {
