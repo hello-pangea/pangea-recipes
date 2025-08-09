@@ -65,6 +65,8 @@ export function RecipeMoreMenu({
 
   const [booksAnchorEl, setBooksAnchorEl] = useState<null | HTMLElement>(null);
   const booksOpen = Boolean(booksAnchorEl);
+  // Set which side the submenu should open on
+  const [submenuSide, setSubmenuSide] = useState<'left' | 'right'>('right');
 
   const [search, setsSearch] = useState('');
 
@@ -141,6 +143,12 @@ export function RecipeMoreMenu({
         <Divider />
         <MenuItem
           onMouseEnter={(event) => {
+            // Decide which side to open the submenu based on available space
+            const rect = event.currentTarget.getBoundingClientRect();
+            const spaceRight = window.innerWidth - rect.right;
+            const spaceLeft = rect.left;
+            setSubmenuSide(spaceRight > spaceLeft ? 'right' : 'left');
+
             setBooksAnchorEl(event.currentTarget);
           }}
           sx={{
@@ -251,11 +259,11 @@ export function RecipeMoreMenu({
         disableEnforceFocus
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: submenuSide === 'right' ? 'right' : 'left',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: submenuSide === 'right' ? 'left' : 'right',
         }}
         sx={{
           pointerEvents: 'none',
