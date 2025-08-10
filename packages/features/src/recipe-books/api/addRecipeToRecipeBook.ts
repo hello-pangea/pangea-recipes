@@ -1,25 +1,36 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { getRecipeQueryOptions } from '../../recipes/index.js';
-import type { RecipeBook } from '../types/recipeBook.js';
+import {
+  getRecipeQueryOptions,
+  listRecipesQueryOptions,
+} from '../../recipes/index.js';
+import { recipeBookSchema } from '../types/recipeBook.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
-interface AddRecipeToRecipeBook {
-  recipeBookId: string;
-  recipeId: string;
-}
+export const addRecipeToRecipeBookContract = defineContract(
+  'recipe-books/:id/recipes',
+  {
+    method: 'post',
+    params: z.object({
+      id: z.uuidv4(),
+    }),
+    body: z.object({
+      recipeId: z.uuidv4(),
+    }),
+    response: {
+      200: z.object({
+        recipeBook: recipeBookSchema,
+      }),
+    },
+  },
+);
 
-function addRecipeToRecipeBook(
-  data: AddRecipeToRecipeBook,
-): Promise<RecipeBook> {
-  return api
-    .post(`recipe-books/${data.recipeBookId}/recipes`, {
-      json: { recipeId: data.recipeId },
-    })
-    .json<{ recipeBook: RecipeBook }>()
-    .then((res) => res.recipeBook);
-}
+const addRecipeToRecipeBook = makeRequest(addRecipeToRecipeBookContract, {
+  select: (res) => res.recipeBook,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof addRecipeToRecipeBook>;
@@ -38,14 +49,19 @@ export function useAddRecipeToRecipeBook({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
       void queryClient.invalidateQueries({
-        queryKey: getRecipeQueryOptions(args[1].recipeId).queryKey,
+        queryKey: getRecipeQueryOptions(args[1].params.id).queryKey,
       });
       queryClient.setQueryData(
         getRecipeBookQueryOptions(data.id).queryKey,
         data,
       );
+      void queryClient.invalidateQueries(
+        listRecipesQueryOptions({
+          recipeBookId: data.id,
+        }),
+      );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: addRecipeToRecipeBook,

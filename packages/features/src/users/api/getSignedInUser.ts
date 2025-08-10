@@ -1,31 +1,30 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { User } from '../types/user.js';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
+import { userSchema } from '../types/user.js';
 
-export function getSignedInUser() {
-  return api
-    .get(`users/signed-in-user`, {
-      credentials: 'include',
-    })
-    .json<{ user: User | null }>()
-    .then((res) => res.user);
-}
+export const getSignedInUserContract = defineContract('users/signed-in-user', {
+  method: 'get',
+  response: {
+    200: z.object({
+      user: userSchema.nullable(),
+    }),
+  },
+});
+
+const getSignedInUser = makeRequest(getSignedInUserContract, {
+  select: (res) => res.user,
+});
 
 export function getSignedInUserQueryOptions() {
   return queryOptions({
     queryKey: ['current_user'],
     queryFn: () => getSignedInUser(),
+    staleTime: 5 * 60 * 1000, // 5 minutes
   });
 }
 
-interface Options {
-  queryConfig?: QueryConfig<typeof getSignedInUserQueryOptions>;
-}
-
-export function useSignedInUser({ queryConfig }: Options = {}) {
-  return useQuery({
-    ...getSignedInUserQueryOptions(),
-    ...queryConfig,
-  });
+export function useSignedInUser() {
+  return useQuery(getSignedInUserQueryOptions());
 }

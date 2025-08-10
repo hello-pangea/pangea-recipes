@@ -1,29 +1,29 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { CanonicalIngredient } from '../types/canonicalIngredient.js';
+import { queryOptions } from '@tanstack/react-query';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
+import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 
-function listCanonicalIngredients(): Promise<CanonicalIngredient[]> {
-  return api
-    .get(`canonical-ingredients`)
-    .json<{ canonicalIngredients: CanonicalIngredient[] }>()
-    .then((res) => res.canonicalIngredients);
-}
+export const listCanonicalIngredientsContract = defineContract(
+  'canonical-ingredients',
+  {
+    method: 'get',
+    response: {
+      200: z.object({
+        canonicalIngredients: z.array(canonicalIngredientSchema),
+      }),
+    },
+  },
+);
 
-export function getListCanonicalIngredientsQueryOptions() {
+const listCanonicalIngredients = makeRequest(listCanonicalIngredientsContract, {
+  select: (res) => res.canonicalIngredients,
+});
+
+export function listCanonicalIngredientsQueryOptions() {
   return queryOptions({
     queryKey: ['canonicalIngredients'],
     queryFn: () => listCanonicalIngredients(),
-  });
-}
-
-interface Options {
-  queryConfig?: QueryConfig<typeof getListCanonicalIngredientsQueryOptions>;
-}
-
-export function useCanonicalIngredients({ queryConfig }: Options = {}) {
-  return useQuery({
-    ...getListCanonicalIngredientsQueryOptions(),
-    ...queryConfig,
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }

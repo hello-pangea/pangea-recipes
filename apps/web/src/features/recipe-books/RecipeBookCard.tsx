@@ -9,7 +9,8 @@ import {
   Stack,
   Tooltip,
 } from '@mui/material';
-import { useRecipeBook } from '@open-zero/features/recipe-books';
+import { getRecipeBookQueryOptions } from '@repo/features/recipe-books';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
@@ -19,7 +20,9 @@ interface Props {
 }
 
 export function RecipeBookCard({ recipeBookId }: Props) {
-  const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
+  const { data: recipeBook } = useQuery(
+    getRecipeBookQueryOptions(recipeBookId),
+  );
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );

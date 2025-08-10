@@ -4,7 +4,11 @@ datasource db {
 }
 
 generator client {
-  provider        = "prisma-client-js"
-  output          = "../generated-client"
-  previewFeatures = ["relationJoins"]
+  provider               = "prisma-client"
+  output                 = "../src/generated-prisma-client"
+  previewFeatures        = ["queryCompiler", "driverAdapters", "relationJoins"]
+  runtime                = "nodejs"
+  moduleFormat           = "esm"
+  generatedFileExtension = "ts"
+  importFileExtension    = "js"
 }

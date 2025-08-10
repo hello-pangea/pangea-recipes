@@ -1,5 +1,5 @@
 {
-  "name": "@open-zero/email",
+  "name": "@repo/email",
   "version": "0.0.0",
   "private": true,
   "license": "AGPL-3.0-or-later",
@@ -20,16 +20,17 @@
     "preview": "email dev --port 3002 --dir src/emails"
   },
   "dependencies": {
-    "@react-email/components": "^0.0.41",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "@react-email/components": "^0.5.0",
+    "@react-email/render": "^1.2.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
   },
   "devDependencies": {
-    "@open-zero/eslint-config": "workspace:*",
-    "@open-zero/typescript-config": "workspace:*",
-    "@types/node": "^22.15.29",
-    "@types/react": "^19.1.6",
-    "react-email": "^4.0.15",
-    "typescript": "~5.8.3"
+    "@repo/eslint-config": "workspace:*",
+    "@repo/typescript-config": "workspace:*",
+    "@types/node": "^22.17.1",
+    "@types/react": "^19.1.9",
+    "react-email": "^4.2.8",
+    "typescript": "~5.9.2"
   }
 }

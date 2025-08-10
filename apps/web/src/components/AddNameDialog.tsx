@@ -9,8 +9,8 @@ import {
   DialogTitle,
   Stack,
 } from '@mui/material';
-import { useUpdateUser } from '@open-zero/features/users';
-import { z } from 'zod/v4';
+import { useUpdateUser } from '@repo/features/users';
+import { z } from 'zod';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -36,8 +36,8 @@ export function AddNameDialog({ open, onClose }: Props) {
 
       updateUser.mutate(
         {
-          id: userId,
-          name: parsed.name,
+          params: { id: userId },
+          body: { name: parsed.name },
         },
         {
           onSuccess: () => {

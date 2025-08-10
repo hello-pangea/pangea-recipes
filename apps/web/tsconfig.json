@@ -1,11 +1,7 @@
 {
-  "extends": "@open-zero/typescript-config/vite.json",
-  "compilerOptions": {
-    "paths": {
-      "#src/*": ["./src/*"]
-    }
-  },
-  "exclude": ["node_modules"],
-  "include": ["src"],
-  "references": [{ "path": "./tsconfig.vite.json" }]
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
 }

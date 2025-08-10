@@ -4,7 +4,7 @@
     "sourceMap": true,
     "noEmit": false
   },
-  "extends": "@open-zero/typescript-config/node.json",
+  "extends": "@repo/typescript-config/node.json",
   "include": ["src", "index.d.ts"],
   "exclude": ["**/node_modules", "**/.*/"]
 }

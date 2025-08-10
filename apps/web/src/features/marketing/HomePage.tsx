@@ -1,367 +1,318 @@
-import { Copyright } from '#src/components/Copyright';
+import { EmphasizeText } from '#src/components/EmphasizeText';
+import { Footer } from '#src/components/Footer';
 import { RouterButton } from '#src/components/RouterButton';
-import { alpha, Box, Container, Grid, Stack, Typography } from '@mui/material';
-import { useSignedInUser } from '@open-zero/features/users';
+import mockupImage from '#src/images/hero-mockup.png';
+import screenshotImage from '#src/images/screenshot-1.png';
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
+import { useSignedInUser } from '@repo/features/users';
 import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
+import { FeatureHighlights } from './FeatureHighlights';
 import { Header } from './Header';
-import { ImportRecipeDemo } from './ImportRecipeDemo';
-import { PhoneDemo } from './PhoneDemo';
+import { PhoneMockup } from './PhoneMockup';
 import { ShareDialogDemo } from './ShareDialogDemo';
 
 export function HomePage() {
   const { data: user } = useSignedInUser();
 
   if (user) {
-    return <Navigate to="/app/recipes" />;
+    return <Navigate to="/app/recipes" replace />;
   }
 
   return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        minHeight: '100vh',
-      }}
-    >
+    <>
       <Header />
-      <Container
-        maxWidth="lg"
-        sx={{
-          mt: { xs: 4, sm: 6, md: 16 },
-          mb: 16,
-        }}
-      >
-        <Grid
-          container
-          spacing={4}
-          direction={{ xs: 'column-reverse', md: 'row' }}
-        >
-          <Grid
-            size={{
-              xs: 12,
-              md: 5,
-            }}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <PhoneDemo />
-          </Grid>
-          <Grid
-            size={{
-              xs: 12,
-              md: 7,
-            }}
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}
-          >
-            <Box
-              sx={{
-                maxWidth: {
-                  xs: 350,
-                  sm: 400,
-                  md: 600,
-                },
-              }}
-            >
-              <Typography
-                variant="h1"
-                sx={{
-                  mb: 2,
-                  maxWidth: 600,
-                  fontWeight: 'normal',
-                }}
-              >
-                <Typography
-                  component={'span'}
-                  variant="h1"
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontSize: 'inherit',
-                    fontFamily: 'inherit',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Organize
-                </Typography>{' '}
-                and{' '}
-                <Typography
-                  component={'span'}
-                  variant="h1"
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontSize: 'inherit',
-                    fontFamily: 'inherit',
-                    fontWeight: 'bold',
-                  }}
-                >
-                  share
-                </Typography>{' '}
-                recipes online.
-              </Typography>
-              <Box sx={{ display: 'flex', gap: 2, mb: 2 }}>
-                <Box
-                  sx={{
-                    border: 1,
-                    borderColor: (theme) => theme.vars.palette.primary.main,
-                    borderRadius: '8px',
-                    backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
-                    display: 'flex',
-                    alignItems: 'center',
-                    px: 1,
-                    py: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 'bold',
-                      color: (theme) => theme.vars.palette.primary.main,
-                    }}
-                  >
-                    Free
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    border: 1,
-                    borderColor: (theme) => theme.vars.palette.primary.main,
-                    borderRadius: '8px',
-                    backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
-                    display: 'flex',
-                    alignItems: 'center',
-                    px: 1,
-                    py: 0.5,
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    sx={{
-                      fontWeight: 'bold',
-                      color: (theme) => theme.vars.palette.primary.main,
-                    }}
-                  >
-                    No ads
-                  </Typography>
-                </Box>
-              </Box>
-              <Typography
-                sx={{
-                  mb: 4,
-                  maxWidth: 400,
-                  fontSize: { xs: 16, md: 18 },
-                }}
-              >
-                All your recipes on all your devices. Create recipe books with
-                friends and family.
-              </Typography>
-              <RouterButton to="/sign-up" variant="contained">
-                Sign up for free
-              </RouterButton>
-            </Box>
-          </Grid>
-        </Grid>
-      </Container>
-      <Container maxWidth="lg">
-        <Stack spacing={32}>
-          <Grid
-            container
-            spacing={{
-              xs: 8,
-              sm: 4,
-              md: 8,
-            }}
-          >
-            <Grid
-              size={{
-                xs: 12,
-                sm: 6,
-              }}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography
-                variant="h1"
-                component={'h2'}
-                sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
-              >
-                <Typography
-                  variant="h1"
-                  component={'span'}
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Import
-                </Typography>{' '}
-                your favorite recipes
-              </Typography>
-              <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
-                <b>Never forget</b> another recipe. Quickly add your favorites
-                and want-to-try recipes to your collection.
-              </Typography>
-            </Grid>
-            <Grid
-              size={{
-                xs: 12,
-                sm: 6,
-              }}
-            >
-              <ImportRecipeDemo />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            spacing={{
-              xs: 8,
-              sm: 4,
-              md: 8,
-            }}
-          >
-            <Grid
-              size={{
-                xs: 12,
-                sm: 6,
-              }}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography
-                variant="h1"
-                component="h2"
-                sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
-              >
-                Collect and access{' '}
-                <Typography
-                  variant="h1"
-                  component={'span'}
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  anywhere
-                </Typography>
-              </Typography>
-              <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
-                All your favorite recipes, available on the web on all your
-                devices.
-              </Typography>
-            </Grid>
-            <Grid
-              size={{
-                xs: 12,
-                sm: 6,
-              }}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <DesktopDemo />
-            </Grid>
-          </Grid>
-          <Grid
-            container
-            spacing={{
-              xs: 8,
-              sm: 4,
-              md: 8,
-            }}
-          >
-            <Grid
-              size={{
-                xs: 12,
-                sm: 6,
-              }}
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-              }}
-            >
-              <Typography
-                variant="h1"
-                component={'h2'}
-                sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
-              >
-                <Typography
-                  variant="h1"
-                  component={'span'}
-                  sx={{
-                    color: (theme) => theme.vars.palette.primary.main,
-                    fontWeight: 'bold',
-                  }}
-                >
-                  Share
-                </Typography>{' '}
-                recipes with friends and family
-              </Typography>
-              <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
-                Collaborate with friends and family to make the perfect{' '}
-                <b>recipe book</b>. Share with a single link or invite.
-              </Typography>
-            </Grid>
-            <Grid
-              size={{
-                xs: 12,
-                sm: 6,
-              }}
-            >
-              <ShareDialogDemo />
-            </Grid>
-          </Grid>
-        </Stack>
-        <Box
+      <main>
+        <Container
+          maxWidth="lg"
           sx={{
-            backgroundColor: (theme) => theme.vars.palette.background.paper,
-            borderRadius: '28px',
-            px: 3,
-            py: 8,
-            display: 'flex',
-            alignItems: 'center',
-            flexDirection: 'column',
-            mt: { xs: 4, sm: 8 },
-            mb: { xs: 2, sm: 4 },
-            textAlign: 'center',
+            mt: { xs: 4, sm: 6, md: 16 },
+            mb: { xs: 4, sm: 16 },
           }}
         >
-          <img src="/assets/lil-guy.svg" width={64} height={64} />
-          <Typography variant="h1" component={'p'} sx={{ mb: 2, mt: 4 }}>
-            Start saving and sharing recipes.
-          </Typography>
-          <Typography
+          <Grid
+            container
+            spacing={4}
+            direction={{ xs: 'column-reverse', md: 'row' }}
+          >
+            <Grid
+              size={{
+                xs: 12,
+                md: 5,
+              }}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <img
+                height={400}
+                width={500}
+                src={mockupImage}
+                style={{
+                  objectFit: 'contain',
+                  display: 'block',
+                  maxWidth: '100%',
+                }}
+              />
+              {/* <img
+              height={550}
+              width={320}
+              src={mockupImage}
+              style={{
+                objectFit: 'contain',
+                display: 'block',
+              }}
+            /> */}
+              {/* <PhoneDemo /> */}
+            </Grid>
+            <Grid
+              size={{
+                xs: 12,
+                md: 7,
+              }}
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Box
+                sx={{
+                  maxWidth: {
+                    xs: 350,
+                    sm: 400,
+                    md: 600,
+                  },
+                }}
+              >
+                <Typography
+                  variant="h1"
+                  sx={{
+                    mb: 2,
+                    maxWidth: 600,
+                    fontWeight: 'normal',
+                  }}
+                >
+                  A recipe manager you'll <EmphasizeText>love</EmphasizeText>
+                </Typography>
+                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                  <Chip size="small" label="Free" color="primary" />
+                  <Chip size="small" label="No ads" color="primary" />
+                  <Chip size="small" label="Open source" color="primary" />
+                </Box>
+                <Typography
+                  sx={{
+                    mb: 4,
+                    maxWidth: 400,
+                    fontSize: { xs: 16, md: 18 },
+                  }}
+                >
+                  Pangea Recipes is a modern, ad-free recipe manager that makes
+                  it easy to save, share, organize, and collaborate on your
+                  favorite dishes.
+                </Typography>
+                <RouterButton
+                  to="/sign-up"
+                  variant="contained"
+                  endIcon={<ArrowForwardRoundedIcon />}
+                >
+                  Get started
+                </RouterButton>
+              </Box>
+            </Grid>
+          </Grid>
+        </Container>
+        <Container
+          maxWidth="lg"
+          sx={{
+            mb: 16,
+          }}
+        >
+          <FeatureHighlights />
+        </Container>
+        <Container maxWidth="lg">
+          <Stack spacing={32}>
+            <Grid
+              container
+              spacing={{
+                xs: 8,
+                sm: 4,
+                md: 8,
+              }}
+            >
+              <Grid
+                size={{
+                  xs: 12,
+                  sm: 6,
+                }}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography
+                  variant="h1"
+                  component={'h2'}
+                  sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
+                >
+                  <EmphasizeText>Save</EmphasizeText> your favorite recipes
+                </Typography>
+                <Typography
+                  sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}
+                >
+                  <b>Never forget</b> another recipe. Quickly add your favorites
+                  and want-to-try recipes to your collection.
+                </Typography>
+              </Grid>
+              <Grid
+                size={{
+                  xs: 12,
+                  sm: 6,
+                }}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <PhoneMockup src={screenshotImage} />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              spacing={{
+                xs: 8,
+                sm: 4,
+                md: 8,
+              }}
+            >
+              <Grid
+                size={{
+                  xs: 12,
+                  sm: 6,
+                }}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography
+                  variant="h1"
+                  component="h2"
+                  sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
+                >
+                  Collect and access <EmphasizeText>anywhere</EmphasizeText>
+                </Typography>
+                <Typography
+                  sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}
+                >
+                  All your favorite recipes, available on the web on all your
+                  devices.
+                </Typography>
+              </Grid>
+              <Grid
+                size={{
+                  xs: 12,
+                  sm: 6,
+                }}
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <DesktopDemo />
+              </Grid>
+            </Grid>
+            <Grid
+              container
+              spacing={{
+                xs: 8,
+                sm: 4,
+                md: 8,
+              }}
+            >
+              <Grid
+                size={{
+                  xs: 12,
+                  sm: 6,
+                }}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                }}
+              >
+                <Typography
+                  variant="h1"
+                  component={'h2'}
+                  sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
+                >
+                  <EmphasizeText>Share</EmphasizeText> recipes with friends and
+                  family
+                </Typography>
+                <Typography
+                  sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}
+                >
+                  Collaborate with friends and family to make the perfect{' '}
+                  <b>recipe book</b>. Share with a single link or invite.
+                </Typography>
+              </Grid>
+              <Grid
+                size={{
+                  xs: 12,
+                  sm: 6,
+                }}
+              >
+                <ShareDialogDemo />
+              </Grid>
+            </Grid>
+          </Stack>
+          <Box
             sx={{
-              mb: 4,
-              maxWidth: 600,
+              backgroundColor: (theme) => theme.vars.palette.background.paper,
+              borderRadius: '28px',
+              px: 3,
+              py: 8,
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              mt: { xs: 4, sm: 8 },
+              mb: { xs: 2, sm: 4 },
+              textAlign: 'center',
             }}
           >
-            Hello Recipes is free to use. We don't have ads, trackers, popups,
-            or distractions. We never sell data. Enjoy your recipes, your way.
-          </Typography>
-          <RouterButton to="/sign-up" variant="contained">
-            Sign up
-          </RouterButton>
-        </Box>
-      </Container>
-      <Copyright sx={{ pb: 2, pt: 6 }} />
-    </Box>
+            <img
+              src="/assets/lil-guy.svg"
+              alt="Pangea Recipes Logo"
+              width={64}
+              height={64}
+            />
+            <Typography variant="h1" component={'p'} sx={{ mb: 2, mt: 4 }}>
+              Start saving and sharing recipes.
+            </Typography>
+            <Typography
+              sx={{
+                mb: 4,
+                maxWidth: 600,
+              }}
+            >
+              Pangea Recipes is free to use. We don't have ads, trackers,
+              popups, or distractions. We never sell data. Enjoy your recipes,
+              your way.
+            </Typography>
+            <RouterButton to="/sign-up" variant="contained">
+              Sign up
+            </RouterButton>
+          </Box>
+        </Container>
+      </main>
+      <Footer sx={{ pb: 2, pt: 6 }} />
+    </>
   );
 }

@@ -1,44 +1,33 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
-import type { RecipeProjected } from '../types/recipeProjected.js';
+import { queryOptions } from '@tanstack/react-query';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
+import { recipeProjectedSchema } from '../types/recipeProjected.js';
 
-function listRecipes(options: {
-  userId?: string;
-  recipeBookId?: string;
-}): Promise<RecipeProjected[]> {
-  return api
-    .get(`recipes`, {
-      searchParams: {
-        ...(options.userId && { userId: options.userId }),
-        ...(options.recipeBookId && { recipeBookId: options.recipeBookId }),
-      },
-    })
-    .json<{ recipes: RecipeProjected[] }>()
-    .then((res) => res.recipes);
-}
+export const listRecipesContract = defineContract('recipes', {
+  method: 'get',
+  querystring: z.object({
+    userId: z.uuidv4().optional(),
+    recipeBookId: z.uuidv4().optional(),
+  }),
+  response: {
+    200: z.object({
+      recipes: recipeProjectedSchema.array(),
+    }),
+  },
+});
 
-export function getListRecipesQueryOptions(options: {
+const listRecipes = makeRequest(listRecipesContract, {
+  select: (res) => res.recipes,
+});
+
+export function listRecipesQueryOptions(options: {
   userId?: string;
   recipeBookId?: string;
 }) {
   return queryOptions({
     queryKey: ['recipes', options],
-    queryFn: () => listRecipes(options),
-  });
-}
-
-interface Options {
-  queryConfig?: QueryConfig<typeof getListRecipesQueryOptions>;
-  options: {
-    userId?: string;
-    recipeBookId?: string;
-  };
-}
-
-export function useRecipes({ queryConfig, options }: Options) {
-  return useQuery({
-    ...getListRecipesQueryOptions(options),
-    ...queryConfig,
+    queryFn: () => listRecipes({ querystring: options }),
+    staleTime: 1000 * 60 * 60, // 1 hour
   });
 }

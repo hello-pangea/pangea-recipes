@@ -1,4 +1,7 @@
 import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
+import { color } from '#src/theme/colors';
+import { capitalizeFirstLetter } from '#src/utils/misc';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
@@ -6,28 +9,48 @@ import {
   Alert,
   Box,
   Button,
+  ButtonBase,
+  Card,
+  Link,
   Stack,
   ToggleButton,
   ToggleButtonGroup,
+  Tooltip,
   Typography,
 } from '@mui/material';
 import {
   useSignedInUser,
   useUpdateUser,
   type User,
-} from '@open-zero/features/users';
+} from '@repo/features/users';
 import { useMutation } from '@tanstack/react-query';
-import { useRouter } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
-import { useState } from 'react';
 import { authClient } from '../auth/authClient';
+
+const accentColors = [
+  'red',
+  'orange',
+  'amber',
+  'yellow',
+  'lime',
+  'green',
+  'emerald',
+  'teal',
+  'cyan',
+  'sky',
+  'blue',
+  'indigo',
+  'violet',
+  'purple',
+  'fuschia',
+  'pink',
+  'rose',
+] as const;
 
 export function SettingsPage() {
   const { data: user } = useSignedInUser();
   const updateUser = useUpdateUser();
-  const [isLoading, setIsLoading] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-  const router = useRouter();
   const verifyEmail = useMutation({
     mutationFn: (data: { email: string; callbackURL: string }) => {
       return authClient.sendVerificationEmail(data, {
@@ -43,7 +66,7 @@ export function SettingsPage() {
   }
 
   return (
-    <Page>
+    <Page maxWidth="md">
       <Typography variant="h1" sx={{ mb: 4 }}>
         Settings
       </Typography>
@@ -92,10 +115,14 @@ export function SettingsPage() {
           </Box>
         </Alert>
       )}
-      <Stack spacing={6}>
-        <Box>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Theme preferences
+      <Stack spacing={4}>
+        <Card
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Appearance
           </Typography>
           <ToggleButtonGroup
             color="primary"
@@ -103,11 +130,16 @@ export function SettingsPage() {
             exclusive
             onChange={(_event, newValue: User['themePreference']) => {
               updateUser.mutate({
-                themePreference: newValue,
-                id: user.id,
+                params: {
+                  id: user.id,
+                },
+                body: {
+                  themePreference: newValue,
+                },
               });
             }}
             aria-label="Theme mode"
+            sx={{ mb: 4 }}
           >
             <ToggleButton value="light">
               <LightModeRoundedIcon sx={{ mr: 1 }} />
@@ -122,19 +154,78 @@ export function SettingsPage() {
               Dark
             </ToggleButton>
           </ToggleButtonGroup>
-        </Box>
-        <Box>
-          <Typography variant="h2" sx={{ mb: 2 }}>
-            Units preferences
+          <Typography variant="h3" sx={{ mb: 1.5 }}>
+            Accent color
+          </Typography>
+          <Stack spacing={1} direction={'row'} flexWrap="wrap">
+            {accentColors.map((accentColor) => (
+              <Tooltip
+                title={capitalizeFirstLetter(accentColor)}
+                key={accentColor}
+                placement="bottom"
+              >
+                <ButtonBase
+                  sx={{
+                    width: 32,
+                    height: 32,
+                    borderRadius: '50%',
+                    backgroundColor: color[accentColor][500],
+                    border: 2,
+                    borderColor: color[accentColor][700],
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                  onClick={() => {
+                    updateUser.mutate({
+                      params: {
+                        id: user.id,
+                      },
+                      body: {
+                        accentColor: accentColor,
+                      },
+                    });
+                  }}
+                >
+                  {user.accentColor === accentColor && (
+                    <Box
+                      sx={{
+                        width: 12,
+                        height: 12,
+                        borderRadius: '50%',
+                        backgroundColor: color.white,
+                      }}
+                    />
+                  )}
+                </ButtonBase>
+              </Tooltip>
+            ))}
+          </Stack>
+        </Card>
+        <Card
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Units
           </Typography>
           <ToggleButtonGroup
             color="primary"
             value={user.unitsPreference}
             exclusive
-            onChange={(_event, newValue: User['unitsPreference']) => {
+            onChange={(_event, newValue: User['unitsPreference'] | null) => {
+              if (newValue === null) {
+                return;
+              }
+
               updateUser.mutate({
-                unitsPreference: newValue,
-                id: user.id,
+                params: {
+                  id: user.id,
+                },
+                body: {
+                  unitsPreference: newValue,
+                },
               });
             }}
             aria-label="Theme mode"
@@ -142,21 +233,37 @@ export function SettingsPage() {
             <ToggleButton value="imperial">Imperial</ToggleButton>
             <ToggleButton value="metric">Metric</ToggleButton>
           </ToggleButtonGroup>
-        </Box>
-        <Button
-          loading={isLoading}
-          color="error"
-          onClick={() => {
-            setIsLoading(true);
-
-            void authClient.signOut().then(() => {
-              void router.invalidate();
-            });
+        </Card>
+        <Card
+          sx={{
+            p: 3,
           }}
-          sx={{ alignSelf: 'flex-start' }}
         >
-          Sign out
-        </Button>
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Contact
+          </Typography>
+          <Typography>
+            Pangea Recipes is in beta! Send any feedback to{' '}
+            <Link href="mailto:hello@pangearecipes.com">
+              hello@pangearecipes.com
+            </Link>
+            . I'd love to hear your thoughts 😊
+            <br />
+            <br />- Reece, Pangea Recipes creator
+          </Typography>
+        </Card>
+        <Card
+          sx={{
+            p: 3,
+          }}
+        >
+          <Typography variant="h2" sx={{ mb: 1.5 }}>
+            Account
+          </Typography>
+          <RouterButton to="/log-out" color="error" sx={{ ml: -1 }}>
+            Sign out
+          </RouterButton>
+        </Card>
       </Stack>
     </Page>
   );

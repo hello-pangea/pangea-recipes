@@ -1,16 +1,21 @@
 import { resend } from '#src/lib/resend.ts';
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
-import { noContentSchema } from '#src/types/noContent.ts';
-import { prisma } from '@open-zero/database';
-import { RequestToJoinRecipeBookEmail } from '@open-zero/email';
-import { recipeBookRequestSchemaRef } from '@open-zero/features/recipe-book-requests';
-import { Type } from '@sinclair/typebox';
+import { prisma } from '@repo/database';
+import { RequestToJoinRecipeBookEmail } from '@repo/email';
+import {
+  acceptRecipeBookRequestContract,
+  declineRecipeBookRequestContract,
+  listRecipeBookRequestsContract,
+  requestAccessToRecipeBookContract,
+} from '@repo/features/recipe-book-requests';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe book requests';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
+export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
+  fastify,
+) {
   fastify.post(
     '',
     {
@@ -20,12 +25,7 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
         summary: 'Request access to a recipe book',
         description:
           'Uses the auth token in the request to determin who is making the request.',
-        body: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...requestAccessToRecipeBookContract,
       },
     },
     async (request) => {
@@ -90,14 +90,14 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
       if (recipeBookOwners.length) {
         for (const owner of recipeBookOwners) {
           await resend.emails.send({
-            from: 'Hello Recipes <invites@notify.hellorecipes.com>',
+            from: 'Pangea Recipes <invites@notify.pangearecipes.com>',
             to: owner.user.email,
             subject: `Share request for recipe book`,
-            replyTo: 'hello@hellorecipes.com',
+            replyTo: 'hello@pangearecipes.com',
             react: RequestToJoinRecipeBookEmail({
               ownerName: owner.user.name || undefined,
               requesterName: requestingUser.name || 'Guest',
-              managerLink: `https://hellorecipes.com/recipe-books/${recipeBookId}`,
+              managerLink: `https://pangearecipes.com/recipe-books/${recipeBookId}`,
               recipeBookName: recipeBook.name,
             }),
           });
@@ -117,15 +117,7 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
         summary: 'List recipe book requests',
         description:
           'For privacy reasons, the user can only check for requests that they made.',
-        querystring: Type.Object({
-          recipeBookId: Type.String({ format: 'uuid' }),
-          userId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: {
-            recipeBookRequests: Type.Array(recipeBookRequestSchemaRef),
-          },
-        },
+        ...listRecipeBookRequestsContract,
       },
     },
     async (request) => {
@@ -142,42 +134,39 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
           acceptedAt: null,
           declinedAt: null,
         },
+        include: {
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
       });
 
       return {
-        recipeBookRequests: recipeBookRequest ? [recipeBookRequest] : [],
+        recipeBookRequests: recipeBookRequest
+          ? [{ ...recipeBookRequest, name: recipeBookRequest.user.name }]
+          : [],
       };
     },
   );
 
   fastify.post(
-    '/:recipeBookRequestId/accept',
+    '/:id/accept',
     {
       schema: {
         tags: [routeTag],
         summary: 'Accept a recipe book request',
-        params: Type.Object({
-          recipeBookRequestId: Type.String({ format: 'uuid' }),
-        }),
-        body: Type.Object({
-          role: Type.Union([
-            Type.Literal('owner'),
-            Type.Literal('editor'),
-            Type.Literal('viewer'),
-          ]),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...acceptRecipeBookRequestContract,
       },
     },
     async (request) => {
-      const { recipeBookRequestId } = request.params;
+      const { id } = request.params;
       const { role } = request.body;
 
       const recipeBookRequest = await prisma.recipeBookRequest.update({
         where: {
-          id: recipeBookRequestId,
+          id: id,
           acceptedAt: null,
           declinedAt: null,
         },
@@ -199,25 +188,20 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
   );
 
   fastify.post(
-    '/:recipeBookRequestId/decline',
+    '/:id/decline',
     {
       schema: {
         tags: [routeTag],
         summary: 'Accept a recipe book request',
-        params: Type.Object({
-          recipeBookRequestId: Type.String({ format: 'uuid' }),
-        }),
-        response: {
-          200: noContentSchema,
-        },
+        ...declineRecipeBookRequestContract,
       },
     },
     async (request) => {
-      const { recipeBookRequestId } = request.params;
+      const { id } = request.params;
 
       await prisma.recipeBookRequest.update({
         where: {
-          id: recipeBookRequestId,
+          id: id,
           acceptedAt: null,
           declinedAt: null,
         },
@@ -229,4 +213,4 @@ export async function recipeBookRequestRoutes(fastify: FastifyTypebox) {
       return null;
     },
   );
-}
+};

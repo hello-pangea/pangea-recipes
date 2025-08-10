@@ -14,11 +14,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { authClient } from './authClient';
+import { useSignUp } from './useSignUp';
 
 const formSchema = z.object({
   name: z.string().transform((val) => (val === '' ? undefined : val)),
@@ -29,21 +28,9 @@ const formSchema = z.object({
     .max(128, { message: 'Password must be at most 128 characters long' }),
 });
 
-const route = getRouteApi('/sign-up');
-
 export function SignUpPage() {
-  const navigate = route.useNavigate();
-  const { redirect } = route.useSearch();
   const [showPassword, setShowPassword] = useState(false);
-  const signUp = useMutation({
-    mutationFn: (data: Parameters<typeof authClient.signUp.email>[0]) => {
-      return authClient.signUp.email(data, {
-        onError: (ctx) => {
-          throw ctx.error;
-        },
-      });
-    },
-  });
+  const signUp = useSignUp();
   const form = useAppForm({
     defaultValues: {
       name: '',
@@ -56,20 +43,11 @@ export function SignUpPage() {
     onSubmit: ({ value }) => {
       const parsed = formSchema.parse(value);
 
-      signUp.mutate(
-        {
-          email: parsed.email,
-          password: parsed.password,
-          name: parsed.name ?? '',
-        },
-        {
-          onSuccess: () => {
-            void navigate({
-              to: redirect || '/app/recipes',
-            });
-          },
-        },
-      );
+      signUp.mutate({
+        email: parsed.email,
+        password: parsed.password,
+        name: parsed.name ?? '',
+      });
     },
   });
 
@@ -96,7 +74,7 @@ export function SignUpPage() {
             ml: 1.5,
           }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Card
@@ -104,7 +82,8 @@ export function SignUpPage() {
         sx={{
           p: 2,
           mb: 2,
-          width: 400,
+          maxWidth: 400,
+          width: '100%',
           border: 0,
           boxShadow:
             '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
@@ -252,7 +231,7 @@ export function SignUpPage() {
               Sign up
             </Button>
             <Typography variant="caption">
-              Signing up for a Hello Recipes account means you agree to the{' '}
+              Signing up for a Pangea Recipes account means you agree to the{' '}
               <RouterLink to="/privacy-policy">Privacy Policy</RouterLink> and{' '}
               <RouterLink to="/terms-of-service">Terms of Service</RouterLink>
             </Typography>

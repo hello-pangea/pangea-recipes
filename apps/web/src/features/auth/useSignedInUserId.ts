@@ -1,11 +1,11 @@
-import { authClient } from './authClient';
+import { useRouteContext } from '@tanstack/react-router';
 
 export function useSignedInUserId() {
-  const { data: session } = authClient.useSession();
+  const { userId } = useRouteContext({ strict: false });
 
-  if (!session?.user.id) {
+  if (!userId) {
     throw new Error('User does not exist');
   }
 
-  return session.user.id;
+  return userId;
 }

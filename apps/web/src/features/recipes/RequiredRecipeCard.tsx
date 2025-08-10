@@ -6,7 +6,8 @@ import {
   IconButton,
   Typography,
 } from '@mui/material';
-import { useRecipe } from '@open-zero/features/recipes';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 
 interface Props {
   recipeId: string;
@@ -14,9 +15,7 @@ interface Props {
 }
 
 export function RequiredRecipeCard({ recipeId, onRemove }: Props) {
-  const { data: recipe } = useRecipe({
-    recipeId: recipeId,
-  });
+  const { data: recipe } = useQuery(getRecipeQueryOptions(recipeId));
 
   if (!recipe) {
     return <CircularProgress />;

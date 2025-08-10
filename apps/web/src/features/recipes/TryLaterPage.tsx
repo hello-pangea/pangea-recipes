@@ -1,32 +1,46 @@
 import { Page } from '#src/components/Page';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import { Box, Grid, InputBase, Typography } from '@mui/material';
-import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
+import { SearchTextField } from '#src/components/SearchTextField';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import { Box, Button, Grid, Typography } from '@mui/material';
+import {
+  listRecipesQueryOptions,
+  useUpdateRecipe,
+} from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { AddRecipesMenu } from './AddRecipesMenu';
 import { EmptyRecipes } from './EmptyRecipes';
 import { RecipeCard } from './RecipeCard';
 
 export function TryLaterPage() {
+  const navigate = useNavigate();
   const userId = useSignedInUserId();
-  const { data: recipes, isError } = useSuspenseQuery(
-    getListRecipesQueryOptions({ userId: userId }),
+  const { data: allRecipes, isError } = useSuspenseQuery(
+    listRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
-  const [searchFocused, setSearchFocused] = useState(false);
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
+  const updateRecipe = useUpdateRecipe();
 
-  const filteredRecipes = useMemo(() => {
-    const toTryRecipes = recipes.filter((recipe) => recipe.tryLater);
+  const tryLaterRecipes = allRecipes.filter(
+    (recipe) => recipe.tryLaterAt !== null,
+  );
+  const tryLaterRecipeIds = tryLaterRecipes.map((r) => r.id);
 
-    if (search) {
-      return toTryRecipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(search.toLowerCase()),
-      );
-    }
-
-    return toTryRecipes;
-  }, [recipes, search]);
+  const filteredRecipes = tryLaterRecipes
+    .slice()
+    .sort((a, b) => {
+      const aTime = a.tryLaterAt ? a.tryLaterAt.getTime() : 0;
+      const bTime = b.tryLaterAt ? b.tryLaterAt.getTime() : 0;
+      return bTime - aTime;
+    })
+    .filter((recipe) =>
+      search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
+    );
 
   return (
     <Page>
@@ -46,50 +60,24 @@ export function TryLaterPage() {
       <Box
         sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
       >
-        <Box
-          sx={[
-            {
-              maxWidth: 800,
-              borderRadius: 99,
-              backgroundColor: (theme) =>
-                searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[200],
-              display: 'flex',
-              alignItems: 'center',
-              width: '100%',
-              px: 2,
-              py: 1,
-              gap: 2,
-              boxShadow: searchFocused
-                ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
-                : undefined,
-            },
-            (theme) =>
-              theme.applyStyles('dark', {
-                backgroundColor: searchFocused
-                  ? theme.palette.background.paper
-                  : theme.palette.grey[900],
-              }),
-          ]}
-        >
-          <SearchRoundedIcon />
-          <InputBase
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            placeholder="Search for a recipe..."
-            sx={{ flex: 1 }}
-            onFocus={() => {
-              setSearchFocused(true);
-            }}
-            onBlur={() => {
-              setSearchFocused(false);
-            }}
-          />
-        </Box>
+        <SearchTextField
+          value={search}
+          onChange={setSearch}
+          placeholder="Search for a recipe..."
+        />
       </Box>
+      <Button
+        size="small"
+        startIcon={<AddRoundedIcon />}
+        sx={{
+          mb: 1.5,
+        }}
+        onClick={(event) => {
+          setAddMenuAnchorEl(event.currentTarget);
+        }}
+      >
+        Add
+      </Button>
       <Grid container spacing={2}>
         {filteredRecipes.map((recipe) => (
           <Grid
@@ -100,11 +88,34 @@ export function TryLaterPage() {
               lg: 4,
             }}
           >
-            <RecipeCard recipeId={recipe.id} />
+            <RecipeCard recipe={recipe} />
           </Grid>
         ))}
       </Grid>
-      {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      {!isError && !tryLaterRecipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      <AddRecipesMenu
+        addedRecipeIds={tryLaterRecipeIds}
+        onClose={() => {
+          setAddMenuAnchorEl(null);
+        }}
+        anchorEl={addMenuAnchorEl}
+        onToggleRecipe={(recipeId) => {
+          const added = tryLaterRecipeIds.includes(recipeId);
+
+          updateRecipe.mutate({
+            params: { id: recipeId },
+            body: {
+              tryLater: !added,
+            },
+          });
+        }}
+        onNewRecipe={() => {
+          void navigate({
+            to: '/app/recipes/new',
+            search: { tryLater: true },
+          });
+        }}
+      />
     </Page>
   );
 }

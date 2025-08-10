@@ -3,12 +3,13 @@ import ChevronRightRoundedIcon from '@mui/icons-material/ChevronRightRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
+import FavoriteBorderRoundedIcon from '@mui/icons-material/FavoriteBorderRounded';
+import FavoriteRoundedIcon from '@mui/icons-material/FavoriteRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
 import {
   Box,
-  CircularProgress,
   Divider,
   IconButton,
   InputAdornment,
@@ -20,29 +21,31 @@ import {
   type MenuProps,
 } from '@mui/material';
 import {
+  listRecipeBooksQueryOptions,
   useAddRecipeToRecipeBook,
   useCreateRecipeBook,
-  useRecipeBooks,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
 import {
   useDeleteRecipe,
-  useRecipe,
   useUpdateRecipe,
-} from '@open-zero/features/recipes';
+  type RecipeProjected,
+} from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
 interface Props
   extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
-  recipeId: string;
+  recipe: RecipeProjected;
   onClose: () => void;
   onDelete?: () => void;
   onRemoveFromRecipeBook?: () => void;
 }
 
 export function RecipeMoreMenu({
-  recipeId,
+  recipe,
   anchorEl,
   anchorPosition,
   anchorReference,
@@ -51,12 +54,9 @@ export function RecipeMoreMenu({
   onRemoveFromRecipeBook,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipe } = useRecipe({ recipeId: recipeId });
-  const { data: recipeBooks } = useRecipeBooks({
-    options: {
-      userId,
-    },
-  });
+  const { data: recipeBooks } = useQuery(
+    listRecipeBooksQueryOptions({ userId }),
+  );
   const deleteRecipe = useDeleteRecipe();
   const createRecipeBook = useCreateRecipeBook();
   const updateRecipe = useUpdateRecipe();
@@ -65,6 +65,8 @@ export function RecipeMoreMenu({
 
   const [booksAnchorEl, setBooksAnchorEl] = useState<null | HTMLElement>(null);
   const booksOpen = Boolean(booksAnchorEl);
+  // Set which side the submenu should open on
+  const [submenuSide, setSubmenuSide] = useState<'left' | 'right'>('right');
 
   const [search, setsSearch] = useState('');
 
@@ -89,10 +91,6 @@ export function RecipeMoreMenu({
   function handleClose() {
     setBooksAnchorEl(null);
     onClose();
-  }
-
-  if (!recipe) {
-    return <CircularProgress />;
   }
 
   return (
@@ -145,6 +143,12 @@ export function RecipeMoreMenu({
         <Divider />
         <MenuItem
           onMouseEnter={(event) => {
+            // Decide which side to open the submenu based on available space
+            const rect = event.currentTarget.getBoundingClientRect();
+            const spaceRight = window.innerWidth - rect.right;
+            const spaceLeft = rect.left;
+            setSubmenuSide(spaceRight > spaceLeft ? 'right' : 'left');
+
             setBooksAnchorEl(event.currentTarget);
           }}
           sx={{
@@ -155,7 +159,7 @@ export function RecipeMoreMenu({
           <ListItemIcon>
             <AddRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>Add to recipe book</ListItemText>
+          <ListItemText>Add to book</ListItemText>
           <ListItemIcon
             sx={{
               justifyContent: 'flex-end',
@@ -170,8 +174,32 @@ export function RecipeMoreMenu({
           }}
           onClick={() => {
             updateRecipe.mutate({
-              id: recipe.id,
-              tryLater: !recipe.tryLater,
+              params: { id: recipe.id },
+              body: { favorite: !recipe.favoritedAt },
+            });
+          }}
+        >
+          <ListItemIcon>
+            {recipe.favoritedAt ? (
+              <FavoriteRoundedIcon fontSize="small" />
+            ) : (
+              <FavoriteBorderRoundedIcon fontSize="small" />
+            )}
+          </ListItemIcon>
+          <ListItemText>
+            {recipe.favoritedAt ? 'Remove from favorites' : 'Add to favorites'}
+          </ListItemText>
+        </MenuItem>
+        <MenuItem
+          onMouseEnter={() => {
+            setBooksAnchorEl(null);
+          }}
+          onClick={() => {
+            updateRecipe.mutate({
+              params: { id: recipe.id },
+              body: {
+                tryLater: !recipe.tryLaterAt,
+              },
             });
           }}
         >
@@ -179,7 +207,7 @@ export function RecipeMoreMenu({
             <UpcomingRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {recipe.tryLater ? 'Remove from "Try Later"' : 'Add to "Try Later"'}
+            {recipe.tryLaterAt ? 'Remove from try later' : 'Add to try later'}
           </ListItemText>
         </MenuItem>
         <Divider />
@@ -197,13 +225,13 @@ export function RecipeMoreMenu({
             <ListItemIcon>
               <RemoveCircleRoundedIcon fontSize="small" />
             </ListItemIcon>
-            <ListItemText>Remove from recipe book</ListItemText>
+            <ListItemText>Remove from book</ListItemText>
           </MenuItem>
         )}
         {onRemoveFromRecipeBook && <Divider />}
         <MenuItem
           onClick={() => {
-            deleteRecipe.mutate({ recipeId: recipe.id });
+            deleteRecipe.mutate({ params: { id: recipe.id } });
 
             if (onDelete) {
               onDelete();
@@ -231,11 +259,11 @@ export function RecipeMoreMenu({
         disableEnforceFocus
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: submenuSide === 'right' ? 'right' : 'left',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: submenuSide === 'right' ? 'left' : 'right',
         }}
         sx={{
           pointerEvents: 'none',
@@ -259,7 +287,7 @@ export function RecipeMoreMenu({
           <TextField
             variant="outlined"
             size="small"
-            placeholder="Find a recipe book"
+            placeholder="Find a book"
             value={search}
             fullWidth
             onChange={(event) => {
@@ -276,8 +304,12 @@ export function RecipeMoreMenu({
                 }
 
                 addRecipeToRecipeBook.mutate({
-                  recipeBookId: firstRecipeBook.id,
-                  recipeId: recipe.id,
+                  params: {
+                    id: firstRecipeBook.id,
+                  },
+                  body: {
+                    recipeId: recipe.id,
+                  },
                 });
 
                 handleClose();
@@ -319,12 +351,16 @@ export function RecipeMoreMenu({
         <MenuItem
           onClick={() => {
             createRecipeBook.mutate(
-              { name: recipe.name },
+              { body: { name: recipe.name } },
               {
                 onSuccess: (newRecipeBook) => {
                   addRecipeToRecipeBook.mutate({
-                    recipeBookId: newRecipeBook.id,
-                    recipeId: recipe.id,
+                    params: {
+                      id: newRecipeBook.id,
+                    },
+                    body: {
+                      recipeId: recipe.id,
+                    },
                   });
                 },
               },
@@ -334,23 +370,11 @@ export function RecipeMoreMenu({
           <ListItemIcon>
             <AddRoundedIcon fontSize="small" />
           </ListItemIcon>
-          <ListItemText>New recipe book</ListItemText>
+          <ListItemText>New book</ListItemText>
         </MenuItem>
         {filteredRecipeBooks.length > 0 && <Divider />}
         {filteredRecipeBooks.map((book) => (
-          <MenuItem
-            key={book.id}
-            onClick={() => {
-              addRecipeToRecipeBook.mutate({
-                recipeBookId: book.id,
-                recipeId: recipe.id,
-              });
-
-              handleClose();
-            }}
-          >
-            <ListItemText>{book.name}</ListItemText>
-          </MenuItem>
+          <RecipeBookMenuItem key={book.id} book={book} recipeId={recipe.id} />
         ))}
       </Menu>
     </>

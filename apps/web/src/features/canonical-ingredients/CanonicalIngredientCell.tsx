@@ -14,7 +14,7 @@ import {
 import {
   useDeleteCanonicalIngredient,
   type CanonicalIngredient,
-} from '@open-zero/features/canonical-ingredients';
+} from '@repo/features/canonical-ingredients';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 
@@ -107,7 +107,7 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
         <MenuItem
           onClick={() => {
             deleteCanonicalIngredient.mutate({
-              canonicalIngredientId: canonicalIngredient.id,
+              params: { id: canonicalIngredient.id },
             });
 
             handleMoreMenuClose();

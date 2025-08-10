@@ -1,68 +1,66 @@
-import { Type, type Static } from '@sinclair/typebox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { z } from 'zod';
 import { createTagDtoSchema } from '../../common/tag.js';
-import { api } from '../../lib/api.js';
-import { Nullable } from '../../lib/nullable.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { recipeSchema, type Recipe } from '../types/recipe.js';
+import { recipeSchema } from '../types/recipe.js';
 
-export type CreateRecipeDto = Static<typeof createRecipeDtoScema>;
-export const createRecipeDtoScema = Type.Composite([
-  Type.Pick(recipeSchema, ['name']),
-  Type.Partial(
-    Type.Pick(recipeSchema, [
-      'description',
-      'prepTime',
-      'cookTime',
-      'servings',
-      'usesRecipes',
-      'nutrition',
-      'tryLater',
-    ]),
-  ),
-  Type.Object({
-    imageIds: Type.Optional(Type.Array(Type.String({ format: 'uuid' }))),
-    websitePageId: Type.Optional(Type.String({ format: 'uuid' })),
-    ingredientGroups: Type.Array(
-      Type.Object({
-        name: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-        ingredients: Type.Array(
-          Type.Object({
-            name: Type.String({ minLength: 1 }),
-            unit: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-            quantity: Type.Optional(Nullable(Type.Number())),
-            notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
+export const createRecipeContract = defineContract('recipes', {
+  method: 'post',
+  body: z.object({
+    ...recipeSchema.pick({ name: true }).shape,
+    ...recipeSchema
+      .pick({
+        description: true,
+        prepTime: true,
+        cookTime: true,
+        servings: true,
+        usesRecipes: true,
+        nutrition: true,
+      })
+      .partial().shape,
+    imageIds: z.array(z.uuidv4()).optional(),
+    websitePageId: z.uuidv4().optional(),
+    tryLater: z.boolean().optional(),
+    favorite: z.boolean().optional(),
+    ingredientGroups: z.array(
+      z.object({
+        name: z.string().min(1).nullable().optional(),
+        ingredients: z.array(
+          z.object({
+            name: z.string().min(1),
+            unit: z.string().min(1).nullable().optional(),
+            quantity: z.number().nullable().optional(),
+            notes: z.string().min(1).nullable().optional(),
           }),
         ),
       }),
     ),
-    instructionGroups: Type.Array(
-      Type.Object({
-        name: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-        instructions: Type.Array(
-          Type.Object({
-            text: Type.String({ minLength: 1 }),
+    instructionGroups: z.array(
+      z.object({
+        name: z.string().min(1).nullable().optional(),
+        instructions: z.array(
+          z.object({
+            text: z.string().min(1),
           }),
         ),
       }),
     ),
-    tags: Type.Optional(
-      Type.Array(
-        Type.Union([
-          Type.Object({ id: Type.String({ format: 'uuid' }) }),
-          createTagDtoSchema,
-        ]),
-      ),
-    ),
+    tags: z
+      .array(z.union([z.object({ id: z.uuidv4() }), createTagDtoSchema]))
+      .optional(),
   }),
-]);
+  response: {
+    200: z.object({
+      recipe: recipeSchema,
+    }),
+  },
+});
 
-function createRecipe(data: CreateRecipeDto): Promise<Recipe> {
-  return api
-    .post(`recipes`, { json: data })
-    .json<{ recipe: Recipe }>()
-    .then((res) => res.recipe);
-}
+const createRecipe = makeRequest(createRecipeContract, {
+  select: (res) => res.recipe,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof createRecipe>;
@@ -79,7 +77,11 @@ export function useCreateRecipe({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
 
-      onSuccess?.(...args);
+      void queryClient.invalidateQueries({
+        queryKey: ['recipes'],
+      });
+
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: createRecipe,

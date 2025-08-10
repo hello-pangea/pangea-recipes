@@ -6,32 +6,32 @@ const recipes = [
   {
     id: '1',
     name: 'Autumn Soup',
-    imageUrl: '/assets/autumn-soup.jpg',
+    imageUrl: '/assets/demo-recipes/autumn-soup.jpg',
   },
   {
     id: '2',
     name: 'Mac & Cheese',
-    imageUrl: '/assets/mac-and-cheese.jpg',
+    imageUrl: '/assets/demo-recipes/mac-and-cheese.jpg',
   },
   {
     id: '3',
     name: 'Cowboy Spaghetti',
-    imageUrl: '/assets/spaghetti.jpg',
+    imageUrl: '/assets/demo-recipes/spaghetti.jpg',
   },
   {
     id: '4',
     name: 'Stir Fry',
-    imageUrl: '/assets/stir-fry.jpg',
+    imageUrl: '/assets/demo-recipes/stir-fry.jpg',
   },
   {
     id: '5',
     name: 'Spiced Latte',
-    imageUrl: '/assets/latte.jpg',
+    imageUrl: '/assets/demo-recipes/latte.jpg',
   },
   {
     id: '6',
     name: 'No Knead Bread',
-    imageUrl: '/assets/bread.jpg',
+    imageUrl: '/assets/demo-recipes/bread.jpg',
   },
 ];
 
@@ -150,6 +150,7 @@ export function DesktopDemo() {
             >
               <img
                 src={recipe.imageUrl}
+                alt=""
                 height={75}
                 width={'100%'}
                 style={{ objectFit: 'cover', display: 'block' }}

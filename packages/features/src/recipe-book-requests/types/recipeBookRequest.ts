@@ -1,24 +1,16 @@
-import { Type, type Static } from '@sinclair/typebox';
-import { Nullable } from '../../lib/nullable.js';
+import { z } from 'zod';
 
-const recipeBookRequestSchemaId = 'RecipeBookRequest';
+export const recipeBookRequestSchema = z
+  .object({
+    id: z.uuidv4(),
 
-export type RecipeBookRequest = Static<typeof recipeBookRequestSchema>;
-export const recipeBookRequestSchema = Type.Object(
-  {
-    id: Type.String({
-      format: 'uuid',
-      description: 'unique id',
-    }),
+    createdAt: z.coerce.date(),
 
-    createdAt: Type.Unsafe<Date>(Type.String({ format: 'date-time' })),
+    userId: z.uuidv4(),
+    name: z.string().nullable(),
+  })
+  .meta({
+    id: 'RecipeBookRequest',
+  });
 
-    userId: Type.String({ format: 'uuid' }),
-    name: Nullable(Type.String()),
-  },
-  { $id: recipeBookRequestSchemaId },
-);
-
-export const recipeBookRequestSchemaRef = Type.Unsafe<RecipeBookRequest>(
-  Type.Ref(recipeBookRequestSchemaId),
-);
+export type RecipeBookRequest = z.infer<typeof recipeBookRequestSchema>;

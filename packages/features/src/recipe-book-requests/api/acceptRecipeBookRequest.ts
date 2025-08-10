@@ -1,17 +1,27 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-function acceptRecipeBookRequest(data: {
-  recipeBookRequestId: string;
-  role: 'viewer' | 'editor' | 'owner';
-}): Promise<null> {
-  return api
-    .post(`recipe-book-requests/${data.recipeBookRequestId}/accept`, {
-      json: { role: data.role },
-    })
-    .json<null>();
-}
+export const acceptRecipeBookRequestContract = defineContract(
+  'recipe-book-requests/:id/accept',
+  {
+    method: 'post',
+    params: z.object({
+      id: z.uuidv4(),
+    }),
+    body: z.object({
+      role: z.enum(['owner', 'editor', 'viewer']),
+    }),
+    response: {
+      200: noContent,
+    },
+  },
+);
+
+const acceptRecipeBookRequest = makeRequest(acceptRecipeBookRequestContract);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof acceptRecipeBookRequest>;
@@ -28,7 +38,7 @@ export function useAcceptRecipeBookRequest({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: acceptRecipeBookRequest,

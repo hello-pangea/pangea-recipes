@@ -1,12 +1,24 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-function declineRecipeBookRequest(recipeBookRequestId: string): Promise<null> {
-  return api
-    .post(`recipe-book-requests/${recipeBookRequestId}/decline`)
-    .json<null>();
-}
+export const declineRecipeBookRequestContract = defineContract(
+  'recipe-book-requests/:id/decline',
+  {
+    method: 'post',
+    params: z.object({
+      id: z.uuidv4(),
+    }),
+    response: {
+      200: noContent,
+    },
+  },
+);
+
+const declineRecipeBookRequest = makeRequest(declineRecipeBookRequestContract);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof declineRecipeBookRequest>;
@@ -23,7 +35,7 @@ export function useDeclineRecipeBookRequest({ mutationConfig }: Options = {}) {
         queryKey: ['recipeBooks'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: declineRecipeBookRequest,

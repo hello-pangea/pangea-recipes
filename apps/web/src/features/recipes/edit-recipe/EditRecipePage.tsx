@@ -1,4 +1,4 @@
-import { getRecipeQueryOptions } from '@open-zero/features/recipes';
+import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipePage } from './CreateRecipePage';
@@ -30,7 +30,7 @@ export function EditRecipePage() {
             ? ''
             : String(Math.round(recipe.prepTime / 60)),
         servings: recipe.servings ? String(recipe.servings) : '',
-        tryLater: recipe.tryLater,
+        tryLater: recipe.tryLaterAt !== null,
         image: recipe.images?.at(0)
           ? {
               // @ts-expect-error Wait for typescript 5.5

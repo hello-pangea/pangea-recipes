@@ -10,32 +10,16 @@ import {
   useMediaQuery,
   type Theme,
 } from '@mui/material';
-import {
-  getSignedInUserQueryOptions,
-  useSignedInUser,
-} from '@open-zero/features/users';
-import { useQueryClient } from '@tanstack/react-query';
-import {
-  getRouteApi,
-  Navigate,
-  Outlet,
-  useRouter,
-} from '@tanstack/react-router';
+import { useSignedInUser } from '@repo/features/users';
+import { Outlet } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { authClient } from '../auth/authClient';
 import { NewButton } from './NewButton';
-
-const route = getRouteApi('/app/_auth');
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const isSmallScreen = useMediaQuery((theme: Theme) =>
     theme.breakpoints.down('md'),
   );
-  const { data: session, isPending, error } = authClient.useSession();
-  const router = useRouter();
-  const routeContext = route.useRouteContext();
-  const queryClient = useQueryClient();
   const { data: user } = useSignedInUser();
   const { setMode } = useColorScheme();
 
@@ -44,27 +28,6 @@ export function Layout() {
       setMode(user.themePreference);
     }
   }, [user?.themePreference, setMode]);
-
-  useEffect(() => {
-    if (!isPending && error) {
-      if (!routeContext.userId) {
-        console.log('Invalidate');
-
-        void router.invalidate();
-        void queryClient.invalidateQueries({
-          queryKey: getSignedInUserQueryOptions().queryKey,
-        });
-      }
-    }
-  }, [isPending, error, router, queryClient, routeContext.userId]);
-
-  if (!isPending && !error && !session) {
-    return <Navigate to="/sign-in" />;
-  }
-
-  if (!routeContext.userId) {
-    return null;
-  }
 
   return (
     <Box sx={{ display: 'flex', minHeight: '100vh' }}>

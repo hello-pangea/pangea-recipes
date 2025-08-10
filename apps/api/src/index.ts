@@ -5,8 +5,6 @@ import { shutdownBrowser } from './lib/browser.ts';
 
 const server = await createServer();
 
-const port = Number(config.PORT);
-
 closeWithGrace({ delay: 500 }, async function ({ err }) {
   if (err) {
     server.log.error(err);
@@ -16,7 +14,7 @@ closeWithGrace({ delay: 500 }, async function ({ err }) {
   await shutdownBrowser();
 });
 
-server.listen({ port: port, host: '::' }, (err, address) => {
+server.listen({ port: config.PORT, host: '::' }, (err, address) => {
   if (err) {
     server.log.error(err);
     process.exit(1);

@@ -10,10 +10,11 @@ import {
   MenuItem,
 } from '@mui/material';
 import {
+  getRecipeBookQueryOptions,
   useDeleteRecipeBook,
   useDeleteRecipeBookMember,
-  useRecipeBook,
-} from '@open-zero/features/recipe-books';
+} from '@repo/features/recipe-books';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -33,7 +34,9 @@ export function RecipeBookMoreMenu({
   onDelete,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
+  const { data: recipeBook } = useQuery(
+    getRecipeBookQueryOptions(recipeBookId),
+  );
   const deleteRecipeBook = useDeleteRecipeBook();
   const open = Boolean(anchorEl);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
@@ -67,8 +70,7 @@ export function RecipeBookMoreMenu({
         <MenuItem
           onClick={() => {
             deleteRecipeBookMember.mutate({
-              recipeBookId: recipeBookId,
-              userId: userId,
+              params: { id: recipeBookId, userId: userId },
             });
 
             onClose();
@@ -138,7 +140,7 @@ export function RecipeBookMoreMenu({
         {myRole === 'owner' && (
           <MenuItem
             onClick={() => {
-              deleteRecipeBook.mutate({ recipeBookId: recipeBookId });
+              deleteRecipeBook.mutate({ params: { id: recipeBookId } });
 
               if (onDelete) {
                 onDelete();

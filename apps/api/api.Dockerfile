@@ -17,10 +17,10 @@ ENV PATH="$PNPM_HOME:$PATH"
 RUN corepack enable && npm install -g corepack@latest
 
 # Global turborepo
-RUN pnpm install turbo@2.5.0 --global
+RUN pnpm install turbo@2.5.4 --global
 
 # Playwright setup (basically downloads chromium)
-RUN pnpm dlx playwright-chromium@1.52.0 install chromium --with-deps
+RUN pnpm dlx playwright-chromium@1.54.2 install chromium --with-deps
 
 # ---
 # - We download packages asap to avoid re-downloads on code changes
@@ -83,4 +83,4 @@ ENV PORT=${PORT}
 
 EXPOSE ${PORT}
 
-CMD ["node", "--experimental-strip-types", "--import", "./apps/api/src/instrument.ts", "apps/api/src/index.ts"]
+CMD ["node", "--import", "./apps/api/src/instrument.ts", "apps/api/src/index.ts"]

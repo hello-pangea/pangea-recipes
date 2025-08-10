@@ -1,11 +1,15 @@
-import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
-import react from '@vitejs/plugin-react';
+import { tanstackStart } from '@tanstack/react-start/plugin/vite';
+import viteReact from '@vitejs/plugin-react';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
-    TanStackRouterVite(),
-    react({
+    tanstackStart({
+      customViteReactPlugin: true,
+      target: 'vercel',
+    }),
+    viteReact({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
       },
@@ -14,10 +18,18 @@ export default defineConfig({
   server: {
     port: 3000,
   },
-  clearScreen: false,
   resolve: {
     alias: {
-      '#src': '/src',
+      '#src': path.resolve(__dirname, '/src'),
     },
+  },
+  ssr: {
+    noExternal: [
+      // https://github.com/atlassian/pragmatic-drag-and-drop/issues/27#issuecomment-2615335498
+      '@atlaskit/pragmatic-drag-and-drop',
+      '@atlaskit/pragmatic-drag-and-drop-auto-scroll',
+      '@atlaskit/pragmatic-drag-and-drop-hitbox',
+      '@mui/*',
+    ],
   },
 });

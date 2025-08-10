@@ -1,6 +1,6 @@
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/lib/focusNextInput';
+import { focusNextInput } from '#src/utils/focusNextInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
@@ -17,12 +17,13 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import { emptyStringToNull, emptyStringToUndefined } from '@open-zero/features';
+import { emptyStringToNull, emptyStringToUndefined } from '@repo/features';
 import {
+  listRecipesQueryOptions,
   useCreateRecipe,
-  useRecipes,
   useUpdateRecipe,
-} from '@open-zero/features/recipes';
+} from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -44,7 +45,7 @@ interface Props {
 }
 
 export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
-  const { importFromUrl } = useSearch({ strict: false });
+  const { importFromUrl, tryLater, favorite } = useSearch({ strict: false });
   const [importDialogOpen, setImportDialogOpen] = useState(
     importFromUrl ?? false,
   );
@@ -61,7 +62,8 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
         cookTime: '',
         servings: '',
         image: null,
-        tryLater: false,
+        tryLater: tryLater ?? false,
+        favorite: favorite ?? false,
         ingredientGroups: [
           {
             id: null,
@@ -112,46 +114,52 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
 
       if (updateRecipeId) {
         updateRecipe.mutate({
-          id: updateRecipeId,
-          name: parsed.recipeName,
-          description: emptyStringToNull(parsed.description),
-          prepTime: parsed.prepTime,
-          cookTime: parsed.cookTime,
-          servings: parsed.servings ? parseInt(parsed.servings) : null,
-          tryLater: parsed.tryLater,
-          ingredientGroups: parsed.ingredientGroups,
-          instructionGroups: parsed.instructionGroups.map((ig) => ({
-            id: ig.id ?? undefined,
-            name: ig.name,
-            instructions: ig.instructions,
-          })),
-          imageIds: parsed.image ? [parsed.image.id] : null,
-          nutrition: parsed.nutrition,
+          params: { id: updateRecipeId },
+          body: {
+            name: parsed.recipeName,
+            description: emptyStringToNull(parsed.description),
+            prepTime: parsed.prepTime,
+            cookTime: parsed.cookTime,
+            servings: parsed.servings ? parseInt(parsed.servings) : null,
+            tryLater: parsed.tryLater,
+            favorite: parsed.favorite,
+            ingredientGroups: parsed.ingredientGroups,
+            instructionGroups: parsed.instructionGroups.map((ig) => ({
+              id: ig.id ?? undefined,
+              name: ig.name,
+              instructions: ig.instructions,
+            })),
+            imageIds: parsed.image ? [parsed.image.id] : null,
+            nutrition: parsed.nutrition,
+          },
         });
       } else {
         createRecipe.mutate({
-          name: parsed.recipeName,
-          description: emptyStringToUndefined(parsed.description),
-          websitePageId: parsed.websitePageId,
-          prepTime: parsed.prepTime,
-          cookTime: parsed.cookTime,
-          servings: parsed.servings ? parseInt(parsed.servings) : undefined,
-          imageIds: parsed.image ? [parsed.image.id] : undefined,
-          tryLater: parsed.tryLater,
-          ingredientGroups: parsed.ingredientGroups,
-          instructionGroups: parsed.instructionGroups,
-          nutrition: parsed.nutrition,
+          body: {
+            name: parsed.recipeName,
+            description: emptyStringToUndefined(parsed.description),
+            websitePageId: parsed.websitePageId,
+            prepTime: parsed.prepTime,
+            cookTime: parsed.cookTime,
+            servings: parsed.servings ? parseInt(parsed.servings) : undefined,
+            imageIds: parsed.image ? [parsed.image.id] : undefined,
+            tryLater: parsed.tryLater,
+            favorite: parsed.favorite,
+            ingredientGroups: parsed.ingredientGroups,
+            instructionGroups: parsed.instructionGroups,
+            nutrition: parsed.nutrition,
+          },
         });
       }
     },
   });
   const userId = useSignedInUserId();
 
-  const { data: recipes } = useRecipes({
-    options: {
-      userId: userId,
-    },
-  });
+  const { data: recipes } = useQuery(
+    listRecipesQueryOptions({
+      userId,
+    }),
+  );
 
   const createRecipe = useCreateRecipe({
     mutationConfig: {
@@ -174,7 +182,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
         void navigate({
           to: `/app/recipes/$recipeId`,
           params: {
-            recipeId: data.recipe.id,
+            recipeId: data.id,
           },
         });
       },
@@ -342,6 +350,27 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           name="tryLater"
           children={({ state, handleChange, handleBlur }) => {
             return (
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={(e) => {
+                        handleChange(e.target.checked);
+                      }}
+                      onBlur={handleBlur}
+                      checked={state.value}
+                    />
+                  }
+                  label="Try later"
+                />
+              </FormGroup>
+            );
+          }}
+        />
+        <form.Field
+          name="favorite"
+          children={({ state, handleChange, handleBlur }) => {
+            return (
               <FormGroup
                 sx={{
                   mb: 2,
@@ -357,7 +386,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
                       checked={state.value}
                     />
                   }
-                  label="Try later"
+                  label="Favorite"
                 />
               </FormGroup>
             );
@@ -535,15 +564,19 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             }),
           });
 
-          form.setFieldValue('recipeName', importedRecipe.name ?? '');
-          form.setFieldValue('description', importedRecipe.description ?? '');
+          form.setFieldValue('recipeName', importedRecipe.name);
+          form.setFieldValue('description', importedRecipe.description);
           form.setFieldValue(
             'cookTime',
-            importedRecipe.cookTime?.toString() ?? '',
+            importedRecipe.cookTime
+              ? Math.round(importedRecipe.cookTime / 60).toString()
+              : '',
           );
           form.setFieldValue(
             'prepTime',
-            importedRecipe.prepTime?.toString() ?? '',
+            importedRecipe.prepTime
+              ? Math.round(importedRecipe.prepTime / 60).toString()
+              : '',
           );
           form.setFieldValue(
             'servings',
@@ -552,22 +585,22 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           form.setFieldValue('websitePageId', websitePageId);
           form.setFieldValue(
             'ingredientGroups',
-            importedRecipe.ingredientGroups?.map((ig) => ({
-              name: ig.title,
+            importedRecipe.ingredientGroups.map((ig) => ({
+              name: ig.name,
               ingredients: ig.ingredients.map((ingredient) => ({
                 name: ingredient.name,
                 unit: ingredient.unit ?? null,
                 quantity: ingredient.quantity ?? null,
                 notes: ingredient.notes ?? null,
               })),
-            })) ?? [],
+            })),
           );
           form.setFieldValue(
             'instructionGroups',
-            importedRecipe.instructionGroups?.map((ig) => ({
-              name: ig.title,
+            importedRecipe.instructionGroups.map((ig) => ({
+              name: ig.name,
               instructions: ig.instructions.map((i) => ({ text: i })),
-            })) ?? [],
+            })),
           );
           form.setFieldValue('usesRecipes', []);
           form.setFieldValue(

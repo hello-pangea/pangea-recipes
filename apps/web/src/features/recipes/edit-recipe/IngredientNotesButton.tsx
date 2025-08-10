@@ -50,7 +50,7 @@ export const IngredientNotesButton = withForm({
     return (
       <Box sx={sx}>
         <Tooltip
-          title={ingredient?.notes ? `Notes: ${ingredient.notes}` : 'Add notes'}
+          title={ingredient?.notes ? ingredient.notes : 'Add notes'}
           disableInteractive
         >
           <IconButton

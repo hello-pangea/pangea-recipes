@@ -1,11 +1,11 @@
-import type { FastifyTypebox } from '#src/server/fastifyTypebox.ts';
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { auth } from './betterAuth.ts';
 
 // Docs for better-auth integration with Fastify:
 // https://www.better-auth.com/docs/integrations/fastify
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export async function authRoutes(fastify: FastifyTypebox) {
+export const authRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.route({
     method: ['GET', 'POST'],
     url: '/auth/*',
@@ -42,7 +42,8 @@ export async function authRoutes(fastify: FastifyTypebox) {
           reply.header(key, value);
         });
         reply.send(response.body ? await response.text() : null);
-      } catch (error) {
+      } catch (error: unknown) {
+        // @ts-expect-error error handling
         fastify.log.error('Authentication Error:', error);
         reply.status(500).send({
           error: 'Internal authentication error',
@@ -51,4 +52,4 @@ export async function authRoutes(fastify: FastifyTypebox) {
       }
     },
   });
-}
+};

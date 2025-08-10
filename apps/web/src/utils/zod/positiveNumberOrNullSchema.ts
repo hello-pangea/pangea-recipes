@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 // ".5" or "12" etc.
 const numericString = /^(?:\d*\.\d+|\d+)$/;
@@ -26,7 +26,7 @@ export const positiveNumberOrNullSchema = z
 
     /* Numbers: enforce positivity */
     if (typeof value === 'number') {
-      if (value > 0) {
+      if (value >= 0) {
         return value;
       }
       ctx.addIssue({ code: 'custom', message: 'Must be a positive number' });

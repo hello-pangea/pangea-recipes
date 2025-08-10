@@ -1,12 +1,15 @@
 packages:
   - apps/*
   - packages/*
+
 onlyBuiltDependencies:
   - '@prisma/client'
   - '@prisma/engines'
   - '@sentry-internal/node-cpu-profiler'
   - '@swc/core'
+  - '@tailwindcss/oxide'
   - esbuild
   - playwright-chromium
   - prisma
   - sharp
+  - vue-demi

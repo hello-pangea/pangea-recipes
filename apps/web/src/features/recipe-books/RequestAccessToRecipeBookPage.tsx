@@ -1,10 +1,11 @@
 import { AddNameDialog } from '#src/components/AddNameDialog';
 import { Box, Button, Container, Typography } from '@mui/material';
 import {
-  useRecipeBookRequests,
+  listRecipeBookRequestsQueryOptions,
   useRequestAccessToRecipeBook,
-} from '@open-zero/features/recipe-book-requests';
-import { useSignedInUser } from '@open-zero/features/users';
+} from '@repo/features/recipe-book-requests';
+import { useSignedInUser } from '@repo/features/users';
+import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -16,9 +17,12 @@ export function RequestAccessToRecipeBookPage() {
   const { data: user } = useSignedInUser();
   const requestAccessToRecipeBook = useRequestAccessToRecipeBook();
   const { recipeBookId } = routeApi.useParams();
-  const { data: requests } = useRecipeBookRequests({
-    options: { userId, recipeBookId },
-  });
+  const { data: requests } = useQuery(
+    listRecipeBookRequestsQueryOptions({
+      userId,
+      recipeBookId,
+    }),
+  );
   const [addNameDialogOpen, setAddNameDialogOpen] = useState(false);
 
   const signedInAs = user?.email ?? 'Guest';
@@ -38,7 +42,7 @@ export function RequestAccessToRecipeBookPage() {
               pt: '0.4rem',
             }}
           >
-            Hello Recipes
+            Pangea Recipes
           </Typography>
         </Box>
         {requests && requests.length > 0 ? (
@@ -61,7 +65,7 @@ export function RequestAccessToRecipeBookPage() {
                   return;
                 }
 
-                requestAccessToRecipeBook.mutate(recipeBookId);
+                requestAccessToRecipeBook.mutate({ body: { recipeBookId } });
               }}
               loading={requestAccessToRecipeBook.isPending}
             >
@@ -78,7 +82,7 @@ export function RequestAccessToRecipeBookPage() {
         onClose={() => {
           setAddNameDialogOpen(false);
 
-          requestAccessToRecipeBook.mutate(recipeBookId);
+          requestAccessToRecipeBook.mutate({ body: { recipeBookId } });
         }}
       />
     </Box>

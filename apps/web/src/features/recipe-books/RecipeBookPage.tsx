@@ -4,12 +4,12 @@ import { Box, Button, Grid, Typography, useMediaQuery } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
   useRemoveRecipeFromRecipeBook,
-} from '@open-zero/features/recipe-books';
-import { useRecipes } from '@open-zero/features/recipes';
-import { useSuspenseQuery } from '@tanstack/react-query';
+} from '@repo/features/recipe-books';
+import { listRecipesQueryOptions } from '@repo/features/recipes';
+import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { useMeasure } from 'react-use';
+import useResizeObserver from 'use-resize-observer';
 import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
@@ -22,9 +22,9 @@ export function RecipeBookPage() {
     null,
   );
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
-  const { data: recipes } = useRecipes({ options: { recipeBookId } });
+  const { data: recipes } = useQuery(listRecipesQueryOptions({ recipeBookId }));
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
@@ -87,11 +87,13 @@ export function RecipeBookPage() {
           recipes?.map((recipe) => (
             <Grid key={recipe.id} size={1}>
               <RecipeCard
-                recipeId={recipe.id}
+                recipe={recipe}
                 onRemoveFromRecipeBook={() => {
                   removeRecipeFromRecipeBook.mutate({
-                    recipeId: recipe.id,
-                    recipeBookId,
+                    params: {
+                      id: recipeBookId,
+                      recipeId: recipe.id,
+                    },
                   });
                 }}
               />

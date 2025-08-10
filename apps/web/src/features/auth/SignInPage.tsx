@@ -14,11 +14,10 @@ import {
   Stack,
   Typography,
 } from '@mui/material';
-import { useMutation } from '@tanstack/react-query';
-import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { authClient } from './authClient';
+import { useSignIn } from './useSignIn';
 
 const formSchema = z.object({
   email: z.email(),
@@ -27,21 +26,9 @@ const formSchema = z.object({
     .min(8, { message: 'Password must be at least 8 characters long' }),
 });
 
-const route = getRouteApi('/sign-in');
-
 export function SignInPage() {
-  const navigate = route.useNavigate();
-  const { redirect } = route.useSearch();
   const [showPassword, setShowPassword] = useState(false);
-  const signIn = useMutation({
-    mutationFn: (data: Parameters<typeof authClient.signIn.email>[0]) => {
-      return authClient.signIn.email(data, {
-        onError: (ctx) => {
-          throw ctx.error;
-        },
-      });
-    },
-  });
+  const signIn = useSignIn();
   const form = useAppForm({
     defaultValues: {
       email: '',
@@ -53,19 +40,10 @@ export function SignInPage() {
     onSubmit: ({ value }) => {
       const parsed = formSchema.parse(value);
 
-      signIn.mutate(
-        {
-          email: parsed.email,
-          password: parsed.password,
-        },
-        {
-          onSuccess: () => {
-            void navigate({
-              to: redirect || '/app/recipes',
-            });
-          },
-        },
-      );
+      signIn.mutate({
+        email: parsed.email,
+        password: parsed.password,
+      });
     },
   });
 
@@ -92,7 +70,7 @@ export function SignInPage() {
             ml: 1.5,
           }}
         >
-          Hello Recipes
+          Pangea Recipes
         </Typography>
       </Box>
       <Card
@@ -100,7 +78,8 @@ export function SignInPage() {
         sx={{
           p: 2,
           mb: 2,
-          minWidth: 400,
+          maxWidth: 400,
+          width: '100%',
           border: 0,
           boxShadow:
             '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',

@@ -2,17 +2,18 @@ import { auth } from '#src/features/auth/betterAuth.ts';
 import fastifyAuth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
+import fastifyRateLimit from '@fastify/rate-limit';
 import fastifySensible from '@fastify/sensible';
-import type { TypeBoxTypeProvider } from '@fastify/type-provider-typebox';
-import type { User } from '@open-zero/features/users';
-import scalar from '@scalar/fastify-api-reference';
-import * as Sentry from '@sentry/node';
+import type { User } from '@repo/features/users';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
+import {
+  serializerCompiler,
+  validatorCompiler,
+} from 'fastify-type-provider-zod';
 import { enablePrettyLogs } from '../config/config.ts';
 import { customOpenApi } from './customOpenApi.ts';
 import { routes } from './routes.ts';
-import schemaPlugin from './schemaPlugin.ts';
 
 export async function createServer() {
   console.log('\n🛠️ Setup: fastify server');
@@ -29,9 +30,11 @@ export async function createServer() {
           },
         }
       : false,
-  }).withTypeProvider<TypeBoxTypeProvider>();
+  });
 
-  Sentry.setupFastifyErrorHandler(fastify);
+  fastify.setValidatorCompiler(validatorCompiler);
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+  fastify.setSerializerCompiler(serializerCompiler);
 
   // -
   // Fastify plugins
@@ -43,8 +46,8 @@ export async function createServer() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://hellorecipes.com',
-      'https://api.hellorecipes.com',
+      // any sub-domain (or the apex) of pangearecipes.com
+      /^https?:\/\/([a-z0-9-]+\.)*pangearecipes\.com$/i,
     ],
   });
 
@@ -54,17 +57,15 @@ export async function createServer() {
 
   await fastify.register(fastifySensible);
 
+  await fastify.register(fastifyRateLimit, {
+    global: false,
+  });
+
   // -
   // Custom plugins
   // -
 
   await fastify.register(customOpenApi);
-
-  await fastify.register(schemaPlugin);
-
-  await fastify.register(scalar, {
-    routePrefix: '/api-docs',
-  });
 
   // -
   // Decorators

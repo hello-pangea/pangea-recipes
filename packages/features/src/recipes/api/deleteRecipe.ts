@@ -1,14 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod';
+import { noContent } from '../../lib/noContent.js';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import { type MutationConfig } from '../../lib/tanstackQuery.js';
+import { getRecipeQueryOptions } from './getRecipe.js';
+import { listRecipesQueryOptions } from './listRecipes.js';
 
-export interface DeleteRecipeDTO {
-  recipeId: string;
-}
+export const deleteRecipeContract = defineContract('recipes/:id', {
+  method: 'delete',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  response: {
+    200: noContent,
+  },
+});
 
-function deleteRecipe({ recipeId }: DeleteRecipeDTO) {
-  return api.delete(`recipes/${recipeId}`).then(() => null);
-}
+const deleteRecipe = makeRequest(deleteRecipeContract);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof deleteRecipe>;
@@ -17,15 +26,33 @@ interface Options {
 export function useDeleteRecipe({ mutationConfig }: Options = {}) {
   const queryClient = useQueryClient();
 
-  const { onSuccess, ...restConfig } = mutationConfig ?? {};
+  const { onSuccess, onMutate, ...restConfig } = mutationConfig ?? {};
 
   return useMutation({
+    onMutate: (args) => {
+      const recipe = queryClient.getQueryData(
+        getRecipeQueryOptions(args.params.id).queryKey,
+      );
+
+      if (recipe) {
+        queryClient.setQueryData(
+          listRecipesQueryOptions({
+            userId: recipe.userId,
+          }).queryKey,
+          (oldRecipes) => {
+            return oldRecipes?.filter((r) => r.id !== args.params.id) ?? [];
+          },
+        );
+      }
+
+      onMutate?.(args);
+    },
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({
         queryKey: ['recipes'],
       });
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: deleteRecipe,

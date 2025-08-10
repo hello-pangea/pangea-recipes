@@ -1,6 +1,6 @@
 import { Box, Checkbox, Typography } from '@mui/material';
-import { numberToFraction } from '@open-zero/features';
-import { type Recipe } from '@open-zero/features/recipes';
+import { numberToFraction } from '@repo/features';
+import { type Recipe } from '@repo/features/recipes';
 import { useState } from 'react';
 
 interface Props {

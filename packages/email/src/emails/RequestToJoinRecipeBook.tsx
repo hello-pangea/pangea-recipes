@@ -23,7 +23,7 @@ interface EmailProps {
 
 export function RequestToJoinRecipeBookEmail({
   recipeBookName = 'Amazing Recipes',
-  managerLink = 'https://hellorecipes.com',
+  managerLink = 'https://pangearecipes.com',
   ownerName = 'Wolfgang',
   requesterName = 'Gordon',
 }: EmailProps): ReactNode {
@@ -41,7 +41,7 @@ export function RequestToJoinRecipeBookEmail({
                 src={'https://assets.hellorecipes.com/assets/logo-128.png'}
                 width="32"
                 height="32"
-                alt="Hello Recipes"
+                alt="Pangea Recipes"
                 className="my-0 mx-auto"
               />
             </Section>

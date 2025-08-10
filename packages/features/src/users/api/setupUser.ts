@@ -1,15 +1,23 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import { type MutationConfig } from '../../lib/tanstackQuery.js';
-import type { User } from '../types/user.js';
+import { userSchema } from '../types/user.js';
 import { getSignedInUserQueryOptions } from './getSignedInUser.js';
 
-export function setupUser() {
-  return api
-    .post(`users/setup`)
-    .json<{ user: User }>()
-    .then((res) => res.user);
-}
+export const setupUserContract = defineContract('users/setup', {
+  method: 'post',
+  response: {
+    200: z.object({
+      user: userSchema,
+    }),
+  },
+});
+
+const setupUser = makeRequest(setupUserContract, {
+  select: (res) => res.user,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof setupUser>;
@@ -29,7 +37,7 @@ export function useSetupUser({ mutationConfig }: Options = {}) {
         structuredClone(data),
       );
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: setupUser,

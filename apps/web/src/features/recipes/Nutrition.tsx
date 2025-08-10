@@ -1,4 +1,4 @@
-import { isSxArray } from '#src/lib/isSxArray';
+import { isSxArray } from '#src/utils/isSxArray';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {
   Accordion,
@@ -11,7 +11,7 @@ import {
   type SxProps,
   type Theme,
 } from '@mui/material';
-import type { Recipe } from '@open-zero/features/recipes';
+import type { Recipe } from '@repo/features/recipes';
 import { Fragment } from 'react/jsx-runtime';
 
 interface Props {

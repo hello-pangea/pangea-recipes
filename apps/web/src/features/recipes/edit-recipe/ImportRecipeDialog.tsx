@@ -9,9 +9,9 @@ import {
   Typography,
 } from '@mui/material';
 import {
-  useImportedRecipe,
+  useImportRecipe,
   type ImportedRecipe,
-} from '@open-zero/features/imported-recipes';
+} from '@repo/features/recipe-imports';
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
@@ -22,9 +22,12 @@ interface Props {
 
 export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
   const [url, setUrl] = useState('');
-  const { isFetching: isImporting, refetch: importRecipe } = useImportedRecipe({
-    url,
-    queryConfig: { enabled: false },
+  const importRecipe = useImportRecipe({
+    mutationConfig: {
+      onSuccess: (res) => {
+        onImport(res.recipe, res.websitePageId);
+      },
+    },
   });
   const textFieldRef = useRef<null | HTMLInputElement>(null);
 
@@ -37,20 +40,23 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
   }, [open]);
 
   function handleImportRecipe() {
-    void importRecipe().then((res) => {
-      if (!res.data) {
-        return;
-      }
+    if (importRecipe.isPending) {
+      return;
+    }
 
-      onImport(res.data.importedRecipe, res.data.websitePageId);
-    });
+    if (!url) {
+      return;
+    }
+
+    importRecipe.mutate({ body: { url } });
   }
 
   return (
     <Dialog
+      disableRestoreFocus
       open={open}
       onClose={() => {
-        if (!isImporting) {
+        if (!importRecipe.isPending) {
           onClose();
         }
       }}
@@ -75,15 +81,15 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
               handleImportRecipe();
             }
           }}
-          disabled={isImporting}
+          disabled={importRecipe.isPending}
         />
       </DialogContent>
       <DialogActions>
-        <Button disabled={isImporting} onClick={onClose}>
+        <Button disabled={importRecipe.isPending} onClick={onClose}>
           Cancel
         </Button>
         <Button
-          loading={isImporting}
+          loading={importRecipe.isPending}
           variant="contained"
           startIcon={<DownloadRoundedIcon />}
           onClick={() => {

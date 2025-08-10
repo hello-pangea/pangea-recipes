@@ -1,76 +1,68 @@
-# Hello Recipes
+<p align="center">
+  <img alt="Pangea Recipes" src="./assets/pangea-recipes-banner.png" width="800" />
+</p>
 
-A modern and open-source recipe manager, written 100% in TypeScript.
+<p align="center">
+  <a href="https://github.com/hello-pangea/pangea-recipes/blob/main/LICENSE"><img src="https://img.shields.io/github/license/hello-pangea/pangea-recipes" /></a>
+  <a href="https://pangearecipes.com/"><img src="https://img.shields.io/badge/demo-online-brightgreen" /></a>
+  <a href="https://pangearecipes.com/openapi-docs"><img src="https://img.shields.io/badge/docs-OpenApi-blue" /></a>
+</p>
 
-[Website](https://hellorecipes.com/)
+# Pangea Recipes
+
+A modern, open source recipe manager focused on privacy, collaboration, and ease of use. This app makes it easy to import, create, and organize your recipes. You can share recipes and collaborate on recipe books with friends and family. Never forget another recipe.
+
+[**Website →**](https://pangearecipes.com/)
+
+[Demo recipe](https://pangearecipes.com/app/shared-recipes/d4dff988-6617-4aa0-800b-52eb03a6f4b6)
+
+[OpenApi Docs](https://pangearecipes.com/openapi-docs/)
+
+![Screenshot of Pangea Recipes](/assets/pangea-recipes.png)
+
+## Project status
+
+Pangea Recipes is in active development! It's ready for use if you're ok with a limited feature set. Developers should expect breaking changes to the api.
+
+## Key features
+
+- 🔗 Import recipes by url
+- 📖 Organize recipes into recipe books
+- 😊 Easy sharing for recipes and recipe books
+- 🤝 Collaborate on recipe books with friends and family
+- ⌚ Save for later
+- 💻 100% open source, 100% TypeScript
+- 🌐 [REST-ish api](https://pangearecipes.com/openapi-docs/)
 
 ## Built with
 
-- [Turborepo](https://turbo.build/repo)
-- [Prisma and Postgres](https://www.prisma.io/)
 - [Fastify](https://fastify.dev/)
-- [React](https://react.dev/)
+- [Prisma and Postgres](https://www.prisma.io/)
+- [React and React Compiler](https://react.dev/)
 - [MUI](https://mui.com/)
-- [TanStack Router](https://tanstack.com/router/latest)
-- [TanStack Query](https://tanstack.com/query/latest)
+- [TanStack Query, Router, Start, and Form](https://tanstack.com/)
+- [Better Auth](https://www.better-auth.com/)
+- [Vite](https://vite.dev/)
+- [Turborepo](https://turbo.build/repo)
 
 ## Getting started
 
 ### Prerequisites
 
-- Node.js >= 22.x
+- Node.js >= 22.18.0
 - Docker (recommended) OR Postgres >= 17.x
 
-### Setup
-
-1. Clone the repo
+### Quick Start
 
 ```sh
-git clone https://github.com/open-zero/hello-recipes.git
-```
-
-2. Go to the project folder
-
-```sh
-cd hello-recipes
-```
-
-3. Check your Node.js version
-
-```sh
-node -v
-```
-
-This should print the correct version of node. If it doesn't, use [nvm](https://github.com/nvm-sh/nvm) or a similar tool to install the correct version of node.
-
-For [`nvm`](https://github.com/nvm-sh/nvm), run this from the project root to install the correct version of node.
-
-```sh
-nvm install && nvm use
-```
-
-4. Enable Corepack
-
-```sh
+git clone https://github.com/hello-pangea/pangea-recipes.git
+cd pangea-recipes
 corepack enable
+pnpm install
+# Setup your .env files
+pnpm dx # Start Postgres (requires Docker)
+pnpm dev # Start the app
 ```
-
-5. Install packages with pnpm
-
-```sh
-pnpm i
-```
-
-6. Setup your `.env` files
-
-- Duplicate `apps/api/.env.example` to `/apps/api/.env`
-- Duplicate `apps/web/.env.example` to `/apps/web/.env`
-- Replace the example values in each `.env` file with real values
-
-7. Run `pnpm dx` to start a local postgres instance with some seed data
-
-> - **Requires Docker and Docker Compose to be installed**
-> - Will start a local Postgres instance
 
 ## Apps
 
@@ -81,3 +73,19 @@ REST-ish api made with Fastify
 ### [web](/apps/web/)
 
 Web app made with Vite, React, and MUI
+
+## Acknowledgements
+
+Pangea Recipes is a new project focused on simplicity. As such, it is lacking _many_ features which other amazing recipe managers provide (and which you should totally check out!)
+
+###### [Tandoor Recipes](https://github.com/TandoorRecipes/recipes)
+
+> Application for managing recipes, planning meals, building shopping lists and much much more!
+
+###### [Mealie](https://github.com/mealie-recipes/mealie)
+
+> Mealie is a self hosted recipe manager and meal planner with a RestAPI backend and a reactive frontend application built in Vue for a pleasant user experience for the whole family. Easily add recipes into your database by providing the url and mealie will automatically import the relevant data or add a family recipe with the UI editor
+
+## License
+
+This project is licensed under the [GNU AGPLv3](./LICENSE).

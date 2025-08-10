@@ -1,66 +1,74 @@
-import { Type, type Static } from '@sinclair/typebox';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
-import { Nullable } from '../../lib/nullable.js';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { nutritionSchema } from '../types/nutrition.js';
-import { recipeSchema, type Recipe } from '../types/recipe.js';
-import { createRecipeDtoScema } from './createRecipe.js';
+import { recipeSchema } from '../types/recipe.js';
+import { createRecipeContract } from './createRecipe.js';
 import { getRecipeQueryOptions } from './getRecipe.js';
 
-export type UpdateRecipeDto = Static<typeof updateRecipeDtoScema>;
-export const updateRecipeDtoScema = Type.Partial(
-  Type.Composite([
-    Type.Pick(recipeSchema, [
-      'name',
-      'description',
-      'prepTime',
-      'cookTime',
-      'servings',
-      'tryLater',
-    ]),
-    Type.Pick(createRecipeDtoScema, ['usesRecipes', 'tags']),
-    Type.Object({
-      imageIds: Type.Optional(
-        Nullable(Type.Array(Type.String({ format: 'uuid' }))),
-      ),
-      ingredientGroups: Type.Array(
-        Type.Object({
-          id: Type.Optional(Type.String({ format: 'uuid' })),
-          name: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-          ingredients: Type.Array(
-            Type.Object({
-              id: Type.Optional(Type.String({ format: 'uuid' })),
-              name: Type.String({ minLength: 1 }),
-              unit: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-              quantity: Type.Optional(Nullable(Type.Number())),
-              notes: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
+export const updateRecipeContract = defineContract('recipes/:id', {
+  method: 'patch',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  body: z
+    .object({
+      ...recipeSchema.pick({
+        name: true,
+        description: true,
+        prepTime: true,
+        cookTime: true,
+        servings: true,
+      }).shape,
+      ...createRecipeContract.body.pick({
+        usesRecipes: true,
+        tags: true,
+      }).shape,
+      tryLater: z.boolean().optional(),
+      favorite: z.boolean().optional(),
+      imageIds: z.array(z.uuidv4()).nullable().optional(),
+      ingredientGroups: z.array(
+        z.object({
+          id: z.uuidv4().optional(),
+          name: z.string().min(1).nullable().optional(),
+          ingredients: z.array(
+            z.object({
+              id: z.uuidv4().optional(),
+              name: z.string().min(1),
+              unit: z.string().min(1).nullable().optional(),
+              quantity: z.number().nullable().optional(),
+              notes: z.string().min(1).nullable().optional(),
             }),
           ),
         }),
       ),
-      instructionGroups: Type.Array(
-        Type.Object({
-          id: Type.Optional(Type.String({ format: 'uuid' })),
-          name: Type.Optional(Nullable(Type.String({ minLength: 1 }))),
-          instructions: Type.Array(
-            Type.Object({
-              id: Type.Optional(Type.String({ format: 'uuid' })),
-              text: Type.String({ minLength: 1 }),
+      instructionGroups: z.array(
+        z.object({
+          id: z.uuidv4().optional(),
+          name: z.string().min(1).nullable().optional(),
+          instructions: z.array(
+            z.object({
+              id: z.uuidv4().optional(),
+              text: z.string().min(1),
             }),
           ),
         }),
       ),
-      nutrition: Type.Optional(Type.Partial(nutritionSchema)),
+      nutrition: nutritionSchema.partial().optional(),
+    })
+    .partial(),
+  response: {
+    200: z.object({
+      recipe: recipeSchema,
     }),
-  ]),
-);
+  },
+});
 
-function updateRecipe(data: UpdateRecipeDto & { id: string }) {
-  return api
-    .patch(`recipes/${data.id}`, { json: data })
-    .then((res) => res.json<{ recipe: Recipe }>());
-}
+const updateRecipe = makeRequest(updateRecipeContract, {
+  select: (res) => res.recipe,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof updateRecipe>;
@@ -81,12 +89,9 @@ export function useUpdateRecipe({ mutationConfig }: Options = {}) {
       void queryClient.invalidateQueries({
         queryKey: ['recipes'],
       });
-      queryClient.setQueryData(
-        getRecipeQueryOptions(data.recipe.id).queryKey,
-        data.recipe,
-      );
+      queryClient.setQueryData(getRecipeQueryOptions(data.id).queryKey, data);
 
-      onSuccess?.(...args);
+      void onSuccess?.(...args);
     },
     ...restConfig,
     mutationFn: updateRecipe,

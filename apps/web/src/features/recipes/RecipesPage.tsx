@@ -1,43 +1,35 @@
 import { Page } from '#src/components/Page';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import TableRowsRoundedIcon from '@mui/icons-material/TableRowsRounded';
-import ViewModuleRoundedIcon from '@mui/icons-material/ViewModuleRounded';
-import {
-  Box,
-  InputBase,
-  ToggleButton,
-  ToggleButtonGroup,
-  Tooltip,
-  Typography,
-} from '@mui/material';
-import { getListRecipesQueryOptions } from '@open-zero/features/recipes';
+import { SearchTextField } from '#src/components/SearchTextField';
+import { Box, Grid, Typography } from '@mui/material';
+import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
+import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
-import { EmptyRecipes } from './EmptyRecipes';
-import { RecipeGrid } from './RecipeGrid';
-import { RecipeList } from './RecipeList';
+import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
+import { useParsingRecipeImports } from '../recipe-imports/useParsingRecipeImports';
+import { EmptyRecipesIntro } from './EmptyRecipesIntro';
+import { RecipeCard } from './RecipeCard';
 
 export function RecipesPage() {
   const userId = useSignedInUserId();
   const { data: recipes, isError } = useSuspenseQuery(
-    getListRecipesQueryOptions({ userId: userId }),
+    listRecipesQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
-  const [searchFocused, setSearchFocused] = useState(false);
   const [layout, setLayout] = useState<'list' | 'grid'>('grid');
+  const parsingRecipeImports = useParsingRecipeImports({
+    enableRecipeRefreshing: true,
+  });
+  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
+  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
-  const filteredRecipes = useMemo(() => {
-    const triedRecipes = recipes.filter((recipe) => !recipe.tryLater);
-
-    if (search) {
-      return triedRecipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(search.toLowerCase()),
-      );
-    }
-
-    return triedRecipes;
-  }, [recipes, search]);
+  const filteredRecipes = recipes
+    .slice()
+    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .filter((recipe) =>
+      search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
+    );
 
   return (
     <Page>
@@ -55,119 +47,91 @@ export function RecipesPage() {
         My Recipes
       </Typography>
       <Box
+        sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
+      >
+        <SearchTextField
+          value={search}
+          onChange={setSearch}
+          placeholder="Search for a recipe..."
+        />
+      </Box>
+      <Box
         sx={{
-          width: '100%',
+          marginLeft: 'auto',
+          flex: 1,
           display: 'flex',
-          // justifyContent: 'center',
-          alignItems: 'center',
-          mb: 2,
-          gap: 2,
+          justifyContent: 'flex-end',
         }}
       >
-        <Box
-          sx={{
-            marginRight: 'auto',
-            flex: 1,
-            display: 'flex',
+        <ToggleButtonGroup
+          value={layout}
+          exclusive
+          onChange={(_event, newLayout: typeof layout | null) => {
+            if (newLayout) {
+              setLayout(newLayout);
+            }
           }}
-        />
-        <Box
-          sx={[
-            {
-              maxWidth: 800,
-              borderRadius: 99,
-              backgroundColor: (theme) =>
-                searchFocused
-                  ? theme.vars.palette.background.paper
-                  : theme.vars.palette.grey[200],
-              display: 'flex',
-              alignItems: 'center',
-              // width: '100%',
-              px: 2,
-              py: 1,
-              gap: 2,
-              flex: 5,
-              boxShadow: searchFocused
-                ? '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
-                : undefined,
-            },
-            (theme) =>
-              theme.applyStyles('dark', {
-                backgroundColor: searchFocused
-                  ? theme.vars.palette.background.paper
-                  : theme.vars.palette.grey[900],
-              }),
-          ]}
+          aria-label="layout"
         >
-          <SearchRoundedIcon />
-          <InputBase
-            value={search}
-            onChange={(event) => {
-              setSearch(event.target.value);
-            }}
-            placeholder="Search for a recipe..."
-            sx={{ flex: 1 }}
-            onFocus={() => {
-              setSearchFocused(true);
-            }}
-            onBlur={() => {
-              setSearchFocused(false);
-            }}
-          />
-        </Box>
-        <Box
-          sx={{
-            marginLeft: 'auto',
-            flex: 1,
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <ToggleButtonGroup
-            value={layout}
-            exclusive
-            onChange={(_event, newLayout: typeof layout | null) => {
-              if (newLayout) {
-                setLayout(newLayout);
-              }
-            }}
-            aria-label="layout"
-          >
-            <Tooltip title="List layout" placement="bottom">
-              <ToggleButton
-                value="list"
-                aria-label="left aligned"
-                sx={{
-                  borderRadius: 99,
-                  borderTopRightRadius: 0,
-                  borderBottomRightRadius: 0,
-                }}
-              >
-                <TableRowsRoundedIcon fontSize="small" />
-              </ToggleButton>
-            </Tooltip>
-            <Tooltip title="Grid layout" placement="bottom">
-              <ToggleButton
-                value="grid"
-                aria-label="centered"
-                sx={{
-                  borderRadius: 99,
-                  borderTopLeftRadius: 0,
-                  borderBottomLeftRadius: 0,
-                }}
-              >
-                <ViewModuleRoundedIcon fontSize="small" />
-              </ToggleButton>
-            </Tooltip>
-          </ToggleButtonGroup>
-        </Box>
+          <Tooltip title="List layout" placement="bottom">
+            <ToggleButton
+              value="list"
+              aria-label="left aligned"
+              sx={{
+                borderRadius: 99,
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              }}
+            >
+              <TableRowsRoundedIcon fontSize="small" />
+            </ToggleButton>
+          </Tooltip>
+          <Tooltip title="Grid layout" placement="bottom">
+            <ToggleButton
+              value="grid"
+              aria-label="centered"
+              sx={{
+                borderRadius: 99,
+                borderTopLeftRadius: 0,
+                borderBottomLeftRadius: 0,
+              }}
+            >
+              <ViewModuleRoundedIcon fontSize="small" />
+            </ToggleButton>
+          </Tooltip>
+        </ToggleButtonGroup>
       </Box>
       {layout === 'grid' ? (
         <RecipeGrid recipes={filteredRecipes} />
       ) : (
         <RecipeList recipes={filteredRecipes} />
       )}
-      {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      {(parsingRecipeImports?.length ?? 0) > 0 && (
+        <Grid
+          container
+          spacing={2}
+          columns={columns}
+          sx={{
+            mb: 2,
+          }}
+        >
+          {width !== 0 &&
+            parsingRecipeImports?.map((recipeImport) => (
+              <Grid key={recipeImport.id} size={1}>
+                <RecipeImportCard recipeImport={recipeImport} />
+              </Grid>
+            ))}
+        </Grid>
+      )}
+      <Grid ref={ref} container spacing={2} columns={columns}>
+        {width !== 0 &&
+          filteredRecipes.map((recipe) => (
+            <Grid key={recipe.id} size={1}>
+              <RecipeCard recipe={recipe} />
+            </Grid>
+          ))}
+      </Grid>
+      {!isError && !recipes.length && <EmptyRecipesIntro sx={{ my: 8 }} />}
     </Page>
   );
 }

@@ -1,43 +1,35 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { api } from '../../lib/api.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
+import { queryOptions } from '@tanstack/react-query';
+import { z } from 'zod';
+import { makeRequest } from '../../lib/request.js';
+import { defineContract } from '../../lib/routeContracts.js';
+import { recipeBookRequestSchema } from '../types/recipeBookRequest.js';
 
-function listRecipeBookRequests(options: {
-  userId: string;
-  recipeBookId: string;
-}): Promise<{ userId: string }[]> {
-  return api
-    .get(`recipe-book-requests`, {
-      searchParams: {
-        userId: options.userId,
-        recipeBookId: options.recipeBookId,
-      },
-    })
-    .json<{ recipeBookRequests: { userId: string }[] }>()
-    .then((res) => res.recipeBookRequests);
-}
+export const listRecipeBookRequestsContract = defineContract(
+  'recipe-book-requests',
+  {
+    method: 'get',
+    querystring: z.object({
+      userId: z.uuidv4(),
+      recipeBookId: z.uuidv4(),
+    }),
+    response: {
+      200: z.object({
+        recipeBookRequests: recipeBookRequestSchema.array(),
+      }),
+    },
+  },
+);
 
-export function getListRecipeBookRequestsQueryOptions(options: {
+const listRecipeBookRequests = makeRequest(listRecipeBookRequestsContract, {
+  select: (res) => res.recipeBookRequests,
+});
+
+export function listRecipeBookRequestsQueryOptions(options: {
   userId: string;
   recipeBookId: string;
 }) {
   return queryOptions({
     queryKey: ['recipeBookRequests', options],
-    queryFn: () => listRecipeBookRequests(options),
-  });
-}
-
-interface Options {
-  queryConfig?: QueryConfig<typeof getListRecipeBookRequestsQueryOptions>;
-  options: {
-    userId: string;
-    recipeBookId: string;
-  };
-}
-
-export function useRecipeBookRequests({ queryConfig, options }: Options) {
-  return useQuery({
-    ...getListRecipeBookRequestsQueryOptions(options),
-    ...queryConfig,
+    queryFn: () => listRecipeBookRequests({ querystring: options }),
   });
 }

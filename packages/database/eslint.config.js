@@ -1,4 +1,4 @@
-import { config } from '@open-zero/eslint-config/node';
+import { config } from '@repo/eslint-config/node';
 
 /** @type {import("eslint").Linter.Config} */
 export default config;
