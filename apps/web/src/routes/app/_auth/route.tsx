@@ -2,6 +2,7 @@ import { Layout } from '#src/features/layout/Layout';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/app/_auth')({
+  ssr: 'data-only',
   beforeLoad: ({ context, location, matches }) => {
     if (!context.userId) {
       const lastMatch = matches.at(-1);
