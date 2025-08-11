@@ -10,7 +10,7 @@ import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { RecipeCard } from '../recipes/RecipeCard';
+import { RecipeCard } from '../recipes/list/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
 

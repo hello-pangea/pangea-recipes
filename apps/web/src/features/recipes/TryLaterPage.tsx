@@ -12,7 +12,7 @@ import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { AddRecipesMenu } from './AddRecipesMenu';
 import { EmptyRecipes } from './EmptyRecipes';
-import { RecipeCard } from './RecipeCard';
+import { RecipeCard } from './list/RecipeCard';
 
 export function TryLaterPage() {
   const navigate = useNavigate();

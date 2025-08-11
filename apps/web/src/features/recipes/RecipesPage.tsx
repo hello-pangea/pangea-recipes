@@ -12,8 +12,8 @@ import { useViewPreference } from '../display-preferences/view';
 import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
 import { useParsingRecipeImports } from '../recipe-imports/useParsingRecipeImports';
 import { EmptyRecipesIntro } from './EmptyRecipesIntro';
-import { RecipeGrid } from './RecipeGrid';
-import { RecipeList } from './RecipeList';
+import { RecipeGrid } from './list/RecipeGrid';
+import { RecipeList } from './list/RecipeList';
 
 export function RecipesPage() {
   const userId = useSignedInUserId();
