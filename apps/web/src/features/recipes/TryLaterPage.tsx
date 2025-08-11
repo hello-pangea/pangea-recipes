@@ -144,10 +144,7 @@ export function TryLaterPage() {
           setDisplayMenuAnchorEl(null);
         }}
         sort={sort}
-        onSortChange={(newSort) => {
-          setSort(newSort);
-          localStorage.setItem('recipesSort', JSON.stringify(newSort));
-        }}
+        onSortChange={setSort}
       />
     </Page>
   );
