@@ -1,10 +1,10 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
+import { useResizeObserver } from '@mantine/hooks';
 import { Box, Grid, Typography } from '@mui/material';
 import { listRecipeBooksQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipeBooks } from './EmptyRecipeBooks';
 import { RecipeBookCard } from './RecipeBookCard';
@@ -15,7 +15,7 @@ export function RecipeBooksPage() {
     listRecipeBooksQueryOptions({ userId: userId }),
   );
   const [search, setSearch] = useState('');
-  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
+  const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipeBooks = useMemo(() => {
