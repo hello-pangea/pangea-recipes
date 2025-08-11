@@ -1,32 +1,47 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
-import { Box, Grid, Typography } from '@mui/material';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import useResizeObserver from 'use-resize-observer';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { DisplayMenu } from '../display-preferences/DisplayMenu';
+import { useSort } from '../display-preferences/sort';
+import { useViewPreference } from '../display-preferences/view';
 import { RecipeImportCard } from '../recipe-imports/RecipeImportCard';
 import { useParsingRecipeImports } from '../recipe-imports/useParsingRecipeImports';
 import { EmptyRecipesIntro } from './EmptyRecipesIntro';
-import { RecipeCard } from './RecipeCard';
+import { RecipeGrid } from './RecipeGrid';
+import { RecipeList } from './RecipeList';
 
 export function RecipesPage() {
   const userId = useSignedInUserId();
   const { data: recipes, isError } = useSuspenseQuery(
     listRecipesQueryOptions({ userId: userId }),
   );
+  const [view] = useViewPreference();
+  const [sort, setSort] = useSort('recipesSort');
   const [search, setSearch] = useState('');
-  const [layout, setLayout] = useState<'list' | 'grid'>('grid');
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
   const parsingRecipeImports = useParsingRecipeImports({
     enableRecipeRefreshing: true,
   });
-  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
-  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const filteredRecipes = recipes
     .slice()
-    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    .sort((a, b) => {
+      if (sort.key === 'date') {
+        return sort.direction === 'asc'
+          ? a.createdAt.getTime() - b.createdAt.getTime()
+          : b.createdAt.getTime() - a.createdAt.getTime();
+      } else {
+        return sort.direction === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      }
+    })
     .filter((recipe) =>
       search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
     );
@@ -57,81 +72,55 @@ export function RecipesPage() {
       </Box>
       <Box
         sx={{
-          marginLeft: 'auto',
-          flex: 1,
           display: 'flex',
           justifyContent: 'flex-end',
+          mb: 2,
         }}
       >
-        <ToggleButtonGroup
-          value={layout}
-          exclusive
-          onChange={(_event, newLayout: typeof layout | null) => {
-            if (newLayout) {
-              setLayout(newLayout);
-            }
+        <Button
+          startIcon={<TuneRoundedIcon />}
+          onClick={(event) => {
+            setDisplayMenuAnchorEl(event.currentTarget);
           }}
-          aria-label="layout"
+          color="inherit"
+          size="small"
         >
-          <Tooltip title="List layout" placement="bottom">
-            <ToggleButton
-              value="list"
-              aria-label="left aligned"
-              sx={{
-                borderRadius: 99,
-                borderTopRightRadius: 0,
-                borderBottomRightRadius: 0,
-              }}
-            >
-              <TableRowsRoundedIcon fontSize="small" />
-            </ToggleButton>
-          </Tooltip>
-          <Tooltip title="Grid layout" placement="bottom">
-            <ToggleButton
-              value="grid"
-              aria-label="centered"
-              sx={{
-                borderRadius: 99,
-                borderTopLeftRadius: 0,
-                borderBottomLeftRadius: 0,
-              }}
-            >
-              <ViewModuleRoundedIcon fontSize="small" />
-            </ToggleButton>
-          </Tooltip>
-        </ToggleButtonGroup>
+          Display
+        </Button>
       </Box>
-      {layout === 'grid' ? (
-        <RecipeGrid recipes={filteredRecipes} />
-      ) : (
-        <RecipeList recipes={filteredRecipes} />
-      )}
       {(parsingRecipeImports?.length ?? 0) > 0 && (
         <Grid
           container
           spacing={2}
-          columns={columns}
+          columns={3}
           sx={{
             mb: 2,
           }}
         >
-          {width !== 0 &&
-            parsingRecipeImports?.map((recipeImport) => (
-              <Grid key={recipeImport.id} size={1}>
-                <RecipeImportCard recipeImport={recipeImport} />
-              </Grid>
-            ))}
-        </Grid>
-      )}
-      <Grid ref={ref} container spacing={2} columns={columns}>
-        {width !== 0 &&
-          filteredRecipes.map((recipe) => (
-            <Grid key={recipe.id} size={1}>
-              <RecipeCard recipe={recipe} />
+          {parsingRecipeImports?.map((recipeImport) => (
+            <Grid key={recipeImport.id} size={1}>
+              <RecipeImportCard recipeImport={recipeImport} />
             </Grid>
           ))}
-      </Grid>
+        </Grid>
+      )}
+      {view === 'grid' ? (
+        <RecipeGrid recipes={filteredRecipes} />
+      ) : (
+        <RecipeList recipes={filteredRecipes} compact={view === 'compact'} />
+      )}
       {!isError && !recipes.length && <EmptyRecipesIntro sx={{ my: 8 }} />}
+      <DisplayMenu
+        anchorEl={displayMenuAnchorEl}
+        onClose={() => {
+          setDisplayMenuAnchorEl(null);
+        }}
+        sort={sort}
+        onSortChange={(newSort) => {
+          setSort(newSort);
+          localStorage.setItem('recipesSort', JSON.stringify(newSort));
+        }}
+      />
     </Page>
   );
 }

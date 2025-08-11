@@ -1,6 +1,6 @@
+import { useResizeObserver } from '@mantine/hooks';
 import { Grid } from '@mui/material';
-import { type RecipeProjected } from '@open-zero/features/recipes';
-import { useMeasure } from 'react-use';
+import { type RecipeProjected } from '@repo/features/recipes';
 import { RecipeCard } from './RecipeCard';
 
 interface Props {
@@ -8,7 +8,7 @@ interface Props {
 }
 
 export function RecipeGrid({ recipes }: Props) {
-  const [ref, { width }] = useMeasure<HTMLDivElement>();
+  const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   return (
@@ -16,7 +16,7 @@ export function RecipeGrid({ recipes }: Props) {
       {width !== 0 &&
         recipes?.map((recipe) => (
           <Grid key={recipe.id} size={1}>
-            <RecipeCard recipeId={recipe.id} />
+            <RecipeCard recipe={recipe} />
           </Grid>
         ))}
     </Grid>

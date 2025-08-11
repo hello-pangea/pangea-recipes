@@ -1,3 +1,4 @@
+import { useResizeObserver } from '@mantine/hooks';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
 import { Box, Button, Grid, Typography, useMediaQuery } from '@mui/material';
@@ -9,7 +10,6 @@ import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import useResizeObserver from 'use-resize-observer';
 import { RecipeCard } from '../recipes/RecipeCard';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
@@ -24,7 +24,7 @@ export function RecipeBookPage() {
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const { data: recipes } = useQuery(listRecipesQueryOptions({ recipeBookId }));
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const { ref, width = 0 } = useResizeObserver<HTMLDivElement>();
+  const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);

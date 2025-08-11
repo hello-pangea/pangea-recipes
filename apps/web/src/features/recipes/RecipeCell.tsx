@@ -1,30 +1,25 @@
 import { DragPreview } from '#src/components/DragPreview';
-import { RouterLink } from '#src/components/RouterLink';
+import { RouterCardActionArea } from '#src/components/RouterCardActionArea';
+import { secondsToTimeString } from '#src/utils/timeFormatting';
 import { draggable } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import { pointerOutsideOfPreview } from '@atlaskit/pragmatic-drag-and-drop/element/pointer-outside-of-preview';
 import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/element/set-custom-native-drag-preview';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import {
-  Box,
-  CardActionArea,
-  CircularProgress,
-  IconButton,
-  Link as MuiLink,
-} from '@mui/material';
-import { useRecipe } from '@open-zero/features/recipes';
-import { Link } from '@tanstack/react-router';
+import TimerRoundedIcon from '@mui/icons-material/TimerRounded';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { type RecipeProjected } from '@repo/features/recipes';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
 
 interface Props {
-  recipeId: string;
+  recipe: RecipeProjected;
   onRemoveFromRecipeBook?: () => void;
+  compact?: boolean;
 }
 
-export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
-  const { data: recipe } = useRecipe({ recipeId: recipeId });
-  const ref = useRef<null | HTMLDivElement>(null);
+export function RecipeCell({ recipe, onRemoveFromRecipeBook, compact }: Props) {
+  const ref = useRef<null | HTMLButtonElement>(null);
   const [isHovering, setIsHovering] = useState(false);
   const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(
     null,
@@ -46,14 +41,15 @@ export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
   useEffect(() => {
     const element = ref.current;
 
-    if (!element || !recipe) {
+    if (!element) {
       return;
     }
 
     const data = {
       type: 'recipe',
-      recipeId: recipeId,
-      tryLater: recipe.tryLater,
+      recipeId: recipe.id,
+      tryLater: Boolean(recipe.tryLaterAt),
+      favorite: Boolean(recipe.favoritedAt),
     };
 
     return draggable({
@@ -72,7 +68,7 @@ export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
         });
       },
     });
-  }, [recipeId, recipe]);
+  }, [recipe]);
 
   const handleContextMenu = (event: React.MouseEvent) => {
     event.preventDefault();
@@ -101,17 +97,17 @@ export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
     }
   };
 
-  if (!recipe) {
-    return <CircularProgress />;
-  }
+  const coverImage = recipe.images?.at(0)?.url ?? '/assets/recipe.jpg';
+
+  const totalTime = (recipe.cookTime ?? 0) + (recipe.prepTime ?? 0);
 
   return (
     <>
-      <CardActionArea
-        // ref={ref}
+      <RouterCardActionArea
+        ref={ref}
         sx={{
           display: 'flex',
-          p: 1,
+          p: compact ? 0.5 : 1,
           borderRadius: 1,
         }}
         onContextMenu={handleContextMenu}
@@ -121,41 +117,17 @@ export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
         onMouseLeave={() => {
           setIsHovering(false);
         }}
+        to="/app/recipes/$recipeId"
+        params={{ recipeId: recipe.id }}
       >
-        {recipe.images?.length ? (
-          <Link
-            to="/app/recipes/$recipeId"
-            params={{
-              recipeId: recipeId,
-            }}
+        {!compact && (
+          <img
+            src={coverImage}
+            height={56}
+            width={56}
+            style={{ objectFit: 'cover', display: 'block', borderRadius: 8 }}
             draggable={false}
-            tabIndex={-1}
-          >
-            <img
-              src={recipe.images.at(0)?.url}
-              height={48}
-              width={72}
-              style={{ objectFit: 'cover', display: 'block', borderRadius: 8 }}
-              draggable={false}
-            />
-          </Link>
-        ) : (
-          <Link
-            to="/app/recipes/$recipeId"
-            params={{
-              recipeId: recipeId,
-            }}
-            draggable={false}
-            tabIndex={-1}
-          >
-            <img
-              src={'/assets/recipe.jpg'}
-              height={48}
-              width={72}
-              style={{ objectFit: 'cover', display: 'block', borderRadius: 8 }}
-              draggable={false}
-            />
-          </Link>
+          />
         )}
         <Box
           sx={{
@@ -167,46 +139,86 @@ export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
           }}
         >
           <Box>
-            <RouterLink
-              to="/app/recipes/$recipeId"
-              params={{
-                recipeId: recipeId,
-              }}
-              draggable={false}
+            <Typography
               sx={{
-                textDecoration: 'none',
                 '&:hover': {
                   textDecoration: 'underline',
                 },
               }}
-              variant="body1"
             >
               {recipe.name}
-            </RouterLink>
-            {recipe.websiteSource && (
-              <MuiLink
-                href={recipe.websiteSource.url}
-                rel="nofollow noopener"
-                variant="caption"
-                sx={{
-                  color: 'text.secondary',
-                  textDecoration: 'none',
-                  '&:hover': {
-                    textDecoration: 'underline',
-                  },
-                }}
-                target="_blank"
+            </Typography>
+            {!compact && (
+              <Stack
+                direction={'row'}
+                divider={
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: (theme) => theme.palette.text.secondary,
+                      pr: 0.5,
+                    }}
+                  >
+                    ,{' '}
+                  </Typography>
+                }
               >
-                {recipe.websiteSource.title ?? 'Source'}
-              </MuiLink>
+                {totalTime > 0 && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: (theme) => theme.palette.text.secondary,
+                    }}
+                  >
+                    <TimerRoundedIcon
+                      fontSize="inherit"
+                      sx={{
+                        verticalAlign: 'bottom',
+                      }}
+                    />{' '}
+                    {secondsToTimeString(totalTime)}
+                  </Typography>
+                )}
+                {recipe.websiteSource && (
+                  <Typography
+                    variant="caption"
+                    sx={{
+                      color: (theme) => theme.palette.text.secondary,
+                      '&:hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      event.preventDefault();
+
+                      window.open(
+                        recipe.websiteSource?.url,
+                        '_blank',
+                        'noopener',
+                      );
+                    }}
+                  >
+                    {recipe.websiteSource.title}
+                  </Typography>
+                )}
+              </Stack>
             )}
           </Box>
           <IconButton
+            component="div"
             id="more-button"
             aria-controls={moreMenuOpen ? 'more-menu' : undefined}
             aria-haspopup="true"
             aria-expanded={moreMenuOpen ? 'true' : undefined}
+            size={compact ? 'small' : undefined}
+            onMouseDown={(event) => {
+              event.stopPropagation();
+            }}
             onClick={(event) => {
+              event.stopPropagation();
+              event.preventDefault();
+
               setMoreMenuAnchor({
                 type: 'more',
                 anchorEl: event.currentTarget,
@@ -216,12 +228,12 @@ export function RecipeCell({ recipeId, onRemoveFromRecipeBook }: Props) {
               visibility: isHovering || moreMenuAnchor ? 'visible' : 'hidden',
             }}
           >
-            <MoreVertRoundedIcon />
+            <MoreVertRoundedIcon fontSize={compact ? 'small' : undefined} />
           </IconButton>
         </Box>
-      </CardActionArea>
+      </RouterCardActionArea>
       <RecipeMoreMenu
-        recipeId={recipeId}
+        recipe={recipe}
         anchorEl={
           moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
         }

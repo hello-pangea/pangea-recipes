@@ -20,6 +20,7 @@
     "@emotion/styled": "^11.14.1",
     "@fontsource-variable/inter": "^5.2.6",
     "@fontsource-variable/lora": "^5.2.6",
+    "@mantine/hooks": "^8.2.4",
     "@mui/icons-material": "^7.3.1",
     "@mui/material": "^7.3.1",
     "@repo/features": "workspace:*",
@@ -41,7 +42,6 @@
     "notistack": "^3.0.2",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "use-resize-observer": "^9.1.0",
     "zod": "^4.0.16"
   },
   "devDependencies": {

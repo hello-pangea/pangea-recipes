@@ -64,11 +64,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
     async (request) => {
       const { userId, recipeBookId } = request.query;
 
-      if (
-        userId &&
-        userId !== request.session?.userId &&
-        request.session?.accessRole !== 'admin'
-      ) {
+      if (userId && userId !== request.session?.userId) {
         throw new ApiError({
           statusCode: 403,
           message: 'Forbidden',
