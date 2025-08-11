@@ -15,10 +15,13 @@ const sortSchema = z
 
 export type Sort = z.infer<typeof sortSchema>;
 
-export function useSort(localStorageKey: string) {
+export function useSort(
+  localStorageKey: string,
+  overrideDefaultSort: Sort = defaultSort,
+) {
   return useLocalStorage<Sort>({
     key: localStorageKey,
-    defaultValue: defaultSort,
+    defaultValue: overrideDefaultSort,
     deserialize: (value) => {
       return sortSchema.parse(JSON.parse(value || '{}'));
     },

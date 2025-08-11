@@ -20,9 +20,16 @@ interface Props extends Pick<MenuProps, 'anchorEl'> {
   onClose: () => void;
   sort: Sort;
   onSortChange: (sort: Sort) => void;
+  disableDateSort?: boolean;
 }
 
-export function DisplayMenu({ anchorEl, onClose, sort, onSortChange }: Props) {
+export function DisplayMenu({
+  anchorEl,
+  onClose,
+  sort,
+  onSortChange,
+  disableDateSort,
+}: Props) {
   const [view, setView] = useViewPreference();
 
   const open = Boolean(anchorEl);
@@ -64,31 +71,33 @@ export function DisplayMenu({ anchorEl, onClose, sort, onSortChange }: Props) {
       }}
     >
       <ListSubheader>Sort by</ListSubheader>
-      <MenuItem
-        selected={sort.key === 'date'}
-        onClick={() => {
-          changeSort('date');
-        }}
-      >
-        <ListItemIcon>
-          <TodayRoundedIcon fontSize="small" />
-        </ListItemIcon>
-        <ListItemText>Date added</ListItemText>
-        {sort.key === 'date' &&
-          (sort.direction === 'asc' ? (
-            <ArrowUpwardRoundedIcon
-              color="primary"
-              fontSize="small"
-              sx={{ ml: 'auto' }}
-            />
-          ) : (
-            <ArrowDownwardRoundedIcon
-              color="primary"
-              fontSize="small"
-              sx={{ ml: 'auto' }}
-            />
-          ))}
-      </MenuItem>
+      {!disableDateSort && (
+        <MenuItem
+          selected={sort.key === 'date'}
+          onClick={() => {
+            changeSort('date');
+          }}
+        >
+          <ListItemIcon>
+            <TodayRoundedIcon fontSize="small" />
+          </ListItemIcon>
+          <ListItemText>Date added</ListItemText>
+          {sort.key === 'date' &&
+            (sort.direction === 'asc' ? (
+              <ArrowUpwardRoundedIcon
+                color="primary"
+                fontSize="small"
+                sx={{ ml: 'auto' }}
+              />
+            ) : (
+              <ArrowDownwardRoundedIcon
+                color="primary"
+                fontSize="small"
+                sx={{ ml: 'auto' }}
+              />
+            ))}
+        </MenuItem>
+      )}
       <MenuItem
         selected={sort.key === 'name'}
         onClick={() => {

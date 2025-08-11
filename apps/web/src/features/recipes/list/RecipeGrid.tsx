@@ -5,9 +5,10 @@ import { RecipeCard } from './RecipeCard';
 
 interface Props {
   recipes?: RecipeProjected[];
+  onRemoveFromRecipeBook?: (recipeId: string) => void;
 }
 
-export function RecipeGrid({ recipes }: Props) {
+export function RecipeGrid({ recipes, onRemoveFromRecipeBook }: Props) {
   const [ref, { width }] = useResizeObserver<HTMLDivElement>();
   const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
 
@@ -16,7 +17,12 @@ export function RecipeGrid({ recipes }: Props) {
       {width !== 0 &&
         recipes?.map((recipe) => (
           <Grid key={recipe.id} size={1}>
-            <RecipeCard recipe={recipe} />
+            <RecipeCard
+              onRemoveFromRecipeBook={() => {
+                onRemoveFromRecipeBook?.(recipe.id);
+              }}
+              recipe={recipe}
+            />
           </Grid>
         ))}
     </Grid>

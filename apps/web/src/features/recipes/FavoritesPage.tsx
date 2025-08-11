@@ -1,7 +1,8 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import { Box, Button, Grid, Typography } from '@mui/material';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import { Box, Button, Typography } from '@mui/material';
 import {
   listRecipesQueryOptions,
   useUpdateRecipe,
@@ -10,9 +11,13 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { DisplayMenu } from '../display-preferences/DisplayMenu';
+import { useSort } from '../display-preferences/sort';
+import { useViewPreference } from '../display-preferences/view';
 import { AddRecipesMenu } from './AddRecipesMenu';
 import { EmptyRecipes } from './EmptyRecipes';
-import { RecipeCard } from './list/RecipeCard';
+import { RecipeGrid } from './list/RecipeGrid';
+import { RecipeList } from './list/RecipeList';
 
 export function FavoritesPage() {
   const navigate = useNavigate();
@@ -20,10 +25,14 @@ export function FavoritesPage() {
   const { data: allRecipes, isError } = useSuspenseQuery(
     listRecipesQueryOptions({ userId: userId }),
   );
+  const [view] = useViewPreference();
+  const [sort, setSort] = useSort('favoritesSort');
   const [search, setSearch] = useState('');
   const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(
     null,
   );
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
   const updateRecipe = useUpdateRecipe();
 
   const favoriteRecipes = allRecipes.filter(
@@ -34,9 +43,16 @@ export function FavoritesPage() {
   const filteredRecipes = favoriteRecipes
     .slice()
     .sort((a, b) => {
-      const aTime = a.favoritedAt ? a.favoritedAt.getTime() : 0;
-      const bTime = b.favoritedAt ? b.favoritedAt.getTime() : 0;
-      return bTime - aTime;
+      if (sort.key === 'date') {
+        const aTime = a.favoritedAt?.getTime() ?? 0;
+        const bTime = b.favoritedAt?.getTime() ?? 0;
+
+        return sort.direction === 'asc' ? aTime - bTime : bTime - aTime;
+      } else {
+        return sort.direction === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      }
     })
     .filter((recipe) =>
       search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
@@ -66,32 +82,38 @@ export function FavoritesPage() {
           placeholder="Search for a recipe..."
         />
       </Box>
-      <Button
-        size="small"
-        startIcon={<AddRoundedIcon />}
+      <Box
         sx={{
-          mb: 1.5,
-        }}
-        onClick={(event) => {
-          setAddMenuAnchorEl(event.currentTarget);
+          display: 'flex',
+          justifyContent: 'space-between',
+          mb: 2,
         }}
       >
-        Add
-      </Button>
-      <Grid container spacing={2}>
-        {filteredRecipes.map((recipe) => (
-          <Grid
-            key={recipe.id}
-            size={{
-              xs: 12,
-              sm: 6,
-              lg: 4,
-            }}
-          >
-            <RecipeCard recipe={recipe} />
-          </Grid>
-        ))}
-      </Grid>
+        <Button
+          size="small"
+          startIcon={<AddRoundedIcon />}
+          onClick={(event) => {
+            setAddMenuAnchorEl(event.currentTarget);
+          }}
+        >
+          Add
+        </Button>
+        <Button
+          startIcon={<TuneRoundedIcon />}
+          onClick={(event) => {
+            setDisplayMenuAnchorEl(event.currentTarget);
+          }}
+          color="inherit"
+          size="small"
+        >
+          Display
+        </Button>
+      </Box>
+      {view === 'grid' ? (
+        <RecipeGrid recipes={filteredRecipes} />
+      ) : (
+        <RecipeList recipes={filteredRecipes} compact={view === 'compact'} />
+      )}
       {!isError && !favoriteRecipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
       <AddRecipesMenu
         addedRecipeIds={favoriteRecipeIds}
@@ -114,6 +136,17 @@ export function FavoritesPage() {
             to: '/app/recipes/new',
             search: { favorite: true },
           });
+        }}
+      />
+      <DisplayMenu
+        anchorEl={displayMenuAnchorEl}
+        onClose={() => {
+          setDisplayMenuAnchorEl(null);
+        }}
+        sort={sort}
+        onSortChange={(newSort) => {
+          setSort(newSort);
+          localStorage.setItem('recipesSort', JSON.stringify(newSort));
         }}
       />
     </Page>

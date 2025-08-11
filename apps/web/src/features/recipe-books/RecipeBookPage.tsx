@@ -1,16 +1,23 @@
-import { useResizeObserver } from '@mantine/hooks';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import MenuBookRoundedIcon from '@mui/icons-material/MenuBookRounded';
-import { Box, Button, Grid, Typography, useMediaQuery } from '@mui/material';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import { Box, Button, Typography, useMediaQuery } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
+  useAddRecipeToRecipeBook,
   useRemoveRecipeFromRecipeBook,
 } from '@repo/features/recipe-books';
 import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { RecipeCard } from '../recipes/list/RecipeCard';
+import { DisplayMenu } from '../display-preferences/DisplayMenu';
+import { useSort } from '../display-preferences/sort';
+import { useViewPreference } from '../display-preferences/view';
+import { AddRecipesMenu } from '../recipes/AddRecipesMenu';
+import { RecipeGrid } from '../recipes/list/RecipeGrid';
+import { RecipeList } from '../recipes/list/RecipeList';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 import { RecipeBookShareButton } from './RecipeBookShareButton';
 
@@ -22,16 +29,41 @@ export function RecipeBookPage() {
     null,
   );
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
+  const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const { data: recipes } = useQuery(listRecipesQueryOptions({ recipeBookId }));
+  const [view] = useViewPreference();
+  const [sort, setSort] = useSort(`recipeBookSort_${recipeBookId}`, {
+    key: 'name',
+    direction: 'desc',
+  });
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const [ref, { width }] = useResizeObserver<HTMLDivElement>();
-  const columns = Math.max(1, Math.floor((width + 16) / (256 + 16)));
-
-  const moreMenuOpen = Boolean(moreMenuAnchorEl);
-
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
   const { data: recipeBook } = useSuspenseQuery(
     getRecipeBookQueryOptions(recipeBookId),
   );
+
+  const moreMenuOpen = Boolean(moreMenuAnchorEl);
+
+  const recipeIds = recipes?.map((r) => r.id) ?? [];
+
+  const filteredRecipes = (recipes ?? []).slice().sort((a, b) => {
+    return sort.direction === 'asc'
+      ? a.name.localeCompare(b.name)
+      : b.name.localeCompare(a.name);
+  });
+
+  function handleRemoveRecipeFromRecipeBook(recipeId: string) {
+    removeRecipeFromRecipeBook.mutate({
+      params: {
+        id: recipeBookId,
+        recipeId: recipeId,
+      },
+    });
+  }
 
   return (
     <Box sx={{ p: 3 }}>
@@ -82,29 +114,88 @@ export function RecipeBookPage() {
       {recipeBook.description && (
         <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
       )}
-      <Grid ref={ref} container spacing={2} columns={columns}>
-        {width !== 0 &&
-          recipes?.map((recipe) => (
-            <Grid key={recipe.id} size={1}>
-              <RecipeCard
-                recipe={recipe}
-                onRemoveFromRecipeBook={() => {
-                  removeRecipeFromRecipeBook.mutate({
-                    params: {
-                      id: recipeBookId,
-                      recipeId: recipe.id,
-                    },
-                  });
-                }}
-              />
-            </Grid>
-          ))}
-      </Grid>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          mb: 2,
+        }}
+      >
+        <Button
+          size="small"
+          startIcon={<AddRoundedIcon />}
+          onClick={(event) => {
+            setAddMenuAnchorEl(event.currentTarget);
+          }}
+        >
+          Add
+        </Button>
+        <Button
+          startIcon={<TuneRoundedIcon />}
+          onClick={(event) => {
+            setDisplayMenuAnchorEl(event.currentTarget);
+          }}
+          color="inherit"
+          size="small"
+        >
+          Display
+        </Button>
+      </Box>
+      {view === 'grid' ? (
+        <RecipeGrid
+          recipes={filteredRecipes}
+          onRemoveFromRecipeBook={handleRemoveRecipeFromRecipeBook}
+        />
+      ) : (
+        <RecipeList
+          recipes={filteredRecipes}
+          compact={view === 'compact'}
+          onRemoveFromRecipeBook={handleRemoveRecipeFromRecipeBook}
+        />
+      )}
       <RecipeBookMoreMenu
         recipeBookId={recipeBookId}
         anchorEl={moreMenuAnchorEl}
         onClose={() => {
           setMoreMenuAnchorEl(null);
+        }}
+      />
+      <AddRecipesMenu
+        addedRecipeIds={recipeIds}
+        onClose={() => {
+          setAddMenuAnchorEl(null);
+        }}
+        anchorEl={addMenuAnchorEl}
+        onToggleRecipe={(recipeId) => {
+          const added = recipeIds.includes(recipeId);
+
+          if (added) {
+            removeRecipeFromRecipeBook.mutate({
+              params: {
+                id: recipeBookId,
+                recipeId: recipeId,
+              },
+            });
+          } else {
+            addRecipeToRecipeBook.mutate({
+              params: { id: recipeBookId },
+              body: {
+                recipeId: recipeId,
+              },
+            });
+          }
+        }}
+      />
+      <DisplayMenu
+        disableDateSort
+        anchorEl={displayMenuAnchorEl}
+        onClose={() => {
+          setDisplayMenuAnchorEl(null);
+        }}
+        sort={sort}
+        onSortChange={(newSort) => {
+          setSort(newSort);
+          localStorage.setItem('recipesSort', JSON.stringify(newSort));
         }}
       />
     </Box>
