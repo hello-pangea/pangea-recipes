@@ -29,7 +29,7 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^22.17.1",
-    "@types/react": "^19.1.9",
+    "@types/react": "^19.1.10",
     "react-email": "^4.2.8",
     "typescript": "~5.9.2"
   }
