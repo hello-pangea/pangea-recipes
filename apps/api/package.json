@@ -43,14 +43,14 @@
     "playwright-chromium": "^1.54.2",
     "resend": "^6.0.1",
     "sharp": "^0.34.3",
-    "turndown": "^7.2.0",
-    "user-agents": "^1.1.629",
+    "turndown": "^7.2.1",
+    "user-agents": "^1.1.633",
     "zod": "^4.0.17"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.17.1",
+    "@types/node": "^22.17.2",
     "@types/turndown": "^5.0.5",
     "@types/user-agents": "^1.0.4",
     "pino-pretty": "^13.1.1",

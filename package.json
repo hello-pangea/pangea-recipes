@@ -29,7 +29,7 @@
     "eslint": "^9.33.0",
     "prettier": "^3.6.2",
     "sort-package-json": "^3.4.0",
-    "turbo": "^2.5.5"
+    "turbo": "^2.5.6"
   },
   "packageManager": "pnpm@10.14.0",
   "engines": {
