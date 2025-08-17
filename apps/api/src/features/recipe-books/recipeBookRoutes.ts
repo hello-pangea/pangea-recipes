@@ -167,7 +167,7 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (
   );
 
   fastify.delete(
-    '/:recipeBookId',
+    '/:id',
     {
       schema: {
         tags: [routeTag],

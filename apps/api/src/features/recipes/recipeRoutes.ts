@@ -198,6 +198,8 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
             },
             instructionGroups: true,
             ingredientGroups: true,
+            tryLaterAt: true,
+            favoritedAt: true,
           },
         });
 
@@ -287,8 +289,10 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
           prepTime: prepTime,
           cookTime: cookTime,
           servings: servings,
-          tryLater: tryLater,
-          favorite: favorite,
+          tryLaterAt:
+            tryLater === true && !oldRecipe.tryLaterAt ? new Date() : null,
+          favoritedAt:
+            favorite === true && !oldRecipe.favoritedAt ? new Date() : null,
           usesRecipes: !usesRecipes
             ? undefined
             : {
@@ -310,17 +314,19 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
                         notIn: imageIds,
                       },
                     },
-                    connectOrCreate: imageIds.map((id) => ({
-                      where: {
-                        recipeId_imageId: {
-                          recipeId: id,
+                    connectOrCreate: imageIds
+                      .filter((i) => !imageIds.includes(i))
+                      .map((id) => ({
+                        where: {
+                          recipeId_imageId: {
+                            recipeId: id,
+                            imageId: id,
+                          },
+                        },
+                        create: {
                           imageId: id,
                         },
-                      },
-                      create: {
-                        imageId: id,
-                      },
-                    })),
+                      })),
                   },
           nutrition: nutrition
             ? {

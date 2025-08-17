@@ -1,10 +1,10 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const userSchema = z
   .object({
     id: z.uuidv4(),
 
-    createdAt: z.date(),
+    createdAt: z.coerce.date(),
 
     name: z.string(),
 

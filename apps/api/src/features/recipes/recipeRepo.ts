@@ -20,6 +20,7 @@ export async function createRecipe(
     websitePageId,
     nutrition,
     tryLater,
+    favorite,
     userId,
   } = data;
 
@@ -75,7 +76,8 @@ export async function createRecipe(
             })),
           }
         : undefined,
-      tryLater: tryLater,
+      tryLaterAt: tryLater ? new Date() : null,
+      favoritedAt: favorite ? new Date() : null,
       ingredientGroups: {
         create: ingredientGroups.map((ingredientGroup, index) => ({
           name: ingredientGroup.name ?? null,

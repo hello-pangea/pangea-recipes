@@ -10,7 +10,6 @@ import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import UpcomingRoundedIcon from '@mui/icons-material/UpcomingRounded';
 import {
   Box,
-  CircularProgress,
   Divider,
   IconButton,
   InputAdornment,
@@ -22,15 +21,16 @@ import {
   type MenuProps,
 } from '@mui/material';
 import {
+  listRecipeBooksQueryOptions,
   useAddRecipeToRecipeBook,
   useCreateRecipeBook,
-  useRecipeBooks,
 } from '@repo/features/recipe-books';
 import {
   useDeleteRecipe,
-  useRecipe,
   useUpdateRecipe,
+  type RecipeProjected,
 } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -38,14 +38,14 @@ import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
 interface Props
   extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
-  recipeId: string;
+  recipe: RecipeProjected;
   onClose: () => void;
   onDelete?: () => void;
   onRemoveFromRecipeBook?: () => void;
 }
 
 export function RecipeMoreMenu({
-  recipeId,
+  recipe,
   anchorEl,
   anchorPosition,
   anchorReference,
@@ -54,12 +54,9 @@ export function RecipeMoreMenu({
   onRemoveFromRecipeBook,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipe } = useRecipe({ recipeId: recipeId });
-  const { data: recipeBooks } = useRecipeBooks({
-    options: {
-      userId,
-    },
-  });
+  const { data: recipeBooks } = useQuery(
+    listRecipeBooksQueryOptions({ userId }),
+  );
   const deleteRecipe = useDeleteRecipe();
   const createRecipeBook = useCreateRecipeBook();
   const updateRecipe = useUpdateRecipe();
@@ -68,6 +65,8 @@ export function RecipeMoreMenu({
 
   const [booksAnchorEl, setBooksAnchorEl] = useState<null | HTMLElement>(null);
   const booksOpen = Boolean(booksAnchorEl);
+  // Set which side the submenu should open on
+  const [submenuSide, setSubmenuSide] = useState<'left' | 'right'>('right');
 
   const [search, setsSearch] = useState('');
 
@@ -92,10 +91,6 @@ export function RecipeMoreMenu({
   function handleClose() {
     setBooksAnchorEl(null);
     onClose();
-  }
-
-  if (!recipe) {
-    return <CircularProgress />;
   }
 
   return (
@@ -148,6 +143,12 @@ export function RecipeMoreMenu({
         <Divider />
         <MenuItem
           onMouseEnter={(event) => {
+            // Decide which side to open the submenu based on available space
+            const rect = event.currentTarget.getBoundingClientRect();
+            const spaceRight = window.innerWidth - rect.right;
+            const spaceLeft = rect.left;
+            setSubmenuSide(spaceRight > spaceLeft ? 'right' : 'left');
+
             setBooksAnchorEl(event.currentTarget);
           }}
           sx={{
@@ -174,19 +175,19 @@ export function RecipeMoreMenu({
           onClick={() => {
             updateRecipe.mutate({
               params: { id: recipe.id },
-              body: { favorite: !recipe.favorite },
+              body: { favorite: !recipe.favoritedAt },
             });
           }}
         >
           <ListItemIcon>
-            {recipe.favorite ? (
+            {recipe.favoritedAt ? (
               <FavoriteRoundedIcon fontSize="small" />
             ) : (
               <FavoriteBorderRoundedIcon fontSize="small" />
             )}
           </ListItemIcon>
           <ListItemText>
-            {recipe.favorite ? 'Remove from favorites' : 'Add to favorites'}
+            {recipe.favoritedAt ? 'Remove from favorites' : 'Add to favorites'}
           </ListItemText>
         </MenuItem>
         <MenuItem
@@ -197,7 +198,7 @@ export function RecipeMoreMenu({
             updateRecipe.mutate({
               params: { id: recipe.id },
               body: {
-                tryLater: !recipe.tryLater,
+                tryLater: !recipe.tryLaterAt,
               },
             });
           }}
@@ -206,7 +207,7 @@ export function RecipeMoreMenu({
             <UpcomingRoundedIcon fontSize="small" />
           </ListItemIcon>
           <ListItemText>
-            {recipe.tryLater ? 'Remove from try later' : 'Add to try later'}
+            {recipe.tryLaterAt ? 'Remove from try later' : 'Add to try later'}
           </ListItemText>
         </MenuItem>
         <Divider />
@@ -258,11 +259,11 @@ export function RecipeMoreMenu({
         disableEnforceFocus
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right',
+          horizontal: submenuSide === 'right' ? 'right' : 'left',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'left',
+          horizontal: submenuSide === 'right' ? 'left' : 'right',
         }}
         sx={{
           pointerEvents: 'none',

@@ -15,9 +15,9 @@ model Recipe {
 
   servings Int?
 
-  tryLater Boolean @default(false) @map("try_later")
+  tryLaterAt DateTime? @map("try_later_at")
 
-  favorite Boolean @default(false)
+  favoritedAt DateTime? @map("favorited_at")
 
   sourceWebsitePageId String?      @map("source_website_page_id") @db.Uuid
   sourceWebsitePage   WebsitePage? @relation(fields: [sourceWebsitePageId], references: [id])

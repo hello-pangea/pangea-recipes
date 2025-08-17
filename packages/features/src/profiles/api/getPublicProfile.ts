@@ -1,8 +1,7 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { queryOptions } from '@tanstack/react-query';
+import { z } from 'zod';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import { publicProfileSchema } from '../types/publicProfile.js';
 
 export const getPublicProfileContract = defineContract('profiles/:id', {
@@ -21,21 +20,9 @@ const getPublicProfile = makeRequest(getPublicProfileContract, {
   select: (res) => res.profile,
 });
 
-function getPublicProfileQueryOptions(id: string) {
+export function getPublicProfileQueryOptions(id: string) {
   return queryOptions({
     queryKey: ['profiles', id],
     queryFn: () => getPublicProfile({ params: { id } }),
-  });
-}
-
-interface Options {
-  id: string;
-  queryConfig?: QueryConfig<typeof getPublicProfileQueryOptions>;
-}
-
-export function usePublicProfile({ id, queryConfig }: Options) {
-  return useQuery({
-    ...getPublicProfileQueryOptions(id),
-    ...queryConfig,
   });
 }

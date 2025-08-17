@@ -1,31 +1,62 @@
 import { Page } from '#src/components/Page';
 import { SearchTextField } from '#src/components/SearchTextField';
-import { Box, Grid, Typography } from '@mui/material';
-import { listRecipesQueryOptions } from '@repo/features/recipes';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+import { Box, Button, Typography } from '@mui/material';
+import {
+  listRecipesQueryOptions,
+  useUpdateRecipe,
+} from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useMemo, useState } from 'react';
+import { useNavigate } from '@tanstack/react-router';
+import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
+import { DisplayMenu } from '../display-preferences/DisplayMenu';
+import { useSort } from '../display-preferences/sort';
+import { useViewPreference } from '../display-preferences/view';
+import { AddRecipesMenu } from './AddRecipesMenu';
 import { EmptyRecipes } from './EmptyRecipes';
-import { RecipeCard } from './RecipeCard';
+import { RecipeGrid } from './list/RecipeGrid';
+import { RecipeList } from './list/RecipeList';
 
 export function TryLaterPage() {
+  const navigate = useNavigate();
   const userId = useSignedInUserId();
-  const { data: recipes, isError } = useSuspenseQuery(
+  const { data: allRecipes, isError } = useSuspenseQuery(
     listRecipesQueryOptions({ userId: userId }),
   );
+  const [view] = useViewPreference();
+  const [sort, setSort] = useSort('tryLaterSort');
   const [search, setSearch] = useState('');
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
+    useState<null | HTMLElement>(null);
+  const updateRecipe = useUpdateRecipe();
 
-  const filteredRecipes = useMemo(() => {
-    const toTryRecipes = recipes.filter((recipe) => recipe.tryLater);
+  const tryLaterRecipes = allRecipes.filter(
+    (recipe) => recipe.tryLaterAt !== null,
+  );
+  const tryLaterRecipeIds = tryLaterRecipes.map((r) => r.id);
 
-    if (search) {
-      return toTryRecipes.filter((recipe) =>
-        recipe.name.toLowerCase().includes(search.toLowerCase()),
-      );
-    }
+  const filteredRecipes = tryLaterRecipes
+    .slice()
+    .sort((a, b) => {
+      if (sort.key === 'date') {
+        const aTime = a.tryLaterAt?.getTime() ?? 0;
+        const bTime = b.tryLaterAt?.getTime() ?? 0;
 
-    return toTryRecipes;
-  }, [recipes, search]);
+        return sort.direction === 'asc' ? aTime - bTime : bTime - aTime;
+      } else {
+        return sort.direction === 'asc'
+          ? a.name.localeCompare(b.name)
+          : b.name.localeCompare(a.name);
+      }
+    })
+    .filter((recipe) =>
+      search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
+    );
 
   return (
     <Page>
@@ -51,21 +82,70 @@ export function TryLaterPage() {
           placeholder="Search for a recipe..."
         />
       </Box>
-      <Grid container spacing={2}>
-        {filteredRecipes.map((recipe) => (
-          <Grid
-            key={recipe.id}
-            size={{
-              xs: 12,
-              sm: 6,
-              lg: 4,
-            }}
-          >
-            <RecipeCard recipeId={recipe.id} />
-          </Grid>
-        ))}
-      </Grid>
-      {!isError && !recipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          mb: 2,
+        }}
+      >
+        <Button
+          size="small"
+          startIcon={<AddRoundedIcon />}
+          onClick={(event) => {
+            setAddMenuAnchorEl(event.currentTarget);
+          }}
+        >
+          Add
+        </Button>
+        <Button
+          startIcon={<TuneRoundedIcon />}
+          onClick={(event) => {
+            setDisplayMenuAnchorEl(event.currentTarget);
+          }}
+          color="inherit"
+          size="small"
+        >
+          Display
+        </Button>
+      </Box>
+      {view === 'grid' ? (
+        <RecipeGrid recipes={filteredRecipes} />
+      ) : (
+        <RecipeList recipes={filteredRecipes} compact={view === 'compact'} />
+      )}
+      {!isError && !tryLaterRecipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      <AddRecipesMenu
+        addedRecipeIds={tryLaterRecipeIds}
+        onClose={() => {
+          setAddMenuAnchorEl(null);
+        }}
+        anchorEl={addMenuAnchorEl}
+        onToggleRecipe={(recipeId) => {
+          const added = tryLaterRecipeIds.includes(recipeId);
+
+          updateRecipe.mutate({
+            params: { id: recipeId },
+            body: {
+              tryLater: !added,
+            },
+          });
+        }}
+        onNewRecipe={() => {
+          void navigate({
+            to: '/app/recipes/new',
+            search: { tryLater: true },
+          });
+        }}
+      />
+      <DisplayMenu
+        anchorEl={displayMenuAnchorEl}
+        onClose={() => {
+          setDisplayMenuAnchorEl(null);
+        }}
+        sort={sort}
+        onSortChange={setSort}
+      />
     </Page>
   );
 }

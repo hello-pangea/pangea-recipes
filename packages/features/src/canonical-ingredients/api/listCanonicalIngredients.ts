@@ -1,8 +1,7 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { queryOptions } from '@tanstack/react-query';
+import { z } from 'zod';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 
 export const listCanonicalIngredientsContract = defineContract(
@@ -26,16 +25,5 @@ export function listCanonicalIngredientsQueryOptions() {
     queryKey: ['canonicalIngredients'],
     queryFn: () => listCanonicalIngredients(),
     staleTime: 1000 * 60 * 60, // 1 hour
-  });
-}
-
-interface Options {
-  queryConfig?: QueryConfig<typeof listCanonicalIngredientsQueryOptions>;
-}
-
-export function useCanonicalIngredients({ queryConfig }: Options = {}) {
-  return useQuery({
-    ...listCanonicalIngredientsQueryOptions(),
-    ...queryConfig,
   });
 }

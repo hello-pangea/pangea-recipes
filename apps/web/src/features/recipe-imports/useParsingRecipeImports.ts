@@ -1,5 +1,5 @@
-import { useRecipeImports } from '@repo/features/recipe-imports';
-import { useQueryClient } from '@tanstack/react-query';
+import { listRecipeImportsQueryOptions } from '@repo/features/recipe-imports';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useRef } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
@@ -12,14 +12,12 @@ export function useParsingRecipeImports({
 }: Options) {
   const queryClient = useQueryClient();
   const userId = useSignedInUserId();
-  const { data: recipeImports } = useRecipeImports({
-    options: {
-      userId: userId,
-    },
-    queryConfig: {
-      refetchInterval: (data) => {
-        return (data.state.data?.length ?? 0) > 0 ? 1000 : false;
-      },
+  const { data: recipeImports } = useQuery({
+    ...listRecipeImportsQueryOptions({
+      userId,
+    }),
+    refetchInterval: (data) => {
+      return (data.state.data?.length ?? 0) > 0 ? 1000 : false;
     },
   });
 

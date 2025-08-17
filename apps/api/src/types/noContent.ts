@@ -1,3 +1,3 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const noContentSchema = z.null().describe('No content');

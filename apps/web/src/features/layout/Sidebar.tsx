@@ -29,11 +29,12 @@ import {
   Typography,
 } from '@mui/material';
 import {
+  listRecipeBooksQueryOptions,
   useAddRecipeToRecipeBook,
-  useRecipeBooks,
 } from '@repo/features/recipe-books';
-import { useUpdateRecipe } from '@repo/features/recipes';
+import { useUpdateRecipe, type RecipeProjected } from '@repo/features/recipes';
 import { useSignedInUser } from '@repo/features/users';
+import { useQuery } from '@tanstack/react-query';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -50,9 +51,9 @@ interface Props {
 export function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const { data: user } = useSignedInUser();
   const userId = useSignedInUserId();
-  const { data: recipeBooks } = useRecipeBooks({
-    options: { userId: userId },
-  });
+  const { data: recipeBooks } = useQuery(
+    listRecipeBooksQueryOptions({ userId }),
+  );
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const updateRecipe = useUpdateRecipe();
 
@@ -73,23 +74,23 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         if (sourceType === 'recipe' && targetType === 'recipe_book_sidebar') {
           console.log('DND: add recipe to recipe book');
 
-          const sourceRecipeId = source.data['recipeId'] as string;
+          const sourceRecipe = source.data['recipe'] as RecipeProjected;
           const targetRecipeBookId = target.data['recipeBookId'] as string;
 
           addRecipeToRecipeBook.mutate({
             params: { id: targetRecipeBookId },
             body: {
-              recipeId: sourceRecipeId,
+              recipeId: sourceRecipe.id,
             },
           });
         } else if (
           sourceType === 'recipe' &&
           targetType === 'recipes_sidebar'
         ) {
-          const sourceRecipeId = source.data['recipeId'] as string;
+          const sourceRecipe = source.data['recipe'] as RecipeProjected;
 
           updateRecipe.mutate({
-            params: { id: sourceRecipeId },
+            params: { id: sourceRecipe.id },
             body: {
               tryLater: false,
             },
@@ -98,10 +99,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           sourceType === 'recipe' &&
           targetType === 'try_later_sidebar'
         ) {
-          const sourceRecipeId = source.data['recipeId'] as string;
+          const sourceRecipe = source.data['recipe'] as RecipeProjected;
 
           updateRecipe.mutate({
-            params: { id: sourceRecipeId },
+            params: { id: sourceRecipe.id },
             body: {
               tryLater: true,
             },
@@ -110,10 +111,10 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
           sourceType === 'recipe' &&
           targetType === 'favorites_sidebar'
         ) {
-          const sourceRecipeId = source.data['recipeId'] as string;
+          const sourceRecipe = source.data['recipe'] as RecipeProjected;
 
           updateRecipe.mutate({
-            params: { id: sourceRecipeId },
+            params: { id: sourceRecipe.id },
             body: {
               favorite: true,
             },
@@ -181,7 +182,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
             canDrop={({ source }) => {
               return (
                 source.data['type'] === 'recipe' &&
-                Boolean(source.data['tryLater'])
+                Boolean((source.data['recipe'] as RecipeProjected).tryLaterAt)
               );
             }}
           />
@@ -198,7 +199,8 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
             }}
             canDrop={({ source }) => {
               return (
-                source.data['type'] === 'recipe' && !source.data['favorite']
+                source.data['type'] === 'recipe' &&
+                !(source.data['recipe'] as RecipeProjected).favoritedAt
               );
             }}
           />
@@ -215,7 +217,8 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
             }}
             canDrop={({ source }) => {
               return (
-                source.data['type'] === 'recipe' && !source.data['tryLater']
+                source.data['type'] === 'recipe' &&
+                !(source.data['recipe'] as RecipeProjected).tryLaterAt
               );
             }}
           />

@@ -1,6 +1,6 @@
 import { SignUpPage } from '#src/features/auth/SignUpPage';
 import { createFileRoute, redirect } from '@tanstack/react-router';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const searchSchema = z.object({
   redirect: z.string().optional(),

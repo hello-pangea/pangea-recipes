@@ -1,7 +1,7 @@
 import multipart, { type MultipartFile } from '@fastify/multipart';
 import { prisma } from '@repo/database';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { getFileUrl, uploadFile } from '../../lib/s3.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
 import { verifySession } from '../auth/verifySession.ts';

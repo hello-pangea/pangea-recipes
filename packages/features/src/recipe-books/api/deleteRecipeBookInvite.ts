@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { noContent } from '../../lib/noContent.js';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';

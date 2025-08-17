@@ -10,10 +10,11 @@ import {
   MenuItem,
 } from '@mui/material';
 import {
+  getRecipeBookQueryOptions,
   useDeleteRecipeBook,
   useDeleteRecipeBookMember,
-  useRecipeBook,
 } from '@repo/features/recipe-books';
+import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
@@ -33,7 +34,9 @@ export function RecipeBookMoreMenu({
   onDelete,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipeBook } = useRecipeBook({ recipeBookId: recipeBookId });
+  const { data: recipeBook } = useQuery(
+    getRecipeBookQueryOptions(recipeBookId),
+  );
   const deleteRecipeBook = useDeleteRecipeBook();
   const open = Boolean(anchorEl);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);

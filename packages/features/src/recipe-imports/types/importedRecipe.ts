@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { nutritionSchema } from '../../recipes/types/nutrition.js';
 import { importedIngredientSchema } from './importedIngredient.js';
 

@@ -25,7 +25,7 @@ import { Dashboard } from '@uppy/react';
 import XHR from '@uppy/xhr-upload';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const formSchema = z.object({
   name: z.string(),

@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useState } from 'react';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { authClient } from './authClient';
 import { useSignIn } from './useSignIn';
 

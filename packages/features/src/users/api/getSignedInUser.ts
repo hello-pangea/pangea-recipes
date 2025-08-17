@@ -1,8 +1,7 @@
 import { queryOptions, useQuery } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import { userSchema } from '../types/user.js';
 
 export const getSignedInUserContract = defineContract('users/signed-in-user', {
@@ -26,13 +25,6 @@ export function getSignedInUserQueryOptions() {
   });
 }
 
-interface Options {
-  queryConfig?: QueryConfig<typeof getSignedInUserQueryOptions>;
-}
-
-export function useSignedInUser({ queryConfig }: Options = {}) {
-  return useQuery({
-    ...getSignedInUserQueryOptions(),
-    ...queryConfig,
-  });
+export function useSignedInUser() {
+  return useQuery(getSignedInUserQueryOptions());
 }

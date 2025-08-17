@@ -1,5 +1,5 @@
 import type { Decimal } from 'decimal.js';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { tagSchema } from '../../common/tag.js';
 import { nutritionSchema } from './nutrition.js';
 
@@ -13,8 +13,8 @@ export const recipeSchema = z
     prepTime: z.number().nullable(),
     cookTime: z.number().nullable(),
     servings: z.number().nullable(),
-    tryLater: z.boolean(),
-    favorite: z.boolean(),
+    tryLaterAt: z.coerce.date().nullable(),
+    favoritedAt: z.coerce.date().nullable(),
     websiteSource: z
       .object({
         title: z.string().nullable(),

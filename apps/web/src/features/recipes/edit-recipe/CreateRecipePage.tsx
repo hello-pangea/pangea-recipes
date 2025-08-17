@@ -19,10 +19,11 @@ import {
 } from '@mui/material';
 import { emptyStringToNull, emptyStringToUndefined } from '@repo/features';
 import {
+  listRecipesQueryOptions,
   useCreateRecipe,
-  useRecipes,
   useUpdateRecipe,
 } from '@repo/features/recipes';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
@@ -44,7 +45,7 @@ interface Props {
 }
 
 export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
-  const { importFromUrl } = useSearch({ strict: false });
+  const { importFromUrl, tryLater, favorite } = useSearch({ strict: false });
   const [importDialogOpen, setImportDialogOpen] = useState(
     importFromUrl ?? false,
   );
@@ -61,7 +62,8 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
         cookTime: '',
         servings: '',
         image: null,
-        tryLater: false,
+        tryLater: tryLater ?? false,
+        favorite: favorite ?? false,
         ingredientGroups: [
           {
             id: null,
@@ -120,6 +122,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             cookTime: parsed.cookTime,
             servings: parsed.servings ? parseInt(parsed.servings) : null,
             tryLater: parsed.tryLater,
+            favorite: parsed.favorite,
             ingredientGroups: parsed.ingredientGroups,
             instructionGroups: parsed.instructionGroups.map((ig) => ({
               id: ig.id ?? undefined,
@@ -141,6 +144,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             servings: parsed.servings ? parseInt(parsed.servings) : undefined,
             imageIds: parsed.image ? [parsed.image.id] : undefined,
             tryLater: parsed.tryLater,
+            favorite: parsed.favorite,
             ingredientGroups: parsed.ingredientGroups,
             instructionGroups: parsed.instructionGroups,
             nutrition: parsed.nutrition,
@@ -151,11 +155,11 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
   });
   const userId = useSignedInUserId();
 
-  const { data: recipes } = useRecipes({
-    options: {
-      userId: userId,
-    },
-  });
+  const { data: recipes } = useQuery(
+    listRecipesQueryOptions({
+      userId,
+    }),
+  );
 
   const createRecipe = useCreateRecipe({
     mutationConfig: {
@@ -346,6 +350,27 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           name="tryLater"
           children={({ state, handleChange, handleBlur }) => {
             return (
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      onChange={(e) => {
+                        handleChange(e.target.checked);
+                      }}
+                      onBlur={handleBlur}
+                      checked={state.value}
+                    />
+                  }
+                  label="Try later"
+                />
+              </FormGroup>
+            );
+          }}
+        />
+        <form.Field
+          name="favorite"
+          children={({ state, handleChange, handleBlur }) => {
+            return (
               <FormGroup
                 sx={{
                   mb: 2,
@@ -361,7 +386,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
                       checked={state.value}
                     />
                   }
-                  label="Try later"
+                  label="Favorite"
                 />
               </FormGroup>
             );

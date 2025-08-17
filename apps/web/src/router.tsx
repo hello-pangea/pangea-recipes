@@ -1,7 +1,7 @@
 import { updateApiOptions } from '@repo/features';
 import { QueryClient } from '@tanstack/react-query';
 import { createRouter as createTanStackRouter } from '@tanstack/react-router';
-import { routerWithQueryClient } from '@tanstack/react-router-with-query';
+import { setupRouterSsrQueryIntegration } from '@tanstack/react-router-ssr-query';
 import { HTTPError } from 'ky';
 import { NotFoundPage } from './components/NotFoundPage';
 import { config } from './config/config';
@@ -47,16 +47,18 @@ export function createRouter() {
     },
   });
 
-  const router = routerWithQueryClient(
-    createTanStackRouter({
-      routeTree,
-      context: { queryClient, userId: null },
-      defaultPreload: 'intent',
-      defaultNotFoundComponent: () => <NotFoundPage />,
-      scrollRestoration: true,
-    }),
+  const router = createTanStackRouter({
+    routeTree,
+    context: { queryClient, userId: null },
+    defaultPreload: 'intent',
+    defaultNotFoundComponent: () => <NotFoundPage />,
+    scrollRestoration: true,
+  });
+
+  setupRouterSsrQueryIntegration({
+    router,
     queryClient,
-  );
+  });
 
   router.subscribe('onResolved', ({ fromLocation }) => {
     // https://developers.google.com/analytics/devguides/collection/ga4/single-page-applications?implementation=event#custom_event_implementation

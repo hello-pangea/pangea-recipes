@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const tagSchema = z.object({
   id: z.uuidv4().describe('unique id'),

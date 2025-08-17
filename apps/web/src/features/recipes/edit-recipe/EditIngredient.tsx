@@ -35,10 +35,11 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { numberToFraction } from '@repo/features';
-import { useCanonicalIngredients } from '@repo/features/canonical-ingredients';
+import { listCanonicalIngredientsQueryOptions } from '@repo/features/canonical-ingredients';
 import { defaultUnitOptions } from '@repo/features/units';
 import { useSignedInUser } from '@repo/features/users';
 import { useStore } from '@tanstack/react-form';
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { IngredientNotesButton } from './IngredientNotesButton';
@@ -332,7 +333,9 @@ export const EditIngredientContent = withForm({
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, ingredientGroupIndex, index }) {
     const { data: user } = useSignedInUser();
-    const { data: canonicalIngredients } = useCanonicalIngredients();
+    const { data: canonicalIngredients } = useQuery(
+      listCanonicalIngredientsQueryOptions(),
+    );
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     return (

@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { createTagDtoSchema } from '../../common/tag.js';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
@@ -18,11 +18,12 @@ export const createRecipeContract = defineContract('recipes', {
         servings: true,
         usesRecipes: true,
         nutrition: true,
-        tryLater: true,
       })
       .partial().shape,
     imageIds: z.array(z.uuidv4()).optional(),
     websitePageId: z.uuidv4().optional(),
+    tryLater: z.boolean().optional(),
+    favorite: z.boolean().optional(),
     ingredientGroups: z.array(
       z.object({
         name: z.string().min(1).nullable().optional(),

@@ -10,7 +10,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { authClient } from './authClient';
 
 const formSchema = z.object({

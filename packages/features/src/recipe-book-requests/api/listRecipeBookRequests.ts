@@ -1,8 +1,7 @@
-import { queryOptions, useQuery } from '@tanstack/react-query';
-import { z } from 'zod/v4';
+import { queryOptions } from '@tanstack/react-query';
+import { z } from 'zod';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
-import type { QueryConfig } from '../../lib/tanstackQuery.js';
 import { recipeBookRequestSchema } from '../types/recipeBookRequest.js';
 
 export const listRecipeBookRequestsContract = defineContract(
@@ -32,20 +31,5 @@ export function listRecipeBookRequestsQueryOptions(options: {
   return queryOptions({
     queryKey: ['recipeBookRequests', options],
     queryFn: () => listRecipeBookRequests({ querystring: options }),
-  });
-}
-
-interface Options {
-  queryConfig?: QueryConfig<typeof listRecipeBookRequestsQueryOptions>;
-  options: {
-    userId: string;
-    recipeBookId: string;
-  };
-}
-
-export function useRecipeBookRequests({ queryConfig, options }: Options) {
-  return useQuery({
-    ...listRecipeBookRequestsQueryOptions(options),
-    ...queryConfig,
   });
 }
