@@ -1,11 +1,7 @@
 # Adapted from the Turborepo example at
 # https://github.com/vercel/turbo/blob/main/examples/with-docker/apps/api/Dockerfile
 
-FROM node:22-bookworm-slim AS base
-
-# Install openssl and clean up in a single layer
-# Required for prisma
-RUN apt-get update -y && apt-get install -y --no-install-recommends openssl && rm -rf /var/lib/apt/lists/*
+FROM node:22-trixie-slim AS base
 
 # Playwright vars
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
