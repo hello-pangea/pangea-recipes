@@ -8,9 +8,9 @@ import {
   useTheme,
 } from '@mui/material';
 import Uppy, { type Meta } from '@uppy/core';
-import '@uppy/core/dist/style.min.css';
-import '@uppy/dashboard/dist/style.min.css';
-import { Dashboard } from '@uppy/react';
+import '@uppy/core/css/style.min.css';
+import '@uppy/dashboard/css/style.min.css';
+import Dashboard from '@uppy/react/dashboard';
 import XHR from '@uppy/xhr-upload';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
