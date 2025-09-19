@@ -29,9 +29,10 @@ export function useDeleteRecipe({ mutationConfig }: Options = {}) {
   const { onSuccess, onMutate, ...restConfig } = mutationConfig ?? {};
 
   return useMutation({
-    onMutate: (args) => {
+    onMutate: (...args) => {
+      const input = args[0];
       const recipe = queryClient.getQueryData(
-        getRecipeQueryOptions(args.params.id).queryKey,
+        getRecipeQueryOptions(input.params.id).queryKey,
       );
 
       if (recipe) {
@@ -40,12 +41,12 @@ export function useDeleteRecipe({ mutationConfig }: Options = {}) {
             userId: recipe.userId,
           }).queryKey,
           (oldRecipes) => {
-            return oldRecipes?.filter((r) => r.id !== args.params.id) ?? [];
+            return oldRecipes?.filter((r) => r.id !== input.params.id) ?? [];
           },
         );
       }
 
-      onMutate?.(args);
+      onMutate?.(...args);
     },
     onSuccess: (...args) => {
       void queryClient.invalidateQueries({

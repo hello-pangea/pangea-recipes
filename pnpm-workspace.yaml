@@ -12,3 +12,5 @@ onlyBuiltDependencies:
   - prisma
   - sharp
   - vue-demi
+
+minimumReleaseAge: 720

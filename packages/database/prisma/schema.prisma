@@ -6,7 +6,7 @@ datasource db {
 generator client {
   provider               = "prisma-client"
   output                 = "../src/generated-prisma-client"
-  previewFeatures        = ["queryCompiler", "driverAdapters", "relationJoins"]
+  previewFeatures        = ["relationJoins"]
   runtime                = "nodejs"
   moduleFormat           = "esm"
   generatedFileExtension = "ts"

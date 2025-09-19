@@ -20,17 +20,17 @@
     "preview": "email dev --port 3002 --dir src/emails"
   },
   "dependencies": {
-    "@react-email/components": "^0.5.1",
-    "@react-email/render": "^1.2.1",
+    "@react-email/components": "^0.5.3",
+    "@react-email/render": "^1.2.3",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.18.0",
-    "@types/react": "^19.1.12",
-    "react-email": "^4.2.8",
+    "@types/node": "^22.18.6",
+    "@types/react": "^19.1.13",
+    "react-email": "^4.2.11",
     "typescript": "~5.9.2"
   }
 }
