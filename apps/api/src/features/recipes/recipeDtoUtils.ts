@@ -80,6 +80,7 @@ export async function mapToRecipeDto(recipeData: RecipeData): Promise<Recipe> {
                 .map(async (i) => {
                   return {
                     ...i,
+                    quantity: i.quantity?.toNumber() ?? null,
                     icon_url: i.canonicalIngredient?.icon?.key
                       ? await getFileUrl({
                           key: i.canonicalIngredient.icon.key,

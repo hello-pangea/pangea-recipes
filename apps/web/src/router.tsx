@@ -8,7 +8,7 @@ import { config } from './config/config';
 import { routeTree } from './routeTree.gen';
 import { getServerHeaders } from './utils/getServerHeaders';
 
-export function createRouter() {
+export function getRouter() {
   const isBrowser = typeof window !== 'undefined';
 
   updateApiOptions({
@@ -20,7 +20,7 @@ export function createRouter() {
             const headers = await getServerHeaders();
 
             for (const [key, value] of Object.entries(headers)) {
-              if (value !== undefined && typeof value === 'string') {
+              if (value && typeof value === 'string') {
                 request.headers.set(key, value);
               }
             }
@@ -78,10 +78,4 @@ export function createRouter() {
   });
 
   return router;
-}
-
-declare module '@tanstack/react-router' {
-  interface Register {
-    router: ReturnType<typeof createRouter>;
-  }
 }

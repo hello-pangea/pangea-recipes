@@ -1,4 +1,3 @@
-import type { Decimal } from 'decimal.js';
 import { z } from 'zod';
 import { tagSchema } from '../../common/tag.js';
 import { nutritionSchema } from './nutrition.js';
@@ -38,7 +37,7 @@ export const recipeSchema = z
           z.object({
             id: z.string(),
             name: z.string(),
-            quantity: z.custom<Decimal>().nullable(), // z.custom for Decimal
+            quantity: z.number().nullable(),
             unit: z.string().nullable(),
             notes: z.string().nullable(),
             icon_url: z.string().nullable(),
