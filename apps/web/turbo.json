@@ -3,7 +3,7 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "outputs": [".nitro/**", ".tanstack/**", ".vercel/**"]
+      "outputs": [".nitro/**", ".tanstack/**", ".vercel/**", ".output/**"]
     },
     "lint:type-check": {
       "outputs": ["node_modules/.tmp/**"]

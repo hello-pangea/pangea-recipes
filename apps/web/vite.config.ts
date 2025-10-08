@@ -7,7 +7,9 @@ import { defineConfig } from 'vite';
 export default defineConfig({
   plugins: [
     tanstackStart(),
-    nitroV2Plugin(),
+    nitroV2Plugin({
+      config: { preset: 'node-server', compatibilityDate: '2025-10-07' },
+    }),
     viteReact({
       babel: {
         plugins: [['babel-plugin-react-compiler']],
