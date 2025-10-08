@@ -216,3 +216,4 @@ generated-prisma-client
 .nitro
 .vercel
 .tanstack
+.output
