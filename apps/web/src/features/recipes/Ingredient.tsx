@@ -49,7 +49,7 @@ export function Ingredient({ ingredient, multiplier }: Props) {
               fontWeight: 'bold',
             }}
           >
-            {numberToFraction(Number(ingredient.quantity) * (multiplier ?? 1))}
+            {numberToFraction(ingredient.quantity * (multiplier ?? 1))}
           </Typography>
         )}{' '}
         {ingredient.unit

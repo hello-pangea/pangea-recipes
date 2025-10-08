@@ -47,7 +47,9 @@ export function useUpdateUser({ mutationConfig }: Options = {}) {
 
       void onSuccess?.(...args);
     },
-    onMutate: (variables) => {
+    onMutate: (...args) => {
+      const variables = args[0];
+
       queryClient.setQueryData(
         getSignedInUserQueryOptions().queryKey,
         (oldUser) => {
@@ -59,7 +61,7 @@ export function useUpdateUser({ mutationConfig }: Options = {}) {
         },
       );
 
-      void onMutate?.(variables);
+      void onMutate?.(...args);
     },
     ...restConfig,
     mutationFn: updateUser,

@@ -3,13 +3,14 @@ packages:
   - packages/*
 
 onlyBuiltDependencies:
+  - '@parcel/watcher'
   - '@prisma/client'
   - '@prisma/engines'
   - '@sentry-internal/node-cpu-profiler'
-  - '@swc/core'
-  - '@tailwindcss/oxide'
   - esbuild
   - playwright-chromium
   - prisma
   - sharp
   - vue-demi
+
+minimumReleaseAge: 720
