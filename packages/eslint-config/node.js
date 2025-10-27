@@ -1,8 +1,8 @@
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 import { config as baseConfig } from './base.js';
 
-export const config = tseslint.config(...baseConfig, {
+export const config = defineConfig(...baseConfig, {
   languageOptions: {
     ecmaVersion: 2023,
     globals: globals.node,

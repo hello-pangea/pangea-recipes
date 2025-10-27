@@ -1,14 +1,14 @@
-import { nitroV2Plugin } from '@tanstack/nitro-v2-vite-plugin';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import viteReact from '@vitejs/plugin-react';
+import { nitro } from 'nitro/vite';
 import path from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
   plugins: [
     tanstackStart(),
-    nitroV2Plugin({
-      config: { preset: 'node-server', compatibilityDate: '2025-10-07' },
+    nitro({
+      config: { preset: 'node-server', compatibilityDate: '2025-10-27' },
     }),
     viteReact({
       babel: {
