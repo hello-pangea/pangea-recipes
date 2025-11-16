@@ -30,6 +30,7 @@ export default defineConfig({
       '@atlaskit/pragmatic-drag-and-drop-hitbox',
       '@mui/*',
       'clsx',
+      'notistack',
     ],
   },
 });
