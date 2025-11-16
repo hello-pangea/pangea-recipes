@@ -9,4 +9,5 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
-export const config = envSchema.parse(import.meta.env);
+// eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+export const config = envSchema.parse(import.meta.env ?? process.env);
