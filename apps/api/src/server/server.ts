@@ -91,25 +91,27 @@ export async function createServer() {
     };
   });
 
-  fastify.setErrorHandler((error, _request, reply) => {
-    console.error('Error:', error);
+  fastify.setErrorHandler(
+    (error: Error & { statusCode?: number }, _request, reply) => {
+      console.error('Error:', error);
 
-    const statusCode = error.statusCode;
+      const statusCode = error.statusCode;
 
-    if (!statusCode || statusCode >= 500 || statusCode < 400) {
-      return reply.code(500).send({
-        error: 'Internal server error',
-        message: 'Something went wrong',
-        statusCode: 500,
-      });
-    } else {
-      return reply.code(statusCode).send({
-        error: error.name,
-        message: error.message,
-        statusCode: statusCode,
-      });
-    }
-  });
+      if (!statusCode || statusCode >= 500 || statusCode < 400) {
+        return reply.code(500).send({
+          error: 'Internal server error',
+          message: 'Something went wrong',
+          statusCode: 500,
+        });
+      } else {
+        return reply.code(statusCode).send({
+          error: error.name,
+          message: error.message,
+          statusCode: statusCode,
+        });
+      }
+    },
+  );
 
   // -
   // Services
