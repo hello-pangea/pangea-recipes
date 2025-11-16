@@ -9,5 +9,10 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
+console.log('envs 1', import.meta.env);
+console.log('envs 2', process.env);
+
 // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
-export const config = envSchema.parse(import.meta.env ?? process.env);
+export const config = envSchema.parse(
+  import.meta.env['VITE_API_URL'] ? import.meta.env : process.env,
+);
