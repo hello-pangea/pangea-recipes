@@ -4,7 +4,7 @@ const envSchema = z.object({
   VITE_API_URL: z.string(),
   VITE_GOOGLE_TAG_ID: z.string().optional(),
   VITE_GOOGLE_TAG_CONVERSION_DESTINATION: z.string().optional(),
-  PROD: z.boolean(),
+  PROD: z.boolean().catch(false),
 });
 
 export type Env = z.infer<typeof envSchema>;
