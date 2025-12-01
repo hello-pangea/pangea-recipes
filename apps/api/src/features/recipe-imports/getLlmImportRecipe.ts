@@ -5,6 +5,7 @@ import {
 } from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@repo/database';
+import { zodTextFormat } from 'openai/helpers/zod';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 import { z } from 'zod';
@@ -156,14 +157,9 @@ export async function getLlmImportRecipe(urlString: string) {
     instructions:
       'Parse the given recipe into a structured recipe object. Estimate nutrition info if not provided.',
     input: recipeMarkdown,
-    model: 'gpt-4.1-2025-04-14',
+    model: 'gpt-5.1-2025-11-13',
     text: {
-      format: {
-        type: 'json_schema',
-        name: 'recipe',
-        strict: true,
-        schema: z.toJSONSchema(llmRecipeSchema, { target: 'draft-7' }),
-      },
+      format: zodTextFormat(llmRecipeSchema, 'recipe'),
     },
   });
 
