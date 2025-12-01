@@ -92,10 +92,10 @@ export async function createServer() {
     };
   });
 
-  fastify.setErrorHandler((error, _request, reply) => {
+  fastify.setErrorHandler((error: Error & {statusCode?: number}, _request, reply) => {
     console.error('Error:', error);
 
-    const statusCode = error.statusCode;
+    const statusCode = error.statusCode
 
     if (!statusCode || statusCode >= 500 || statusCode < 400) {
       return reply.code(500).send({

@@ -19,8 +19,10 @@ const formSchema = z.object({
 
 export function ForgotPasswordPage() {
   const sendEmail = useMutation({
-    mutationFn: (data: Parameters<typeof authClient.forgetPassword>[0]) => {
-      return authClient.forgetPassword(data, {
+    mutationFn: (
+      data: Parameters<typeof authClient.requestPasswordReset>[0],
+    ) => {
+      return authClient.requestPasswordReset(data, {
         onError: (ctx) => {
           throw ctx.error;
         },

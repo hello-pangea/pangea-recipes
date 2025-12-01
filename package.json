@@ -25,13 +25,13 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "@eslint/js": "^9.37.0",
-    "eslint": "^9.37.0",
-    "prettier": "^3.6.2",
-    "sort-package-json": "^3.4.0",
-    "turbo": "^2.5.8"
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "prettier": "^3.7.3",
+    "sort-package-json": "^3.5.0",
+    "turbo": "^2.6.1"
   },
-  "packageManager": "pnpm@10.18.1",
+  "packageManager": "pnpm@10.24.0",
   "engines": {
     "node": ">=22.18.0"
   }
