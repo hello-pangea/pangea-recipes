@@ -24,7 +24,7 @@
     "@mui/icons-material": "^7.3.5",
     "@mui/material": "^7.3.5",
     "@repo/features": "workspace:*",
-    "@scalar/api-reference-react": "^0.7.55",
+    "@scalar/api-reference-react": "^0.8.6",
     "@tanstack/nitro-v2-vite-plugin": "^1.139.0",
     "@tanstack/react-form": "^1.26.0",
     "@tanstack/react-query": "^5.90.11",
