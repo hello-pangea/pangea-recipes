@@ -1,13 +1,14 @@
 import pluginReact from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
+import { defineConfig } from 'eslint/config';
 import globals from 'globals';
-import tseslint from 'typescript-eslint';
 import { config as baseConfig } from './base.js';
 
-export const config = tseslint.config(
+export const config = defineConfig(
   ...baseConfig,
   pluginReact.configs.flat.recommended,
+  reactHooks.configs.flat.recommended,
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -57,16 +58,6 @@ export const config = tseslint.config(
         'warn',
         { allowConstantExport: true },
       ],
-    },
-  },
-  {
-    plugins: {
-      'react-hooks': reactHooks,
-    },
-    settings: { react: { version: 'detect' } },
-    rules: {
-      ...reactHooks.configs['recommended-latest'].rules,
-      // React scope no longer necessary with new JSX transform.
       'react/react-in-jsx-scope': 'off',
     },
   },
