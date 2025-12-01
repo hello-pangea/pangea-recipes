@@ -50,7 +50,7 @@
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^22.19.1",
+    "@types/node": "^24.10.1",
     "@types/turndown": "^5.0.6",
     "@types/user-agents": "^1.0.4",
     "pino-pretty": "^13.1.2",

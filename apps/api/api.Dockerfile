@@ -1,7 +1,7 @@
 # Adapted from the Turborepo example at
 # https://github.com/vercel/turbo/blob/main/examples/with-docker/apps/api/Dockerfile
 
-FROM node:22-trixie-slim AS base
+FROM node:24-trixie-slim AS base
 
 # Playwright vars
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
