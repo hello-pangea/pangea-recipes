@@ -25,7 +25,7 @@
     "@fastify/rate-limit": "^10.3.0",
     "@fastify/sensible": "^6.0.3",
     "@fastify/swagger": "^9.6.1",
-    "@prisma/instrumentation": "^6.19.0",
+    "@prisma/instrumentation": "^7.0.1",
     "@repo/database": "workspace:*",
     "@repo/email": "workspace:*",
     "@repo/features": "workspace:*",

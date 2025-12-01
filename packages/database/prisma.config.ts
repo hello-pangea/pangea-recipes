@@ -1,7 +1,10 @@
 import 'dotenv/config';
 import path from 'node:path';
-import { defineConfig } from 'prisma/config';
+import { defineConfig, env } from 'prisma/config';
 
 export default defineConfig({
   schema: path.join('prisma'),
+  datasource: {
+    url: env('PG_DATABASE_URL'),
+  },
 });
