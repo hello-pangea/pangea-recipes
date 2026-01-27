@@ -36,8 +36,10 @@ import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
-interface Props
-  extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
+interface Props extends Pick<
+  MenuProps,
+  'anchorEl' | 'anchorReference' | 'anchorPosition'
+> {
   recipe: RecipeProjected;
   onClose: () => void;
   onDelete?: () => void;
