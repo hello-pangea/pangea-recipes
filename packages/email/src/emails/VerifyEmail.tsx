@@ -18,9 +18,7 @@ interface EmailProps {
   url: string;
 }
 
-export function VerifyEmail({
-  url = 'https://pangearecipes.com',
-}: EmailProps): ReactNode {
+export function VerifyEmail({ url }: EmailProps): ReactNode {
   const previewText = `Verify your email address`;
 
   return (

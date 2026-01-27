@@ -20,8 +20,8 @@ interface EmailProps {
 }
 
 export function InviteToRecipeBook({
-  url = 'https://pangearecipes.com',
-  recipeBookName = 'Amazing Recipes',
+  url,
+  recipeBookName,
 }: EmailProps): ReactNode {
   const previewText = `Invite to recipe book "${recipeBookName}"`;
 

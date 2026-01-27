@@ -22,10 +22,10 @@ interface EmailProps {
 }
 
 export function RequestToJoinRecipeBookEmail({
-  recipeBookName = 'Amazing Recipes',
-  managerLink = 'https://pangearecipes.com',
+  recipeBookName,
+  managerLink,
   ownerName = 'Wolfgang',
-  requesterName = 'Gordon',
+  requesterName,
 }: EmailProps): ReactNode {
   const previewText = `Share a recipe book? ${requesterName} is requesting access to ${recipeBookName}.`;
 

@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     tanstackStart(),
     nitroV2Plugin({
-      config: { preset: 'node-server', compatibilityDate: '2025-10-07' },
+      config: { preset: 'node-server', compatibilityDate: '2026-01-27' },
     }),
     viteReact({
       babel: {

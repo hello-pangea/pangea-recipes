@@ -18,9 +18,7 @@ interface EmailProps {
   url: string;
 }
 
-export function ResetPassword({
-  url = 'https://pangearecipes.com',
-}: EmailProps): ReactNode {
+export function ResetPassword({ url }: EmailProps): ReactNode {
   const previewText = `Reset your password`;
 
   return (

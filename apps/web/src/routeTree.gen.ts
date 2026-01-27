@@ -37,14 +37,8 @@ import { Route as AppAuthRecipesRecipeIdEditRouteImport } from './routes/app/_au
 import { Route as AppAuthRecipeBooksRecipeBookIdEditRouteImport } from './routes/app/_auth/recipe-books_.$recipeBookId.edit'
 import { Route as AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport } from './routes/app/_auth/canonical-ingredients_.$canonicalIngredientId.edit'
 
-const AppRouteImport = createFileRoute('/app')()
 const IndexLazyRouteImport = createFileRoute('/')()
 
-const AppRoute = AppRouteImport.update({
-  id: '/app',
-  path: '/app',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
   id: '/terms-of-service',
   path: '/terms-of-service',
@@ -91,19 +85,20 @@ const IndexLazyRoute = IndexLazyRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
 const AppIndexRoute = AppIndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => AppRoute,
+  id: '/app/',
+  path: '/app/',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppAuthRouteRoute = AppAuthRouteRouteImport.update({
-  id: '/_auth',
-  getParentRoute: () => AppRoute,
+  id: '/app/_auth',
+  path: '/app',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AppSharedRecipesRecipeIdRoute =
   AppSharedRecipesRecipeIdRouteImport.update({
-    id: '/shared-recipes/$recipeId',
-    path: '/shared-recipes/$recipeId',
-    getParentRoute: () => AppRoute,
+    id: '/app/shared-recipes/$recipeId',
+    path: '/app/shared-recipes/$recipeId',
+    getParentRoute: () => rootRouteImport,
   } as any)
 const AppAuthTryLaterRoute = AppAuthTryLaterRouteImport.update({
   id: '/try-later',
@@ -203,9 +198,9 @@ export interface FileRoutesByFullPath {
   '/app/recipe-books/new': typeof AppAuthRecipeBooksNewRoute
   '/app/recipes/$recipeId': typeof AppAuthRecipesRecipeIdRoute
   '/app/recipes/new': typeof AppAuthRecipesNewRoute
-  '/app/canonical-ingredients': typeof AppAuthCanonicalIngredientsIndexRoute
-  '/app/recipe-books': typeof AppAuthRecipeBooksIndexRoute
-  '/app/recipes': typeof AppAuthRecipesIndexRoute
+  '/app/canonical-ingredients/': typeof AppAuthCanonicalIngredientsIndexRoute
+  '/app/recipe-books/': typeof AppAuthRecipeBooksIndexRoute
+  '/app/recipes/': typeof AppAuthRecipesIndexRoute
   '/app/canonical-ingredients/$canonicalIngredientId/edit': typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute
   '/app/recipe-books/$recipeBookId/edit': typeof AppAuthRecipeBooksRecipeBookIdEditRoute
   '/app/recipes/$recipeId/edit': typeof AppAuthRecipesRecipeIdEditRoute
@@ -248,7 +243,6 @@ export interface FileRoutesById {
   '/sign-in': typeof SignInRoute
   '/sign-up': typeof SignUpRoute
   '/terms-of-service': typeof TermsOfServiceRoute
-  '/app': typeof AppRouteWithChildren
   '/app/_auth': typeof AppAuthRouteRouteWithChildren
   '/app/': typeof AppIndexRoute
   '/app/_auth/favorites': typeof AppAuthFavoritesRoute
@@ -290,9 +284,9 @@ export interface FileRouteTypes {
     | '/app/recipe-books/new'
     | '/app/recipes/$recipeId'
     | '/app/recipes/new'
-    | '/app/canonical-ingredients'
-    | '/app/recipe-books'
-    | '/app/recipes'
+    | '/app/canonical-ingredients/'
+    | '/app/recipe-books/'
+    | '/app/recipes/'
     | '/app/canonical-ingredients/$canonicalIngredientId/edit'
     | '/app/recipe-books/$recipeBookId/edit'
     | '/app/recipes/$recipeId/edit'
@@ -334,7 +328,6 @@ export interface FileRouteTypes {
     | '/sign-in'
     | '/sign-up'
     | '/terms-of-service'
-    | '/app'
     | '/app/_auth'
     | '/app/'
     | '/app/_auth/favorites'
@@ -364,18 +357,13 @@ export interface RootRouteChildren {
   SignInRoute: typeof SignInRoute
   SignUpRoute: typeof SignUpRoute
   TermsOfServiceRoute: typeof TermsOfServiceRoute
-  AppRoute: typeof AppRouteWithChildren
+  AppAuthRouteRoute: typeof AppAuthRouteRouteWithChildren
+  AppIndexRoute: typeof AppIndexRoute
+  AppSharedRecipesRecipeIdRoute: typeof AppSharedRecipesRecipeIdRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/app': {
-      id: '/app'
-      path: '/app'
-      fullPath: '/app'
-      preLoaderRoute: typeof AppRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms-of-service': {
       id: '/terms-of-service'
       path: '/terms-of-service'
@@ -441,24 +429,24 @@ declare module '@tanstack/react-router' {
     }
     '/app/': {
       id: '/app/'
-      path: '/'
+      path: '/app'
       fullPath: '/app/'
       preLoaderRoute: typeof AppIndexRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof rootRouteImport
     }
     '/app/_auth': {
       id: '/app/_auth'
       path: '/app'
       fullPath: '/app'
       preLoaderRoute: typeof AppAuthRouteRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof rootRouteImport
     }
     '/app/shared-recipes/$recipeId': {
       id: '/app/shared-recipes/$recipeId'
-      path: '/shared-recipes/$recipeId'
+      path: '/app/shared-recipes/$recipeId'
       fullPath: '/app/shared-recipes/$recipeId'
       preLoaderRoute: typeof AppSharedRecipesRecipeIdRouteImport
-      parentRoute: typeof AppRoute
+      parentRoute: typeof rootRouteImport
     }
     '/app/_auth/try-later': {
       id: '/app/_auth/try-later'
@@ -484,21 +472,21 @@ declare module '@tanstack/react-router' {
     '/app/_auth/recipes/': {
       id: '/app/_auth/recipes/'
       path: '/recipes'
-      fullPath: '/app/recipes'
+      fullPath: '/app/recipes/'
       preLoaderRoute: typeof AppAuthRecipesIndexRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
     '/app/_auth/recipe-books/': {
       id: '/app/_auth/recipe-books/'
       path: '/recipe-books'
-      fullPath: '/app/recipe-books'
+      fullPath: '/app/recipe-books/'
       preLoaderRoute: typeof AppAuthRecipeBooksIndexRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
     '/app/_auth/canonical-ingredients/': {
       id: '/app/_auth/canonical-ingredients/'
       path: '/canonical-ingredients'
-      fullPath: '/app/canonical-ingredients'
+      fullPath: '/app/canonical-ingredients/'
       preLoaderRoute: typeof AppAuthCanonicalIngredientsIndexRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
@@ -601,20 +589,6 @@ const AppAuthRouteRouteWithChildren = AppAuthRouteRoute._addFileChildren(
   AppAuthRouteRouteChildren,
 )
 
-interface AppRouteChildren {
-  AppAuthRouteRoute: typeof AppAuthRouteRouteWithChildren
-  AppIndexRoute: typeof AppIndexRoute
-  AppSharedRecipesRecipeIdRoute: typeof AppSharedRecipesRecipeIdRoute
-}
-
-const AppRouteChildren: AppRouteChildren = {
-  AppAuthRouteRoute: AppAuthRouteRouteWithChildren,
-  AppIndexRoute: AppIndexRoute,
-  AppSharedRecipesRecipeIdRoute: AppSharedRecipesRecipeIdRoute,
-}
-
-const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexLazyRoute: IndexLazyRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
@@ -625,7 +599,9 @@ const rootRouteChildren: RootRouteChildren = {
   SignInRoute: SignInRoute,
   SignUpRoute: SignUpRoute,
   TermsOfServiceRoute: TermsOfServiceRoute,
-  AppRoute: AppRouteWithChildren,
+  AppAuthRouteRoute: AppAuthRouteRouteWithChildren,
+  AppIndexRoute: AppIndexRoute,
+  AppSharedRecipesRecipeIdRoute: AppSharedRecipesRecipeIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
