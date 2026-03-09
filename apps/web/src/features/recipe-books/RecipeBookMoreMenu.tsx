@@ -2,13 +2,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import GroupAddRoundedIcon from '@mui/icons-material/GroupAddRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-import {
-  Divider,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from '@mui/material';
+import { Divider, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import {
   getRecipeBookQueryOptions,
   useDeleteRecipeBook,
@@ -27,24 +21,15 @@ interface Props {
   onDelete?: () => void;
 }
 
-export function RecipeBookMoreMenu({
-  recipeBookId,
-  anchorEl,
-  onClose,
-  onDelete,
-}: Props) {
+export function RecipeBookMoreMenu({ recipeBookId, anchorEl, onClose, onDelete }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipeBook } = useQuery(
-    getRecipeBookQueryOptions(recipeBookId),
-  );
+  const { data: recipeBook } = useQuery(getRecipeBookQueryOptions(recipeBookId));
   const deleteRecipeBook = useDeleteRecipeBook();
   const open = Boolean(anchorEl);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const deleteRecipeBookMember = useDeleteRecipeBookMember();
 
-  const myRole =
-    recipeBook?.members.find((member) => member.userId === userId)?.role ??
-    'viewer';
+  const myRole = recipeBook?.members.find((member) => member.userId === userId)?.role ?? 'viewer';
 
   if (myRole === 'viewer') {
     return (

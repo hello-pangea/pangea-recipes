@@ -1,10 +1,10 @@
-import { Page } from '#src/components/Page';
-import { SearchTextField } from '#src/components/SearchTextField';
 import { useResizeObserver } from '@mantine/hooks';
 import { Box, Grid, Typography } from '@mui/material';
 import { listRecipeBooksQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
+import { Page } from '#src/components/Page';
+import { SearchTextField } from '#src/components/SearchTextField';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipeBooks } from './EmptyRecipeBooks';
 import { RecipeBookCard } from './RecipeBookCard';
@@ -43,9 +43,7 @@ export function RecipeBooksPage() {
       >
         My Recipe Books
       </Typography>
-      <Box
-        sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
-      >
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}>
         <SearchTextField
           value={search}
           onChange={setSearch}

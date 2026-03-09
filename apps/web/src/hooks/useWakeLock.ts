@@ -31,15 +31,11 @@ export const useWakeLock = ({
     async (type: WakeLockType = 'screen') => {
       const isWakeLockAlreadyDefined = wakeLock.current != null;
       if (!isSupported) {
-        warn(
-          "Calling the `request` function has no effect, Wake Lock Screen API isn't supported",
-        );
+        warn("Calling the `request` function has no effect, Wake Lock Screen API isn't supported");
         return;
       }
       if (isWakeLockAlreadyDefined) {
-        warn(
-          'Calling `request` multiple times without `release` has no effect',
-        );
+        warn('Calling `request` multiple times without `release` has no effect');
         return;
       }
 
@@ -66,9 +62,7 @@ export const useWakeLock = ({
   const release = React.useCallback(async () => {
     const isWakeLockUndefined = wakeLock.current === null;
     if (!isSupported) {
-      warn(
-        "Calling the `release` function has no effect, Wake Lock Screen API isn't supported",
-      );
+      warn("Calling the `release` function has no effect, Wake Lock Screen API isn't supported");
       return;
     }
 
@@ -101,10 +95,7 @@ export const useWakeLock = ({
 
       document.addEventListener('visibilitychange', handleVisibilityChange);
       return () => {
-        document.removeEventListener(
-          'visibilitychange',
-          handleVisibilityChange,
-        );
+        document.removeEventListener('visibilitychange', handleVisibilityChange);
       };
     }
     return undefined;

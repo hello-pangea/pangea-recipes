@@ -1,7 +1,3 @@
-import { useIsMounted } from '#src/hooks/useIsMounted';
-import { useWakeLock } from '#src/hooks/useWakeLock';
-import { getNumberFromInput } from '#src/utils/getNumberFromInput';
-import { secondsToTimeString } from '#src/utils/timeFormatting';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import BlenderRoundedIcon from '@mui/icons-material/BlenderRounded';
 import GroupsRoundedIcon from '@mui/icons-material/GroupsRounded';
@@ -33,6 +29,10 @@ import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { useIsMounted } from '#src/hooks/useIsMounted';
+import { useWakeLock } from '#src/hooks/useWakeLock';
+import { getNumberFromInput } from '#src/utils/getNumberFromInput';
+import { secondsToTimeString } from '#src/utils/timeFormatting';
 import { Ingredient } from './Ingredient';
 import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
@@ -46,9 +46,7 @@ interface Props {
 export function Recipe({ readOnly, recipeId }: Props) {
   const { data: recipe } = useSuspenseQuery(getRecipeQueryOptions(recipeId));
   const navigate = useNavigate();
-  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
+  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(null);
   const { enqueueSnackbar } = useSnackbar();
   const {
     isSupported: isWakeLockSupported,
@@ -62,11 +60,8 @@ export function Recipe({ readOnly, recipeId }: Props) {
     },
   });
   const isMounted = useIsMounted();
-  const [servingsModifier, setServingsModifier] = useState(
-    String(recipe.servings ?? 1),
-  );
-  const [servingsAnchorEl, setServingsAnchorEl] =
-    useState<HTMLButtonElement | null>(null);
+  const [servingsModifier, setServingsModifier] = useState(String(recipe.servings ?? 1));
+  const [servingsAnchorEl, setServingsAnchorEl] = useState<HTMLButtonElement | null>(null);
   const servingsMultiplier = recipe.servings
     ? (getNumberFromInput(servingsModifier) ?? 1) / recipe.servings
     : (getNumberFromInput(servingsModifier) ?? 1);
@@ -109,12 +104,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
             }}
           >
             <Stack spacing={0.5} sx={{ alignItems: 'flex-start' }}>
-              {sharedByProfile && (
-                <Chip
-                  size="small"
-                  label={`Shared by ${sharedByProfile.name}`}
-                />
-              )}
+              {sharedByProfile && <Chip size="small" label={`Shared by ${sharedByProfile.name}`} />}
               <Typography variant="h1">{recipe.name}</Typography>
               {recipe.websiteSource && (
                 <Link
@@ -157,20 +147,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
               mb: 2,
             }}
           />
-          <Typography
-            sx={{ maxWidth: 500, mb: { xs: 2, sm: 4 }, whiteSpace: 'pre-wrap' }}
-          >
+          <Typography sx={{ maxWidth: 500, mb: { xs: 2, sm: 4 }, whiteSpace: 'pre-wrap' }}>
             {recipe.description}
           </Typography>
           <Grid container spacing={2} columns={{ xs: 2, sm: 3 }}>
             <Grid size={1}>
               <Stack spacing={1} alignItems={'flex-start'}>
-                <Stack
-                  spacing={1}
-                  direction="row"
-                  alignItems="center"
-                  sx={{ height: 30 }}
-                >
+                <Stack spacing={1} direction="row" alignItems="center" sx={{ height: 30 }}>
                   <GroupsRoundedIcon fontSize="small" />
                   <Typography variant="h3">Servings</Typography>
                   <Button
@@ -277,36 +260,22 @@ export function Recipe({ readOnly, recipeId }: Props) {
             {recipe.prepTime !== null && (
               <Grid size={1}>
                 <Stack spacing={1}>
-                  <Stack
-                    spacing={1}
-                    direction="row"
-                    alignItems="center"
-                    sx={{ height: 30 }}
-                  >
+                  <Stack spacing={1} direction="row" alignItems="center" sx={{ height: 30 }}>
                     <BlenderRoundedIcon fontSize="small" />
                     <Typography variant="h3">Prep Time</Typography>
                   </Stack>
-                  <Typography>
-                    {secondsToTimeString(recipe.prepTime)}
-                  </Typography>
+                  <Typography>{secondsToTimeString(recipe.prepTime)}</Typography>
                 </Stack>
               </Grid>
             )}
             {recipe.cookTime !== null && (
               <Grid size={1}>
                 <Stack spacing={1}>
-                  <Stack
-                    spacing={1}
-                    direction="row"
-                    alignItems="center"
-                    sx={{ height: 30 }}
-                  >
+                  <Stack spacing={1} direction="row" alignItems="center" sx={{ height: 30 }}>
                     <LocalFireDepartmentRoundedIcon fontSize="small" />
                     <Typography variant="h3">Cook Time</Typography>
                   </Stack>
-                  <Typography>
-                    {secondsToTimeString(recipe.cookTime)}
-                  </Typography>
+                  <Typography>{secondsToTimeString(recipe.cookTime)}</Typography>
                 </Stack>
               </Grid>
             )}
@@ -319,8 +288,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
               position: 'relative',
               width: '100%',
               overflow: 'hidden',
-              boxShadow:
-                '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+              boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
             }}
           >
             <img
@@ -399,12 +367,11 @@ export function Recipe({ readOnly, recipeId }: Props) {
           <Stack component={'ol'} spacing={4} sx={{ maxWidth: '500px' }}>
             {recipe.instructionGroups.map((instructionGroup) => (
               <Box component={'li'} key={instructionGroup.id}>
-                {recipe.instructionGroups.length > 1 &&
-                  instructionGroup.name && (
-                    <Typography variant="h3" sx={{ mb: 2 }}>
-                      {instructionGroup.name}
-                    </Typography>
-                  )}
+                {recipe.instructionGroups.length > 1 && instructionGroup.name && (
+                  <Typography variant="h3" sx={{ mb: 2 }}>
+                    {instructionGroup.name}
+                  </Typography>
+                )}
                 <Stack component={'ol'} spacing={1} sx={{ maxWidth: '500px' }}>
                   {instructionGroup.instructions.map((instruction, index) => (
                     <Box component={'li'} key={instruction.id}>

@@ -1,6 +1,3 @@
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
-import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/utils/focusNextInput';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
@@ -18,25 +15,20 @@ import {
   Typography,
 } from '@mui/material';
 import { emptyStringToNull, emptyStringToUndefined } from '@repo/features';
-import {
-  listRecipesQueryOptions,
-  useCreateRecipe,
-  useUpdateRecipe,
-} from '@repo/features/recipes';
+import { listRecipesQueryOptions, useCreateRecipe, useUpdateRecipe } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
+import { useAppForm } from '#src/hooks/form';
+import { focusNextInput } from '#src/utils/focusNextInput';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { EditIngredientGroup } from './EditIngredientGroup';
 import { EditInstructionGroup } from './EditInstructionGroup';
 import { EditNutrition } from './EditNutrition';
 import { ImportRecipeDialog } from './ImportRecipeDialog';
-import {
-  recipeFormOptions,
-  recipeFormSchema,
-  type RecipeFormInputs,
-} from './recipeForm';
+import { recipeFormOptions, recipeFormSchema, type RecipeFormInputs } from './recipeForm';
 import { UploadRecipeImage } from './UploadRecipeImage';
 
 interface Props {
@@ -46,9 +38,7 @@ interface Props {
 
 export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
   const { importFromUrl, tryLater, favorite } = useSearch({ strict: false });
-  const [importDialogOpen, setImportDialogOpen] = useState(
-    importFromUrl ?? false,
-  );
+  const [importDialogOpen, setImportDialogOpen] = useState(importFromUrl ?? false);
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const form = useAppForm({
@@ -217,13 +207,10 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             px: 2,
             py: 1.5,
             borderRadius: 1.5,
-            boxShadow:
-              '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
+            boxShadow: '0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1)',
           }}
         >
-          <Typography variant="h1">
-            {updateRecipeId ? 'Edit recipe' : 'New recipe'}
-          </Typography>
+          <Typography variant="h1">{updateRecipeId ? 'Edit recipe' : 'New recipe'}</Typography>
           <Button
             variant="contained"
             startIcon={<SaveRoundedIcon />}
@@ -276,9 +263,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           <Grid size={{ xs: 12 }}>
             <form.AppField
               name="description"
-              children={(field) => (
-                <field.TextField label="Description" fullWidth multiline />
-              )}
+              children={(field) => <field.TextField label="Description" fullWidth multiline />}
             />
           </Grid>
           <Grid size={{ xs: 6, sm: 4 }}>
@@ -311,9 +296,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
                   }}
                   slotProps={{
                     input: {
-                      endAdornment: (
-                        <InputAdornment position="end">minutes</InputAdornment>
-                      ),
+                      endAdornment: <InputAdornment position="end">minutes</InputAdornment>,
                     },
                   }}
                 />
@@ -336,9 +319,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
                   }}
                   slotProps={{
                     input: {
-                      endAdornment: (
-                        <InputAdornment position="end">minutes</InputAdornment>
-                      ),
+                      endAdornment: <InputAdornment position="end">minutes</InputAdornment>,
                     },
                   }}
                 />
@@ -400,11 +381,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           {(field) => {
             return (
               <>
-                <Stack
-                  direction={'column'}
-                  spacing={2}
-                  sx={{ mb: 2, maxWidth: '750px' }}
-                >
+                <Stack direction={'column'} spacing={2} sx={{ mb: 2, maxWidth: '750px' }}>
                   {field.state.value.map((_, ingredientGroupIndex) => {
                     return (
                       <EditIngredientGroup
@@ -448,11 +425,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           {(field) => {
             return (
               <>
-                <Stack
-                  direction={'column'}
-                  spacing={2}
-                  sx={{ mb: 2, maxWidth: '750px' }}
-                >
+                <Stack direction={'column'} spacing={2} sx={{ mb: 2, maxWidth: '750px' }}>
                   {field.state.value.map((_, instructionGroupIndex) => {
                     return (
                       <EditInstructionGroup
@@ -522,9 +495,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
                     }) ?? []
                   }
                   size="small"
-                  renderInput={(params) => (
-                    <TextField {...params} label="Add required recipe" />
-                  )}
+                  renderInput={(params) => <TextField {...params} label="Add required recipe" />}
                   onChange={(_, value) => {
                     if (value) {
                       field.pushValue({ recipeId: value.id });
@@ -568,20 +539,13 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
           form.setFieldValue('description', importedRecipe.description);
           form.setFieldValue(
             'cookTime',
-            importedRecipe.cookTime
-              ? Math.round(importedRecipe.cookTime / 60).toString()
-              : '',
+            importedRecipe.cookTime ? Math.round(importedRecipe.cookTime / 60).toString() : '',
           );
           form.setFieldValue(
             'prepTime',
-            importedRecipe.prepTime
-              ? Math.round(importedRecipe.prepTime / 60).toString()
-              : '',
+            importedRecipe.prepTime ? Math.round(importedRecipe.prepTime / 60).toString() : '',
           );
-          form.setFieldValue(
-            'servings',
-            importedRecipe.servings?.toString() ?? '',
-          );
+          form.setFieldValue('servings', importedRecipe.servings?.toString() ?? '');
           form.setFieldValue('websitePageId', websitePageId);
           form.setFieldValue(
             'ingredientGroups',
@@ -603,10 +567,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             })),
           );
           form.setFieldValue('usesRecipes', []);
-          form.setFieldValue(
-            'nutrition',
-            importedRecipe.nutrition ?? undefined,
-          );
+          form.setFieldValue('nutrition', importedRecipe.nutrition ?? undefined);
           form.setFieldValue('image', null);
         }}
       />

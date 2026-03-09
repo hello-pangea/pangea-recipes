@@ -8,10 +8,7 @@ import {
   TextField,
   Typography,
 } from '@mui/material';
-import {
-  useImportRecipe,
-  type ImportedRecipe,
-} from '@repo/features/recipe-imports';
+import { useImportRecipe, type ImportedRecipe } from '@repo/features/recipe-imports';
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
@@ -63,9 +60,7 @@ export function ImportRecipeDialog({ open, onClose, onImport }: Props) {
     >
       <DialogTitle>Import recipe</DialogTitle>
       <DialogContent>
-        <Typography sx={{ mb: 2 }}>
-          Paste the url of the recipe you want to import
-        </Typography>
+        <Typography sx={{ mb: 2 }}>Paste the url of the recipe you want to import</Typography>
         <TextField
           placeholder="Recipe url"
           fullWidth

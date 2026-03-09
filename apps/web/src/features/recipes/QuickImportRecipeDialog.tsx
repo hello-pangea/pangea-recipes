@@ -71,8 +71,7 @@ export function QuickImportRecipeDialog({ open, onClose }: Props) {
       <DialogTitle>Save from url</DialogTitle>
       <DialogContent>
         <Typography sx={{ mb: 2 }}>
-          Paste the url of a recipe you want to save. It can be from any
-          website!
+          Paste the url of a recipe you want to save. It can be from any website!
         </Typography>
         <TextField
           placeholder="Recipe url"

@@ -1,5 +1,3 @@
-import { RouterLink } from '#src/components/RouterLink';
-import { useAppForm } from '#src/hooks/form';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -16,14 +14,14 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { z } from 'zod';
+import { RouterLink } from '#src/components/RouterLink';
+import { useAppForm } from '#src/hooks/form';
 import { authClient } from './authClient';
 import { useSignIn } from './useSignIn';
 
 const formSchema = z.object({
   email: z.email(),
-  password: z
-    .string()
-    .min(8, { message: 'Password must be at least 8 characters long' }),
+  password: z.string().min(8, { message: 'Password must be at least 8 characters long' }),
 });
 
 export function SignInPage() {
@@ -81,8 +79,7 @@ export function SignInPage() {
           maxWidth: 400,
           width: '100%',
           border: 0,
-          boxShadow:
-            '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         }}
       >
         <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
@@ -174,11 +171,7 @@ export function SignInPage() {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
-                            aria-label={
-                              showPassword
-                                ? 'hide the password'
-                                : 'display the password'
-                            }
+                            aria-label={showPassword ? 'hide the password' : 'display the password'}
                             onClick={() => {
                               setShowPassword((show) => !show);
                             }}
@@ -204,16 +197,9 @@ export function SignInPage() {
               )}
             />
             {signIn.isError && (
-              <Alert severity="error">
-                {signIn.error.message || 'An error occurred'}
-              </Alert>
+              <Alert severity="error">{signIn.error.message || 'An error occurred'}</Alert>
             )}
-            <Button
-              variant="contained"
-              type="submit"
-              loading={signIn.isPending}
-              fullWidth
-            >
+            <Button variant="contained" type="submit" loading={signIn.isPending} fullWidth>
               Sign in
             </Button>
             <Box

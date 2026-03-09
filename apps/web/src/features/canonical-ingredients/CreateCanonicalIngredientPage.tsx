@@ -1,17 +1,7 @@
-import { Page } from '#src/components/Page';
-import { config } from '#src/config/config';
-import { useAppForm } from '#src/hooks/form';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import SaveRoundedIcon from '@mui/icons-material/SaveRounded';
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, Button, IconButton, Stack, Typography, useTheme } from '@mui/material';
 import {
   useCreateCanonicalIngredient,
   useUpdateCanonicalIngredient,
@@ -19,13 +9,16 @@ import {
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';
-import '@uppy/core/css/style.min.css';
-import '@uppy/dashboard/css/style.min.css';
 import Dashboard from '@uppy/react/dashboard';
 import XHR from '@uppy/xhr-upload';
 import { useSnackbar } from 'notistack';
+import '@uppy/core/css/style.min.css';
+import '@uppy/dashboard/css/style.min.css';
 import { useState } from 'react';
 import { z } from 'zod';
+import { Page } from '#src/components/Page';
+import { config } from '#src/config/config';
+import { useAppForm } from '#src/hooks/form';
 
 const formSchema = z.object({
   name: z.string(),
@@ -157,11 +150,7 @@ export function CreateCanonicalIngredientPage({
           void form.handleSubmit();
         }}
       >
-        <Stack
-          direction={'column'}
-          spacing={2}
-          sx={{ mb: 4, maxWidth: '550px' }}
-        >
+        <Stack direction={'column'} spacing={2} sx={{ mb: 4, maxWidth: '550px' }}>
           <form.AppField
             name="name"
             children={(field) => (
@@ -176,11 +165,7 @@ export function CreateCanonicalIngredientPage({
           />
           {iconUrl ? (
             <>
-              <img
-                src={iconUrl}
-                alt="Icon"
-                style={{ width: 100, height: 100 }}
-              />
+              <img src={iconUrl} alt="Icon" style={{ width: 100, height: 100 }} />
             </>
           ) : (
             <Dashboard
@@ -211,11 +196,7 @@ export function CreateCanonicalIngredientPage({
                           <form.AppField
                             name={`aliases[${i}].name`}
                             children={(subField) => (
-                              <subField.TextField
-                                placeholder="Alias"
-                                size="small"
-                                fullWidth
-                              />
+                              <subField.TextField placeholder="Alias" size="small" fullWidth />
                             )}
                           />
                           <IconButton

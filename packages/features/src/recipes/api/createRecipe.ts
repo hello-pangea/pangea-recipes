@@ -47,9 +47,7 @@ export const createRecipeContract = defineContract('recipes', {
         ),
       }),
     ),
-    tags: z
-      .array(z.union([z.object({ id: z.uuidv4() }), createTagDtoSchema]))
-      .optional(),
+    tags: z.array(z.union([z.object({ id: z.uuidv4() }), createTagDtoSchema])).optional(),
   }),
   response: {
     200: z.object({

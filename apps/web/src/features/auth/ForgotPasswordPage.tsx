@@ -1,16 +1,8 @@
-import { RouterLink } from '#src/components/RouterLink';
-import { useAppForm } from '#src/hooks/form';
-import {
-  Alert,
-  Box,
-  Button,
-  Card,
-  Container,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { Alert, Box, Button, Card, Container, Stack, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
+import { RouterLink } from '#src/components/RouterLink';
+import { useAppForm } from '#src/hooks/form';
 import { authClient } from './authClient';
 
 const formSchema = z.object({
@@ -19,9 +11,7 @@ const formSchema = z.object({
 
 export function ForgotPasswordPage() {
   const sendEmail = useMutation({
-    mutationFn: (
-      data: Parameters<typeof authClient.requestPasswordReset>[0],
-    ) => {
+    mutationFn: (data: Parameters<typeof authClient.requestPasswordReset>[0]) => {
       return authClient.requestPasswordReset(data, {
         onError: (ctx) => {
           throw ctx.error;
@@ -80,8 +70,7 @@ export function ForgotPasswordPage() {
           maxWidth: 400,
           width: '100%',
           border: 0,
-          boxShadow:
-            '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         }}
       >
         <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
@@ -89,16 +78,14 @@ export function ForgotPasswordPage() {
         </Typography>
         {!sendEmail.isSuccess && (
           <Typography sx={{ mb: 2 }}>
-            We will send you an email with instructions on how to reset your
-            password.
+            We will send you an email with instructions on how to reset your password.
           </Typography>
         )}
         {sendEmail.isSuccess ? (
           <>
             <Typography sx={{ mb: 2 }}>
-              An email with instructions on how to reset your password has been
-              sent to your email. Check your spam or junk folder if you don't
-              see the email in your inbox.
+              An email with instructions on how to reset your password has been sent to your email.
+              Check your spam or junk folder if you don't see the email in your inbox.
             </Typography>
             <RouterLink to="/sign-in" variant="caption">
               Back
@@ -127,16 +114,9 @@ export function ForgotPasswordPage() {
                 )}
               />
               {sendEmail.isError && (
-                <Alert severity="error">
-                  {sendEmail.error.message || 'An error occurred'}
-                </Alert>
+                <Alert severity="error">{sendEmail.error.message || 'An error occurred'}</Alert>
               )}
-              <Button
-                variant="contained"
-                type="submit"
-                loading={sendEmail.isPending}
-                fullWidth
-              >
+              <Button variant="contained" type="submit" loading={sendEmail.isPending} fullWidth>
                 Email me
               </Button>
               <RouterLink to="/sign-in" variant="caption">

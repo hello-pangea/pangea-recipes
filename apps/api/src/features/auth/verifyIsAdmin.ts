@@ -2,10 +2,7 @@ import type { FastifyReply, FastifyRequest } from 'fastify';
 import { ApiError } from '../../lib/ApiError.ts';
 import { verifySession } from './verifySession.ts';
 
-export async function verifyIsAdmin(
-  request: FastifyRequest,
-  reply: FastifyReply,
-) {
+export async function verifyIsAdmin(request: FastifyRequest, reply: FastifyReply) {
   await verifySession(request, reply);
 
   const isAdmin = request.session?.accessRole === 'admin';

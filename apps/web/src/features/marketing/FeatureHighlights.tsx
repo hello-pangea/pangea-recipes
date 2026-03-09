@@ -29,8 +29,7 @@ export function FeatureHighlights() {
           color="primary"
           sx={{
             mb: 1.5,
-            backgroundColor: (theme) =>
-              alpha(theme.palette.primary.main, 0.075),
+            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
             borderRadius: 1,
             p: 1,
             fontSize: 56,
@@ -60,8 +59,7 @@ export function FeatureHighlights() {
           color="primary"
           sx={{
             mb: 1.5,
-            backgroundColor: (theme) =>
-              alpha(theme.palette.primary.main, 0.075),
+            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
             borderRadius: 1,
             p: 1,
             fontSize: 56,
@@ -91,8 +89,7 @@ export function FeatureHighlights() {
           color="primary"
           sx={{
             mb: 1.5,
-            backgroundColor: (theme) =>
-              alpha(theme.palette.primary.main, 0.075),
+            backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
             borderRadius: 1,
             p: 1,
             fontSize: 56,

@@ -1,5 +1,3 @@
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { getReorderDestinationIndex } from '@atlaskit/pragmatic-drag-and-drop-hitbox/util/get-reorder-destination-index';
 import {
@@ -8,17 +6,11 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import {
-  alpha,
-  Box,
-  Button,
-  Card,
-  IconButton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { alpha, Box, Button, Card, IconButton, Stack, Typography } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { EditIngredient } from './EditIngredient';
 import { recipeFormOptions, type RecipeFormInputs } from './recipeForm';
 
@@ -32,14 +24,9 @@ export const EditIngredientGroup = withForm({
   render: function Render({ form, index: ingredientGroupIndex }) {
     const ingredients = useStore(
       form.store,
-      (state) =>
-        state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients ??
-        [],
+      (state) => state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients ?? [],
     );
-    const minimal = useStore(
-      form.store,
-      (state) => state.values.ingredientGroups.length <= 1,
-    );
+    const minimal = useStore(form.store, (state) => state.values.ingredientGroups.length <= 1);
 
     useEffect(() => {
       return monitorForElements({
@@ -102,10 +89,7 @@ export const EditIngredientGroup = withForm({
 
               const closestEdgeOfTarget = extractClosestEdge(target.data);
 
-              const finishIndex =
-                closestEdgeOfTarget === 'bottom'
-                  ? targetIndex + 1
-                  : targetIndex;
+              const finishIndex = closestEdgeOfTarget === 'bottom' ? targetIndex + 1 : targetIndex;
 
               void form.insertFieldValue(
                 `ingredientGroups[${ingredientGroupIndex}].ingredients`,
@@ -115,18 +99,13 @@ export const EditIngredientGroup = withForm({
                 ] as RecipeFormInputs['ingredientGroups'][0]['ingredients'][0],
               );
             }
-          } else if (
-            sourceType === 'ingredient' &&
-            targetType === 'empty_ingredient_group'
-          ) {
+          } else if (sourceType === 'ingredient' && targetType === 'empty_ingredient_group') {
             console.log('DND: move ingredient to empty group');
 
             const sourceIndex = source.data['index'] as number;
             const sourceGroupIndex = source.data['groupIndex'] as number;
 
-            const targetGroupIndex = target.data[
-              'ingredientGroupIndex'
-            ] as number;
+            const targetGroupIndex = target.data['ingredientGroupIndex'] as number;
 
             if (sourceGroupIndex === ingredientGroupIndex) {
               void form.removeFieldValue(
@@ -146,9 +125,7 @@ export const EditIngredientGroup = withForm({
           }
         },
         canMonitor: ({ source }) =>
-          ['ingredient', 'empty_ingredient_group'].includes(
-            source.data['type'] as string,
-          ),
+          ['ingredient', 'empty_ingredient_group'].includes(source.data['type'] as string),
       });
     }, [ingredientGroupIndex, form]);
 
@@ -177,22 +154,14 @@ export const EditIngredientGroup = withForm({
             />
             <IconButton
               onClick={() => {
-                void form.removeFieldValue(
-                  `ingredientGroups`,
-                  ingredientGroupIndex,
-                );
+                void form.removeFieldValue(`ingredientGroups`, ingredientGroupIndex);
               }}
             >
               <DeleteRoundedIcon />
             </IconButton>
           </Stack>
         )}
-        <Stack
-          direction={'column'}
-          spacing={2}
-          useFlexGap
-          sx={{ mb: 2, maxWidth: '750px' }}
-        >
+        <Stack direction={'column'} spacing={2} useFlexGap sx={{ mb: 2, maxWidth: '750px' }}>
           {ingredients.map((_ingredient, ingredientIndex) => (
             <EditIngredient
               form={form}
@@ -202,9 +171,7 @@ export const EditIngredientGroup = withForm({
             />
           ))}
           {ingredients.length === 0 && (
-            <EmptyIngredientGroupDroppable
-              ingredientGroupIndex={ingredientGroupIndex}
-            />
+            <EmptyIngredientGroupDroppable ingredientGroupIndex={ingredientGroupIndex} />
           )}
         </Stack>
         <Button
@@ -212,15 +179,12 @@ export const EditIngredientGroup = withForm({
           size="small"
           startIcon={<AddRoundedIcon />}
           onClick={() => {
-            form.pushFieldValue(
-              `ingredientGroups[${ingredientGroupIndex}].ingredients`,
-              {
-                name: '',
-                unit: null,
-                quantity: null,
-                notes: null,
-              },
-            );
+            form.pushFieldValue(`ingredientGroups[${ingredientGroupIndex}].ingredients`, {
+              name: '',
+              unit: null,
+              quantity: null,
+              notes: null,
+            });
           }}
         >
           Add ingredient
@@ -418,9 +382,7 @@ interface DroppableProps {
   ingredientGroupIndex: number;
 }
 
-function EmptyIngredientGroupDroppable({
-  ingredientGroupIndex,
-}: DroppableProps) {
+function EmptyIngredientGroupDroppable({ ingredientGroupIndex }: DroppableProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -458,9 +420,7 @@ function EmptyIngredientGroupDroppable({
           borderWidth: '2px',
           borderRadius: 1,
           borderColor: (theme) =>
-            isDraggedOver
-              ? theme.vars.palette.primary.main
-              : theme.vars.palette.divider,
+            isDraggedOver ? theme.vars.palette.primary.main : theme.vars.palette.divider,
           backgroundColor: (theme) =>
             isDraggedOver
               ? alpha(theme.palette.primary.main, 0.2)
@@ -476,9 +436,7 @@ function EmptyIngredientGroupDroppable({
         <AddRoundedIcon
           sx={{
             color: (theme) =>
-              isDraggedOver
-                ? theme.vars.palette.primary.main
-                : theme.vars.palette.text.secondary,
+              isDraggedOver ? theme.vars.palette.primary.main : theme.vars.palette.text.secondary,
             transitionProperty: 'color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',
@@ -487,9 +445,7 @@ function EmptyIngredientGroupDroppable({
         <Typography
           sx={{
             color: (theme) =>
-              isDraggedOver
-                ? theme.vars.palette.primary.main
-                : theme.vars.palette.text.secondary,
+              isDraggedOver ? theme.vars.palette.primary.main : theme.vars.palette.text.secondary,
             transitionProperty: 'color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',

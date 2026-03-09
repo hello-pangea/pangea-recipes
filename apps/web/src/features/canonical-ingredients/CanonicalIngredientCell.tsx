@@ -24,9 +24,7 @@ interface Props {
 
 export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
   const deleteCanonicalIngredient = useDeleteCanonicalIngredient();
-  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
+  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(null);
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
   function handleMoreMenuClose() {
@@ -116,9 +114,7 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
           <ListItemIcon>
             <DeleteRoundedIcon color="error" fontSize="small" />
           </ListItemIcon>
-          <ListItemText
-            sx={{ color: (theme) => theme.vars.palette.error.main }}
-          >
+          <ListItemText sx={{ color: (theme) => theme.vars.palette.error.main }}>
             Delete
           </ListItemText>
         </MenuItem>

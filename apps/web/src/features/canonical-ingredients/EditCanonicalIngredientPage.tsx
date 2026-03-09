@@ -3,9 +3,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateCanonicalIngredientPage } from './CreateCanonicalIngredientPage';
 
-const route = getRouteApi(
-  '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit',
-);
+const route = getRouteApi('/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit');
 
 export function EditCanonicalIngredientPage() {
   const { canonicalIngredientId } = route.useParams();

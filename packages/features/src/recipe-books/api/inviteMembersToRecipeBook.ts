@@ -6,27 +6,22 @@ import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
-export const inviteMembersToRecipeBookContract = defineContract(
-  'recipe-books/:id/members',
-  {
-    method: 'post',
-    params: z.object({
-      id: z.uuidv4(),
-    }),
-    body: z.object({
-      emails: z.array(z.email()).optional(),
-      userIds: z.array(z.uuidv4()).optional(),
-      role: z.enum(['owner', 'editor', 'viewer']),
-    }),
-    response: {
-      200: noContent,
-    },
+export const inviteMembersToRecipeBookContract = defineContract('recipe-books/:id/members', {
+  method: 'post',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  body: z.object({
+    emails: z.array(z.email()).optional(),
+    userIds: z.array(z.uuidv4()).optional(),
+    role: z.enum(['owner', 'editor', 'viewer']),
+  }),
+  response: {
+    200: noContent,
   },
-);
+});
 
-const inviteMembersToRecipeBook = makeRequest(
-  inviteMembersToRecipeBookContract,
-);
+const inviteMembersToRecipeBook = makeRequest(inviteMembersToRecipeBookContract);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof inviteMembersToRecipeBook>;

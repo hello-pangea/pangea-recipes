@@ -75,9 +75,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
       const recipes = await prisma.recipe.findMany({
         where: {
           userId: userId,
-          recipeBooks: recipeBookId
-            ? { some: { recipeBookId: recipeBookId } }
-            : undefined,
+          recipeBooks: recipeBookId ? { some: { recipeBookId: recipeBookId } } : undefined,
         },
         include: {
           images: {
@@ -218,14 +216,11 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         const existingTagIds = oldRecipe.tags.map((tag) => tag.tagId);
 
         const tagsToCreate =
-          tags?.filter((tag) => 'name' in tag && !('id' in tag)) ??
-          ([] as CreateTagDto[]);
+          tags?.filter((tag) => 'name' in tag && !('id' in tag)) ?? ([] as CreateTagDto[]);
 
         const tagsWithIds = tags?.filter((tag) => 'id' in tag) ?? [];
 
-        const tagsToAdd = tagsWithIds.filter(
-          (tag) => !existingTagIds.includes(tag.id),
-        );
+        const tagsToAdd = tagsWithIds.filter((tag) => !existingTagIds.includes(tag.id));
 
         const tagIdsToRemove = existingTagIds.filter(
           (id) => !tagsWithIds.some((tag) => tag.id === id),
@@ -233,9 +228,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
 
         const tagsToCreateOrAdd = [...tagsToCreate, ...tagsToAdd];
 
-        const tagsUpdate:
-          | Prisma.RecipeTagUpdateManyWithoutRecipeNestedInput
-          | undefined =
+        const tagsUpdate: Prisma.RecipeTagUpdateManyWithoutRecipeNestedInput | undefined =
           tags !== undefined
             ? {
                 create: !tagsToCreateOrAdd.length
@@ -289,10 +282,8 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
           prepTime: prepTime,
           cookTime: cookTime,
           servings: servings,
-          tryLaterAt:
-            tryLater === true && !oldRecipe.tryLaterAt ? new Date() : null,
-          favoritedAt:
-            favorite === true && !oldRecipe.favoritedAt ? new Date() : null,
+          tryLaterAt: tryLater === true && !oldRecipe.tryLaterAt ? new Date() : null,
+          favoritedAt: favorite === true && !oldRecipe.favoritedAt ? new Date() : null,
           usesRecipes: !usesRecipes
             ? undefined
             : {

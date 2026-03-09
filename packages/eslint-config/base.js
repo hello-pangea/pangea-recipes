@@ -1,5 +1,4 @@
 import eslint from '@eslint/js';
-import eslintConfigPrettier from 'eslint-config-prettier';
 import turboPlugin from 'eslint-plugin-turbo';
 import tseslint from 'typescript-eslint';
 
@@ -12,7 +11,6 @@ export const config = [
   eslint.configs.recommended,
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
-  eslintConfigPrettier,
   {
     plugins: {
       turbo: turboPlugin,

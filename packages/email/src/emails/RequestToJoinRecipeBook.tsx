@@ -52,8 +52,7 @@ export function RequestToJoinRecipeBookEmail({
               Hello{ownerName ? ` ${ownerName}` : ''},
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              {requesterName} is <strong>requesting access</strong> to "
-              {recipeBookName}"
+              {requesterName} is <strong>requesting access</strong> to "{recipeBookName}"
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button

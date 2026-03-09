@@ -24,9 +24,7 @@ export function uploadFile(data: {
   public?: boolean;
 }) {
   const uploadParams: PutObjectCommandInput = {
-    Bucket: data.public
-      ? config.PUBLIC_BUCKET_NAME
-      : config.PRIVATE_BUCKET_NAME,
+    Bucket: data.public ? config.PUBLIC_BUCKET_NAME : config.PRIVATE_BUCKET_NAME,
     Key: data.key,
     Body: data.buffer,
     ContentType: data.mimeType,

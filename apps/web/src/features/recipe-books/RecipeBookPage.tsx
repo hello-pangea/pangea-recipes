@@ -25,9 +25,7 @@ const route = getRouteApi('/app/_auth/recipe-books/$recipeBookId');
 
 export function RecipeBookPage() {
   const { recipeBookId } = route.useParams();
-  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
+  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(null);
   const removeRecipeFromRecipeBook = useRemoveRecipeFromRecipeBook();
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const { data: recipes } = useQuery(listRecipesQueryOptions({ recipeBookId }));
@@ -37,23 +35,16 @@ export function RecipeBookPage() {
     direction: 'desc',
   });
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
-  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
-  const { data: recipeBook } = useSuspenseQuery(
-    getRecipeBookQueryOptions(recipeBookId),
-  );
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const { data: recipeBook } = useSuspenseQuery(getRecipeBookQueryOptions(recipeBookId));
 
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
   const recipeIds = recipes?.map((r) => r.id) ?? [];
 
   const filteredRecipes = (recipes ?? []).slice().sort((a, b) => {
-    return sort.direction === 'asc'
-      ? a.name.localeCompare(b.name)
-      : b.name.localeCompare(a.name);
+    return sort.direction === 'asc' ? a.name.localeCompare(b.name) : b.name.localeCompare(a.name);
   });
 
   function handleRemoveRecipeFromRecipeBook(recipeId: string) {
@@ -81,10 +72,7 @@ export function RecipeBookPage() {
             alignItems: 'center',
           }}
         >
-          <MenuBookRoundedIcon
-            fontSize={isSmall ? 'small' : undefined}
-            sx={{ mr: 2 }}
-          />
+          <MenuBookRoundedIcon fontSize={isSmall ? 'small' : undefined} sx={{ mr: 2 }} />
           <Button
             variant="text"
             endIcon={
@@ -111,9 +99,7 @@ export function RecipeBookPage() {
         </Box>
         <RecipeBookShareButton recipeBookId={recipeBookId} />
       </Box>
-      {recipeBook.description && (
-        <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>
-      )}
+      {recipeBook.description && <Typography sx={{ mb: 4 }}>{recipeBook.description}</Typography>}
       <Box
         sx={{
           display: 'flex',

@@ -7,34 +7,28 @@ import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 import { createCanonicalIngredientContract } from './createCanonicalIngredient.js';
 import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
-export const updateCanonicalIngredientContract = defineContract(
-  'canonical-ingredients/:id',
-  {
-    method: 'patch',
-    params: z.object({
-      id: z.uuidv4(),
+export const updateCanonicalIngredientContract = defineContract('canonical-ingredients/:id', {
+  method: 'patch',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  body: createCanonicalIngredientContract.body
+    .pick({
+      name: true,
+      iconId: true,
+      aliases: true,
+    })
+    .partial(),
+  response: {
+    200: z.object({
+      canonicalIngredient: canonicalIngredientSchema,
     }),
-    body: createCanonicalIngredientContract.body
-      .pick({
-        name: true,
-        iconId: true,
-        aliases: true,
-      })
-      .partial(),
-    response: {
-      200: z.object({
-        canonicalIngredient: canonicalIngredientSchema,
-      }),
-    },
   },
-);
+});
 
-const updateCanonicalIngredient = makeRequest(
-  updateCanonicalIngredientContract,
-  {
-    select: (res) => res.canonicalIngredient,
-  },
-);
+const updateCanonicalIngredient = makeRequest(updateCanonicalIngredientContract, {
+  select: (res) => res.canonicalIngredient,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof updateCanonicalIngredient>;

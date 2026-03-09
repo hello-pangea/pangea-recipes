@@ -1,23 +1,16 @@
-import {
-  browser,
-  browserContext,
-  initializeBrowser,
-} from '#src/lib/browser.ts';
-import { openAi } from '#src/lib/openAi.ts';
 import { prisma } from '@repo/database';
 import { zodTextFormat } from 'openai/helpers/zod';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 import { z } from 'zod';
+import { browser, browserContext, initializeBrowser } from '#src/lib/browser.ts';
+import { openAi } from '#src/lib/openAi.ts';
 
 const turndownService = new TurndownService();
 turndownService.remove('script');
 turndownService.remove('style');
 
-async function processWebsite(data: {
-  urlString: string;
-  browserContext: BrowserContext;
-}) {
+async function processWebsite(data: { urlString: string; browserContext: BrowserContext }) {
   const { urlString, browserContext } = data;
 
   const url = new URL(urlString);
@@ -195,10 +188,7 @@ export async function getLlmImportRecipe(urlString: string) {
 const llmRecipeSchema = z
   .object({
     name: z.string(),
-    description: z
-      .string()
-      .nullable()
-      .describe('Short, friendly description of the recipe'),
+    description: z.string().nullable().describe('Short, friendly description of the recipe'),
     prepTime: z.number().nullable().describe('Prep time in minutes'),
     cookTime: z.number().nullable().describe('Cook time in minutes'),
     totalTime: z.number().nullable().describe('Total time in minutes'),

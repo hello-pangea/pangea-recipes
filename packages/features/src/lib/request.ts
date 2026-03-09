@@ -95,22 +95,15 @@ export async function request<
       : never
 > {
   // Validate & serialize params
-  const path = insertParamsIntoPath(
-    contract.path,
-    validateParams(contract, options?.params),
-  );
+  const path = insertParamsIntoPath(contract.path, validateParams(contract, options?.params));
 
   const res = await api(path, {
     method: contract.method,
     headers:
-      options && 'headers' in options
-        ? (options.headers as RequestInit['headers'])
-        : undefined,
+      options && 'headers' in options ? (options.headers as RequestInit['headers']) : undefined,
     json: options?.body,
     searchParams:
-      options && 'querystring' in options
-        ? (options.querystring as URLSearchParams)
-        : undefined,
+      options && 'querystring' in options ? (options.querystring as URLSearchParams) : undefined,
     ...options?.ky,
   });
 
@@ -161,10 +154,7 @@ function validateParams(
 }
 
 /** Replace :params in path with values */
-function insertParamsIntoPath(
-  path: string,
-  params?: Record<string, string>,
-): string {
+function insertParamsIntoPath(path: string, params?: Record<string, string>): string {
   if (!params) return path;
   return path.replace(/:([A-Za-z0-9_]+)/g, (_, key: string) => {
     const v = params[key];
@@ -173,10 +163,9 @@ function insertParamsIntoPath(
   });
 }
 
-type DefaultResponse<C extends Contract<string>> =
-  DefaultSuccessStatus extends keyof C['response']
-    ? ResponseOf<C, DefaultSuccessStatus>
-    : never;
+type DefaultResponse<C extends Contract<string>> = DefaultSuccessStatus extends keyof C['response']
+  ? ResponseOf<C, DefaultSuccessStatus>
+  : never;
 
 /* =====================================
  *        UTILITY TYPE HELPERS
@@ -223,8 +212,6 @@ export function makeRequest<C extends Contract<string>, R>(
       ...options,
       ky: options.ky ?? makeOptions?.ky, // merge default/per-call ky opts
     });
-    return makeOptions?.select
-      ? makeOptions.select(res as DefaultResponse<C>)
-      : res;
+    return makeOptions?.select ? makeOptions.select(res as DefaultResponse<C>) : res;
   };
 }

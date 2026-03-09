@@ -1,10 +1,10 @@
-import { RouterCardActionArea } from '#src/components/RouterCardActionArea';
-import { secondsToTimeString } from '#src/utils/timeFormatting';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import TimerRoundedIcon from '@mui/icons-material/TimerRounded';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { type RecipeProjected } from '@repo/features/recipes';
 import { useState } from 'react';
+import { RouterCardActionArea } from '#src/components/RouterCardActionArea';
+import { secondsToTimeString } from '#src/utils/timeFormatting';
 import { RecipeMoreMenu } from '../RecipeMoreMenu';
 import { RecipeDraggable } from './RecipeDraggable';
 
@@ -153,11 +153,7 @@ export function RecipeCell({ recipe, onRemoveFromRecipeBook, compact }: Props) {
                         event.stopPropagation();
                         event.preventDefault();
 
-                        window.open(
-                          recipe.websiteSource?.url,
-                          '_blank',
-                          'noopener',
-                        );
+                        window.open(recipe.websiteSource?.url, '_blank', 'noopener');
                       }}
                     >
                       {recipe.websiteSource.title}
@@ -196,15 +192,11 @@ export function RecipeCell({ recipe, onRemoveFromRecipeBook, compact }: Props) {
       </RecipeDraggable>
       <RecipeMoreMenu
         recipe={recipe}
-        anchorEl={
-          moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
-        }
+        anchorEl={moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null}
         onClose={() => {
           setMoreMenuAnchor(null);
         }}
-        anchorReference={
-          moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'
-        }
+        anchorReference={moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'}
         onRemoveFromRecipeBook={onRemoveFromRecipeBook}
         anchorPosition={
           moreMenuAnchor?.type === 'context'

@@ -10,9 +10,7 @@ import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.ts';
 const routeTag = 'Recipe books';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const recipeBookRecipeRoutes: FastifyPluginAsyncZod = async function (
-  fastify,
-) {
+export const recipeBookRecipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '/:id/recipes',
     {

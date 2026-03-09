@@ -40,12 +40,10 @@ export function ResetPassword({ url }: EmailProps): ReactNode {
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
               Reset password
             </Heading>
+            <Text className="text-black text-[14px] leading-[24px]">Hello,</Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello,
-            </Text>
-            <Text className="text-black text-[14px] leading-[24px]">
-              Someone recently requested a password change for your Hello
-              Recipes account. If this was you, you can set a new password here:
+              Someone recently requested a password change for your Hello Recipes account. If this
+              was you, you can set a new password here:
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button
@@ -62,8 +60,8 @@ export function ResetPassword({ url }: EmailProps): ReactNode {
               </Link>
             </Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              If you don't want to change your password or didn't request this,
-              just ignore and delete this message.
+              If you don't want to change your password or didn't request this, just ignore and
+              delete this message.
             </Text>
           </Container>
         </Body>

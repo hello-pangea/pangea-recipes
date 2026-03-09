@@ -1,12 +1,7 @@
 import CheckCircleRoundedIcon from '@mui/icons-material/CheckCircleRounded';
 import Groups2RoundedIcon from '@mui/icons-material/Groups2Rounded';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
-import {
-  CircularProgress,
-  ListItemIcon,
-  ListItemText,
-  MenuItem,
-} from '@mui/material';
+import { CircularProgress, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
 import {
   useAddRecipeToRecipeBook,
   useRemoveRecipeFromRecipeBook,
@@ -33,10 +28,7 @@ export function RecipeBookMenuItem({ book, recipeId }: Props) {
   const isRecipeInBook = book.recipeIds.includes(recipeId);
 
   const toggleRecipeInBook = () => {
-    if (
-      removeRecipeFromRecipeBook.isPending ||
-      addRecipeToRecipeBook.isPending
-    ) {
+    if (removeRecipeFromRecipeBook.isPending || addRecipeToRecipeBook.isPending) {
       return;
     }
 

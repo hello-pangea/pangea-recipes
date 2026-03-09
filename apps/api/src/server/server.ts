@@ -1,4 +1,3 @@
-import { auth } from '#src/features/auth/betterAuth.ts';
 import fastifyAuth from '@fastify/auth';
 import cors from '@fastify/cors';
 import helmet from '@fastify/helmet';
@@ -7,10 +6,8 @@ import fastifySensible from '@fastify/sensible';
 import type { User } from '@repo/features/users';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
-import {
-  serializerCompiler,
-  validatorCompiler,
-} from 'fastify-type-provider-zod';
+import { serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import { auth } from '#src/features/auth/betterAuth.ts';
 import { enablePrettyLogs } from '../config/config.ts';
 import { customOpenApi } from './customOpenApi.ts';
 import { routes } from './routes.ts';
@@ -91,27 +88,25 @@ export async function createServer() {
     };
   });
 
-  fastify.setErrorHandler(
-    (error: Error & { statusCode?: number }, _request, reply) => {
-      console.error('Error:', error);
+  fastify.setErrorHandler((error: Error & { statusCode?: number }, _request, reply) => {
+    console.error('Error:', error);
 
-      const statusCode = error.statusCode;
+    const statusCode = error.statusCode;
 
-      if (!statusCode || statusCode >= 500 || statusCode < 400) {
-        return reply.code(500).send({
-          error: 'Internal server error',
-          message: 'Something went wrong',
-          statusCode: 500,
-        });
-      } else {
-        return reply.code(statusCode).send({
-          error: error.name,
-          message: error.message,
-          statusCode: statusCode,
-        });
-      }
-    },
-  );
+    if (!statusCode || statusCode >= 500 || statusCode < 400) {
+      return reply.code(500).send({
+        error: 'Internal server error',
+        message: 'Something went wrong',
+        statusCode: 500,
+      });
+    } else {
+      return reply.code(statusCode).send({
+        error: error.name,
+        message: error.message,
+        statusCode: statusCode,
+      });
+    }
+  });
 
   // -
   // Services

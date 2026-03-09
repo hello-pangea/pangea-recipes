@@ -1,15 +1,7 @@
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import LinkRoundedIcon from '@mui/icons-material/LinkRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import {
-  Autocomplete,
-  Box,
-  Button,
-  Chip,
-  Stack,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Autocomplete, Box, Button, Chip, Stack, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 
 interface InviteOption {
@@ -45,8 +37,7 @@ export function ShareDialogDemo() {
         backgroundColor: (theme) => theme.vars.palette.background.paper,
         borderRadius: '28px',
         p: 3,
-        boxShadow:
-          '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
       }}
     >
       <Typography variant="h2" sx={{ pb: 2 }}>
@@ -82,23 +73,14 @@ export function ShareDialogDemo() {
         renderValue={(value, getTagProps) =>
           value.map((option, index) => {
             const { key, ...tagProps } = getTagProps({ index });
-            return (
-              <Chip
-                variant="outlined"
-                label={option.label}
-                key={key}
-                {...tagProps}
-              />
-            );
+            return <Chip variant="outlined" label={option.label} key={key} {...tagProps} />;
           })
         }
         renderInput={(params) => (
           <TextField
             {...params}
             variant="outlined"
-            placeholder={
-              invites.length <= 0 ? 'Add by email or name' : undefined
-            }
+            placeholder={invites.length <= 0 ? 'Add by email or name' : undefined}
           />
         )}
         sx={{ mb: 4 }}
@@ -136,14 +118,12 @@ export function ShareDialogDemo() {
       <Button
         variant="outlined"
         onClick={() => {
-          void navigator.clipboard
-            .writeText(`${window.location.origin}/sign-up`)
-            .then(() => {
-              setLinkCopied(true);
-              setTimeout(() => {
-                setLinkCopied(false);
-              }, 3000);
-            });
+          void navigator.clipboard.writeText(`${window.location.origin}/sign-up`).then(() => {
+            setLinkCopied(true);
+            setTimeout(() => {
+              setLinkCopied(false);
+            }, 3000);
+          });
         }}
         startIcon={linkCopied ? <CheckRoundedIcon /> : <LinkRoundedIcon />}
         color={linkCopied ? 'success' : 'primary'}

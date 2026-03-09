@@ -1,6 +1,3 @@
-import { Page } from '#src/components/Page';
-import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/utils/focusNextInput';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PublicRoundedIcon from '@mui/icons-material/PublicRounded';
@@ -18,15 +15,15 @@ import {
   Typography,
 } from '@mui/material';
 import { emptyStringToUndefined } from '@repo/features';
-import {
-  useCreateRecipeBook,
-  useUpdateRecipeBook,
-} from '@repo/features/recipe-books';
+import { useCreateRecipeBook, useUpdateRecipeBook } from '@repo/features/recipe-books';
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
 import { z } from 'zod';
+import { Page } from '#src/components/Page';
+import { useAppForm } from '#src/hooks/form';
+import { focusNextInput } from '#src/utils/focusNextInput';
 
 const formSchema = z.object({
   recipeBookName: z.string().min(1, { message: 'Name is required' }),
@@ -43,14 +40,12 @@ interface Props {
   updateRecipeBookId?: string;
 }
 
-export function CreateRecipeBookPage({
-  defaultValues,
-  updateRecipeBookId,
-}: Props) {
+export function CreateRecipeBookPage({ defaultValues, updateRecipeBookId }: Props) {
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
-  const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
+  const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
 
   const recipeBookCreator = useCreateRecipeBook({
     mutationConfig: {
@@ -117,9 +112,7 @@ export function CreateRecipeBookPage({
   return (
     <Page>
       <Box sx={{ mb: 2 }}>
-        <Typography variant="h1">
-          {updateRecipeBookId ? 'Edit book' : 'New book'}
-        </Typography>
+        <Typography variant="h1">{updateRecipeBookId ? 'Edit book' : 'New book'}</Typography>
       </Box>
       <form
         onSubmit={(e) => {
@@ -155,9 +148,7 @@ export function CreateRecipeBookPage({
           <Grid size={{ xs: 12 }}>
             <form.AppField
               name="description"
-              children={(field) => (
-                <field.TextField label="Description" fullWidth multiline />
-              )}
+              children={(field) => <field.TextField label="Description" fullWidth multiline />}
             />
           </Grid>
           <Grid size={12}>
@@ -190,11 +181,7 @@ export function CreateRecipeBookPage({
                         : theme.vars.palette.text.primary,
                   }}
                 >
-                  {access === 'public' ? (
-                    <PublicRoundedIcon />
-                  ) : (
-                    <LockOutlinedIcon />
-                  )}
+                  {access === 'public' ? <PublicRoundedIcon /> : <LockOutlinedIcon />}
                 </Avatar>
                 <Box>
                   <Button
@@ -205,9 +192,7 @@ export function CreateRecipeBookPage({
                       setGeneralAccessMenuAnchorEl(event.currentTarget);
                     }}
                   >
-                    {access === 'public'
-                      ? 'Anyone with the link'
-                      : 'Restricted'}
+                    {access === 'public' ? 'Anyone with the link' : 'Restricted'}
                   </Button>
                   <Typography variant="caption">
                     {access === 'public'

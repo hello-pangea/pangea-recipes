@@ -1,5 +1,3 @@
-import { config } from '#src/config/config.ts';
-import { resend } from '#src/lib/resend.ts';
 import { prisma } from '@repo/database';
 import { InviteToRecipeBook } from '@repo/email';
 import {
@@ -8,14 +6,14 @@ import {
   inviteMembersToRecipeBookContract,
 } from '@repo/features/recipe-books';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { config } from '#src/config/config.ts';
+import { resend } from '#src/lib/resend.ts';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe books';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (
-  fastify,
-) {
+export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '/:id/members',
     {

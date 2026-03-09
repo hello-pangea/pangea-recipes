@@ -1,6 +1,6 @@
-import { ResetPasswordPage } from '#src/features/auth/ResetPasswordPage';
 import { createFileRoute, redirect } from '@tanstack/react-router';
 import { z } from 'zod';
+import { ResetPasswordPage } from '#src/features/auth/ResetPasswordPage';
 
 const searchSchema = z.object({
   token: z.string(),

@@ -23,13 +23,7 @@ interface Props extends Pick<MenuProps, 'anchorEl'> {
   disableDateSort?: boolean;
 }
 
-export function DisplayMenu({
-  anchorEl,
-  onClose,
-  sort,
-  onSortChange,
-  disableDateSort,
-}: Props) {
+export function DisplayMenu({ anchorEl, onClose, sort, onSortChange, disableDateSort }: Props) {
   const [view, setView] = useViewPreference();
 
   const open = Boolean(anchorEl);
@@ -84,17 +78,9 @@ export function DisplayMenu({
           <ListItemText>Date added</ListItemText>
           {sort.key === 'date' &&
             (sort.direction === 'asc' ? (
-              <ArrowUpwardRoundedIcon
-                color="primary"
-                fontSize="small"
-                sx={{ ml: 'auto' }}
-              />
+              <ArrowUpwardRoundedIcon color="primary" fontSize="small" sx={{ ml: 'auto' }} />
             ) : (
-              <ArrowDownwardRoundedIcon
-                color="primary"
-                fontSize="small"
-                sx={{ ml: 'auto' }}
-              />
+              <ArrowDownwardRoundedIcon color="primary" fontSize="small" sx={{ ml: 'auto' }} />
             ))}
         </MenuItem>
       )}
@@ -110,17 +96,9 @@ export function DisplayMenu({
         <ListItemText>Name</ListItemText>
         {sort.key === 'name' &&
           (sort.direction === 'asc' ? (
-            <ArrowUpwardRoundedIcon
-              color="primary"
-              fontSize="small"
-              sx={{ ml: 'auto' }}
-            />
+            <ArrowUpwardRoundedIcon color="primary" fontSize="small" sx={{ ml: 'auto' }} />
           ) : (
-            <ArrowDownwardRoundedIcon
-              color="primary"
-              fontSize="small"
-              sx={{ ml: 'auto' }}
-            />
+            <ArrowDownwardRoundedIcon color="primary" fontSize="small" sx={{ ml: 'auto' }} />
           ))}
       </MenuItem>
       <ListSubheader>View as</ListSubheader>

@@ -1,5 +1,3 @@
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
-import { useAppForm } from '#src/hooks/form';
 import {
   Button,
   Dialog,
@@ -11,6 +9,8 @@ import {
 } from '@mui/material';
 import { useUpdateUser } from '@repo/features/users';
 import { z } from 'zod';
+import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
+import { useAppForm } from '#src/hooks/form';
 
 const formSchema = z.object({
   name: z.string().min(1),
@@ -98,11 +98,7 @@ export function AddNameDialog({ open, onClose }: Props) {
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            variant="contained"
-            loading={updateUser.isPending}
-          >
+          <Button type="submit" variant="contained" loading={updateUser.isPending}>
             Save
           </Button>
         </DialogActions>

@@ -1,9 +1,3 @@
-import { DragPreview } from '#src/components/DragPreview';
-import { DropIndicator } from '#src/components/DropIndicator';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
-import { focusNextInput } from '#src/utils/focusNextInput';
-import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -42,6 +36,12 @@ import { useStore } from '@tanstack/react-form';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { DragPreview } from '#src/components/DragPreview';
+import { DropIndicator } from '#src/components/DropIndicator';
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { focusNextInput } from '#src/utils/focusNextInput';
+import { getNumberFromInput } from '#src/utils/getNumberFromInput';
 import { IngredientNotesButton } from './IngredientNotesButton';
 import { recipeFormOptions } from './recipeForm';
 
@@ -58,12 +58,9 @@ export const EditIngredient = withForm({
     const dragHandleRef = useRef<HTMLButtonElement>(null);
     const [dragging, setDragging] = useState<boolean>(false);
     const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
-    const [previewContainer, setPreviewContainer] =
-      useState<HTMLElement | null>(null);
+    const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(null);
     const ingredient = useStore(form.store, (state) =>
-      state.values.ingredientGroups
-        .at(ingredientGroupIndex)
-        ?.ingredients.at(index),
+      state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients.at(index),
     );
     const [dialogOpen, setDialogOpen] = useState(false);
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
@@ -122,8 +119,7 @@ export const EditIngredient = withForm({
             return true;
           },
           onDrag({ self, source }) {
-            const isSource =
-              source.element === element || source.element === dragHandle;
+            const isSource = source.element === element || source.element === dragHandle;
             if (isSource) {
               setClosestEdge(null);
               return;
@@ -139,11 +135,9 @@ export const EditIngredient = withForm({
             const sourceGroupIndex = source.data['groupIndex'] as number;
 
             const isItemBeforeSource =
-              index === sourceIndex - 1 &&
-              ingredientGroupIndex === sourceGroupIndex;
+              index === sourceIndex - 1 && ingredientGroupIndex === sourceGroupIndex;
             const isItemAfterSource =
-              index === sourceIndex + 1 &&
-              ingredientGroupIndex === sourceGroupIndex;
+              index === sourceIndex + 1 && ingredientGroupIndex === sourceGroupIndex;
 
             const isDropIndicatorHidden =
               (isItemBeforeSource && closestEdge === 'bottom') ||
@@ -157,8 +151,7 @@ export const EditIngredient = withForm({
             setClosestEdge(closestEdge);
           },
           onDragEnter({ self, source }) {
-            const isSource =
-              source.element === element || source.element === dragHandle;
+            const isSource = source.element === element || source.element === dragHandle;
             if (isSource) {
               setClosestEdge(null);
               return;
@@ -174,11 +167,9 @@ export const EditIngredient = withForm({
             const sourceGroupIndex = source.data['groupIndex'] as number;
 
             const isItemBeforeSource =
-              index === sourceIndex - 1 &&
-              ingredientGroupIndex === sourceGroupIndex;
+              index === sourceIndex - 1 && ingredientGroupIndex === sourceGroupIndex;
             const isItemAfterSource =
-              index === sourceIndex + 1 &&
-              ingredientGroupIndex === sourceGroupIndex;
+              index === sourceIndex + 1 && ingredientGroupIndex === sourceGroupIndex;
 
             const isDropIndicatorHidden =
               (isItemBeforeSource && closestEdge === 'bottom') ||
@@ -245,8 +236,7 @@ export const EditIngredient = withForm({
                   sx={{
                     borderRadius: 1,
                     border: 1,
-                    borderColor: (theme) =>
-                      alpha(theme.palette.text.primary, 0.23),
+                    borderColor: (theme) => alpha(theme.palette.text.primary, 0.23),
                     px: '14px',
                     py: '8.5px',
                   }}
@@ -276,10 +266,7 @@ export const EditIngredient = withForm({
           {closestEdge && <DropIndicator edge={closestEdge} gap="16px" />}
         </div>
         {previewContainer
-          ? createPortal(
-              <DragPreview text={ingredient?.name || 'Ingredient'} />,
-              previewContainer,
-            )
+          ? createPortal(<DragPreview text={ingredient?.name || 'Ingredient'} />, previewContainer)
           : null}
         {isSmall && (
           <Dialog
@@ -333,9 +320,7 @@ export const EditIngredientContent = withForm({
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, ingredientGroupIndex, index }) {
     const { data: user } = useSignedInUser();
-    const { data: canonicalIngredients } = useQuery(
-      listCanonicalIngredientsQueryOptions(),
-    );
+    const { data: canonicalIngredients } = useQuery(listCanonicalIngredientsQueryOptions());
     const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     return (
@@ -426,9 +411,7 @@ export const EditIngredientContent = withForm({
                   renderOption={(props, option) => {
                     const { key, ...optionProps } = props;
 
-                    const unitOption = defaultUnitOptions.find(
-                      (u) => u.name === option.name,
-                    );
+                    const unitOption = defaultUnitOptions.find((u) => u.name === option.name);
 
                     return (
                       <li key={key} {...optionProps}>
@@ -467,10 +450,7 @@ export const EditIngredientContent = withForm({
                   size={isSmall ? undefined : 'small'}
                   options={canonicalIngredients?.map((ci) => ci.name) ?? []}
                   getOptionLabel={(option) => {
-                    return (
-                      canonicalIngredients?.find((ci) => ci.name === option)
-                        ?.name ?? option
-                    );
+                    return canonicalIngredients?.find((ci) => ci.name === option)?.name ?? option;
                   }}
                   onChange={(_event, newValue) => {
                     handleChange(newValue);

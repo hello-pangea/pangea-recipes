@@ -1,9 +1,5 @@
 import { prisma } from '@repo/database';
-import {
-  getSignedInUserContract,
-  getUserContract,
-  updateUserContract,
-} from '@repo/features/users';
+import { getSignedInUserContract, getUserContract, updateUserContract } from '@repo/features/users';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 
@@ -81,8 +77,7 @@ export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
       },
     },
     async (request) => {
-      const { themePreference, unitsPreference, name, accentColor } =
-        request.body;
+      const { themePreference, unitsPreference, name, accentColor } = request.body;
       const { id } = request.params;
 
       if (id !== request.session?.userId) {

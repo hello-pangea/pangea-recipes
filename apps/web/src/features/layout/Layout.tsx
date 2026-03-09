@@ -1,5 +1,3 @@
-import { RouterLink } from '#src/components/RouterLink';
-import { Sidebar } from '#src/features/layout/Sidebar';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
   AppBar,
@@ -13,13 +11,13 @@ import {
 import { useSignedInUser } from '@repo/features/users';
 import { Outlet } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
+import { RouterLink } from '#src/components/RouterLink';
+import { Sidebar } from '#src/features/layout/Sidebar';
 import { NewButton } from './NewButton';
 
 export function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const isSmallScreen = useMediaQuery((theme: Theme) =>
-    theme.breakpoints.down('md'),
-  );
+  const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down('md'));
   const { data: user } = useSignedInUser();
   const { setMode } = useColorScheme();
 
@@ -50,8 +48,7 @@ export function Layout() {
           >
             <Toolbar
               sx={{
-                backgroundColor: (theme) =>
-                  theme.vars.palette.background.default,
+                backgroundColor: (theme) => theme.vars.palette.background.default,
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',

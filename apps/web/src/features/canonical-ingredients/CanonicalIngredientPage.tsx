@@ -1,15 +1,13 @@
-import { Page } from '#src/components/Page';
-import { RouterButton } from '#src/components/RouterButton';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import { Divider, Stack, Typography } from '@mui/material';
 import { listCanonicalIngredientsQueryOptions } from '@repo/features/canonical-ingredients';
 import { useQuery } from '@tanstack/react-query';
+import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
 import { CanonicalIngredientCell } from './CanonicalIngredientCell';
 
 export function CanonicalIngredientsPage() {
-  const { data: canonicalIngredients } = useQuery(
-    listCanonicalIngredientsQueryOptions(),
-  );
+  const { data: canonicalIngredients } = useQuery(listCanonicalIngredientsQueryOptions());
 
   return (
     <Page>

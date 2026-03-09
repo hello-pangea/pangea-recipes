@@ -31,9 +31,7 @@ export function useDeleteRecipe({ mutationConfig }: Options = {}) {
   return useMutation({
     onMutate: (...args) => {
       const input = args[0];
-      const recipe = queryClient.getQueryData(
-        getRecipeQueryOptions(input.params.id).queryKey,
-      );
+      const recipe = queryClient.getQueryData(getRecipeQueryOptions(input.params.id).queryKey);
 
       if (recipe) {
         queryClient.setQueryData(

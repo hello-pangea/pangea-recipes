@@ -1,8 +1,4 @@
-export function stepUpSnapped(data: {
-  value: number;
-  steps: number[];
-  stepUpBy?: number;
-}): number {
+export function stepUpSnapped(data: { value: number; steps: number[]; stepUpBy?: number }): number {
   const { value, steps, stepUpBy } = data;
 
   if (!steps.length) {

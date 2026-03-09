@@ -6,29 +6,23 @@ import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
-export const createCanonicalIngredientContract = defineContract(
-  'canonical-ingredients',
-  {
-    method: 'post',
-    body: z.object({
-      name: z.string().min(1),
-      iconId: z.uuidv4().optional(),
-      aliases: z.array(z.string().min(1)).optional(),
+export const createCanonicalIngredientContract = defineContract('canonical-ingredients', {
+  method: 'post',
+  body: z.object({
+    name: z.string().min(1),
+    iconId: z.uuidv4().optional(),
+    aliases: z.array(z.string().min(1)).optional(),
+  }),
+  response: {
+    200: z.object({
+      canonicalIngredient: canonicalIngredientSchema,
     }),
-    response: {
-      200: z.object({
-        canonicalIngredient: canonicalIngredientSchema,
-      }),
-    },
   },
-);
+});
 
-const createCanonicalIngredient = makeRequest(
-  createCanonicalIngredientContract,
-  {
-    select: (res) => res.canonicalIngredient,
-  },
-);
+const createCanonicalIngredient = makeRequest(createCanonicalIngredientContract, {
+  select: (res) => res.canonicalIngredient,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof createCanonicalIngredient>;

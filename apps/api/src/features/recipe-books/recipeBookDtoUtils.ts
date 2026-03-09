@@ -32,10 +32,7 @@ export const recipeBookInclude = {
     },
   },
   invites: true,
-} satisfies Prisma.Args<
-  typeof prisma.recipeBook,
-  'findUniqueOrThrow'
->['include'];
+} satisfies Prisma.Args<typeof prisma.recipeBook, 'findUniqueOrThrow'>['include'];
 
 type RecipeBookData = Prisma.RecipeBookGetPayload<{
   include: typeof recipeBookInclude;

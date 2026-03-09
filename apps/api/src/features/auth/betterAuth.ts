@@ -1,16 +1,14 @@
-import { config } from '#src/config/config.ts';
-import { resend } from '#src/lib/resend.ts';
 import { prisma } from '@repo/database';
 import { ResetPassword, VerifyEmail } from '@repo/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { openAPI } from 'better-auth/plugins';
+import { config } from '#src/config/config.ts';
+import { resend } from '#src/lib/resend.ts';
 import { claimRecipeBookInvites } from '../users/userUtils.ts';
 
 export const auth = betterAuth({
-  database: prismaAdapter(prisma, {
-    provider: 'postgresql',
-  }),
+  database: prismaAdapter(prisma, { provider: 'postgresql' }),
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
@@ -41,9 +39,7 @@ export const auth = betterAuth({
   plugins: [openAPI()],
   basePath: '/auth',
   baseURL:
-    config.NODE_ENV === 'production'
-      ? 'https://api.pangearecipes.com'
-      : 'http://localhost:3001',
+    config.NODE_ENV === 'production' ? 'https://api.pangearecipes.com' : 'http://localhost:3001',
   trustedOrigins: [
     'http://localhost:3000',
     'http://localhost:3001',
@@ -55,8 +51,7 @@ export const auth = betterAuth({
   advanced: {
     crossSubDomainCookies: {
       enabled: true,
-      domain:
-        config.NODE_ENV === 'production' ? '.pangearecipes.com' : 'localhost',
+      domain: config.NODE_ENV === 'production' ? '.pangearecipes.com' : 'localhost',
     },
     defaultCookieAttributes: {
       secure: true,

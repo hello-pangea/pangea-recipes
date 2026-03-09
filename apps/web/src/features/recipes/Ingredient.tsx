@@ -52,9 +52,7 @@ export function Ingredient({ ingredient, multiplier }: Props) {
             {numberToFraction(ingredient.quantity * (multiplier ?? 1))}
           </Typography>
         )}{' '}
-        {ingredient.unit
-          ? `${ingredient.unit} ${ingredient.name}`
-          : ingredient.name}
+        {ingredient.unit ? `${ingredient.unit} ${ingredient.name}` : ingredient.name}
         {ingredient.notes && (
           <Typography
             component={'span'}

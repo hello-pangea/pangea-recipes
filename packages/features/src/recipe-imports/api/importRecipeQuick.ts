@@ -5,18 +5,15 @@ import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-export const importRecipeQuickContract = defineContract(
-  'recipe-imports/quick',
-  {
-    method: 'post',
-    body: z.object({
-      url: z.url(),
-    }),
-    response: {
-      202: noContent,
-    },
+export const importRecipeQuickContract = defineContract('recipe-imports/quick', {
+  method: 'post',
+  body: z.object({
+    url: z.url(),
+  }),
+  response: {
+    202: noContent,
   },
-);
+});
 
 const importRecipeQuick = makeRequest(importRecipeQuickContract, {
   ky: {

@@ -32,17 +32,14 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
   const menuOpen = Boolean(menuAnchorEl);
   const isSmall = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
-  const { data: recipeBook } = useSuspenseQuery(
-    getRecipeBookQueryOptions(recipeBookId),
-  );
+  const { data: recipeBook } = useSuspenseQuery(getRecipeBookQueryOptions(recipeBookId));
 
   const isShared =
     recipeBook.members.length > 1 ||
     recipeBook.invites.length > 0 ||
     recipeBook.access === 'public';
 
-  const sharedWithNumber =
-    recipeBook.members.length + recipeBook.invites.length - 1;
+  const sharedWithNumber = recipeBook.members.length + recipeBook.invites.length - 1;
 
   const isPublic = recipeBook.access === 'public';
 
@@ -66,11 +63,7 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
           </IconButton>
         </Tooltip>
       ) : (
-        <ButtonGroup
-          variant="contained"
-          aria-label="share button"
-          disableElevation
-        >
+        <ButtonGroup variant="contained" aria-label="share button" disableElevation>
           <Tooltip
             placement="bottom"
             title={
@@ -102,9 +95,7 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
             <Button
               id="quick-sharing-actions-button"
               size="small"
-              aria-controls={
-                menuOpen ? 'quick-sharing-actions-menu' : undefined
-              }
+              aria-controls={menuOpen ? 'quick-sharing-actions-menu' : undefined}
               aria-expanded={menuOpen ? 'true' : undefined}
               aria-label="quick sharing actions"
               aria-haspopup="menu"
@@ -141,9 +132,7 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
         <MenuItem
           onClick={() => {
             void navigator.clipboard
-              .writeText(
-                `${window.location.origin}/app/recipe-books/${recipeBookId}`,
-              )
+              .writeText(`${window.location.origin}/app/recipe-books/${recipeBookId}`)
               .then(() => {
                 enqueueSnackbar('Link copied', {
                   variant: 'success',

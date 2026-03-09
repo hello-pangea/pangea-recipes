@@ -15,10 +15,7 @@ const sortSchema = z
 
 export type Sort = z.infer<typeof sortSchema>;
 
-export function useSort(
-  localStorageKey: string,
-  overrideDefaultSort: Sort = defaultSort,
-) {
+export function useSort(localStorageKey: string, overrideDefaultSort: Sort = defaultSort) {
   return useLocalStorage<Sort>({
     key: localStorageKey,
     defaultValue: overrideDefaultSort,

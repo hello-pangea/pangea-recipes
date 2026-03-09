@@ -1,4 +1,3 @@
-import { isSxArray } from '#src/utils/isSxArray';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {
   Accordion,
@@ -13,6 +12,7 @@ import {
 } from '@mui/material';
 import type { Recipe } from '@repo/features/recipes';
 import { Fragment } from 'react/jsx-runtime';
+import { isSxArray } from '#src/utils/isSxArray';
 
 interface Props {
   nutrition: Exclude<Recipe['nutrition'], undefined>;
@@ -20,19 +20,12 @@ interface Props {
   sx?: SxProps<Theme>;
 }
 
-export function Nutrition({
-  nutrition,
-  showApproximateWarning,
-  sx = [],
-}: Props) {
+export function Nutrition({ nutrition, showApproximateWarning, sx = [] }: Props) {
   const nutritionKeysToDisplay = (
     Object.keys(nutrition) as (keyof Exclude<Recipe['nutrition'], undefined>)[]
   )
     .filter((key) => nutrition[key] !== null)
-    .sort(
-      (a, b) =>
-        preferredNutritionOrder.indexOf(a) - preferredNutritionOrder.indexOf(b),
-    );
+    .sort((a, b) => preferredNutritionOrder.indexOf(a) - preferredNutritionOrder.indexOf(b));
 
   if (!nutritionKeysToDisplay.length) {
     return null;
@@ -61,13 +54,10 @@ export function Nutrition({
             Nutrition <Typography component={'span'}>(per serving)</Typography>
           </Typography>
         </AccordionSummary>
-        <AccordionDetails
-          sx={{ px: { xs: 2, sm: 3 }, pb: { xs: 2, sm: 3 }, pt: 0 }}
-        >
+        <AccordionDetails sx={{ px: { xs: 2, sm: 3 }, pb: { xs: 2, sm: 3 }, pt: 0 }}>
           {showApproximateWarning && (
             <Typography variant="caption" sx={{ mb: 2 }}>
-              *Nutrition information from imports is approximate and might have
-              errors.
+              *Nutrition information from imports is approximate and might have errors.
             </Typography>
           )}
           <Box
@@ -85,14 +75,9 @@ export function Nutrition({
                     size={6}
                     sx={{
                       backgroundColor: (theme) =>
-                        index % 2 !== 0
-                          ? alpha(theme.palette.text.primary, 0.05)
-                          : undefined,
+                        index % 2 !== 0 ? alpha(theme.palette.text.primary, 0.05) : undefined,
                       borderRight: 1,
-                      borderBottom:
-                        index === nutritionKeysToDisplay.length - 1
-                          ? undefined
-                          : 1,
+                      borderBottom: index === nutritionKeysToDisplay.length - 1 ? undefined : 1,
                       borderColor: (theme) => theme.vars.palette.divider,
                       display: 'flex',
                       alignItems: 'center',
@@ -106,13 +91,8 @@ export function Nutrition({
                     size={6}
                     sx={{
                       backgroundColor: (theme) =>
-                        index % 2 !== 0
-                          ? alpha(theme.palette.text.primary, 0.05)
-                          : undefined,
-                      borderBottom:
-                        index === nutritionKeysToDisplay.length - 1
-                          ? undefined
-                          : 1,
+                        index % 2 !== 0 ? alpha(theme.palette.text.primary, 0.05) : undefined,
+                      borderBottom: index === nutritionKeysToDisplay.length - 1 ? undefined : 1,
                       borderColor: (theme) => theme.vars.palette.divider,
                       display: 'flex',
                       alignItems: 'center',
@@ -121,10 +101,7 @@ export function Nutrition({
                     }}
                   >
                     <Typography>
-                      <Typography
-                        component={'span'}
-                        sx={{ fontWeight: 'bold' }}
-                      >
+                      <Typography component={'span'} sx={{ fontWeight: 'bold' }}>
                         {nutrition[key]}{' '}
                       </Typography>
                       {nutriotionRecord[key].unit}
@@ -140,10 +117,7 @@ export function Nutrition({
   );
 }
 
-const preferredNutritionOrder: (keyof Exclude<
-  Recipe['nutrition'],
-  undefined
->)[] = [
+const preferredNutritionOrder: (keyof Exclude<Recipe['nutrition'], undefined>)[] = [
   'calories',
   'totalFatG',
   'unsaturatedFatG',

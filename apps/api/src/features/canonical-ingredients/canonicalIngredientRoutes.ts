@@ -15,9 +15,7 @@ import { verifySession } from '../auth/verifySession.ts';
 const routeTag = 'Canonical ingredients';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
-  fastify,
-) {
+export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',
     {
@@ -93,24 +91,23 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
         },
       });
 
-      const canonicalIngredientsWithIcon: CanonicalIngredient[] =
-        await Promise.all(
-          canonicalIngredients.map(async (canonicalIngredient) => {
-            return {
-              ...canonicalIngredient,
-              icon: !canonicalIngredient.icon
-                ? undefined
-                : {
-                    id: canonicalIngredient.icon.id,
-                    url: await getFileUrl({
-                      key: canonicalIngredient.icon.key,
-                      public: true,
-                    }),
-                  },
-              aliases: canonicalIngredient.aliases.map((alias) => alias.name),
-            };
-          }),
-        );
+      const canonicalIngredientsWithIcon: CanonicalIngredient[] = await Promise.all(
+        canonicalIngredients.map(async (canonicalIngredient) => {
+          return {
+            ...canonicalIngredient,
+            icon: !canonicalIngredient.icon
+              ? undefined
+              : {
+                  id: canonicalIngredient.icon.id,
+                  url: await getFileUrl({
+                    key: canonicalIngredient.icon.key,
+                    public: true,
+                  }),
+                },
+            aliases: canonicalIngredient.aliases.map((alias) => alias.name),
+          };
+        }),
+      );
 
       return {
         canonicalIngredients: canonicalIngredientsWithIcon,
@@ -131,20 +128,19 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
     async (request) => {
       const { id } = request.params;
 
-      const canonicalIngredient =
-        await prisma.canonicalIngredient.findUniqueOrThrow({
-          where: {
-            id: id,
-          },
-          include: {
-            icon: true,
-            aliases: {
-              select: {
-                name: true,
-              },
+      const canonicalIngredient = await prisma.canonicalIngredient.findUniqueOrThrow({
+        where: {
+          id: id,
+        },
+        include: {
+          icon: true,
+          aliases: {
+            select: {
+              name: true,
             },
           },
-        });
+        },
+      });
 
       const canonicalIngredientDto: CanonicalIngredient = {
         ...canonicalIngredient,

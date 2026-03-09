@@ -4,9 +4,7 @@ import { z } from 'zod';
 
 export async function updateInstructionGroups(data: {
   tx: Prisma.TransactionClient;
-  newInstructionGroups: z.infer<
-    typeof updateRecipeContract.body.shape.instructionGroups
-  >;
+  newInstructionGroups: z.infer<typeof updateRecipeContract.body.shape.instructionGroups>;
   oldInstructionGroups: {
     recipeId: string;
     name: string | null;
@@ -22,9 +20,7 @@ export async function updateInstructionGroups(data: {
     return;
   }
 
-  const existingInstructionGroupIds = oldInstructionGroups.map(
-    (group) => group.id,
-  );
+  const existingInstructionGroupIds = oldInstructionGroups.map((group) => group.id);
 
   const instructionGroupsToDelete = oldInstructionGroups.filter(
     (group) => !newInstructionGroups.some((g) => g.id === group.id),
@@ -34,9 +30,7 @@ export async function updateInstructionGroups(data: {
     (group) => group.id && existingInstructionGroupIds.includes(group.id),
   );
 
-  const instructionGroupsToCreate = newInstructionGroups.filter(
-    (group) => !group.id,
-  );
+  const instructionGroupsToCreate = newInstructionGroups.filter((group) => !group.id);
 
   if (instructionGroupsToDelete.length) {
     await tx.instructionGroup.deleteMany({
@@ -59,12 +53,10 @@ export async function updateInstructionGroups(data: {
             name: instructionGroup.name ?? null,
             order: index,
             instructions: {
-              create: instructionGroup.instructions.map(
-                (instruction, index) => ({
-                  order: index,
-                  text: instruction.text,
-                }),
-              ),
+              create: instructionGroup.instructions.map((instruction, index) => ({
+                order: index,
+                text: instruction.text,
+              })),
             },
           },
         });

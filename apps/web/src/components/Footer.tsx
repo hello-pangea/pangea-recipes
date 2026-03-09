@@ -1,11 +1,4 @@
-import {
-  Box,
-  Link,
-  Stack,
-  Typography,
-  type SxProps,
-  type Theme,
-} from '@mui/material';
+import { Box, Link, Stack, Typography, type SxProps, type Theme } from '@mui/material';
 import { RouterLink } from './RouterLink';
 
 interface Props {
@@ -43,11 +36,7 @@ export function Footer({ sx = [] }: Props) {
         }}
       >
         Made with ❤️ |{' '}
-        <Link
-          variant="body2"
-          href="https://github.com/hello-pangea/pangea-recipes"
-          target="_blank"
-        >
+        <Link variant="body2" href="https://github.com/hello-pangea/pangea-recipes" target="_blank">
           GitHub
         </Link>
       </Typography>

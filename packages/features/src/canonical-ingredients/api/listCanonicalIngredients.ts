@@ -4,17 +4,14 @@ import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
 import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
 
-export const listCanonicalIngredientsContract = defineContract(
-  'canonical-ingredients',
-  {
-    method: 'get',
-    response: {
-      200: z.object({
-        canonicalIngredients: z.array(canonicalIngredientSchema),
-      }),
-    },
+export const listCanonicalIngredientsContract = defineContract('canonical-ingredients', {
+  method: 'get',
+  response: {
+    200: z.object({
+      canonicalIngredients: z.array(canonicalIngredientSchema),
+    }),
   },
-);
+});
 
 const listCanonicalIngredients = makeRequest(listCanonicalIngredientsContract, {
   select: (res) => res.canonicalIngredients,

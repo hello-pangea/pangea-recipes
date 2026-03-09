@@ -1,7 +1,7 @@
-import { Page } from '#src/components/Page';
 import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
+import { Page } from '#src/components/Page';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { Recipe } from './Recipe';
 

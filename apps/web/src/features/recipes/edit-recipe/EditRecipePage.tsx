@@ -21,14 +21,8 @@ export function EditRecipePage() {
           recipe.usesRecipes?.map((recipeId) => ({
             recipeId: recipeId,
           })) ?? [],
-        cookTime:
-          recipe.cookTime === null
-            ? ''
-            : String(Math.round(recipe.cookTime / 60)),
-        prepTime:
-          recipe.prepTime === null
-            ? ''
-            : String(Math.round(recipe.prepTime / 60)),
+        cookTime: recipe.cookTime === null ? '' : String(Math.round(recipe.cookTime / 60)),
+        prepTime: recipe.prepTime === null ? '' : String(Math.round(recipe.prepTime / 60)),
         servings: recipe.servings ? String(recipe.servings) : '',
         tryLater: recipe.tryLaterAt !== null,
         image: recipe.images?.at(0)

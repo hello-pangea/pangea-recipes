@@ -1,4 +1,3 @@
-import { isSxArray } from '#src/utils/isSxArray';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -23,6 +22,7 @@ import {
 } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
+import { isSxArray } from '#src/utils/isSxArray';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
 interface Props {

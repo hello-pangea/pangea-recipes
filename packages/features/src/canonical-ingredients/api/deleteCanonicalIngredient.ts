@@ -6,22 +6,17 @@ import { defineContract } from '../../lib/routeContracts.js';
 import { type MutationConfig } from '../../lib/tanstackQuery.js';
 import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
 
-export const deleteCanonicalIngredientContract = defineContract(
-  'canonical-ingredients/:id',
-  {
-    method: 'delete',
-    params: z.object({
-      id: z.uuidv4(),
-    }),
-    response: {
-      200: noContent,
-    },
+export const deleteCanonicalIngredientContract = defineContract('canonical-ingredients/:id', {
+  method: 'delete',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  response: {
+    200: noContent,
   },
-);
+});
 
-const deleteCanonicalIngredient = makeRequest(
-  deleteCanonicalIngredientContract,
-);
+const deleteCanonicalIngredient = makeRequest(deleteCanonicalIngredientContract);
 
 interface Options {
   mutationConfig?: MutationConfig<typeof deleteCanonicalIngredient>;

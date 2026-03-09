@@ -6,19 +6,16 @@ import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
-export const deleteRecipeBookMemberContract = defineContract(
-  'recipe-books/:id/members/:userId',
-  {
-    method: 'delete',
-    params: z.object({
-      id: z.uuidv4(),
-      userId: z.uuidv4(),
-    }),
-    response: {
-      200: noContent,
-    },
+export const deleteRecipeBookMemberContract = defineContract('recipe-books/:id/members/:userId', {
+  method: 'delete',
+  params: z.object({
+    id: z.uuidv4(),
+    userId: z.uuidv4(),
+  }),
+  response: {
+    200: noContent,
   },
-);
+});
 
 const deleteRecipeBookMember = makeRequest(deleteRecipeBookMemberContract);
 

@@ -1,5 +1,5 @@
-import { isSxArray } from '#src/utils/isSxArray';
 import { Box, Typography, type SxProps, type Theme } from '@mui/material';
+import { isSxArray } from '#src/utils/isSxArray';
 
 interface Props {
   sx?: SxProps<Theme>;

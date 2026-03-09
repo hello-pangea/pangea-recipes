@@ -1,17 +1,10 @@
-import { RouterLink } from '#src/components/RouterLink';
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import {
-  Box,
-  Card,
-  IconButton,
-  Link as MuiLink,
-  Typography,
-  useMediaQuery,
-} from '@mui/material';
+import { Box, Card, IconButton, Link as MuiLink, Typography, useMediaQuery } from '@mui/material';
 import { type RecipeProjected } from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { RouterLink } from '#src/components/RouterLink';
+import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { RecipeMoreMenu } from '../RecipeMoreMenu';
 import { RecipeDraggable } from './RecipeDraggable';
 
@@ -74,13 +67,10 @@ export function RecipeCard({ recipe, onRemoveFromRecipeBook }: Props) {
           variant="outlined"
           sx={{
             '&:hover': {
-              boxShadow:
-                '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+              boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
             },
           }}
-          onContextMenu={
-            isTouchDevice || !ownsRecipe ? undefined : handleContextMenu
-          }
+          onContextMenu={isTouchDevice || !ownsRecipe ? undefined : handleContextMenu}
           onMouseEnter={
             isTouchDevice
               ? undefined
@@ -187,10 +177,7 @@ export function RecipeCard({ recipe, onRemoveFromRecipeBook }: Props) {
                   });
                 }}
                 sx={{
-                  visibility:
-                    isHovering || moreMenuAnchor || isTouchDevice
-                      ? 'visible'
-                      : 'hidden',
+                  visibility: isHovering || moreMenuAnchor || isTouchDevice ? 'visible' : 'hidden',
                 }}
               >
                 <MoreVertRoundedIcon />
@@ -202,15 +189,11 @@ export function RecipeCard({ recipe, onRemoveFromRecipeBook }: Props) {
       {ownsRecipe && (
         <RecipeMoreMenu
           recipe={recipe}
-          anchorEl={
-            moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null
-          }
+          anchorEl={moreMenuAnchor?.type === 'more' ? moreMenuAnchor.anchorEl : null}
           onClose={() => {
             setMoreMenuAnchor(null);
           }}
-          anchorReference={
-            moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'
-          }
+          anchorReference={moreMenuAnchor?.type === 'context' ? 'anchorPosition' : 'anchorEl'}
           onRemoveFromRecipeBook={onRemoveFromRecipeBook}
           anchorPosition={
             moreMenuAnchor?.type === 'context'

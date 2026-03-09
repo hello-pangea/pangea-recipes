@@ -1,15 +1,12 @@
-import { Page } from '#src/components/Page';
-import { SearchTextField } from '#src/components/SearchTextField';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { Box, Button, Typography } from '@mui/material';
-import {
-  listRecipesQueryOptions,
-  useUpdateRecipe,
-} from '@repo/features/recipes';
+import { listRecipesQueryOptions, useUpdateRecipe } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
+import { Page } from '#src/components/Page';
+import { SearchTextField } from '#src/components/SearchTextField';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { DisplayMenu } from '../display-preferences/DisplayMenu';
 import { useSort } from '../display-preferences/sort';
@@ -28,16 +25,11 @@ export function TryLaterPage() {
   const [view] = useViewPreference();
   const [sort, setSort] = useSort('tryLaterSort');
   const [search, setSearch] = useState('');
-  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
-  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
+  const [addMenuAnchorEl, setAddMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] = useState<null | HTMLElement>(null);
   const updateRecipe = useUpdateRecipe();
 
-  const tryLaterRecipes = allRecipes.filter(
-    (recipe) => recipe.tryLaterAt !== null,
-  );
+  const tryLaterRecipes = allRecipes.filter((recipe) => recipe.tryLaterAt !== null);
   const tryLaterRecipeIds = tryLaterRecipes.map((r) => r.id);
 
   const filteredRecipes = tryLaterRecipes
@@ -54,9 +46,7 @@ export function TryLaterPage() {
           : b.name.localeCompare(a.name);
       }
     })
-    .filter((recipe) =>
-      search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
-    );
+    .filter((recipe) => (search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true));
 
   return (
     <Page>
@@ -73,14 +63,8 @@ export function TryLaterPage() {
       >
         Recipes To Try Later
       </Typography>
-      <Box
-        sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
-      >
-        <SearchTextField
-          value={search}
-          onChange={setSearch}
-          placeholder="Search for a recipe..."
-        />
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}>
+        <SearchTextField value={search} onChange={setSearch} placeholder="Search for a recipe..." />
       </Box>
       <Box
         sx={{

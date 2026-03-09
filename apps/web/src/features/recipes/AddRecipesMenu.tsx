@@ -63,9 +63,7 @@ export function AddRecipesMenu({
       return sortedRecipes;
     }
 
-    return sortedRecipes.filter((book) =>
-      book.name.toLowerCase().includes(search.toLowerCase()),
-    );
+    return sortedRecipes.filter((book) => book.name.toLowerCase().includes(search.toLowerCase()));
   }, [recipes, search, initialAddedIds]);
 
   function handleClose() {

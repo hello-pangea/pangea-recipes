@@ -1,6 +1,3 @@
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
-import { isSxArray } from '#src/utils/isSxArray';
 import ExpandMoreRoundedIcon from '@mui/icons-material/ExpandMoreRounded';
 import {
   Accordion,
@@ -16,6 +13,9 @@ import {
   type Theme,
 } from '@mui/material';
 import { Fragment } from 'react/jsx-runtime';
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { isSxArray } from '#src/utils/isSxArray';
 import { recipeFormOptions, type RecipeFormInputs } from './recipeForm';
 
 interface Props {
@@ -44,8 +44,7 @@ export const EditNutrition = withForm({
           </AccordionSummary>
           <AccordionDetails>
             <Typography variant="caption" sx={{ mb: 2 }}>
-              *Nutrition information from imports is approximate and might have
-              errors.
+              *Nutrition information from imports is approximate and might have errors.
             </Typography>
             <Box
               sx={{
@@ -62,12 +61,9 @@ export const EditNutrition = withForm({
                       size={6}
                       sx={{
                         backgroundColor: (theme) =>
-                          index % 2 !== 0
-                            ? alpha(theme.palette.text.primary, 0.05)
-                            : undefined,
+                          index % 2 !== 0 ? alpha(theme.palette.text.primary, 0.05) : undefined,
                         borderRight: 1,
-                        borderBottom:
-                          index === nutritionLines.length - 1 ? undefined : 1,
+                        borderBottom: index === nutritionLines.length - 1 ? undefined : 1,
                         borderColor: (theme) => theme.vars.palette.divider,
                         display: 'flex',
                         alignItems: 'center',
@@ -81,11 +77,8 @@ export const EditNutrition = withForm({
                       size={6}
                       sx={{
                         backgroundColor: (theme) =>
-                          index % 2 !== 0
-                            ? alpha(theme.palette.text.primary, 0.05)
-                            : undefined,
-                        borderBottom:
-                          index === nutritionLines.length - 1 ? undefined : 1,
+                          index % 2 !== 0 ? alpha(theme.palette.text.primary, 0.05) : undefined,
+                        borderBottom: index === nutritionLines.length - 1 ? undefined : 1,
                         borderColor: (theme) => theme.vars.palette.divider,
                       }}
                     >
@@ -101,11 +94,7 @@ export const EditNutrition = withForm({
                                 px: 1,
                               }}
                               endAdornment={
-                                unit && (
-                                  <InputAdornment position="end">
-                                    {unit}
-                                  </InputAdornment>
-                                )
+                                unit && <InputAdornment position="end">{unit}</InputAdornment>
                               }
                               value={state.value ?? ''}
                               onChange={(e) => {

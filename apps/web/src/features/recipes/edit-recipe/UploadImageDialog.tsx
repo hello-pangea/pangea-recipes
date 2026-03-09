@@ -1,19 +1,12 @@
-import { config } from '#src/config/config';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  useTheme,
-} from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, useTheme } from '@mui/material';
 import Uppy, { type Meta } from '@uppy/core';
+import Dashboard from '@uppy/react/dashboard';
 import '@uppy/core/css/style.min.css';
 import '@uppy/dashboard/css/style.min.css';
-import Dashboard from '@uppy/react/dashboard';
 import XHR from '@uppy/xhr-upload';
 import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { config } from '#src/config/config';
 
 interface Props {
   open: boolean;

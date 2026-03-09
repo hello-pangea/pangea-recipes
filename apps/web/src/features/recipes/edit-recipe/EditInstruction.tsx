@@ -1,7 +1,3 @@
-import { DragPreview } from '#src/components/DragPreview';
-import { DropIndicator } from '#src/components/DropIndicator';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import {
   attachClosestEdge,
   extractClosestEdge,
@@ -20,6 +16,10 @@ import { Box, FormLabel, IconButton } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { DragPreview } from '#src/components/DragPreview';
+import { DropIndicator } from '#src/components/DropIndicator';
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { recipeFormOptions } from './recipeForm';
 
 interface Props {
@@ -35,15 +35,12 @@ export const EditInstruction = withForm({
     const dragHandleRef = useRef<HTMLButtonElement>(null);
     const [dragging, setDragging] = useState<boolean>(false);
     const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
-    const [previewContainer, setPreviewContainer] =
-      useState<HTMLElement | null>(null);
+    const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(null);
     const instruction = useStore(
       form.store,
       (state) =>
-        (
-          state.values.instructionGroups.at(instructionGroupIndex)
-            ?.instructions ?? []
-        ).at(index)?.text,
+        (state.values.instructionGroups.at(instructionGroupIndex)?.instructions ?? []).at(index)
+          ?.text,
     );
 
     useEffect(() => {
@@ -102,8 +99,7 @@ export const EditInstruction = withForm({
             return true;
           },
           onDrag({ self, source }) {
-            const isSource =
-              source.element === element || source.element === dragHandle;
+            const isSource = source.element === element || source.element === dragHandle;
             if (isSource) {
               setClosestEdge(null);
               return;
@@ -119,11 +115,9 @@ export const EditInstruction = withForm({
             const sourceGroupIndex = source.data['groupIndex'] as number;
 
             const isItemBeforeSource =
-              index === sourceIndex - 1 &&
-              instructionGroupIndex === sourceGroupIndex;
+              index === sourceIndex - 1 && instructionGroupIndex === sourceGroupIndex;
             const isItemAfterSource =
-              index === sourceIndex + 1 &&
-              instructionGroupIndex === sourceGroupIndex;
+              index === sourceIndex + 1 && instructionGroupIndex === sourceGroupIndex;
 
             const isDropIndicatorHidden =
               (isItemBeforeSource && closestEdge === 'bottom') ||
@@ -137,8 +131,7 @@ export const EditInstruction = withForm({
             setClosestEdge(closestEdge);
           },
           onDragEnter({ self, source }) {
-            const isSource =
-              source.element === element || source.element === dragHandle;
+            const isSource = source.element === element || source.element === dragHandle;
             if (isSource) {
               setClosestEdge(null);
               return;
@@ -154,11 +147,9 @@ export const EditInstruction = withForm({
             const sourceGroupIndex = source.data['groupIndex'] as number;
 
             const isItemBeforeSource =
-              index === sourceIndex - 1 &&
-              instructionGroupIndex === sourceGroupIndex;
+              index === sourceIndex - 1 && instructionGroupIndex === sourceGroupIndex;
             const isItemAfterSource =
-              index === sourceIndex + 1 &&
-              instructionGroupIndex === sourceGroupIndex;
+              index === sourceIndex + 1 && instructionGroupIndex === sourceGroupIndex;
 
             const isDropIndicatorHidden =
               (isItemBeforeSource && closestEdge === 'bottom') ||
@@ -258,10 +249,7 @@ export const EditInstruction = withForm({
           {closestEdge && <DropIndicator edge={closestEdge} gap="24px" />}
         </div>
         {previewContainer
-          ? createPortal(
-              <DragPreview text={`Step ${index + 1}`} />,
-              previewContainer,
-            )
+          ? createPortal(<DragPreview text={`Step ${index + 1}`} />, previewContainer)
           : null}
       </>
     );

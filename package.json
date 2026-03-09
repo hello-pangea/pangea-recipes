@@ -17,9 +17,8 @@
     "db:studio": "pnpm run -F=database db:studio",
     "dev": "turbo run dev",
     "dx": "turbo run dx",
-    "format": "pnpm format:prettier && pnpm format:package-json",
-    "format:package-json": "sort-package-json \"package.json\" \"apps/*/package.json\" \"packages/*/package.json\"",
-    "format:prettier": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check",
     "lint": "turbo run lint:eslint lint:type-check",
     "preview-emails": "pnpm run -F=email preview",
     "test": "turbo run test"
@@ -27,12 +26,11 @@
   "devDependencies": {
     "@eslint/js": "^9.39.4",
     "eslint": "^9.39.4",
-    "prettier": "^3.8.1",
-    "sort-package-json": "^3.6.1",
+    "oxfmt": "^0.36.0",
     "turbo": "^2.8.14"
   },
-  "packageManager": "pnpm@10.31.0",
   "engines": {
     "node": "^24.11.0"
-  }
+  },
+  "packageManager": "pnpm@10.31.0"
 }

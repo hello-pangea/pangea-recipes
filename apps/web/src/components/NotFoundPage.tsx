@@ -15,10 +15,7 @@ export function NotFoundPage() {
     >
       <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
         <img src="/assets/lil-guy.svg" width={32} height={32} />
-        <Typography
-          variant="h1"
-          sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}
-        >
+        <Typography variant="h1" sx={{ fontSize: 22, lineHeight: 1, ml: 2, pt: '0.4rem' }}>
           Pangea Recipes
         </Typography>
       </Box>

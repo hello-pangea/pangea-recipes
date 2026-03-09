@@ -46,10 +46,7 @@ export function useUpdateRecipeBook({ mutationConfig }: Options = {}) {
       void queryClient.invalidateQueries({
         queryKey: ['recipeBooks'],
       });
-      queryClient.setQueryData(
-        getRecipeBookQueryOptions(data.id).queryKey,
-        data,
-      );
+      queryClient.setQueryData(getRecipeBookQueryOptions(data.id).queryKey, data);
 
       void onSuccess?.(...args);
     },

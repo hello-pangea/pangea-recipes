@@ -1,6 +1,6 @@
-import { getFileUrl } from '#src/lib/s3.ts';
 import type { prisma, Prisma } from '@repo/database';
 import type { Recipe } from '@repo/features/recipes';
+import { getFileUrl } from '#src/lib/s3.ts';
 
 export const recipeInclude = {
   ingredientGroups: {
@@ -107,8 +107,7 @@ export async function mapToRecipeDto(recipeData: RecipeData): Promise<Recipe> {
           calories: recipeData.nutrition.calories,
 
           totalFatG: recipeData.nutrition.totalFatG?.toNumber() ?? null,
-          unsaturatedFatG:
-            recipeData.nutrition.unsaturatedFatG?.toNumber() ?? null,
+          unsaturatedFatG: recipeData.nutrition.unsaturatedFatG?.toNumber() ?? null,
           saturatedFatG: recipeData.nutrition.saturatedFatG?.toNumber() ?? null,
           transFatG: recipeData.nutrition.transFatG?.toNumber() ?? null,
 

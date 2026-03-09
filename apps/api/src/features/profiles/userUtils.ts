@@ -1,9 +1,6 @@
 import { prisma } from '@repo/database';
 
-export async function claimRecipeBookInvites(user: {
-  email: string;
-  id: string;
-}) {
+export async function claimRecipeBookInvites(user: { email: string; id: string }) {
   const now = new Date();
 
   const recipeBookInvites = await prisma.recipeBookInvite.findMany({

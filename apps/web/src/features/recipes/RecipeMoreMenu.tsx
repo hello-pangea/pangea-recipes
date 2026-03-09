@@ -25,21 +25,14 @@ import {
   useAddRecipeToRecipeBook,
   useCreateRecipeBook,
 } from '@repo/features/recipe-books';
-import {
-  useDeleteRecipe,
-  useUpdateRecipe,
-  type RecipeProjected,
-} from '@repo/features/recipes';
+import { useDeleteRecipe, useUpdateRecipe, type RecipeProjected } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useMemo, useState } from 'react';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { RecipeBookMenuItem } from './RecipeBookMenuItem';
 
-interface Props extends Pick<
-  MenuProps,
-  'anchorEl' | 'anchorReference' | 'anchorPosition'
-> {
+interface Props extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchorPosition'> {
   recipe: RecipeProjected;
   onClose: () => void;
   onDelete?: () => void;
@@ -56,9 +49,7 @@ export function RecipeMoreMenu({
   onRemoveFromRecipeBook,
 }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipeBooks } = useQuery(
-    listRecipeBooksQueryOptions({ userId }),
-  );
+  const { data: recipeBooks } = useQuery(listRecipeBooksQueryOptions({ userId }));
   const deleteRecipe = useDeleteRecipe();
   const createRecipeBook = useCreateRecipeBook();
   const updateRecipe = useUpdateRecipe();
@@ -77,9 +68,7 @@ export function RecipeMoreMenu({
       return [];
     }
 
-    const sortedRecipeBooks = recipeBooks.sort((a, b) =>
-      a.name.localeCompare(b.name),
-    );
+    const sortedRecipeBooks = recipeBooks.sort((a, b) => a.name.localeCompare(b.name));
 
     if (!search) {
       return sortedRecipeBooks;

@@ -1,9 +1,7 @@
 import { alpha, type CssVarsThemeOptions } from '@mui/material/styles';
 import { color, type ColorRange } from './colors';
 
-export function getColorSchemes(
-  accentColor: ColorRange,
-): CssVarsThemeOptions['colorSchemes'] {
+export function getColorSchemes(accentColor: ColorRange): CssVarsThemeOptions['colorSchemes'] {
   return {
     light: {
       palette: {

@@ -1,10 +1,10 @@
-import { Page } from '#src/components/Page';
-import { SearchTextField } from '#src/components/SearchTextField';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
+import { Page } from '#src/components/Page';
+import { SearchTextField } from '#src/components/SearchTextField';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { DisplayMenu } from '../display-preferences/DisplayMenu';
 import { useSort } from '../display-preferences/sort';
@@ -17,14 +17,11 @@ import { RecipeList } from './list/RecipeList';
 
 export function RecipesPage() {
   const userId = useSignedInUserId();
-  const { data: recipes, isError } = useSuspenseQuery(
-    listRecipesQueryOptions({ userId: userId }),
-  );
+  const { data: recipes, isError } = useSuspenseQuery(listRecipesQueryOptions({ userId: userId }));
   const [view] = useViewPreference();
   const [sort, setSort] = useSort('recipesSort');
   const [search, setSearch] = useState('');
-  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
+  const [displayMenuAnchorEl, setDisplayMenuAnchorEl] = useState<null | HTMLElement>(null);
   const parsingRecipeImports = useParsingRecipeImports({
     enableRecipeRefreshing: true,
   });
@@ -42,9 +39,7 @@ export function RecipesPage() {
           : b.name.localeCompare(a.name);
       }
     })
-    .filter((recipe) =>
-      search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true,
-    );
+    .filter((recipe) => (search ? recipe.name.toLowerCase().includes(search.toLowerCase()) : true));
 
   return (
     <Page>
@@ -61,14 +56,8 @@ export function RecipesPage() {
       >
         My Recipes
       </Typography>
-      <Box
-        sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
-      >
-        <SearchTextField
-          value={search}
-          onChange={setSearch}
-          placeholder="Search for a recipe..."
-        />
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}>
+        <SearchTextField value={search} onChange={setSearch} placeholder="Search for a recipe..." />
       </Box>
       <Box
         sx={{

@@ -1,4 +1,3 @@
-import { resend } from '#src/lib/resend.ts';
 import { prisma } from '@repo/database';
 import { RequestToJoinRecipeBookEmail } from '@repo/email';
 import {
@@ -8,14 +7,13 @@ import {
   requestAccessToRecipeBookContract,
 } from '@repo/features/recipe-book-requests';
 import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { resend } from '#src/lib/resend.ts';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe book requests';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
-  fastify,
-) {
+export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',
     {
@@ -23,8 +21,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'Request access to a recipe book',
-        description:
-          'Uses the auth token in the request to determin who is making the request.',
+        description: 'Uses the auth token in the request to determin who is making the request.',
         ...requestAccessToRecipeBookContract,
       },
     },
@@ -59,9 +56,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
         },
       });
 
-      const alreadyRequested = recipeBook.requests.some(
-        (request) => request.userId === userId,
-      );
+      const alreadyRequested = recipeBook.requests.some((request) => request.userId === userId);
 
       if (alreadyRequested) {
         throw fastify.httpErrors.conflict();
@@ -83,9 +78,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
         },
       });
 
-      const recipeBookOwners = recipeBook.members.filter(
-        (member) => member.role === 'owner',
-      );
+      const recipeBookOwners = recipeBook.members.filter((member) => member.role === 'owner');
 
       if (recipeBookOwners.length) {
         for (const owner of recipeBookOwners) {
@@ -115,8 +108,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (
       schema: {
         tags: [routeTag],
         summary: 'List recipe book requests',
-        description:
-          'For privacy reasons, the user can only check for requests that they made.',
+        description: 'For privacy reasons, the user can only check for requests that they made.',
         ...listRecipeBookRequestsContract,
       },
     },

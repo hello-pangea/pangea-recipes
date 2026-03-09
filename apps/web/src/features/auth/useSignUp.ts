@@ -1,7 +1,7 @@
-import { config } from '#src/config/config';
 import { getSignedInUserQueryOptions } from '@repo/features/users';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from '@tanstack/react-router';
+import { config } from '#src/config/config';
 import { authClient } from './authClient';
 
 export function useSignUp() {

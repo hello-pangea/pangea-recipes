@@ -1,14 +1,7 @@
+import { Box, Container, Typography, useMediaQuery, type SxProps, type Theme } from '@mui/material';
 import { RouterButton } from '#src/components/RouterButton';
 import { RouterLink } from '#src/components/RouterLink';
 import { isSxArray } from '#src/utils/isSxArray';
-import {
-  Box,
-  Container,
-  Typography,
-  useMediaQuery,
-  type SxProps,
-  type Theme,
-} from '@mui/material';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
 interface Props {
@@ -57,11 +50,7 @@ export function Header({ sx = [] }: Props) {
         </Typography>
       </Box>
       {isSignedIn ? (
-        <RouterButton
-          to="/"
-          variant="contained"
-          size={isSmall ? 'small' : 'medium'}
-        >
+        <RouterButton to="/" variant="contained" size={isSmall ? 'small' : 'medium'}>
           My recipes
         </RouterButton>
       ) : (
@@ -72,18 +61,10 @@ export function Header({ sx = [] }: Props) {
             gap: isSmall ? 1 : 2,
           }}
         >
-          <RouterButton
-            to="/sign-in"
-            variant="text"
-            size={isSmall ? 'small' : 'medium'}
-          >
+          <RouterButton to="/sign-in" variant="text" size={isSmall ? 'small' : 'medium'}>
             Sign in
           </RouterButton>
-          <RouterButton
-            to="/sign-up"
-            variant="contained"
-            size={isSmall ? 'small' : 'medium'}
-          >
+          <RouterButton to="/sign-up" variant="contained" size={isSmall ? 'small' : 'medium'}>
             Get started
           </RouterButton>
         </Box>

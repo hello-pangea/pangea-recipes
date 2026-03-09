@@ -1,5 +1,5 @@
-import { Layout } from '#src/features/layout/Layout';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { Layout } from '#src/features/layout/Layout';
 
 export const Route = createFileRoute('/app/_auth')({
   ssr: 'data-only',

@@ -65,9 +65,7 @@ interface Props {
 
 export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const userId = useSignedInUserId();
-  const { data: recipeBook } = useQuery(
-    getRecipeBookQueryOptions(recipeBookId),
-  );
+  const { data: recipeBook } = useQuery(getRecipeBookQueryOptions(recipeBookId));
   const [invites, setInvites] = useState<InviteOption[]>([]);
   const [inviteRole, setInviteRole] = useState<'editor' | 'viewer'>('viewer');
   const inviteMembersToRecipeBook = useInviteMembersToRecipeBook();
@@ -76,25 +74,21 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   const acceptRecipeBookRequest = useAcceptRecipeBookRequest();
   const declineRecipeBookRequest = useDeclineRecipeBookRequest();
   const updateRecipeBook = useUpdateRecipeBook();
-  const { data: recipeBooks } = useQuery(
-    listRecipeBooksQueryOptions({ userId }),
-  );
+  const { data: recipeBooks } = useQuery(listRecipeBooksQueryOptions({ userId }));
   const [linkCopied, setLinkCopied] = useState(false);
   const [reviewRequestId, setReviewRequestId] = useState<string | null>(null);
-  const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] =
-    useState<null | HTMLElement>(null);
+  const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] = useState<null | HTMLElement>(
+    null,
+  );
 
   const invitedEmails = [
     ...new Set(
       (
-        recipeBooks?.map((recipeBook) =>
-          recipeBook.invites.map((invite) => invite.inviteeEmail),
-        ) ?? []
+        recipeBooks?.map((recipeBook) => recipeBook.invites.map((invite) => invite.inviteeEmail)) ??
+        []
       ).flat(),
     ),
-  ].filter((email) =>
-    recipeBook?.invites.every((invite) => invite.inviteeEmail !== email),
-  );
+  ].filter((email) => recipeBook?.invites.every((invite) => invite.inviteeEmail !== email));
   const knownMembers =
     recipeBooks
       ?.map((recipeBook) =>
@@ -138,18 +132,11 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
     return <CircularProgress />;
   }
 
-  const myRole =
-    recipeBook.members.find((member) => member.userId === userId)?.role ??
-    'viewer';
+  const myRole = recipeBook.members.find((member) => member.userId === userId)?.role ?? 'viewer';
 
   return (
     <>
-      <Dialog
-        open={open && !reviewRequestId}
-        onClose={onClose}
-        maxWidth="sm"
-        fullWidth
-      >
+      <Dialog open={open && !reviewRequestId} onClose={onClose} maxWidth="sm" fullWidth>
         <DialogTitle>Share "{recipeBook.name}"</DialogTitle>
         <DialogContent>
           {recipeBook.requests.length > 0 && (
@@ -160,8 +147,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                   sx={{
                     borderRadius: 1,
                     overflow: 'hidden',
-                    backgroundColor: (theme) =>
-                      alpha(theme.palette.primary.main, 0.1),
+                    backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.1),
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
@@ -225,9 +211,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                 <TextField
                   {...params}
                   variant="outlined"
-                  placeholder={
-                    invites.length <= 0 ? 'Add by email or name' : undefined
-                  }
+                  placeholder={invites.length <= 0 ? 'Add by email or name' : undefined}
                 />
               )}
               filterOptions={(options, params) => {
@@ -235,9 +219,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
 
                 const { inputValue } = params;
                 // Suggest the creation of a new value
-                const isExisting = options.some(
-                  (option) => inputValue === option.email,
-                );
+                const isExisting = options.some((option) => inputValue === option.email);
 
                 const isEmail = isMaybeValidEmail(inputValue);
 
@@ -293,8 +275,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     >
                       <Avatar
                         sx={{
-                          backgroundColor: (theme) =>
-                            alpha(theme.palette.text.primary, 0.1),
+                          backgroundColor: (theme) => alpha(theme.palette.text.primary, 0.1),
                           color: (theme) => theme.vars.palette.text.primary,
                         }}
                       >
@@ -308,21 +289,20 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         <Typography variant="caption">{member.role}</Typography>
                       </Box>
                     </Box>
-                    {member.userId !== userId &&
-                      (myRole == 'owner' || member.role !== 'owner') && (
-                        <IconButton
-                          onClick={() => {
-                            deleteRecipeBookMember.mutate({
-                              params: {
-                                id: recipeBookId,
-                                userId: member.userId,
-                              },
-                            });
-                          }}
-                        >
-                          <DeleteRoundedIcon />
-                        </IconButton>
-                      )}
+                    {member.userId !== userId && (myRole == 'owner' || member.role !== 'owner') && (
+                      <IconButton
+                        onClick={() => {
+                          deleteRecipeBookMember.mutate({
+                            params: {
+                              id: recipeBookId,
+                              userId: member.userId,
+                            },
+                          });
+                        }}
+                      >
+                        <DeleteRoundedIcon />
+                      </IconButton>
+                    )}
                   </Box>
                 ))}
                 {recipeBook.invites.map((invitee) => (
@@ -345,8 +325,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       <Tooltip title="We sent an invite to their email">
                         <Avatar
                           sx={{
-                            backgroundColor: (theme) =>
-                              alpha(theme.palette.text.primary, 0.1),
+                            backgroundColor: (theme) => alpha(theme.palette.text.primary, 0.1),
                             color: (theme) => theme.vars.palette.text.primary,
                           }}
                         >
@@ -355,9 +334,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       </Tooltip>
                       <Box>
                         <Typography>{invitee.inviteeEmail}</Typography>
-                        <Typography variant="caption">
-                          Invite sent ({invitee.role})
-                        </Typography>
+                        <Typography variant="caption">Invite sent ({invitee.role})</Typography>
                       </Box>
                     </Box>
                     <IconButton
@@ -402,11 +379,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                       : theme.vars.palette.text.primary,
                 }}
               >
-                {recipeBook.access === 'public' ? (
-                  <PublicRoundedIcon />
-                ) : (
-                  <LockOutlinedIcon />
-                )}
+                {recipeBook.access === 'public' ? <PublicRoundedIcon /> : <LockOutlinedIcon />}
               </Avatar>
               <Box>
                 <Button
@@ -417,9 +390,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     setGeneralAccessMenuAnchorEl(event.currentTarget);
                   }}
                 >
-                  {recipeBook.access === 'public'
-                    ? 'Anyone with the link'
-                    : 'Restricted'}
+                  {recipeBook.access === 'public' ? 'Anyone with the link' : 'Restricted'}
                 </Button>
                 <Typography variant="caption">
                   {recipeBook.access === 'public'
@@ -440,9 +411,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
               variant="outlined"
               onClick={() => {
                 void navigator.clipboard
-                  .writeText(
-                    `${window.location.origin}/app/recipe-books/${recipeBookId}`,
-                  )
+                  .writeText(`${window.location.origin}/app/recipe-books/${recipeBookId}`)
                   .then(() => {
                     setLinkCopied(true);
                     setTimeout(() => {
@@ -450,9 +419,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                     }, 3000);
                   });
               }}
-              startIcon={
-                linkCopied ? <CheckRoundedIcon /> : <LinkRoundedIcon />
-              }
+              startIcon={linkCopied ? <CheckRoundedIcon /> : <LinkRoundedIcon />}
               color={linkCopied ? 'success' : 'primary'}
             >
               {linkCopied ? 'Link copied' : 'Copy link'}
@@ -539,12 +506,8 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
         </Box>
         <DialogContent>
           <Typography sx={{ mb: 2 }}>
-            {
-              recipeBook.requests.find(
-                (request) => request.id === reviewRequestId,
-              )?.name
-            }{' '}
-            requested to join {recipeBook.name}.
+            {recipeBook.requests.find((request) => request.id === reviewRequestId)?.name} requested
+            to join {recipeBook.name}.
           </Typography>
           <FormControl sx={{ minWidth: 100 }}>
             <Select

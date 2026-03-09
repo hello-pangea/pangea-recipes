@@ -1,7 +1,3 @@
-import { Page } from '#src/components/Page';
-import { RouterButton } from '#src/components/RouterButton';
-import { color } from '#src/theme/colors';
-import { capitalizeFirstLetter } from '#src/utils/misc';
 import DarkModeRoundedIcon from '@mui/icons-material/DarkModeRounded';
 import LightModeRoundedIcon from '@mui/icons-material/LightModeRounded';
 import SettingsBrightnessRoundedIcon from '@mui/icons-material/SettingsBrightnessRounded';
@@ -18,13 +14,13 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material';
-import {
-  useSignedInUser,
-  useUpdateUser,
-  type User,
-} from '@repo/features/users';
+import { useSignedInUser, useUpdateUser, type User } from '@repo/features/users';
 import { useMutation } from '@tanstack/react-query';
 import { useSnackbar } from 'notistack';
+import { Page } from '#src/components/Page';
+import { RouterButton } from '#src/components/RouterButton';
+import { color } from '#src/theme/colors';
+import { capitalizeFirstLetter } from '#src/utils/misc';
 import { authClient } from '../auth/authClient';
 
 const accentColors = [
@@ -71,10 +67,7 @@ export function SettingsPage() {
         Settings
       </Typography>
       {!user.emailVerified && (
-        <Alert
-          severity={!verifyEmail.isSuccess ? 'warning' : 'success'}
-          sx={{ mb: 2 }}
-        >
+        <Alert severity={!verifyEmail.isSuccess ? 'warning' : 'success'} sx={{ mb: 2 }}>
           <Box
             sx={{
               display: 'flex',
@@ -83,9 +76,7 @@ export function SettingsPage() {
               ml: '5px',
             }}
           >
-            {!verifyEmail.isSuccess
-              ? "Your email hasn't been verified"
-              : 'Verification email sent'}
+            {!verifyEmail.isSuccess ? "Your email hasn't been verified" : 'Verification email sent'}
             {!verifyEmail.isSuccess && (
               <Button
                 color="inherit"
@@ -244,10 +235,8 @@ export function SettingsPage() {
           </Typography>
           <Typography>
             Pangea Recipes is in beta! Send any feedback to{' '}
-            <Link href="mailto:hello@pangearecipes.com">
-              hello@pangearecipes.com
-            </Link>
-            . I'd love to hear your thoughts 😊
+            <Link href="mailto:hello@pangearecipes.com">hello@pangearecipes.com</Link>. I'd love to
+            hear your thoughts 😊
             <br />
             <br />- Reece, Pangea Recipes creator
           </Typography>

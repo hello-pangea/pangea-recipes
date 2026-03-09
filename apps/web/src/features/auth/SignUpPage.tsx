@@ -1,5 +1,3 @@
-import { RouterLink } from '#src/components/RouterLink';
-import { useAppForm } from '#src/hooks/form';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -16,6 +14,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { z } from 'zod';
+import { RouterLink } from '#src/components/RouterLink';
+import { useAppForm } from '#src/hooks/form';
 import { authClient } from './authClient';
 import { useSignUp } from './useSignUp';
 
@@ -85,8 +85,7 @@ export function SignUpPage() {
           maxWidth: 400,
           width: '100%',
           border: 0,
-          boxShadow:
-            '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         }}
       >
         <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
@@ -155,11 +154,7 @@ export function SignUpPage() {
             <form.AppField
               name="name"
               children={(field) => (
-                <field.TextField
-                  label="Name (optional)"
-                  fullWidth
-                  autoComplete="name"
-                />
+                <field.TextField label="Name (optional)" fullWidth autoComplete="name" />
               )}
             />
             <form.AppField
@@ -188,11 +183,7 @@ export function SignUpPage() {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
-                            aria-label={
-                              showPassword
-                                ? 'hide the password'
-                                : 'display the password'
-                            }
+                            aria-label={showPassword ? 'hide the password' : 'display the password'}
                             onClick={() => {
                               setShowPassword((show) => !show);
                             }}
@@ -218,16 +209,9 @@ export function SignUpPage() {
               )}
             />
             {signUp.isError && (
-              <Alert severity="error">
-                {signUp.error.message || 'An error occurred'}
-              </Alert>
+              <Alert severity="error">{signUp.error.message || 'An error occurred'}</Alert>
             )}
-            <Button
-              variant="contained"
-              type="submit"
-              loading={signUp.isPending}
-              fullWidth
-            >
+            <Button variant="contained" type="submit" loading={signUp.isPending} fullWidth>
               Sign up
             </Button>
             <Typography variant="caption">
@@ -236,8 +220,7 @@ export function SignUpPage() {
               <RouterLink to="/terms-of-service">Terms of Service</RouterLink>
             </Typography>
             <Typography variant="caption">
-              Already have an account?{' '}
-              <RouterLink to="/sign-in">Sign in</RouterLink>
+              Already have an account? <RouterLink to="/sign-in">Sign in</RouterLink>
             </Typography>
           </Stack>
         </form>

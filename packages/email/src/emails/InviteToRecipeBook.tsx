@@ -19,10 +19,7 @@ interface EmailProps {
   recipeBookName: string;
 }
 
-export function InviteToRecipeBook({
-  url,
-  recipeBookName,
-}: EmailProps): ReactNode {
+export function InviteToRecipeBook({ url, recipeBookName }: EmailProps): ReactNode {
   const previewText = `Invite to recipe book "${recipeBookName}"`;
 
   return (
@@ -44,12 +41,9 @@ export function InviteToRecipeBook({
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
               Join "{recipeBookName}"
             </Heading>
+            <Text className="text-black text-[14px] leading-[24px]">Hello,</Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello,
-            </Text>
-            <Text className="text-black text-[14px] leading-[24px]">
-              You've been invited to join the recipe book "{recipeBookName}" on
-              Pangea Recipes.
+              You've been invited to join the recipe book "{recipeBookName}" on Pangea Recipes.
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button

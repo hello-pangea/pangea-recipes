@@ -93,18 +93,14 @@ export function DesktopDemo() {
       >
         My Recipes
       </Typography>
-      <Box
-        sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}
-      >
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'center', mb: 2 }}>
         <Box
           sx={[
             {
               maxWidth: 800,
               borderRadius: 99,
               backgroundColor: (theme) =>
-                searchFocused
-                  ? theme.vars.palette.background.paper
-                  : theme.vars.palette.grey[200],
+                searchFocused ? theme.vars.palette.background.paper : theme.vars.palette.grey[200],
               display: 'flex',
               alignItems: 'center',
               width: '100%',
@@ -143,8 +139,7 @@ export function DesktopDemo() {
               variant="outlined"
               sx={{
                 '&:hover': {
-                  boxShadow:
-                    '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+                  boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
                 },
               }}
             >

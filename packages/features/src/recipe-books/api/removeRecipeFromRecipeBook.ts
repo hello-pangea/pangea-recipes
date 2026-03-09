@@ -3,10 +3,7 @@ import { z } from 'zod';
 import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import {
-  getRecipeQueryOptions,
-  listRecipesQueryOptions,
-} from '../../recipes/index.js';
+import { getRecipeQueryOptions, listRecipesQueryOptions } from '../../recipes/index.js';
 import { recipeBookSchema } from '../types/recipeBook.js';
 import { getRecipeBookQueryOptions } from './getRecipeBook.js';
 
@@ -26,20 +23,15 @@ export const removeRecipeFromRecipeBookContract = defineContract(
   },
 );
 
-const removeRecipeFromRecipeBook = makeRequest(
-  removeRecipeFromRecipeBookContract,
-  {
-    select: (res) => res.recipeBook,
-  },
-);
+const removeRecipeFromRecipeBook = makeRequest(removeRecipeFromRecipeBookContract, {
+  select: (res) => res.recipeBook,
+});
 
 interface Options {
   mutationConfig?: MutationConfig<typeof removeRecipeFromRecipeBook>;
 }
 
-export function useRemoveRecipeFromRecipeBook({
-  mutationConfig,
-}: Options = {}) {
+export function useRemoveRecipeFromRecipeBook({ mutationConfig }: Options = {}) {
   const queryClient = useQueryClient();
 
   const { onSuccess, ...restConfig } = mutationConfig ?? {};
@@ -57,10 +49,7 @@ export function useRemoveRecipeFromRecipeBook({
       void queryClient.invalidateQueries({
         queryKey: listRecipesQueryOptions({}).queryKey,
       });
-      queryClient.setQueryData(
-        getRecipeBookQueryOptions(data.id).queryKey,
-        data,
-      );
+      queryClient.setQueryData(getRecipeBookQueryOptions(data.id).queryKey, data);
 
       void onSuccess?.(...args);
     },

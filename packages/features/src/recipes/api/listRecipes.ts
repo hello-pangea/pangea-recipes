@@ -21,10 +21,7 @@ const listRecipes = makeRequest(listRecipesContract, {
   select: (res) => res.recipes,
 });
 
-export function listRecipesQueryOptions(options: {
-  userId?: string;
-  recipeBookId?: string;
-}) {
+export function listRecipesQueryOptions(options: { userId?: string; recipeBookId?: string }) {
   return queryOptions({
     queryKey: ['recipes', options],
     queryFn: () => listRecipes({ querystring: options }),

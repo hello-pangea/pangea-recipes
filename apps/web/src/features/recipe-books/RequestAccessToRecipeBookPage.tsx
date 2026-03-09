@@ -1,4 +1,3 @@
-import { AddNameDialog } from '#src/components/AddNameDialog';
 import { Box, Button, Container, Typography } from '@mui/material';
 import {
   listRecipeBookRequestsQueryOptions,
@@ -8,6 +7,7 @@ import { useSignedInUser } from '@repo/features/users';
 import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
+import { AddNameDialog } from '#src/components/AddNameDialog';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
 const routeApi = getRouteApi('/app/_auth/recipe-books/$recipeBookId');
@@ -73,9 +73,7 @@ export function RequestAccessToRecipeBookPage() {
             </Button>
           </>
         )}
-        <Typography variant="caption">
-          You're signed in as {signedInAs}
-        </Typography>
+        <Typography variant="caption">You're signed in as {signedInAs}</Typography>
       </Container>
       <AddNameDialog
         open={addNameDialogOpen}

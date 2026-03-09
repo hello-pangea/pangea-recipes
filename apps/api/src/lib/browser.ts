@@ -1,8 +1,4 @@
-import {
-  chromium,
-  type Browser,
-  type BrowserContext,
-} from 'playwright-chromium';
+import { chromium, type Browser, type BrowserContext } from 'playwright-chromium';
 import UserAgent from 'user-agents';
 
 const AD_SERVING_DOMAINS = [

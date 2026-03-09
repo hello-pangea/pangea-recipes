@@ -8,9 +8,7 @@ const route = getRouteApi('/app/_auth/recipe-books_/$recipeBookId/edit');
 export function EditRecipeBookPage() {
   const { recipeBookId } = route.useParams();
 
-  const { data: recipeBook } = useSuspenseQuery(
-    getRecipeBookQueryOptions(recipeBookId),
-  );
+  const { data: recipeBook } = useSuspenseQuery(getRecipeBookQueryOptions(recipeBookId));
 
   return (
     <CreateRecipeBookPage

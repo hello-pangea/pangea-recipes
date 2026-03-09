@@ -32,10 +32,7 @@ export function useSetupUser({ mutationConfig }: Options = {}) {
     onSuccess: (...args) => {
       const [data] = args;
 
-      queryClient.setQueryData(
-        getSignedInUserQueryOptions().queryKey,
-        structuredClone(data),
-      );
+      queryClient.setQueryData(getSignedInUserQueryOptions().queryKey, structuredClone(data));
 
       void onSuccess?.(...args);
     },

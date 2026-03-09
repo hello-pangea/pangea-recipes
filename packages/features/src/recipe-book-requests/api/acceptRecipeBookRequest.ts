@@ -5,21 +5,18 @@ import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-export const acceptRecipeBookRequestContract = defineContract(
-  'recipe-book-requests/:id/accept',
-  {
-    method: 'post',
-    params: z.object({
-      id: z.uuidv4(),
-    }),
-    body: z.object({
-      role: z.enum(['owner', 'editor', 'viewer']),
-    }),
-    response: {
-      200: noContent,
-    },
+export const acceptRecipeBookRequestContract = defineContract('recipe-book-requests/:id/accept', {
+  method: 'post',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  body: z.object({
+    role: z.enum(['owner', 'editor', 'viewer']),
+  }),
+  response: {
+    200: noContent,
   },
-);
+});
 
 const acceptRecipeBookRequest = makeRequest(acceptRecipeBookRequestContract);
 

@@ -1,3 +1,4 @@
+import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { authRoutes } from '#src/features/auth/authRoutes.ts';
 import { canonicalIngredientRoutes } from '#src/features/canonical-ingredients/canonicalIngredientRoutes.ts';
 import { imageRoutes } from '#src/features/images/imageRoutes.ts';
@@ -5,7 +6,6 @@ import { profileRoutes } from '#src/features/profiles/profileRoutes.ts';
 import { recipeBookRequestRoutes } from '#src/features/recipe-book-requests/recipeBookRequestRoutes.ts';
 import { recipeBookRoutes } from '#src/features/recipe-books/recipeBookRoutes.ts';
 import { userRoutes } from '#src/features/users/userRoutes.ts';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { recipeImportRoutes } from '../features/recipe-imports/recipeImportRoutes.ts';
 import { recipeRoutes } from '../features/recipes/recipeRoutes.ts';
 

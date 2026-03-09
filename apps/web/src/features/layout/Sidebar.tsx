@@ -1,6 +1,3 @@
-import { CarrotIcon } from '#src/components/CarrotIcon';
-import { RouterLink } from '#src/components/RouterLink';
-import { RouterListItemButton } from '#src/components/RouterListItemButton';
 import type {
   DropTargetArgs,
   ElementDragType,
@@ -28,15 +25,15 @@ import {
   ListItem as MuiListItem,
   Typography,
 } from '@mui/material';
-import {
-  listRecipeBooksQueryOptions,
-  useAddRecipeToRecipeBook,
-} from '@repo/features/recipe-books';
+import { listRecipeBooksQueryOptions, useAddRecipeToRecipeBook } from '@repo/features/recipe-books';
 import { useUpdateRecipe, type RecipeProjected } from '@repo/features/recipes';
 import { useSignedInUser } from '@repo/features/users';
 import { useQuery } from '@tanstack/react-query';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
+import { CarrotIcon } from '#src/components/CarrotIcon';
+import { RouterLink } from '#src/components/RouterLink';
+import { RouterListItemButton } from '#src/components/RouterListItemButton';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { NewButton } from './NewButton';
 
@@ -51,9 +48,7 @@ interface Props {
 export function Sidebar({ open, onClose, isSmallScreen }: Props) {
   const { data: user } = useSignedInUser();
   const userId = useSignedInUserId();
-  const { data: recipeBooks } = useQuery(
-    listRecipeBooksQueryOptions({ userId }),
-  );
+  const { data: recipeBooks } = useQuery(listRecipeBooksQueryOptions({ userId }));
   const addRecipeToRecipeBook = useAddRecipeToRecipeBook();
   const updateRecipe = useUpdateRecipe();
 
@@ -83,10 +78,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               recipeId: sourceRecipe.id,
             },
           });
-        } else if (
-          sourceType === 'recipe' &&
-          targetType === 'recipes_sidebar'
-        ) {
+        } else if (sourceType === 'recipe' && targetType === 'recipes_sidebar') {
           const sourceRecipe = source.data['recipe'] as RecipeProjected;
 
           updateRecipe.mutate({
@@ -95,10 +87,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               tryLater: false,
             },
           });
-        } else if (
-          sourceType === 'recipe' &&
-          targetType === 'try_later_sidebar'
-        ) {
+        } else if (sourceType === 'recipe' && targetType === 'try_later_sidebar') {
           const sourceRecipe = source.data['recipe'] as RecipeProjected;
 
           updateRecipe.mutate({
@@ -107,10 +96,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
               tryLater: true,
             },
           });
-        } else if (
-          sourceType === 'recipe' &&
-          targetType === 'favorites_sidebar'
-        ) {
+        } else if (sourceType === 'recipe' && targetType === 'favorites_sidebar') {
           const sourceRecipe = source.data['recipe'] as RecipeProjected;
 
           updateRecipe.mutate({
@@ -122,9 +108,7 @@ export function Sidebar({ open, onClose, isSmallScreen }: Props) {
         }
       },
       canMonitor: ({ source }) =>
-        ['recipe', 'recipe_book_sidebar'].includes(
-          source.data['type'] as string,
-        ),
+        ['recipe', 'recipe_book_sidebar'].includes(source.data['type'] as string),
     });
   }, [addRecipeToRecipeBook, updateRecipe]);
 
@@ -347,8 +331,7 @@ function ListItem({
 
   const selected = matchExact
     ? location.pathname === plainPath
-    : location.pathname === plainPath ||
-      location.pathname.startsWith(plainPath + '/');
+    : location.pathname === plainPath || location.pathname.startsWith(plainPath + '/');
 
   return (
     <>
@@ -393,8 +376,7 @@ function ListItem({
           {icon && (
             <ListItemIcon
               sx={{
-                color: (theme) =>
-                  selected ? theme.vars.palette.primary.main : undefined,
+                color: (theme) => (selected ? theme.vars.palette.primary.main : undefined),
                 minWidth: small ? '28px' : '42px',
               }}
             >
@@ -406,8 +388,7 @@ function ListItem({
             slotProps={{
               primary: {
                 sx: {
-                  color: (theme) =>
-                    selected ? theme.vars.palette.primary.main : undefined,
+                  color: (theme) => (selected ? theme.vars.palette.primary.main : undefined),
                   fontSize: small ? 14 : 16,
                 },
               },
@@ -428,10 +409,7 @@ type DroppableRecipeBookListItemProps = ListItemProps & {
   recipeBookId: string;
 };
 
-function DroppableRecipeBookListItem({
-  recipeBookId,
-  ...rest
-}: DroppableRecipeBookListItemProps) {
+function DroppableRecipeBookListItem({ recipeBookId, ...rest }: DroppableRecipeBookListItemProps) {
   const ref = useRef<null | HTMLDivElement>(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 

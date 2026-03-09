@@ -1,12 +1,12 @@
+import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
+import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
+import { useSignedInUser } from '@repo/features/users';
+import { Navigate } from '@tanstack/react-router';
 import { EmphasizeText } from '#src/components/EmphasizeText';
 import { Footer } from '#src/components/Footer';
 import { RouterButton } from '#src/components/RouterButton';
 import mockupImage from '#src/images/hero-mockup.png';
 import screenshotImage from '#src/images/screenshot-1.png';
-import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
-import { Box, Chip, Container, Grid, Stack, Typography } from '@mui/material';
-import { useSignedInUser } from '@repo/features/users';
-import { Navigate } from '@tanstack/react-router';
 import { DesktopDemo } from './DesktopDemo';
 import { FeatureHighlights } from './FeatureHighlights';
 import { Header } from './Header';
@@ -31,11 +31,7 @@ export function HomePage() {
             mb: { xs: 4, sm: 16 },
           }}
         >
-          <Grid
-            container
-            spacing={4}
-            direction={{ xs: 'column-reverse', md: 'row' }}
-          >
+          <Grid container spacing={4} direction={{ xs: 'column-reverse', md: 'row' }}>
             <Grid
               size={{
                 xs: 12,
@@ -112,9 +108,8 @@ export function HomePage() {
                     fontSize: { xs: 16, md: 18 },
                   }}
                 >
-                  Pangea Recipes is a modern, ad-free recipe manager that makes
-                  it easy to save, share, organize, and collaborate on your
-                  favorite dishes.
+                  Pangea Recipes is a modern, ad-free recipe manager that makes it easy to save,
+                  share, organize, and collaborate on your favorite dishes.
                 </Typography>
                 <RouterButton
                   to="/sign-up"
@@ -163,11 +158,9 @@ export function HomePage() {
                 >
                   <EmphasizeText>Save</EmphasizeText> your favorite recipes
                 </Typography>
-                <Typography
-                  sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}
-                >
-                  <b>Never forget</b> another recipe. Quickly add your favorites
-                  and want-to-try recipes to your collection.
+                <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
+                  <b>Never forget</b> another recipe. Quickly add your favorites and want-to-try
+                  recipes to your collection.
                 </Typography>
               </Grid>
               <Grid
@@ -209,11 +202,8 @@ export function HomePage() {
                 >
                   Collect and access <EmphasizeText>anywhere</EmphasizeText>
                 </Typography>
-                <Typography
-                  sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}
-                >
-                  All your favorite recipes, available on the web on all your
-                  devices.
+                <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
+                  All your favorite recipes, available on the web on all your devices.
                 </Typography>
               </Grid>
               <Grid
@@ -253,14 +243,11 @@ export function HomePage() {
                   component={'h2'}
                   sx={{ mb: 4, maxWidth: 400, fontWeight: 'normal' }}
                 >
-                  <EmphasizeText>Share</EmphasizeText> recipes with friends and
-                  family
+                  <EmphasizeText>Share</EmphasizeText> recipes with friends and family
                 </Typography>
-                <Typography
-                  sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}
-                >
-                  Collaborate with friends and family to make the perfect{' '}
-                  <b>recipe book</b>. Share with a single link or invite.
+                <Typography sx={{ maxWidth: 400, fontSize: { xs: 16, md: 18 } }}>
+                  Collaborate with friends and family to make the perfect <b>recipe book</b>. Share
+                  with a single link or invite.
                 </Typography>
               </Grid>
               <Grid
@@ -287,12 +274,7 @@ export function HomePage() {
               textAlign: 'center',
             }}
           >
-            <img
-              src="/assets/lil-guy.svg"
-              alt="Pangea Recipes Logo"
-              width={64}
-              height={64}
-            />
+            <img src="/assets/lil-guy.svg" alt="Pangea Recipes Logo" width={64} height={64} />
             <Typography variant="h1" component={'p'} sx={{ mb: 2, mt: 4 }}>
               Start saving and sharing recipes.
             </Typography>
@@ -302,9 +284,8 @@ export function HomePage() {
                 maxWidth: 600,
               }}
             >
-              Pangea Recipes is free to use. We don't have ads, trackers,
-              popups, or distractions. We never sell data. Enjoy your recipes,
-              your way.
+              Pangea Recipes is free to use. We don't have ads, trackers, popups, or distractions.
+              We never sell data. Enjoy your recipes, your way.
             </Typography>
             <RouterButton to="/sign-up" variant="contained">
               Sign up

@@ -66,9 +66,7 @@ export function getRouter() {
       window.gtag('config', config.VITE_GOOGLE_TAG_ID, {
         page_title: document.title,
         page_location: location.href,
-        page_referrer: fromLocation?.href
-          ? location.origin + fromLocation.href
-          : undefined,
+        page_referrer: fromLocation?.href ? location.origin + fromLocation.href : undefined,
         send_page_view: false,
         update: true,
       });

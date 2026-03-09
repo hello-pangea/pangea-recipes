@@ -8,11 +8,7 @@ interface Props {
   onRemoveFromRecipeBook?: (recipeId: string) => void;
 }
 
-export function RecipeList({
-  recipes,
-  compact,
-  onRemoveFromRecipeBook,
-}: Props) {
+export function RecipeList({ recipes, compact, onRemoveFromRecipeBook }: Props) {
   return (
     <Stack>
       {recipes?.map((recipe) => (

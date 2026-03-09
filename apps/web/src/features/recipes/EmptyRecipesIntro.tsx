@@ -1,12 +1,5 @@
+import { alpha, Box, Grid, Typography, type SxProps, type Theme } from '@mui/material';
 import { isSxArray } from '#src/utils/isSxArray';
-import {
-  alpha,
-  Box,
-  Grid,
-  Typography,
-  type SxProps,
-  type Theme,
-} from '@mui/material';
 
 interface Props {
   sx?: SxProps<Theme>;
@@ -52,8 +45,7 @@ export function EmptyRecipesIntro({ sx = [] }: Props) {
             color="primary"
             sx={{
               mb: 1.5,
-              backgroundColor: (theme) =>
-                alpha(theme.palette.primary.main, 0.075),
+              backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
               borderRadius: 99,
               p: 1,
               color: (theme) => theme.palette.primary.main,
@@ -92,8 +84,7 @@ export function EmptyRecipesIntro({ sx = [] }: Props) {
             color="primary"
             sx={{
               mb: 1.5,
-              backgroundColor: (theme) =>
-                alpha(theme.palette.primary.main, 0.075),
+              backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
               borderRadius: 99,
               p: 1,
               color: (theme) => theme.palette.primary.main,
@@ -132,8 +123,7 @@ export function EmptyRecipesIntro({ sx = [] }: Props) {
             color="primary"
             sx={{
               mb: 1.5,
-              backgroundColor: (theme) =>
-                alpha(theme.palette.primary.main, 0.075),
+              backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
               borderRadius: 99,
               p: 1,
               color: (theme) => theme.palette.primary.main,

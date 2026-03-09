@@ -5,18 +5,15 @@ import { makeRequest } from '../../lib/request.js';
 import { defineContract } from '../../lib/routeContracts.js';
 import type { MutationConfig } from '../../lib/tanstackQuery.js';
 
-export const declineRecipeBookRequestContract = defineContract(
-  'recipe-book-requests/:id/decline',
-  {
-    method: 'post',
-    params: z.object({
-      id: z.uuidv4(),
-    }),
-    response: {
-      200: noContent,
-    },
+export const declineRecipeBookRequestContract = defineContract('recipe-book-requests/:id/decline', {
+  method: 'post',
+  params: z.object({
+    id: z.uuidv4(),
+  }),
+  response: {
+    200: noContent,
   },
-);
+});
 
 const declineRecipeBookRequest = makeRequest(declineRecipeBookRequestContract);
 

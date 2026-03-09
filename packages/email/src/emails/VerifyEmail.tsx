@@ -40,12 +40,9 @@ export function VerifyEmail({ url }: EmailProps): ReactNode {
             <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
               Verify email
             </Heading>
+            <Text className="text-black text-[14px] leading-[24px]">Hello,</Text>
             <Text className="text-black text-[14px] leading-[24px]">
-              Hello,
-            </Text>
-            <Text className="text-black text-[14px] leading-[24px]">
-              Please confirm that this is the correct email for your Hello
-              Recipes account.
+              Please confirm that this is the correct email for your Hello Recipes account.
             </Text>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button

@@ -1,18 +1,11 @@
-import { RouterLink } from '#src/components/RouterLink';
 import GroupRoundedIcon from '@mui/icons-material/GroupRounded';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
-import {
-  Box,
-  Card,
-  CircularProgress,
-  IconButton,
-  Stack,
-  Tooltip,
-} from '@mui/material';
+import { Box, Card, CircularProgress, IconButton, Stack, Tooltip } from '@mui/material';
 import { getRecipeBookQueryOptions } from '@repo/features/recipe-books';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
+import { RouterLink } from '#src/components/RouterLink';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 
 interface Props {
@@ -20,12 +13,8 @@ interface Props {
 }
 
 export function RecipeBookCard({ recipeBookId }: Props) {
-  const { data: recipeBook } = useQuery(
-    getRecipeBookQueryOptions(recipeBookId),
-  );
-  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
+  const { data: recipeBook } = useQuery(getRecipeBookQueryOptions(recipeBookId));
+  const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(null);
   const moreMenuOpen = Boolean(moreMenuAnchorEl);
 
   if (!recipeBook) {
@@ -38,8 +27,7 @@ export function RecipeBookCard({ recipeBookId }: Props) {
         variant="outlined"
         sx={{
           '&:hover': {
-            boxShadow:
-              '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+            boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
           },
         }}
       >

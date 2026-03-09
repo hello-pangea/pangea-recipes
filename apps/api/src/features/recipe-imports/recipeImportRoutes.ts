@@ -1,4 +1,3 @@
-import { ApiError } from '#src/lib/ApiError.ts';
 import { prisma } from '@repo/database';
 import {
   importRecipeContract,
@@ -7,6 +6,7 @@ import {
 } from '@repo/features/recipe-imports';
 import * as Sentry from '@sentry/node';
 import { type FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import { ApiError } from '#src/lib/ApiError.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { createRecipe } from '../recipes/recipeRepo.ts';
 import { getLlmImportRecipe } from './getLlmImportRecipe.ts';
@@ -15,9 +15,7 @@ import { isValidHttpUrl } from './isValidHttpUrl.ts';
 const routeTag = 'Recipe imports';
 
 // eslint-disable-next-line @typescript-eslint/require-await
-export const recipeImportRoutes: FastifyPluginAsyncZod = async function (
-  fastify,
-) {
+export const recipeImportRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',
     {
@@ -45,8 +43,7 @@ export const recipeImportRoutes: FastifyPluginAsyncZod = async function (
         });
       }
 
-      const { parsedRecipe: recipe, websitePage } =
-        await getLlmImportRecipe(urlString);
+      const { parsedRecipe: recipe, websitePage } = await getLlmImportRecipe(urlString);
 
       return {
         websitePageId: websitePage.id,

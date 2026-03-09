@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "sortImports": {
+    "newlinesBetween": false,
+  },
+  "singleQuote": true,
+  "ignorePatterns": ["routeTree.gen.ts"],
+}

@@ -1,6 +1,6 @@
-import { authClient } from '#src/features/auth/authClient';
 import { getSignedInUserQueryOptions } from '@repo/features/users';
 import { createFileRoute, redirect } from '@tanstack/react-router';
+import { authClient } from '#src/features/auth/authClient';
 
 export const Route = createFileRoute('/log-out')({
   preload: false,

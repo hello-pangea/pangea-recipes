@@ -1,11 +1,5 @@
 import RemoveRoundedIcon from '@mui/icons-material/RemoveRounded';
-import {
-  Box,
-  Card,
-  CircularProgress,
-  IconButton,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CircularProgress, IconButton, Typography } from '@mui/material';
 import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 

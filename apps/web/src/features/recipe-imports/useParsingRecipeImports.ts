@@ -7,9 +7,7 @@ interface Options {
   enableRecipeRefreshing?: boolean;
 }
 
-export function useParsingRecipeImports({
-  enableRecipeRefreshing = false,
-}: Options) {
+export function useParsingRecipeImports({ enableRecipeRefreshing = false }: Options) {
   const queryClient = useQueryClient();
   const userId = useSignedInUserId();
   const { data: recipeImports } = useQuery({

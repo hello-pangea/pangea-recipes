@@ -1,10 +1,7 @@
-import { auth } from '#src/features/auth/betterAuth.ts';
 import openApi from '@fastify/swagger';
 import fastifyPlugin from 'fastify-plugin';
-import {
-  jsonSchemaTransform,
-  jsonSchemaTransformObject,
-} from 'fastify-type-provider-zod';
+import { jsonSchemaTransform, jsonSchemaTransformObject } from 'fastify-type-provider-zod';
+import { auth } from '#src/features/auth/betterAuth.ts';
 import { config } from '../config/config.ts';
 
 export const customOpenApi = fastifyPlugin(async (fastify) => {

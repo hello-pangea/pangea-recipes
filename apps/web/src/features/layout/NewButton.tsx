@@ -23,9 +23,7 @@ interface Props {
 
 export function NewButton({ onOptionClick, slotProps }: Props) {
   const [quickImportDialogOpen, setQuickImportDialogOpen] = useState(false);
-  const [newMenuAnchorEl, setNewMenuAnchorEl] = useState<null | HTMLElement>(
-    null,
-  );
+  const [newMenuAnchorEl, setNewMenuAnchorEl] = useState<null | HTMLElement>(null);
 
   return (
     <>

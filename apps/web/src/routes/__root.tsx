@@ -1,34 +1,22 @@
-import { NotFoundPage } from '#src/components/NotFoundPage';
-import { config } from '#src/config/config';
-import { color } from '#src/theme/colors';
-import { getTheme } from '#src/theme/theme';
-import appCss from '#src/theme/theme.css?url';
-import { getHasAuthCookie } from '#src/utils/getServerWebRequest';
-import { seo } from '#src/utils/seo';
 import createCache from '@emotion/cache';
 import { CacheProvider } from '@emotion/react';
 import interFontCss from '@fontsource-variable/inter?url';
 import loraFontCss from '@fontsource-variable/lora?url';
-import {
-  CssBaseline,
-  InitColorSchemeScript,
-  ThemeProvider,
-} from '@mui/material';
+import { CssBaseline, InitColorSchemeScript, ThemeProvider } from '@mui/material';
 import type {} from '@mui/material/themeCssVarsAugmentation';
-import {
-  getSignedInUserQueryOptions,
-  useSignedInUser,
-} from '@repo/features/users';
+import { getSignedInUserQueryOptions, useSignedInUser } from '@repo/features/users';
 import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import {
-  createRootRouteWithContext,
-  HeadContent,
-  Outlet,
-  Scripts,
-} from '@tanstack/react-router';
+import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
 import { SnackbarProvider } from 'notistack';
+import { NotFoundPage } from '#src/components/NotFoundPage';
+import { config } from '#src/config/config';
+import { color } from '#src/theme/colors';
+import { getTheme } from '#src/theme/theme';
+import { getHasAuthCookie } from '#src/utils/getServerWebRequest';
+import { seo } from '#src/utils/seo';
+import appCss from '#src/theme/theme.css?url';
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -52,9 +40,7 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       }
     }
 
-    const user = await context.queryClient.ensureQueryData(
-      getSignedInUserQueryOptions(),
-    );
+    const user = await context.queryClient.ensureQueryData(getSignedInUserQueryOptions());
 
     return {
       userId: user?.id ?? null,
@@ -157,10 +143,7 @@ function Providers({ children }: { children: React.ReactNode }) {
 
   return (
     <CacheProvider value={emotionCache}>
-      <ThemeProvider
-        theme={getTheme(color[user?.accentColor ?? 'indigo'])}
-        forceThemeRerender
-      >
+      <ThemeProvider theme={getTheme(color[user?.accentColor ?? 'indigo'])} forceThemeRerender>
         <CssBaseline />
         <SnackbarProvider>{children}</SnackbarProvider>
       </ThemeProvider>

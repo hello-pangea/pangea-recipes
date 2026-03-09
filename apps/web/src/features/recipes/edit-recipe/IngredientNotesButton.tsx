@@ -1,17 +1,10 @@
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import SpeakerNotesOutlinedIcon from '@mui/icons-material/SpeakerNotesOutlined';
 import SpeakerNotesRoundedIcon from '@mui/icons-material/SpeakerNotesRounded';
-import {
-  Box,
-  IconButton,
-  Popover,
-  Tooltip,
-  type SxProps,
-  type Theme,
-} from '@mui/material';
+import { Box, IconButton, Popover, Tooltip, type SxProps, type Theme } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import { useState } from 'react';
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { recipeFormOptions } from './recipeForm';
 
 interface Props {
@@ -23,17 +16,10 @@ interface Props {
 export const IngredientNotesButton = withForm({
   ...recipeFormOptions,
   props: {} as FormPropsWrapper<Props>,
-  render: function Render({
-    form,
-    sx = [],
-    ingredientGroupIndex,
-    ingredientIndex,
-  }) {
+  render: function Render({ form, sx = [], ingredientGroupIndex, ingredientIndex }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const ingredient = useStore(form.store, (state) =>
-      state.values.ingredientGroups
-        .at(ingredientGroupIndex)
-        ?.ingredients.at(ingredientIndex),
+      state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients.at(ingredientIndex),
     );
 
     function handleClose() {
@@ -49,10 +35,7 @@ export const IngredientNotesButton = withForm({
 
     return (
       <Box sx={sx}>
-        <Tooltip
-          title={ingredient?.notes ? ingredient.notes : 'Add notes'}
-          disableInteractive
-        >
+        <Tooltip title={ingredient?.notes ? ingredient.notes : 'Add notes'} disableInteractive>
           <IconButton
             onClick={(event) => {
               setAnchorEl(event.currentTarget);

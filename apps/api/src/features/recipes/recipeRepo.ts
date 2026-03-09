@@ -28,21 +28,18 @@ export async function createRecipe(
     group.ingredients.map((ingredient) => ingredient.name.toLocaleLowerCase()),
   );
 
-  ingredientTerms.push(
-    ...ingredientTerms.map((term) => term.split(' ')).flat(),
-  );
+  ingredientTerms.push(...ingredientTerms.map((term) => term.split(' ')).flat());
 
   ingredientTerms = [...new Set(ingredientTerms.filter(Boolean))];
 
-  const conditions: Prisma.CanonicalIngredientWhereInput[] =
-    ingredientTerms.flatMap((term) => [
-      { name: { contains: term, mode: 'insensitive' } },
-      {
-        aliases: {
-          some: { name: { contains: term, mode: 'insensitive' } },
-        },
+  const conditions: Prisma.CanonicalIngredientWhereInput[] = ingredientTerms.flatMap((term) => [
+    { name: { contains: term, mode: 'insensitive' } },
+    {
+      aliases: {
+        some: { name: { contains: term, mode: 'insensitive' } },
       },
-    ]);
+    },
+  ]);
 
   const canonicalIngredients = await prisma.canonicalIngredient.findMany({
     where: {
@@ -84,22 +81,15 @@ export async function createRecipe(
           order: index,
           ingredients: {
             create: ingredientGroup.ingredients.map((ingredient, index) => {
-              const terms = ingredient.name
-                .toLocaleLowerCase()
-                .split(' ')
-                .filter(Boolean);
+              const terms = ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean);
               const matchingCanonicalIngredient =
                 canonicalIngredients.find((canonicalIngredient) =>
-                  ingredient.name
-                    .toLocaleLowerCase()
-                    .includes(canonicalIngredient.name),
+                  ingredient.name.toLocaleLowerCase().includes(canonicalIngredient.name),
                 ) ??
                 canonicalIngredients.find(
                   (canonicalIngredient) =>
                     terms.includes(canonicalIngredient.name) ||
-                    canonicalIngredient.aliases.some((alias) =>
-                      terms.includes(alias.name),
-                    ),
+                    canonicalIngredient.aliases.some((alias) => terms.includes(alias.name)),
                 );
 
               return {
@@ -108,8 +98,7 @@ export async function createRecipe(
                 canonicalIngredientId:
                   canonicalIngredients.find(
                     (canonicalIngredient) =>
-                      canonicalIngredient.name ===
-                      ingredient.name.toLocaleLowerCase(),
+                      canonicalIngredient.name === ingredient.name.toLocaleLowerCase(),
                   )?.id ??
                   matchingCanonicalIngredient?.id ??
                   null,

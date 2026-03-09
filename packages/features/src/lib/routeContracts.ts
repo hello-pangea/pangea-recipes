@@ -14,9 +14,7 @@ type PathParamNames<S extends string> = S extends `${string}:${infer Rest}`
   : never;
 
 /** True if the path has params */
-type HasPathParams<S extends string> = [PathParamNames<S>] extends [never]
-  ? false
-  : true;
+type HasPathParams<S extends string> = [PathParamNames<S>] extends [never] ? false : true;
 
 /** Zod object type that exactly matches the path params (no extras, all required) */
 export type ParamSchemaFor<Path extends string> = z.ZodObject<
@@ -70,9 +68,9 @@ export type Contract<Path extends string> = {
 } & ContractConfigForPath<Path>;
 
 /** Define a contract with strong type constraints */
-export function defineContract<
-  Path extends string,
-  Config extends ContractConfigForPath<Path>,
->(path: Path, config: Config): Config & { path: Path } {
+export function defineContract<Path extends string, Config extends ContractConfigForPath<Path>>(
+  path: Path,
+  config: Config,
+): Config & { path: Path } {
   return { path, ...config };
 }

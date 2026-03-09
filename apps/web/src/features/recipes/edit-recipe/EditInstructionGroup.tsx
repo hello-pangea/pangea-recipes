@@ -1,5 +1,3 @@
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { extractClosestEdge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
 import { getReorderDestinationIndex } from '@atlaskit/pragmatic-drag-and-drop-hitbox/util/get-reorder-destination-index';
 import {
@@ -8,17 +6,11 @@ import {
 } from '@atlaskit/pragmatic-drag-and-drop/element/adapter';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
-import {
-  alpha,
-  Box,
-  Button,
-  Card,
-  IconButton,
-  Stack,
-  Typography,
-} from '@mui/material';
+import { alpha, Box, Button, Card, IconButton, Stack, Typography } from '@mui/material';
 import { useStore } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
+import { withForm } from '#src/hooks/form';
+import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
 import { EditInstruction } from './EditInstruction';
 import { recipeFormOptions, type RecipeFormInputs } from './recipeForm';
 
@@ -32,14 +24,9 @@ export const EditInstructionGroup = withForm({
   render: function Render({ form, index: instructionGroupIndex }) {
     const instructions = useStore(
       form.store,
-      (state) =>
-        state.values.instructionGroups.at(instructionGroupIndex)
-          ?.instructions ?? [],
+      (state) => state.values.instructionGroups.at(instructionGroupIndex)?.instructions ?? [],
     );
-    const minimal = useStore(
-      form.store,
-      (state) => state.values.instructionGroups.length <= 1,
-    );
+    const minimal = useStore(form.store, (state) => state.values.instructionGroups.length <= 1);
 
     useEffect(() => {
       return monitorForElements({
@@ -102,10 +89,7 @@ export const EditInstructionGroup = withForm({
 
               const closestEdgeOfTarget = extractClosestEdge(target.data);
 
-              const finishIndex =
-                closestEdgeOfTarget === 'bottom'
-                  ? targetIndex + 1
-                  : targetIndex;
+              const finishIndex = closestEdgeOfTarget === 'bottom' ? targetIndex + 1 : targetIndex;
 
               void form.insertFieldValue(
                 `instructionGroups[${instructionGroupIndex}].instructions`,
@@ -115,18 +99,13 @@ export const EditInstructionGroup = withForm({
                 ] as RecipeFormInputs['instructionGroups'][0]['instructions'][0],
               );
             }
-          } else if (
-            sourceType === 'instruction' &&
-            targetType === 'empty_instruction_group'
-          ) {
+          } else if (sourceType === 'instruction' && targetType === 'empty_instruction_group') {
             console.log('DND: move instruction to empty group');
 
             const sourceIndex = source.data['index'] as number;
             const sourceGroupIndex = source.data['groupIndex'] as number;
 
-            const targetGroupIndex = target.data[
-              'instructionGroupIndex'
-            ] as number;
+            const targetGroupIndex = target.data['instructionGroupIndex'] as number;
 
             if (sourceGroupIndex === instructionGroupIndex) {
               void form.removeFieldValue(
@@ -146,9 +125,7 @@ export const EditInstructionGroup = withForm({
           }
         },
         canMonitor: ({ source }) =>
-          ['instruction', 'empty_instruction_group'].includes(
-            source.data['type'] as string,
-          ),
+          ['instruction', 'empty_instruction_group'].includes(source.data['type'] as string),
       });
     }, [instructionGroupIndex, form]);
 
@@ -177,21 +154,14 @@ export const EditInstructionGroup = withForm({
             />
             <IconButton
               onClick={() => {
-                void form.removeFieldValue(
-                  'instructionGroups',
-                  instructionGroupIndex,
-                );
+                void form.removeFieldValue('instructionGroups', instructionGroupIndex);
               }}
             >
               <DeleteRoundedIcon />
             </IconButton>
           </Stack>
         )}
-        <Stack
-          direction={'column'}
-          spacing={3}
-          sx={{ mb: 2, maxWidth: '750px' }}
-        >
+        <Stack direction={'column'} spacing={3} sx={{ mb: 2, maxWidth: '750px' }}>
           {instructions.map((_instruction, instructionIndex) => (
             <EditInstruction
               form={form}
@@ -201,9 +171,7 @@ export const EditInstructionGroup = withForm({
             />
           ))}
           {instructions.length === 0 && (
-            <EmptyInstructionGroupDroppable
-              instructionGroupIndex={instructionGroupIndex}
-            />
+            <EmptyInstructionGroupDroppable instructionGroupIndex={instructionGroupIndex} />
           )}
         </Stack>
         <Button
@@ -211,12 +179,9 @@ export const EditInstructionGroup = withForm({
           size="small"
           startIcon={<AddRoundedIcon />}
           onClick={() => {
-            form.pushFieldValue(
-              `instructionGroups[${instructionGroupIndex}].instructions`,
-              {
-                text: '',
-              },
-            );
+            form.pushFieldValue(`instructionGroups[${instructionGroupIndex}].instructions`, {
+              text: '',
+            });
           }}
         >
           Add step
@@ -230,9 +195,7 @@ interface DroppableProps {
   instructionGroupIndex: number;
 }
 
-function EmptyInstructionGroupDroppable({
-  instructionGroupIndex,
-}: DroppableProps) {
+function EmptyInstructionGroupDroppable({ instructionGroupIndex }: DroppableProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [isDraggedOver, setIsDraggedOver] = useState(false);
 
@@ -273,9 +236,7 @@ function EmptyInstructionGroupDroppable({
           borderWidth: '2px',
           borderRadius: 1,
           borderColor: (theme) =>
-            isDraggedOver
-              ? theme.vars.palette.primary.main
-              : theme.vars.palette.divider,
+            isDraggedOver ? theme.vars.palette.primary.main : theme.vars.palette.divider,
           backgroundColor: (theme) =>
             isDraggedOver
               ? alpha(theme.palette.primary.main, 0.2)
@@ -291,9 +252,7 @@ function EmptyInstructionGroupDroppable({
         <AddRoundedIcon
           sx={{
             color: (theme) =>
-              isDraggedOver
-                ? theme.vars.palette.primary.main
-                : theme.vars.palette.text.secondary,
+              isDraggedOver ? theme.vars.palette.primary.main : theme.vars.palette.text.secondary,
             transitionProperty: 'color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',
@@ -302,9 +261,7 @@ function EmptyInstructionGroupDroppable({
         <Typography
           sx={{
             color: (theme) =>
-              isDraggedOver
-                ? theme.vars.palette.primary.main
-                : theme.vars.palette.text.secondary,
+              isDraggedOver ? theme.vars.palette.primary.main : theme.vars.palette.text.secondary,
             transitionProperty: 'color',
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',

@@ -1,4 +1,3 @@
-import { useAppForm } from '#src/hooks/form';
 import VisibilityOffRoundedIcon from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRoundedIcon from '@mui/icons-material/VisibilityRounded';
 import {
@@ -16,6 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { z } from 'zod';
+import { useAppForm } from '#src/hooks/form';
 import { authClient } from './authClient';
 
 const formSchema = z.object({
@@ -100,8 +100,7 @@ export function ResetPasswordPage() {
           maxWidth: 400,
           width: '100%',
           border: 0,
-          boxShadow:
-            '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
+          boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)',
         }}
       >
         <Typography variant="h2" component={'h1'} sx={{ mb: 4 }}>
@@ -129,11 +128,7 @@ export function ResetPasswordPage() {
                       endAdornment: (
                         <InputAdornment position="end">
                           <IconButton
-                            aria-label={
-                              showPassword
-                                ? 'hide the password'
-                                : 'display the password'
-                            }
+                            aria-label={showPassword ? 'hide the password' : 'display the password'}
                             onClick={() => {
                               setShowPassword((show) => !show);
                             }}
@@ -159,16 +154,9 @@ export function ResetPasswordPage() {
               )}
             />
             {resetPassword.isError && (
-              <Alert severity="error">
-                {resetPassword.error.message || 'An error occurred'}
-              </Alert>
+              <Alert severity="error">{resetPassword.error.message || 'An error occurred'}</Alert>
             )}
-            <Button
-              variant="contained"
-              type="submit"
-              loading={resetPassword.isPending}
-              fullWidth
-            >
+            <Button variant="contained" type="submit" loading={resetPassword.isPending} fullWidth>
               Reset password
             </Button>
           </Stack>
