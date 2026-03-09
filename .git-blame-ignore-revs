@@ -1,0 +1,8 @@
+# Since version 2.23 (released in August 2019), git-blame has a feature
+# to ignore or bypass certain commits.
+#
+# This file contains a list of commits that are not likely what you
+# are looking for in a blame, such as mass reformatting or renaming.
+
+# chore: prettier -> oxfmt
+aca6eec2443c7532ad6a913ae74ae58edab9440f
