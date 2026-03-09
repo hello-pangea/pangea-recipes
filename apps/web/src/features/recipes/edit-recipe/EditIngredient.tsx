@@ -424,7 +424,6 @@ export const EditIngredientContent = withForm({
                     />
                   )}
                   renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const { key, ...optionProps } = props;
 
                     const unitOption = defaultUnitOptions.find(
@@ -432,7 +431,6 @@ export const EditIngredientContent = withForm({
                     );
 
                     return (
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                       <li key={key} {...optionProps}>
                         {unitOption?.name}
                       </li>
@@ -491,7 +489,6 @@ export const EditIngredientContent = withForm({
                     />
                   )}
                   renderOption={(props, option) => {
-                    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                     const { key, ...optionProps } = props;
 
                     const canonicalIngredient = canonicalIngredients?.find(
@@ -499,7 +496,6 @@ export const EditIngredientContent = withForm({
                     );
 
                     return (
-                      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
                       <li key={key} {...optionProps}>
                         {canonicalIngredient?.icon ? (
                           <img

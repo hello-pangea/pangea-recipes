@@ -33,7 +33,6 @@ export async function createServer() {
   });
 
   fastify.setValidatorCompiler(validatorCompiler);
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
   fastify.setSerializerCompiler(serializerCompiler);
 
   // -

@@ -1,6 +1,6 @@
 import pluginReact from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
-import reactRefresh from 'eslint-plugin-react-refresh';
+import { reactRefresh } from "eslint-plugin-react-refresh";
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import { config as baseConfig } from './base.js';
@@ -8,7 +8,7 @@ import { config as baseConfig } from './base.js';
 export const config = defineConfig(
   ...baseConfig,
   pluginReact.configs.flat.recommended,
-  reactHooks.configs.flat.recommended,
+  pluginReact.configs.flat["jsx-runtime"],
   {
     languageOptions: {
       ...pluginReact.configs.flat.recommended.languageOptions,
@@ -48,17 +48,8 @@ export const config = defineConfig(
       ],
     },
   },
-  {
-    plugins: {
-      'react-refresh': reactRefresh,
-    },
-    settings: { react: { version: 'detect' } },
-    rules: {
-      'react-refresh/only-export-components': [
-        'warn',
-        { allowConstantExport: true },
-      ],
-      'react/react-in-jsx-scope': 'off',
-    },
-  },
+  reactHooks.configs.flat.recommended,
+  reactRefresh.configs.vite({
+    extraHOCs: ["createFileRoute", "createRootRouteWithContext", "createRootRoute", "withForm"],
+  }),
 );
