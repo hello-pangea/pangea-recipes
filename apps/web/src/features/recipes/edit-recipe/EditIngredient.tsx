@@ -56,7 +56,7 @@ export const EditIngredient = withForm({
   render: function Render({ form, ingredientGroupIndex, index }) {
     const ref = useRef<null | HTMLDivElement>(null);
     const dragHandleRef = useRef<HTMLButtonElement>(null);
-    const [dragging, setDragging] = useState<boolean>(false);
+    const [dragging, setDragging] = useState(false);
     const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
     const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(null);
     const ingredient = useStore(form.store, (state) =>

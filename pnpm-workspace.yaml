@@ -2,16 +2,13 @@ packages:
   - apps/*
   - packages/*
 
-ignoredBuiltDependencies:
-  - '@prisma/engines'
-  - '@parcel/watcher'
-  - esbuild
-  - prisma
-  - sharp
-  - vue-demi
+allowBuilds:
+  '@prisma/engines': false
+  core-js: false
+  esbuild: false
+  playwright-chromium: true
+  prisma: false
+  protobufjs: false
+  vue-demi: false
 
 minimumReleaseAge: 720
-
-onlyBuiltDependencies:
-  - '@sentry-internal/node-cpu-profiler'
-  - playwright-chromium

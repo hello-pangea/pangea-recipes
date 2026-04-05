@@ -33,7 +33,7 @@ export const EditInstruction = withForm({
   render: function Render({ form, index, instructionGroupIndex }) {
     const ref = useRef<null | HTMLDivElement>(null);
     const dragHandleRef = useRef<HTMLButtonElement>(null);
-    const [dragging, setDragging] = useState<boolean>(false);
+    const [dragging, setDragging] = useState(false);
     const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
     const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(null);
     const instruction = useStore(
