@@ -134,12 +134,11 @@ export const EditIngredientGroup = withForm({
         {!minimal && (
           <Stack
             direction={'row'}
-            alignItems={'center'}
             spacing={2}
             sx={{
-              mb: 4,
-            }}
-          >
+              alignItems: 'center',
+              mb: 4
+            }}>
             <form.AppField
               name={`ingredientGroups[${ingredientGroupIndex}].name`}
               children={(subField) => (

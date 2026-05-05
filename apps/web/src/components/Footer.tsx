@@ -19,7 +19,13 @@ export function Footer({ sx = [] }: Props) {
         {'Copyright © Reece Carolan '}
         {new Date().getFullYear()}
       </Typography>
-      <Stack direction="row" spacing={1} justifyContent="center" sx={{ mb: 1 }}>
+      <Stack
+        direction="row"
+        spacing={1}
+        sx={{
+          justifyContent: "center",
+          mb: 1
+        }}>
         <RouterLink variant="caption" to="/terms-of-service">
           Terms of service
         </RouterLink>

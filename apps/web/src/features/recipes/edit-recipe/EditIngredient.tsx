@@ -330,7 +330,9 @@ export const EditIngredientContent = withForm({
           xs: 3,
           sm: 1,
         }}
-        flex={1}
+        sx={{
+          flex: 1
+        }}
       >
         <Grid
           size={{
@@ -517,9 +519,10 @@ export const EditIngredientContent = withForm({
             size={{
               xs: 'auto',
             }}
-            display="flex"
-            alignItems="center"
-          >
+            sx={{
+              display: "flex",
+              alignItems: "center"
+            }}>
             <IngredientNotesButton
               form={form}
               ingredientGroupIndex={ingredientGroupIndex}

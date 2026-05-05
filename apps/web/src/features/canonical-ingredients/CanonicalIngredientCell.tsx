@@ -41,7 +41,9 @@ export function CanonicalIngredientCell({ canonicalIngredient }: Props) {
           width: '100%',
         }}
       >
-        <Stack direction="row" alignItems="center" spacing={1}>
+        <Stack direction="row" spacing={1} sx={{
+          alignItems: "center"
+        }}>
           {canonicalIngredient.icon && (
             <img
               src={canonicalIngredient.icon.url}

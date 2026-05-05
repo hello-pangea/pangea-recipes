@@ -55,7 +55,9 @@ export function RecipeBookCard({ recipeBookId }: Props) {
             p: 1,
           }}
         >
-          <Stack direction="row" spacing={1} alignItems="center">
+          <Stack direction="row" spacing={1} sx={{
+            alignItems: "center"
+          }}>
             <RouterLink
               to="/app/recipe-books/$recipeBookId"
               params={{

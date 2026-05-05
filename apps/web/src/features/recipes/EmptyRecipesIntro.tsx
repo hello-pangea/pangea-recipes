@@ -42,7 +42,6 @@ export function EmptyRecipesIntro({ sx = [] }: Props) {
           }}
         >
           <Box
-            color="primary"
             sx={{
               mb: 1.5,
               backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
@@ -81,7 +80,6 @@ export function EmptyRecipesIntro({ sx = [] }: Props) {
           }}
         >
           <Box
-            color="primary"
             sx={{
               mb: 1.5,
               backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),
@@ -120,7 +118,6 @@ export function EmptyRecipesIntro({ sx = [] }: Props) {
           }}
         >
           <Box
-            color="primary"
             sx={{
               mb: 1.5,
               backgroundColor: (theme) => alpha(theme.palette.primary.main, 0.075),

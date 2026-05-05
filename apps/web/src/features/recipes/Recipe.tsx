@@ -152,8 +152,16 @@ export function Recipe({ readOnly, recipeId }: Props) {
           </Typography>
           <Grid container spacing={2} columns={{ xs: 2, sm: 3 }}>
             <Grid size={1}>
-              <Stack spacing={1} alignItems={'flex-start'}>
-                <Stack spacing={1} direction="row" alignItems="center" sx={{ height: 30 }}>
+              <Stack spacing={1} sx={{
+                alignItems: 'flex-start'
+              }}>
+                <Stack
+                  spacing={1}
+                  direction="row"
+                  sx={{
+                    alignItems: "center",
+                    height: 30
+                  }}>
                   <GroupsRoundedIcon fontSize="small" />
                   <Typography variant="h3">Servings</Typography>
                   <Button
@@ -211,7 +219,9 @@ export function Recipe({ readOnly, recipeId }: Props) {
                     },
                   }}
                 >
-                  <Stack spacing={1} direction={'row'} alignItems={'center'}>
+                  <Stack spacing={1} direction={'row'} sx={{
+                    alignItems: 'center'
+                  }}>
                     <TextField
                       size="small"
                       value={servingsModifier}
@@ -260,7 +270,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
             {recipe.prepTime !== null && (
               <Grid size={1}>
                 <Stack spacing={1}>
-                  <Stack spacing={1} direction="row" alignItems="center" sx={{ height: 30 }}>
+                  <Stack
+                    spacing={1}
+                    direction="row"
+                    sx={{
+                      alignItems: "center",
+                      height: 30
+                    }}>
                     <BlenderRoundedIcon fontSize="small" />
                     <Typography variant="h3">Prep Time</Typography>
                   </Stack>
@@ -271,7 +287,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
             {recipe.cookTime !== null && (
               <Grid size={1}>
                 <Stack spacing={1}>
-                  <Stack spacing={1} direction="row" alignItems="center" sx={{ height: 30 }}>
+                  <Stack
+                    spacing={1}
+                    direction="row"
+                    sx={{
+                      alignItems: "center",
+                      height: 30
+                    }}>
                     <LocalFireDepartmentRoundedIcon fontSize="small" />
                     <Typography variant="h3">Cook Time</Typography>
                   </Stack>

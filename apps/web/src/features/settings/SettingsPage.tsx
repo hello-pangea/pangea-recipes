@@ -148,7 +148,9 @@ export function SettingsPage() {
           <Typography variant="h3" sx={{ mb: 1.5 }}>
             Accent color
           </Typography>
-          <Stack spacing={1} direction={'row'} flexWrap="wrap">
+          <Stack spacing={1} direction={'row'} sx={{
+            flexWrap: "wrap"
+          }}>
             {accentColors.map((accentColor) => (
               <Tooltip
                 title={capitalizeFirstLetter(accentColor)}

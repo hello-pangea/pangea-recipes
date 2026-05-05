@@ -134,12 +134,11 @@ export const EditInstructionGroup = withForm({
         {!minimal && (
           <Stack
             direction={'row'}
-            alignItems={'center'}
             spacing={2}
             sx={{
-              mb: 4,
-            }}
-          >
+              alignItems: 'center',
+              mb: 4
+            }}>
             <form.AppField
               name={`instructionGroups[${instructionGroupIndex}].name`}
               children={(subField) => (

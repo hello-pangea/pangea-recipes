@@ -25,10 +25,11 @@ export function CanonicalIngredientsPage() {
       </RouterButton>
       <Stack
         divider={<Divider />}
-        alignItems={'stretch'}
-        justifyContent={'stretch'}
-        sx={{ width: '100%' }}
-      >
+        sx={{
+          alignItems: 'stretch',
+          justifyContent: 'stretch',
+          width: '100%'
+        }}>
         {canonicalIngredients?.map((canonicalIngredient) => (
           <CanonicalIngredientCell
             key={canonicalIngredient.id}

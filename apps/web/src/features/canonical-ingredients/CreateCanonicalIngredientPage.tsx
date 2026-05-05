@@ -183,16 +183,19 @@ export function CreateCanonicalIngredientPage({
             <form.Field name="aliases" mode="array">
               {(field) => {
                 return (
-                  <Stack spacing={2} alignItems={'flex-start'}>
+                  <Stack spacing={2} sx={{
+                    alignItems: 'flex-start'
+                  }}>
                     {field.state.value.map((_, i) => {
                       return (
                         <Stack
                           key={i}
                           direction="row"
                           spacing={2}
-                          alignItems="center"
-                          width={'100%'}
-                        >
+                          sx={{
+                            alignItems: "center",
+                            width: '100%'
+                          }}>
                           <form.AppField
                             name={`aliases[${i}].name`}
                             children={(subField) => (

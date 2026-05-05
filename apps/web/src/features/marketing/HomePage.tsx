@@ -31,7 +31,13 @@ export function HomePage() {
             mb: { xs: 4, sm: 16 },
           }}
         >
-          <Grid container spacing={4} direction={{ xs: 'column-reverse', md: 'row' }}>
+          <Grid
+            container
+            spacing={4}
+            sx={{
+              flexDirection: { xs: 'column-reverse', md: 'row' },
+            }}
+          >
             <Grid
               size={{
                 xs: 12,
