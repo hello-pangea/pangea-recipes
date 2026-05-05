@@ -137,8 +137,9 @@ export const EditInstructionGroup = withForm({
             spacing={2}
             sx={{
               alignItems: 'center',
-              mb: 4
-            }}>
+              mb: 4,
+            }}
+          >
             <form.AppField
               name={`instructionGroups[${instructionGroupIndex}].name`}
               children={(subField) => (

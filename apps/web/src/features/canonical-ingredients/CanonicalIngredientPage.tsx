@@ -28,8 +28,9 @@ export function CanonicalIngredientsPage() {
         sx={{
           alignItems: 'stretch',
           justifyContent: 'stretch',
-          width: '100%'
-        }}>
+          width: '100%',
+        }}
+      >
         {canonicalIngredients?.map((canonicalIngredient) => (
           <CanonicalIngredientCell
             key={canonicalIngredient.id}

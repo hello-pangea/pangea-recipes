@@ -36,9 +36,12 @@ export function Layout() {
           setSidebarOpen(false);
         }}
       />
-      <Box component="main" sx={{
-        width: '100%'
-      }}>
+      <Box
+        component="main"
+        sx={{
+          width: '100%',
+        }}
+      >
         {isSmallScreen && (
           <AppBar
             position="static"

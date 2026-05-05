@@ -331,7 +331,7 @@ export const EditIngredientContent = withForm({
           sm: 1,
         }}
         sx={{
-          flex: 1
+          flex: 1,
         }}
       >
         <Grid
@@ -520,9 +520,10 @@ export const EditIngredientContent = withForm({
               xs: 'auto',
             }}
             sx={{
-              display: "flex",
-              alignItems: "center"
-            }}>
+              display: 'flex',
+              alignItems: 'center',
+            }}
+          >
             <IngredientNotesButton
               form={form}
               ingredientGroupIndex={ingredientGroupIndex}
