@@ -3,7 +3,7 @@
   "tasks": {
     "build": {
       "inputs": ["$TURBO_DEFAULT$", ".env*"],
-      "dependsOn": ["^build"],
+      "dependsOn": ["^build", "@repo/database#db:generate"],
       "outputs": ["dist/**"]
     },
     "dev": {
