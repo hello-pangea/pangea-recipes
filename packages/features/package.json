@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",
-    "ky": "^1.14.3",
+    "ky": "^2.0.2",
     "zod": "^4.4.3"
   },
   "devDependencies": {

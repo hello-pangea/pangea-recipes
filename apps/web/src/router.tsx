@@ -12,10 +12,10 @@ export function getRouter() {
   const isBrowser = typeof window !== 'undefined';
 
   updateApiOptions({
-    prefixUrl: config.VITE_API_URL,
+    prefix: config.VITE_API_URL,
     hooks: {
       beforeRequest: [
-        async (request) => {
+        async ({ request }) => {
           if (!isBrowser) {
             const headers = await getServerHeaders();
 

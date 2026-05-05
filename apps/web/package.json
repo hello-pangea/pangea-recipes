@@ -42,7 +42,7 @@
     "@uppy/react": "^5.2.0",
     "@uppy/xhr-upload": "^5.2.0",
     "better-auth": "^1.6.9",
-    "ky": "^1.14.3",
+    "ky": "^2.0.2",
     "motion": "^12.38.0",
     "notistack": "^3.0.2",
     "react": "^19.2.5",
