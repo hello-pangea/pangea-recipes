@@ -9,7 +9,7 @@ import type { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
-import { SnackbarProvider } from 'notistack';
+import { Toaster } from 'sonner';
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { config } from '#src/config/config';
 import { color } from '#src/theme/colors';
@@ -145,7 +145,8 @@ function Providers({ children }: { children: React.ReactNode }) {
     <CacheProvider value={emotionCache}>
       <ThemeProvider theme={getTheme(color[user?.accentColor ?? 'indigo'])} forceThemeRerender>
         <CssBaseline />
-        <SnackbarProvider>{children}</SnackbarProvider>
+        {children}
+        <Toaster position="bottom-right" richColors />
       </ThemeProvider>
     </CacheProvider>
   );

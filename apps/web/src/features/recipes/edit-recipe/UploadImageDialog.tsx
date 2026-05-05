@@ -4,8 +4,8 @@ import Dashboard from '@uppy/react/dashboard';
 import '@uppy/core/css/style.min.css';
 import '@uppy/dashboard/css/style.min.css';
 import XHR from '@uppy/xhr-upload';
-import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { config } from '#src/config/config';
 
 interface Props {
@@ -14,7 +14,6 @@ interface Props {
 }
 
 export function UploadImageDialog({ open, onClose }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
   const [uppy] = useState(() =>
     new Uppy<Meta, { imageId: string; imageUrl: string }>({
       restrictions: {
@@ -37,15 +36,11 @@ export function UploadImageDialog({ open, onClose }: Props) {
 
           onClose(image);
 
-          enqueueSnackbar('Uploaded image', {
-            variant: 'success',
-          });
+          toast.success('Uploaded image');
         } else {
           onClose();
 
-          enqueueSnackbar('Error uploading image', {
-            variant: 'error',
-          });
+          toast.error('Error uploading image');
         }
 
         // oxlint-disable-next-line react-hooks-js/immutability

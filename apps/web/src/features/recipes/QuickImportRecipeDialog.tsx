@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@mui/material';
 import { useImportRecipeQuick } from '@repo/features/recipe-imports';
-import { useSnackbar } from 'notistack';
 import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 interface Props {
   open: boolean;
@@ -19,13 +19,10 @@ interface Props {
 
 export function QuickImportRecipeDialog({ open, onClose }: Props) {
   const [url, setUrl] = useState('');
-  const { enqueueSnackbar } = useSnackbar();
   const importRecipeQuick = useImportRecipeQuick({
     mutationConfig: {
       onSuccess: () => {
-        enqueueSnackbar('Importing recipe... This will take a few seconds', {
-          variant: 'success',
-        });
+        toast.success('Importing recipe... This will take a few seconds');
 
         onClose();
       },

@@ -11,10 +11,10 @@ import { useNavigate } from '@tanstack/react-router';
 import Uppy, { type Meta } from '@uppy/core';
 import Dashboard from '@uppy/react/dashboard';
 import XHR from '@uppy/xhr-upload';
-import { useSnackbar } from 'notistack';
 import '@uppy/core/css/style.min.css';
 import '@uppy/dashboard/css/style.min.css';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { Page } from '#src/components/Page';
 import { config } from '#src/config/config';
@@ -46,7 +46,6 @@ export function CreateCanonicalIngredientPage({
   updateCanonicalIngredientId,
 }: Props) {
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
   const form = useAppForm({
     defaultValues: defaultValues ?? {
       name: '',
@@ -101,13 +100,9 @@ export function CreateCanonicalIngredientPage({
 
           form.setFieldValue('icon', image);
 
-          enqueueSnackbar('Uploaded image', {
-            variant: 'success',
-          });
+          toast.success('Uploaded image');
         } else {
-          enqueueSnackbar('Error uploading image', {
-            variant: 'error',
-          });
+          toast.error('Error uploading image');
         }
       }),
   );
@@ -117,7 +112,7 @@ export function CreateCanonicalIngredientPage({
   const canonicalIngredientCreator = useCreateCanonicalIngredient({
     mutationConfig: {
       onSuccess: () => {
-        enqueueSnackbar('Canonical ingredient created', { variant: 'success' });
+        toast.success('Canonical ingredient created');
         uppy.clear();
         form.reset();
       },
@@ -127,7 +122,7 @@ export function CreateCanonicalIngredientPage({
   const canonicalIngredientUpdater = useUpdateCanonicalIngredient({
     mutationConfig: {
       onSuccess: () => {
-        enqueueSnackbar('Canonical ingredient updated', { variant: 'success' });
+        toast.success('Canonical ingredient updated');
 
         void navigate({
           to: `/app/canonical-ingredients`,
@@ -183,9 +178,12 @@ export function CreateCanonicalIngredientPage({
             <form.Field name="aliases" mode="array">
               {(field) => {
                 return (
-                  <Stack spacing={2} sx={{
-                    alignItems: 'flex-start'
-                  }}>
+                  <Stack
+                    spacing={2}
+                    sx={{
+                      alignItems: 'flex-start',
+                    }}
+                  >
                     {field.state.value.map((_, i) => {
                       return (
                         <Stack
@@ -193,9 +191,10 @@ export function CreateCanonicalIngredientPage({
                           direction="row"
                           spacing={2}
                           sx={{
-                            alignItems: "center",
-                            width: '100%'
-                          }}>
+                            alignItems: 'center',
+                            width: '100%',
+                          }}
+                        >
                           <form.AppField
                             name={`aliases[${i}].name`}
                             children={(subField) => (

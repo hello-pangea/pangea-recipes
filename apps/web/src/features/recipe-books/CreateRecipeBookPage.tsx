@@ -18,8 +18,8 @@ import { emptyStringToUndefined } from '@repo/features';
 import { useCreateRecipeBook, useUpdateRecipeBook } from '@repo/features/recipe-books';
 import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
-import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { z } from 'zod';
 import { Page } from '#src/components/Page';
 import { useAppForm } from '#src/hooks/form';
@@ -41,7 +41,6 @@ interface Props {
 }
 
 export function CreateRecipeBookPage({ defaultValues, updateRecipeBookId }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [generalAccessMenuAnchorEl, setGeneralAccessMenuAnchorEl] = useState<null | HTMLElement>(
     null,
@@ -63,7 +62,7 @@ export function CreateRecipeBookPage({ defaultValues, updateRecipeBookId }: Prop
   const recipeBookUpdater = useUpdateRecipeBook({
     mutationConfig: {
       onSuccess: (updatedRecipeBook) => {
-        enqueueSnackbar('Recipe book updated', { variant: 'success' });
+        toast.success('Recipe book updated');
 
         void navigate({
           to: `/app/recipe-books/$recipeBookId`,

@@ -17,8 +17,8 @@ import {
 } from '@mui/material';
 import { getRecipeBookQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { RecipeBookShareDialog } from './RecipeBookShareDialog';
 
 interface Props {
@@ -26,7 +26,6 @@ interface Props {
 }
 
 export function RecipeBookShareButton({ recipeBookId }: Props) {
-  const { enqueueSnackbar } = useSnackbar();
   const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
   const [shareDialogOpen, setShareDialogOpen] = useState(false);
   const menuOpen = Boolean(menuAnchorEl);
@@ -134,9 +133,7 @@ export function RecipeBookShareButton({ recipeBookId }: Props) {
             void navigator.clipboard
               .writeText(`${window.location.origin}/app/recipe-books/${recipeBookId}`)
               .then(() => {
-                enqueueSnackbar('Link copied', {
-                  variant: 'success',
-                });
+                toast.success('Link copied');
               });
 
             setMenuAnchorEl(null);

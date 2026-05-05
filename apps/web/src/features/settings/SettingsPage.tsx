@@ -16,7 +16,7 @@ import {
 } from '@mui/material';
 import { useSignedInUser, useUpdateUser, type User } from '@repo/features/users';
 import { useMutation } from '@tanstack/react-query';
-import { useSnackbar } from 'notistack';
+import { toast } from 'sonner';
 import { Page } from '#src/components/Page';
 import { RouterButton } from '#src/components/RouterButton';
 import { color } from '#src/theme/colors';
@@ -46,7 +46,6 @@ const accentColors = [
 export function SettingsPage() {
   const { data: user } = useSignedInUser();
   const updateUser = useUpdateUser();
-  const { enqueueSnackbar } = useSnackbar();
   const verifyEmail = useMutation({
     mutationFn: (data: { email: string; callbackURL: string }) => {
       return authClient.sendVerificationEmail(data, {
@@ -91,9 +90,7 @@ export function SettingsPage() {
                     },
                     {
                       onError: () => {
-                        enqueueSnackbar('Failed to send verification email', {
-                          variant: 'error',
-                        });
+                        toast.error('Failed to send verification email');
                       },
                     },
                   );
@@ -148,9 +145,13 @@ export function SettingsPage() {
           <Typography variant="h3" sx={{ mb: 1.5 }}>
             Accent color
           </Typography>
-          <Stack spacing={1} direction={'row'} sx={{
-            flexWrap: "wrap"
-          }}>
+          <Stack
+            spacing={1}
+            direction={'row'}
+            sx={{
+              flexWrap: 'wrap',
+            }}
+          >
             {accentColors.map((accentColor) => (
               <Tooltip
                 title={capitalizeFirstLetter(accentColor)}

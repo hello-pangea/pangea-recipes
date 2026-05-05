@@ -27,8 +27,8 @@ import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useSignedInUser } from '@repo/features/users';
 import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
-import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { useIsMounted } from '#src/hooks/useIsMounted';
 import { useWakeLock } from '#src/hooks/useWakeLock';
 import { getNumberFromInput } from '#src/utils/getNumberFromInput';
@@ -47,7 +47,6 @@ export function Recipe({ readOnly, recipeId }: Props) {
   const { data: recipe } = useSuspenseQuery(getRecipeQueryOptions(recipeId));
   const navigate = useNavigate();
   const [moreMenuAnchorEl, setMoreMenuAnchorEl] = useState<null | HTMLElement>(null);
-  const { enqueueSnackbar } = useSnackbar();
   const {
     isSupported: isWakeLockSupported,
     released: isWakeLockReleased,
@@ -56,7 +55,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
   } = useWakeLock({
     reacquireOnPageVisible: true,
     onError: () => {
-      enqueueSnackbar('Failed to keep screen awake', { variant: 'error' });
+      toast.error('Failed to keep screen awake');
     },
   });
   const isMounted = useIsMounted();
@@ -152,16 +151,20 @@ export function Recipe({ readOnly, recipeId }: Props) {
           </Typography>
           <Grid container spacing={2} columns={{ xs: 2, sm: 3 }}>
             <Grid size={1}>
-              <Stack spacing={1} sx={{
-                alignItems: 'flex-start'
-              }}>
+              <Stack
+                spacing={1}
+                sx={{
+                  alignItems: 'flex-start',
+                }}
+              >
                 <Stack
                   spacing={1}
                   direction="row"
                   sx={{
-                    alignItems: "center",
-                    height: 30
-                  }}>
+                    alignItems: 'center',
+                    height: 30,
+                  }}
+                >
                   <GroupsRoundedIcon fontSize="small" />
                   <Typography variant="h3">Servings</Typography>
                   <Button
@@ -219,9 +222,13 @@ export function Recipe({ readOnly, recipeId }: Props) {
                     },
                   }}
                 >
-                  <Stack spacing={1} direction={'row'} sx={{
-                    alignItems: 'center'
-                  }}>
+                  <Stack
+                    spacing={1}
+                    direction={'row'}
+                    sx={{
+                      alignItems: 'center',
+                    }}
+                  >
                     <TextField
                       size="small"
                       value={servingsModifier}
@@ -274,9 +281,10 @@ export function Recipe({ readOnly, recipeId }: Props) {
                     spacing={1}
                     direction="row"
                     sx={{
-                      alignItems: "center",
-                      height: 30
-                    }}>
+                      alignItems: 'center',
+                      height: 30,
+                    }}
+                  >
                     <BlenderRoundedIcon fontSize="small" />
                     <Typography variant="h3">Prep Time</Typography>
                   </Stack>
@@ -291,9 +299,10 @@ export function Recipe({ readOnly, recipeId }: Props) {
                     spacing={1}
                     direction="row"
                     sx={{
-                      alignItems: "center",
-                      height: 30
-                    }}>
+                      alignItems: 'center',
+                      height: 30,
+                    }}
+                  >
                     <LocalFireDepartmentRoundedIcon fontSize="small" />
                     <Typography variant="h3">Cook Time</Typography>
                   </Stack>

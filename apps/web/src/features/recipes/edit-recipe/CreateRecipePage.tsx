@@ -18,8 +18,8 @@ import { emptyStringToNull, emptyStringToUndefined } from '@repo/features';
 import { listRecipesQueryOptions, useCreateRecipe, useUpdateRecipe } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
-import { useSnackbar } from 'notistack';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
 import { useAppForm } from '#src/hooks/form';
 import { focusNextInput } from '#src/utils/focusNextInput';
@@ -39,7 +39,6 @@ interface Props {
 export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
   const { importFromUrl, tryLater, favorite } = useSearch({ strict: false });
   const [importDialogOpen, setImportDialogOpen] = useState(importFromUrl ?? false);
-  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const form = useAppForm({
     ...recipeFormOptions,
@@ -168,7 +167,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
   const updateRecipe = useUpdateRecipe({
     mutationConfig: {
       onSuccess: (data) => {
-        enqueueSnackbar('Recipe updated', { variant: 'success' });
+        toast.success('Recipe updated');
 
         void navigate({
           to: `/app/recipes/$recipeId`,
