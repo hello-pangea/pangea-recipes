@@ -6,15 +6,6 @@
       "dependsOn": ["^build"],
       "outputs": ["dist/**"]
     },
-    "transit": {
-      "dependsOn": ["^transit"]
-    },
-    "lint:eslint": {
-      "dependsOn": ["transit", "@repo/database#db:generate"]
-    },
-    "lint:type-check": {
-      "dependsOn": ["transit", "@repo/database#db:generate"]
-    },
     "dev": {
       "dependsOn": ["^build"],
       "cache": false,
@@ -29,7 +20,12 @@
     "dx": {
       "cache": false
     },
-    "db:generate": {}
+    "db:generate": {},
+    "//#format:check": {},
+    "//#lint": {},
+    "//#lint:fix": {
+      "cache": false
+    }
   },
   "ui": "tui"
 }

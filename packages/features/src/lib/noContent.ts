@@ -5,7 +5,7 @@ export const noContent = z.null().meta({
 });
 
 // https://github.com/colinhacks/zod/issues/4145#issuecomment-2982870033
-// eslint-disable-next-line @typescript-eslint/unbound-method
+// oxlint-disable-next-line typescript/unbound-method
 const originalAdd = z.globalRegistry.add;
 
 // terrible hack for vite's HMR:

@@ -39,7 +39,7 @@ export function QuickImportRecipeDialog({ open, onClose }: Props) {
         textFieldRef.current?.focus();
       }, 100);
     } else {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
+      // oxlint-disable-next-line react-hooks-js/set-state-in-effect
       setUrl('');
     }
   }, [open]);

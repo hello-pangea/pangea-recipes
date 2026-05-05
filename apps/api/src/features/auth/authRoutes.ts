@@ -4,7 +4,7 @@ import { auth } from './betterAuth.ts';
 // Docs for better-auth integration with Fastify:
 // https://www.better-auth.com/docs/integrations/fastify
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const authRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.route({
     method: ['GET', 'POST'],

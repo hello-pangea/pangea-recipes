@@ -21,7 +21,7 @@ export type ParamSchemaFor<Path extends string> = z.ZodObject<
   Required<Record<PathParamNames<Path>, z.ZodType>>
 >;
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-object-type
+// oxlint-disable-next-line typescript/consistent-type-definitions, typescript/no-empty-object-type
 type EmptyObject = {};
 
 /** When there are no path params, this is the only valid schema (empty, strict) */

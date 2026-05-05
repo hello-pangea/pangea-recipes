@@ -11,8 +11,6 @@
   "scripts": {
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
     "dev": "node --watch --env-file=.env --import ./src/instrument.ts src/index.ts",
-    "lint:eslint": "eslint src/",
-    "lint:type-check": "tsc --noEmit",
     "start": "node --env-file=.env --import ./src/instrument.ts src/index.ts"
   },
   "dependencies": {
@@ -48,7 +46,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.12.2",
     "@types/turndown": "^5.0.6",

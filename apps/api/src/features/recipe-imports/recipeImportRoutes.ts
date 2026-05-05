@@ -14,7 +14,7 @@ import { isValidHttpUrl } from './isValidHttpUrl.ts';
 
 const routeTag = 'Recipe imports';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const recipeImportRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',

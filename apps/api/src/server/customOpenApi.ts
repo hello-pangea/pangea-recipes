@@ -87,7 +87,7 @@ export const customOpenApi = fastifyPlugin(async (fastify) => {
     //       return `def-${String(i)}`;
     //     }
 
-    //     // eslint-disable-next-line @typescript-eslint/no-base-to-string
+    //     // oxlint-disable-next-line typescript/no-base-to-string
     //     return String(json['$id']);
     //   },
     // },

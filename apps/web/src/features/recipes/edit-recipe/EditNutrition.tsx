@@ -24,7 +24,7 @@ interface Props {
 
 export const EditNutrition = withForm({
   ...recipeFormOptions,
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+  // oxlint-disable-next-line typescript/no-unnecessary-type-assertion
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, sx = [] }) {
     return (

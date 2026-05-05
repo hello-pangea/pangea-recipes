@@ -13,9 +13,7 @@
   "scripts": {
     "build": "vite build",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "vite",
-    "lint:eslint": "eslint src/",
-    "lint:type-check": "tsc -b"
+    "dev": "vite"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.8.1",
@@ -53,7 +51,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.29.0",
-    "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@rolldown/plugin-babel": "^0.2.3",
     "@tanstack/router-plugin": "^1.167.32",

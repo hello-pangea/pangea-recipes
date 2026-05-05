@@ -9,7 +9,7 @@ import { processAndUploadImage } from './processAndUploadImage.ts';
 
 const routeTag = 'Images';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const imageRoutes: FastifyPluginAsyncZod = async function (fastify) {
   void fastify.register(multipart, {
     attachFieldsToBody: true,

@@ -48,7 +48,7 @@ export function UploadImageDialog({ open, onClose }: Props) {
           });
         }
 
-        // eslint-disable-next-line react-hooks/immutability
+        // oxlint-disable-next-line react-hooks-js/immutability
         uppy.clear();
       }),
   );

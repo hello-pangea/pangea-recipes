@@ -1,6 +1,6 @@
 {
   "compilerOptions": {},
   "extends": "@repo/typescript-config/node.json",
-  "include": ["src", "index.d.ts"],
+  "include": ["src", "index.d.ts", "prisma.config.ts"],
   "exclude": ["**/node_modules", "**/.*/"]
 }

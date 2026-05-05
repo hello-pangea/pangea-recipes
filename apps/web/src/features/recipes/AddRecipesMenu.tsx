@@ -45,9 +45,10 @@ export function AddRecipesMenu({
   useEffect(() => {
     // Snapshot on open, reset on close
     if (open) {
+      // oxlint-disable-next-line react-hooks-js/set-state-in-effect
       setInitialAddedIds(addedRecipeIds);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react-hooks-js/exhaustive-deps
   }, [open]);
 
   const filteredRecipes = useMemo(() => {

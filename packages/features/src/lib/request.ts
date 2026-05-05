@@ -7,7 +7,7 @@ import type { Contract, DefaultSuccessStatus } from './routeContracts.ts';
 type In<T extends z.ZodType> = z.input<T>;
 type Out<T extends z.ZodType> = z.output<T>;
 
-// eslint-disable-next-line @typescript-eslint/consistent-type-definitions, @typescript-eslint/no-empty-object-type
+// oxlint-disable-next-line typescript/consistent-type-definitions, typescript/no-empty-object-type
 type EmptyObject = {};
 
 /* ==================
@@ -143,7 +143,7 @@ function validateParams(
   // Ensure all params are strings in the URL; coerce to string via Zod if you like
   const out: Record<string, string> = {};
   for (const k of required) {
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-member-access
+    // oxlint-disable-next-line typescript/no-unsafe-assignment, typescript/no-explicit-any, typescript/no-unsafe-member-access
     const v = (parsed as any)[k];
     if (v == null) {
       throw new Error(`Missing path param "${k}"`);

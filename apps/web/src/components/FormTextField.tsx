@@ -10,14 +10,14 @@ type Props = Omit<
 export function FormTextField(props: Props) {
   const field = useFieldContext<string>();
 
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+  // oxlint-disable-next-line typescript/no-unsafe-return
   const errors = useStore(field.store, (state) => state.meta.errors);
   const isValid = useStore(field.store, (state) => state.meta.isValid);
 
   return (
     <TextField
       // Force controlled component behavior
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      // oxlint-disable-next-line typescript/no-unnecessary-condition
       value={field.state.value ?? ''}
       onChange={(e) => {
         field.handleChange(e.target.value);
@@ -25,7 +25,7 @@ export function FormTextField(props: Props) {
       onBlur={field.handleBlur}
       error={!isValid}
       helperText={
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access
+        // oxlint-disable-next-line typescript/no-unsafe-return, typescript/no-unsafe-member-access
         !isValid ? errors.map((e) => e.message).join(', ') : undefined
       }
       {...props}

@@ -1,0 +1,24 @@
+{
+  "$schema": "../../node_modules/oxlint/configuration_schema.json",
+  "extends": ["../../.oxlintrc.react.json"],
+  "env": {
+    "builtin": true,
+    "es2023": true,
+    "browser": true,
+    "serviceworker": true
+  },
+  "settings": {
+    "react": {
+      "version": "19.2"
+    }
+  },
+  "ignorePatterns": ["**/*.js"],
+  "overrides": [
+    {
+      "files": ["vite.config.ts"],
+      "env": {
+        "node": true
+      }
+    }
+  ]
+}

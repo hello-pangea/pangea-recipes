@@ -5,7 +5,7 @@ import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Users';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.get(
     '/:id',

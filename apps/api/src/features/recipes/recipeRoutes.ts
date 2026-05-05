@@ -19,7 +19,7 @@ import { updateInstructionGroups } from './updateInstructionGroups.ts';
 
 const routeTag = 'Recipes';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',

@@ -4,7 +4,7 @@ import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 
 const routeTag = 'Profiles';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const profileRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.get(
     '/:id',

@@ -10,9 +10,7 @@
     "./*": "./src/*/index.ts"
   },
   "scripts": {
-    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "lint:eslint": "eslint src/",
-    "lint:type-check": "tsc --noEmit"
+    "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.100.9",
@@ -20,7 +18,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.12.2",
     "typescript": "~6.0.3"

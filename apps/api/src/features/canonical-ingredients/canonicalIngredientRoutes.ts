@@ -14,7 +14,7 @@ import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Canonical ingredients';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',

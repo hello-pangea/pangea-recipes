@@ -12,7 +12,7 @@ import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe book requests';
 
-// eslint-disable-next-line @typescript-eslint/require-await
+// oxlint-disable-next-line typescript/require-await
 export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (fastify) {
   fastify.post(
     '',
