@@ -9,8 +9,7 @@ ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
 ENV PNPM_HOME="/pnpm"
 ENV PATH="$PNPM_HOME:$PATH"
 
-# Enable corepack and install turbo globally
-RUN corepack enable && npm install -g corepack@latest
+RUN npm install -g corepack@latest
 
 # Global turborepo
 RUN pnpm install turbo@2.9 --global
@@ -49,7 +48,7 @@ COPY --from=pruner /app/out/pnpm-workspace.yaml ./pnpm-workspace.yaml
 COPY --from=pruner /app/out/json/ .
 
 # Install all deps (prod & dev) from the cache
-RUN pnpm install --frozen-lockfile --offline --silent
+RUN pnpm install --frozen-lockfile --silent
 
 # Copy source code of isolated subworkspace
 COPY --from=pruner /app/out/full/ .
