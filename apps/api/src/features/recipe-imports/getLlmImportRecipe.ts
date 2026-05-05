@@ -156,7 +156,7 @@ export async function getLlmImportRecipe(urlString: string) {
     },
   });
 
-  const llmRecipe = llmRecipeSchema.parse(openAiRes.output_parsed as unknown);
+  const llmRecipe = llmRecipeSchema.parse(openAiRes.output_parsed);
 
   if (llmRecipe.totalTime !== null) {
     llmRecipe.totalTime = llmRecipe.totalTime * 60;

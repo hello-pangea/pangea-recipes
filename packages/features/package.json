@@ -23,9 +23,9 @@
     "lint:type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "@tanstack/react-query": "^5.96.2",
+    "@tanstack/react-query": "^5.100.9",
     "ky": "^1.14.3",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@repo/eslint-config": "workspace:*",

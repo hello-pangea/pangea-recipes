@@ -13,6 +13,7 @@ interface Props {
 
 export const UploadRecipeImage = withForm({
   ...recipeFormOptions,
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, sx }) {
     const image = useStore(form.store, (state) => state.values.image);

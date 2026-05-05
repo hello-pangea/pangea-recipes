@@ -45,6 +45,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
     ...recipeFormOptions,
     defaultValues:
       defaultValues ??
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       ({
         recipeName: '',
         description: '',
