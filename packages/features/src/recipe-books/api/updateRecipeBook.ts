@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { recipeBookSchema } from '../types/recipeBook.js';
-import { createRecipeBookContract } from './createRecipeBook.js';
-import { getRecipeBookQueryOptions } from './getRecipeBook.js';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import type { MutationConfig } from '../../lib/tanstackQuery.ts';
+import { recipeBookSchema } from '../types/recipeBook.ts';
+import { createRecipeBookContract } from './createRecipeBook.ts';
+import { getRecipeBookQueryOptions } from './getRecipeBook.ts';
 
 export const updateRecipeBookContract = defineContract('recipe-books/:id', {
   method: 'patch',

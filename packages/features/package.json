@@ -6,19 +6,11 @@
   "type": "module",
   "sideEffects": false,
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "default": "./dist/index.js"
-    },
-    "./*": {
-      "types": "./src/*/index.ts",
-      "default": "./dist/*/index.js"
-    }
+    ".": "./src/index.ts",
+    "./*": "./src/*/index.ts"
   },
   "scripts": {
-    "build": "tsc",
     "clean": "rm -rf .turbo && rm -rf node_modules && rm -rf dist",
-    "dev": "tsc --watch",
     "lint:eslint": "eslint src/",
     "lint:type-check": "tsc --noEmit"
   },
@@ -31,6 +23,6 @@
     "@repo/eslint-config": "workspace:*",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.12.2",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   }
 }

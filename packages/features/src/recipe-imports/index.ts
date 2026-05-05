@@ -1,9 +1,9 @@
 // Types
-export * from './types/importedIngredient.js';
-export * from './types/importedRecipe.js';
-export * from './types/recipeImport.js';
+export * from './types/importedIngredient.ts';
+export * from './types/importedRecipe.ts';
+export * from './types/recipeImport.ts';
 
 // Api
-export * from './api/importRecipe.js';
-export * from './api/importRecipeQuick.js';
-export * from './api/listRecipeImports.js';
+export * from './api/importRecipe.ts';
+export * from './api/importRecipeQuick.ts';
+export * from './api/listRecipeImports.ts';

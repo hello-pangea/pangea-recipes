@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 import { z } from 'zod';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import { canonicalIngredientSchema } from '../types/canonicalIngredient.ts';
 
 export const listCanonicalIngredientsContract = defineContract('canonical-ingredients', {
   method: 'get',

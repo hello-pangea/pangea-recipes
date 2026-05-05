@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { tagSchema } from '../../common/tag.js';
-import { nutritionSchema } from './nutrition.js';
+import { tagSchema } from '../../common/tag.ts';
+import { nutritionSchema } from './nutrition.ts';
 
 export const recipeSchema = z
   .object({

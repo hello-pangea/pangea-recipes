@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { canonicalIngredientSchema } from '../types/canonicalIngredient.js';
-import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.js';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import type { MutationConfig } from '../../lib/tanstackQuery.ts';
+import { canonicalIngredientSchema } from '../types/canonicalIngredient.ts';
+import { listCanonicalIngredientsQueryOptions } from './listCanonicalIngredients.ts';
 
 export const createCanonicalIngredientContract = defineContract('canonical-ingredients', {
   method: 'post',

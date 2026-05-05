@@ -1,3 +1,3 @@
-export * from './types/publicProfile.js';
+export * from './types/publicProfile.ts';
 
-export * from './api/getPublicProfile.js';
+export * from './api/getPublicProfile.ts';

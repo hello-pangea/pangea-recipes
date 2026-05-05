@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 import { z } from 'zod';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import { recipeBookRequestSchema } from '../types/recipeBookRequest.js';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import { recipeBookRequestSchema } from '../types/recipeBookRequest.ts';
 
 export const listRecipeBookRequestsContract = defineContract('recipe-book-requests', {
   method: 'get',

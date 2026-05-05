@@ -1,8 +1,8 @@
 import { queryOptions } from '@tanstack/react-query';
 import { z } from 'zod';
-import { tagSchema } from '../../common/tag.js';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
+import { tagSchema } from '../../common/tag.ts';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
 
 export const getUsedRecipeTagsContract = defineContract('recipes/used-tags', {
   method: 'get',

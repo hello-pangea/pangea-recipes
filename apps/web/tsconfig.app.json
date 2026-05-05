@@ -2,10 +2,7 @@
   "extends": "@repo/typescript-config/vite.json",
   "compilerOptions": {
     "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
-    "noEmit": true,
-    "paths": {
-      "#src/*": ["./src/*"]
-    }
+    "types": ["@types/gtag.js"]
   },
   "include": ["src"],
   "exclude": ["**/node_modules", "**/.*/"]

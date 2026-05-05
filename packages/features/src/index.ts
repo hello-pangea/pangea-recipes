@@ -1,7 +1,7 @@
-export * from './common/emptyStrings.js';
-export * from './common/fractions.js';
-export * from './common/stepSnapped.js';
-export * from './common/tag.js';
+export * from './common/emptyStrings.ts';
+export * from './common/fractions.ts';
+export * from './common/stepSnapped.ts';
+export * from './common/tag.ts';
 
-export * from './lib/api.js';
-export * from './lib/tanstackQuery.js';
+export * from './lib/api.ts';
+export * from './lib/tanstackQuery.ts';

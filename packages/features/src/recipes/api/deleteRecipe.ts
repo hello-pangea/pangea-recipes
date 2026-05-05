@@ -1,11 +1,11 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
-import { noContent } from '../../lib/noContent.js';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import { type MutationConfig } from '../../lib/tanstackQuery.js';
-import { getRecipeQueryOptions } from './getRecipe.js';
-import { listRecipesQueryOptions } from './listRecipes.js';
+import { noContent } from '../../lib/noContent.ts';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import { type MutationConfig } from '../../lib/tanstackQuery.ts';
+import { getRecipeQueryOptions } from './getRecipe.ts';
+import { listRecipesQueryOptions } from './listRecipes.ts';
 
 export const deleteRecipeContract = defineContract('recipes/:id', {
   method: 'delete',

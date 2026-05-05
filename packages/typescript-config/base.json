@@ -33,7 +33,12 @@
     "verbatimModuleSyntax": true,
     "noUncheckedSideEffectImports": true,
 
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+
+    "types": []
   },
   "exclude": ["node_modules", "dist"]
 }

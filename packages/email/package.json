@@ -32,6 +32,6 @@
     "@types/node": "^24.12.2",
     "@types/react": "^19.2.14",
     "react-email": "^5.2.11",
-    "typescript": "~5.9.3"
+    "typescript": "~6.0.3"
   }
 }

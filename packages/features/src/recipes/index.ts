@@ -1,12 +1,12 @@
 // Types
-export * from './types/nutrition.js';
-export * from './types/recipe.js';
-export * from './types/recipeProjected.js';
+export * from './types/nutrition.ts';
+export * from './types/recipe.ts';
+export * from './types/recipeProjected.ts';
 
 // Api
-export * from './api/createRecipe.js';
-export * from './api/deleteRecipe.js';
-export * from './api/getRecipe.js';
-export * from './api/getUsedRecipeTags.js';
-export * from './api/listRecipes.js';
-export * from './api/updateRecipe.js';
+export * from './api/createRecipe.ts';
+export * from './api/deleteRecipe.ts';
+export * from './api/getRecipe.ts';
+export * from './api/getUsedRecipeTags.ts';
+export * from './api/listRecipes.ts';
+export * from './api/updateRecipe.ts';

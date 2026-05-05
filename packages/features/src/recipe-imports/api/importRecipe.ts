@@ -1,9 +1,9 @@
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { importedRecipeSchema } from '../types/importedRecipe.js';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import type { MutationConfig } from '../../lib/tanstackQuery.ts';
+import { importedRecipeSchema } from '../types/importedRecipe.ts';
 
 export const importRecipeContract = defineContract('recipe-imports', {
   method: 'post',

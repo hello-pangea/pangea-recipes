@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { recipeBookRequestSchema } from '../../recipe-book-requests/index.js';
+import { recipeBookRequestSchema } from '../../recipe-book-requests/index.ts';
 
 export const recipeBookSchema = z
   .object({

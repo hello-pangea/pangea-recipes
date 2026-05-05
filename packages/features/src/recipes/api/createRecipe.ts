@@ -1,10 +1,10 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { z } from 'zod';
-import { createTagDtoSchema } from '../../common/tag.js';
-import { makeRequest } from '../../lib/request.js';
-import { defineContract } from '../../lib/routeContracts.js';
-import type { MutationConfig } from '../../lib/tanstackQuery.js';
-import { recipeSchema } from '../types/recipe.js';
+import { createTagDtoSchema } from '../../common/tag.ts';
+import { makeRequest } from '../../lib/request.ts';
+import { defineContract } from '../../lib/routeContracts.ts';
+import type { MutationConfig } from '../../lib/tanstackQuery.ts';
+import { recipeSchema } from '../types/recipe.ts';
 
 export const createRecipeContract = defineContract('recipes', {
   method: 'post',

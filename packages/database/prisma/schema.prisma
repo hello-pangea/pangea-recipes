@@ -9,5 +9,5 @@ generator client {
   runtime                = "nodejs"
   moduleFormat           = "esm"
   generatedFileExtension = "ts"
-  importFileExtension    = "js"
+  importFileExtension    = "ts"
 }

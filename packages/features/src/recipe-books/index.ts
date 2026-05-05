@@ -1,14 +1,14 @@
 // Types
-export * from './types/recipeBook.js';
+export * from './types/recipeBook.ts';
 
 // Api
-export * from './api/addRecipeToRecipeBook.js';
-export * from './api/createRecipeBook.js';
-export * from './api/deleteRecipeBook.js';
-export * from './api/deleteRecipeBookInvite.js';
-export * from './api/deleteRecipeBookMember.js';
-export * from './api/getRecipeBook.js';
-export * from './api/inviteMembersToRecipeBook.js';
-export * from './api/listRecipeBooks.js';
-export * from './api/removeRecipeFromRecipeBook.js';
-export * from './api/updateRecipeBook.js';
+export * from './api/addRecipeToRecipeBook.ts';
+export * from './api/createRecipeBook.ts';
+export * from './api/deleteRecipeBook.ts';
+export * from './api/deleteRecipeBookInvite.ts';
+export * from './api/deleteRecipeBookMember.ts';
+export * from './api/getRecipeBook.ts';
+export * from './api/inviteMembersToRecipeBook.ts';
+export * from './api/listRecipeBooks.ts';
+export * from './api/removeRecipeFromRecipeBook.ts';
+export * from './api/updateRecipeBook.ts';

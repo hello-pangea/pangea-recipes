@@ -1,6 +1,9 @@
 {
   "compilerOptions": {
-    "outDir": "dist"
+    "outDir": "dist",
+    "rootDir": "src",
+    "noEmit": false,
+    "allowImportingTsExtensions": false
   },
   "extends": "@repo/typescript-config/react-library.json",
   "include": ["src"],

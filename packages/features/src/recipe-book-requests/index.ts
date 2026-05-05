@@ -1,8 +1,8 @@
 // Types
-export * from './types/recipeBookRequest.js';
+export * from './types/recipeBookRequest.ts';
 
 // Api
-export * from './api/acceptRecipeBookRequest.js';
-export * from './api/declineRecipeBookRequest.js';
-export * from './api/listRecipeBookRequests.js';
-export * from './api/requestAccessToRecipeBook.js';
+export * from './api/acceptRecipeBookRequest.ts';
+export * from './api/declineRecipeBookRequest.ts';
+export * from './api/listRecipeBookRequests.ts';
+export * from './api/requestAccessToRecipeBook.ts';

@@ -1,6 +1,6 @@
-export * from './types/user.js';
+export * from './types/user.ts';
 
-export * from './api/getSignedInUser.js';
-export * from './api/getUser.js';
-export * from './api/setupUser.js';
-export * from './api/updateUser.js';
+export * from './api/getSignedInUser.ts';
+export * from './api/getUser.ts';
+export * from './api/setupUser.ts';
+export * from './api/updateUser.ts';

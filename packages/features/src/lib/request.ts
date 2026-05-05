@@ -1,7 +1,7 @@
 import type { Options as KyOptions } from 'ky';
 import { z } from 'zod';
-import { api } from './api.js';
-import type { Contract, DefaultSuccessStatus } from './routeContracts.js';
+import { api } from './api.ts';
+import type { Contract, DefaultSuccessStatus } from './routeContracts.ts';
 
 /** Input/Output helpers (Zod v4) */
 type In<T extends z.ZodType> = z.input<T>;

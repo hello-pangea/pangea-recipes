@@ -1,5 +1,5 @@
-import { prisma } from './index.js';
-import { canonicalIngredients } from './seed-data/canonicalIngredients.js';
+import { prisma } from './index.ts';
+import { canonicalIngredients } from './seed-data/canonicalIngredients.ts';
 
 async function seedDatabase() {
   await prisma.canonicalIngredient.createMany({

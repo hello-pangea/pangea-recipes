@@ -1,4 +1,4 @@
-import { Prisma } from '../index.js';
+import { Prisma } from '../index.ts';
 
 export const canonicalIngredients: Prisma.CanonicalIngredientCreateInput[] = [
   {
