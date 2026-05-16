@@ -5,14 +5,15 @@ FROM node:24-trixie-slim AS base
 
 # Playwright vars
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
+
 # PNPM vars
 ENV PNPM_HOME="/pnpm"
-ENV PATH="$PNPM_HOME:$PATH"
+ENV PATH="$PNPM_HOME/bin:$PNPM_HOME:$PATH"
 
 RUN npm install -g corepack@latest
 
 # Global turborepo
-RUN pnpm install turbo@2.9 --global
+RUN mkdir -p "$PNPM_HOME" && pnpm add -g turbo@2.9
 
 # Playwright setup (basically downloads chromium)
 RUN pnpm dlx playwright-chromium@1.60.0 install chromium --with-deps
