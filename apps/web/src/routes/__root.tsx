@@ -5,10 +5,12 @@ import loraFontCss from '@fontsource-variable/lora?url';
 import { CssBaseline, InitColorSchemeScript, ThemeProvider } from '@mui/material';
 import type {} from '@mui/material/themeCssVarsAugmentation';
 import { getSignedInUserQueryOptions, useSignedInUser } from '@repo/features/users';
+import { TanStackDevtools } from '@tanstack/react-devtools';
+import { formDevtoolsPlugin } from '@tanstack/react-form-devtools';
 import type { QueryClient } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
-import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { Toaster } from 'sonner';
 import { NotFoundPage } from '#src/components/NotFoundPage';
 import { config } from '#src/config/config';
@@ -163,8 +165,24 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <body>
         <InitColorSchemeScript attribute="class" />
         <Providers>{children}</Providers>
-        <ReactQueryDevtools buttonPosition="top-right" />
-        <TanStackRouterDevtools position="bottom-right" />
+        <TanStackDevtools
+          config={{
+            defaultOpen: false,
+            position: 'bottom-right',
+          }}
+          plugins={[
+            {
+              name: 'TanStack Query',
+              render: <ReactQueryDevtoolsPanel />,
+              defaultOpen: true,
+            },
+            {
+              name: 'TanStack Router',
+              render: <TanStackRouterDevtoolsPanel />,
+            },
+            formDevtoolsPlugin(),
+          ]}
+        />
         <Scripts />
       </body>
     </html>
