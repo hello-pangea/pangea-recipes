@@ -9,9 +9,4 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
-export const config = envSchema.parse({
-  VITE_API_URL: import.meta.env.VITE_API_URL,
-  VITE_GOOGLE_TAG_ID: import.meta.env.VITE_GOOGLE_TAG_ID,
-  VITE_GOOGLE_TAG_CONVERSION_DESTINATION: import.meta.env.VITE_GOOGLE_TAG_CONVERSION_DESTINATION,
-  PROD: import.meta.env.PROD,
-});
+export const config = envSchema.parse(import.meta.env);
