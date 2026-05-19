@@ -3,7 +3,8 @@
   "extends": ["//"],
   "tasks": {
     "build": {
-      "outputs": [".nitro/**", ".tanstack/**", ".vercel/**", ".output/**"]
+      "outputs": [".nitro/**", ".tanstack/**", ".vercel/**", ".output/**"],
+      "env": ["PROD"]
     }
   }
 }
