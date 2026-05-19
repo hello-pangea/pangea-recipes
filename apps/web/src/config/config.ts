@@ -1,12 +1,5 @@
 import { z } from 'zod';
 
-console.log({
-  // @ts-expect-error fjiorefjroie f
-  // oxlint-disable-next-line typescript/no-unsafe-assignment typescript/no-unsafe-member-access
-  process: process.env,
-  meta: import.meta.env,
-});
-
 const envSchema = z.object({
   VITE_API_URL: z.string(),
   VITE_GOOGLE_TAG_ID: z.string().optional(),
@@ -16,4 +9,9 @@ const envSchema = z.object({
 
 export type Env = z.infer<typeof envSchema>;
 
-export const config = envSchema.parse(import.meta.env);
+export const config = envSchema.parse({
+  VITE_API_URL: import.meta.env['VITE_API_URL'],
+  VITE_GOOGLE_TAG_ID: import.meta.env['VITE_GOOGLE_TAG_ID'],
+  VITE_GOOGLE_TAG_CONVERSION_DESTINATION: import.meta.env['VITE_GOOGLE_TAG_CONVERSION_DESTINATION'],
+  PROD: import.meta.env.PROD,
+});
