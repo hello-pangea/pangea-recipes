@@ -1,6 +1,6 @@
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { prisma } from '@repo/database';
 import { getPublicProfileContract } from '@repo/features/profiles';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 
 const routeTag = 'Profiles';
 

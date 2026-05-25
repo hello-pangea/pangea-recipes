@@ -1,9 +1,9 @@
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { prisma } from '@repo/database';
 import {
   addRecipeToRecipeBookContract,
   removeRecipeFromRecipeBookContract,
 } from '@repo/features/recipe-books';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeBookDto, recipeBookInclude } from './recipeBookDtoUtils.ts';
 

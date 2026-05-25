@@ -1,6 +1,6 @@
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { prisma } from '@repo/database';
 import { getSignedInUserContract, getUserContract, updateUserContract } from '@repo/features/users';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Users';

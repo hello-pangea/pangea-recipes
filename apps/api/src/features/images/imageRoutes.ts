@@ -1,6 +1,6 @@
 import multipart, { type MultipartFile } from '@fastify/multipart';
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { prisma } from '@repo/database';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { z } from 'zod';
 import { getFileUrl, uploadFile } from '../../lib/s3.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';

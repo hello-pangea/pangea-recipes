@@ -1,4 +1,4 @@
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { authRoutes } from '#src/features/auth/authRoutes.ts';
 import { canonicalIngredientRoutes } from '#src/features/canonical-ingredients/canonicalIngredientRoutes.ts';
 import { imageRoutes } from '#src/features/images/imageRoutes.ts';

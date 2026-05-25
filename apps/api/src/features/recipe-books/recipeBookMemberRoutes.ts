@@ -1,3 +1,4 @@
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { prisma } from '@repo/database';
 import { InviteToRecipeBook } from '@repo/email';
 import {
@@ -5,7 +6,6 @@ import {
   deleteRecipeBookMemberContract,
   inviteMembersToRecipeBookContract,
 } from '@repo/features/recipe-books';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { config } from '#src/config/config.ts';
 import { resend } from '#src/lib/resend.ts';
 import { verifySession } from '../auth/verifySession.ts';

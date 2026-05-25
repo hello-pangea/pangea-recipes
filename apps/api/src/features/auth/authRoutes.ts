@@ -1,4 +1,4 @@
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { auth } from './betterAuth.ts';
 
 // Docs for better-auth integration with Fastify:

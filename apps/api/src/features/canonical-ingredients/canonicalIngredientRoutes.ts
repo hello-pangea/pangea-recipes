@@ -1,3 +1,4 @@
+import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
 import { prisma } from '@repo/database';
 import {
   createCanonicalIngredientContract,
@@ -7,7 +8,6 @@ import {
   updateCanonicalIngredientContract,
   type CanonicalIngredient,
 } from '@repo/features/canonical-ingredients';
-import type { FastifyPluginAsyncZod } from 'fastify-type-provider-zod';
 import { getFileUrl } from '../../lib/s3.ts';
 import { verifyIsAdmin } from '../auth/verifyIsAdmin.ts';
 import { verifySession } from '../auth/verifySession.ts';

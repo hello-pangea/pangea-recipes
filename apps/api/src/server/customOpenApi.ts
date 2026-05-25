@@ -1,6 +1,6 @@
 import openApi from '@fastify/swagger';
+import { jsonSchemaTransform, jsonSchemaTransformObject } from '@fastify/type-provider-zod';
 import fastifyPlugin from 'fastify-plugin';
-import { jsonSchemaTransform, jsonSchemaTransformObject } from 'fastify-type-provider-zod';
 import { auth } from '#src/features/auth/betterAuth.ts';
 import { config } from '../config/config.ts';
 
