@@ -21,7 +21,6 @@ export default defineConfig({
     }),
     tanstackStart(),
     nitro({
-      preset: 'vercel',
       compatibilityDate: '2026-05-19',
     }),
     react(),
