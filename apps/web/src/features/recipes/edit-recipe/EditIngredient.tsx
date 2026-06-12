@@ -32,8 +32,8 @@ import { numberToFraction } from '@repo/features';
 import { listCanonicalIngredientsQueryOptions } from '@repo/features/canonical-ingredients';
 import { defaultUnitOptions } from '@repo/features/units';
 import { useSignedInUser } from '@repo/features/users';
-import { useStore } from '@tanstack/react-form';
 import { useQuery } from '@tanstack/react-query';
+import { useSelector } from '@tanstack/react-store';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { DragPreview } from '#src/components/DragPreview';
@@ -59,7 +59,7 @@ export const EditIngredient = withForm({
     const [dragging, setDragging] = useState(false);
     const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
     const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(null);
-    const ingredient = useStore(form.store, (state) =>
+    const ingredient = useSelector(form.store, (state) =>
       state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients.at(index),
     );
     const [dialogOpen, setDialogOpen] = useState(false);

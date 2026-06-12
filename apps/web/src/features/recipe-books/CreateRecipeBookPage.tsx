@@ -16,8 +16,8 @@ import {
 } from '@mui/material';
 import { emptyStringToUndefined } from '@repo/features';
 import { useCreateRecipeBook, useUpdateRecipeBook } from '@repo/features/recipe-books';
-import { useStore } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
+import { useSelector } from '@tanstack/react-store';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -106,7 +106,7 @@ export function CreateRecipeBookPage({ defaultValues, updateRecipeBookId }: Prop
     },
   });
 
-  const access = useStore(form.store, (state) => state.values.access);
+  const access = useSelector(form.store, (state) => state.values.access);
 
   return (
     <Page>

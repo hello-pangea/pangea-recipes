@@ -26,14 +26,14 @@
   },
   "devDependencies": {
     "eslint-plugin-react-hooks": "^7.1.1",
-    "eslint-plugin-turbo": "^2.9.14",
-    "oxfmt": "^0.51.0",
-    "oxlint": "^1.66.0",
+    "eslint-plugin-turbo": "^2.9.18",
+    "oxfmt": "^0.54.0",
+    "oxlint": "^1.69.0",
     "oxlint-tsgolint": "0.23.0",
-    "turbo": "^2.9.14"
+    "turbo": "^2.9.18"
   },
   "engines": {
     "node": "^24.14.0"
   },
-  "packageManager": "pnpm@11.3.0"
+  "packageManager": "pnpm@11.6.0"
 }

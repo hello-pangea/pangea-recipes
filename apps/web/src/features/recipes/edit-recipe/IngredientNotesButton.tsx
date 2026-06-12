@@ -1,7 +1,7 @@
 import SpeakerNotesOutlinedIcon from '@mui/icons-material/SpeakerNotesOutlined';
 import SpeakerNotesRoundedIcon from '@mui/icons-material/SpeakerNotesRounded';
 import { Box, IconButton, Popover, Tooltip, type SxProps, type Theme } from '@mui/material';
-import { useStore } from '@tanstack/react-form';
+import { useSelector } from '@tanstack/react-store';
 import { useState } from 'react';
 import { withForm } from '#src/hooks/form';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
@@ -18,7 +18,7 @@ export const IngredientNotesButton = withForm({
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, sx = [], ingredientGroupIndex, ingredientIndex }) {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const ingredient = useStore(form.store, (state) =>
+    const ingredient = useSelector(form.store, (state) =>
       state.values.ingredientGroups.at(ingredientGroupIndex)?.ingredients.at(ingredientIndex),
     );
 

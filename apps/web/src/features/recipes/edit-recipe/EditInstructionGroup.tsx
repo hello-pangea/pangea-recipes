@@ -7,7 +7,7 @@ import {
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { alpha, Box, Button, Card, IconButton, Stack, Typography } from '@mui/material';
-import { useStore } from '@tanstack/react-form';
+import { useSelector } from '@tanstack/react-store';
 import { useEffect, useRef, useState } from 'react';
 import { withForm } from '#src/hooks/form';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
@@ -22,11 +22,11 @@ export const EditInstructionGroup = withForm({
   ...recipeFormOptions,
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, index: instructionGroupIndex }) {
-    const instructions = useStore(
+    const instructions = useSelector(
       form.store,
       (state) => state.values.instructionGroups.at(instructionGroupIndex)?.instructions ?? [],
     );
-    const minimal = useStore(form.store, (state) => state.values.instructionGroups.length <= 1);
+    const minimal = useSelector(form.store, (state) => state.values.instructionGroups.length <= 1);
 
     useEffect(() => {
       return monitorForElements({

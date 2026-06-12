@@ -13,7 +13,7 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import DragIndicatorRoundedIcon from '@mui/icons-material/DragIndicatorRounded';
 import { Box, FormLabel, IconButton } from '@mui/material';
-import { useStore } from '@tanstack/react-form';
+import { useSelector } from '@tanstack/react-store';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { DragPreview } from '#src/components/DragPreview';
@@ -36,7 +36,7 @@ export const EditInstruction = withForm({
     const [dragging, setDragging] = useState(false);
     const [closestEdge, setClosestEdge] = useState<Edge | null>(null);
     const [previewContainer, setPreviewContainer] = useState<HTMLElement | null>(null);
-    const instruction = useStore(
+    const instruction = useSelector(
       form.store,
       (state) =>
         (state.values.instructionGroups.at(instructionGroupIndex)?.instructions ?? []).at(index)

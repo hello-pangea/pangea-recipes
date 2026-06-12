@@ -1,5 +1,5 @@
 import { TextField, type TextFieldProps } from '@mui/material';
-import { useStore } from '@tanstack/react-form';
+import { useSelector } from '@tanstack/react-store';
 import { useFieldContext } from '#src/hooks/formContext';
 
 type Props = Omit<
@@ -11,8 +11,8 @@ export function FormTextField(props: Props) {
   const field = useFieldContext<string>();
 
   // oxlint-disable-next-line typescript/no-unsafe-return
-  const errors = useStore(field.store, (state) => state.meta.errors);
-  const isValid = useStore(field.store, (state) => state.meta.isValid);
+  const errors = useSelector(field.store, (state) => state.meta.errors);
+  const isValid = useSelector(field.store, (state) => state.meta.isValid);
 
   return (
     <TextField

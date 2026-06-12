@@ -1,6 +1,6 @@
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import { Box, Button, type SxProps, type Theme } from '@mui/material';
-import { useStore } from '@tanstack/react-form';
+import { useSelector } from '@tanstack/react-store';
 import { useState } from 'react';
 import { withForm } from '#src/hooks/form';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
@@ -16,7 +16,7 @@ export const UploadRecipeImage = withForm({
   // oxlint-disable-next-line typescript/no-unnecessary-type-assertion
   props: {} as FormPropsWrapper<Props>,
   render: function Render({ form, sx }) {
-    const image = useStore(form.store, (state) => state.values.image);
+    const image = useSelector(form.store, (state) => state.values.image);
     const [uploadImageDialogOpen, setUploadImageDialogOpen] = useState(false);
 
     if (!image) {
