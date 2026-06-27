@@ -3,11 +3,14 @@ packages:
   - packages/*
 
 allowBuilds:
+  '@parcel/watcher': false
   '@prisma/engines': false
-  '@sentry/node-cpu-profiler': false
+  '@sentry-internal/node-cpu-profiler': false
+  core-js: false
   esbuild: false
   playwright-chromium: true
   prisma: false
+  protobufjs: false
   sharp: false
   vue-demi: false
 
