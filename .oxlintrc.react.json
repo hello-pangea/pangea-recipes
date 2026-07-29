@@ -1,13 +1,7 @@
 {
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "plugins": ["typescript", "react"],
-  "jsPlugins": [
-    "eslint-plugin-turbo",
-    {
-      "name": "react-hooks-js",
-      "specifier": "eslint-plugin-react-hooks"
-    }
-  ],
+  "jsPlugins": ["eslint-plugin-turbo"],
   "categories": {
     "correctness": "off"
   },
@@ -212,29 +206,8 @@
     "typescript/prefer-regexp-exec": "error",
     "typescript/prefer-string-starts-ends-with": "error",
 
-    // ---
-    // react-hooks-js
-    // https://github.com/facebook/react/blob/main/compiler/packages/babel-plugin-react-compiler/src/CompilerError.ts
-    // ---
-
-    // Recommended rules (from LintRulePreset.Recommended)
-    "react-hooks-js/config": "error",
-    "react-hooks-js/error-boundaries": "error",
-    "react-hooks-js/gating": "error",
-    "react-hooks-js/globals": "error",
-    "react-hooks-js/immutability": "error",
-    "react-hooks-js/preserve-manual-memoization": "error",
-    "react-hooks-js/purity": "error",
-    "react-hooks-js/refs": "error",
-    "react-hooks-js/set-state-in-effect": "error",
-    "react-hooks-js/set-state-in-render": "error",
-    "react-hooks-js/static-components": "error",
-    "react-hooks-js/unsupported-syntax": "error",
-    "react-hooks-js/use-memo": "error",
-    "react-hooks-js/incompatible-library": "warn",
-
-    // Recommended-latest rules (from LintRulePreset.RecommendedLatest)
-    "react-hooks-js/void-use-memo": "error"
+    // React compiler
+    "react/react-compiler": "error"
   },
   "overrides": [
     {

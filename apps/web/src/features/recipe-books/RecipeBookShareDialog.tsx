@@ -118,10 +118,10 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
   ];
 
   useEffect(() => {
-    // oxlint-disable-next-line react-hooks-js/immutability
     resetInviteForm();
   }, [open]);
 
+  // oxlint-disable-next-line react/react-compiler
   function resetInviteForm() {
     setInvites([]);
     setInviteRole('viewer');

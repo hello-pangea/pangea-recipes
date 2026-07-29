@@ -11,57 +11,47 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
-import { Route as SignUpRouteImport } from './routes/sign-up'
-import { Route as SignInRouteImport } from './routes/sign-in'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
-import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as OpenapiDocsRouteImport } from './routes/openapi-docs'
-import { Route as LogOutRouteImport } from './routes/log-out'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as LogOutRouteImport } from './routes/log-out'
+import { Route as OpenapiDocsRouteImport } from './routes/openapi-docs'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as SignInRouteImport } from './routes/sign-in'
+import { Route as SignUpRouteImport } from './routes/sign-up'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as AppIndexRouteImport } from './routes/app/index'
 import { Route as AppAuthRouteRouteImport } from './routes/app/_auth/route'
-import { Route as AppSharedRecipesRecipeIdRouteImport } from './routes/app/shared-recipes.$recipeId'
-import { Route as AppAuthTryLaterRouteImport } from './routes/app/_auth/try-later'
-import { Route as AppAuthSettingsRouteImport } from './routes/app/_auth/settings'
 import { Route as AppAuthFavoritesRouteImport } from './routes/app/_auth/favorites'
-import { Route as AppAuthRecipesIndexRouteImport } from './routes/app/_auth/recipes.index'
-import { Route as AppAuthRecipeBooksIndexRouteImport } from './routes/app/_auth/recipe-books.index'
+import { Route as AppAuthSettingsRouteImport } from './routes/app/_auth/settings'
+import { Route as AppAuthTryLaterRouteImport } from './routes/app/_auth/try-later'
+import { Route as AppSharedRecipesRecipeIdRouteImport } from './routes/app/shared-recipes.$recipeId'
 import { Route as AppAuthCanonicalIngredientsIndexRouteImport } from './routes/app/_auth/canonical-ingredients.index'
-import { Route as AppAuthRecipesNewRouteImport } from './routes/app/_auth/recipes.new'
-import { Route as AppAuthRecipesRecipeIdRouteImport } from './routes/app/_auth/recipes.$recipeId'
-import { Route as AppAuthRecipeBooksNewRouteImport } from './routes/app/_auth/recipe-books.new'
-import { Route as AppAuthRecipeBooksRecipeBookIdRouteImport } from './routes/app/_auth/recipe-books.$recipeBookId'
 import { Route as AppAuthCanonicalIngredientsNewRouteImport } from './routes/app/_auth/canonical-ingredients.new'
-import { Route as AppAuthRecipesRecipeIdEditRouteImport } from './routes/app/_auth/recipes_.$recipeId.edit'
-import { Route as AppAuthRecipeBooksRecipeBookIdEditRouteImport } from './routes/app/_auth/recipe-books_.$recipeBookId.edit'
+import { Route as AppAuthRecipeBooksIndexRouteImport } from './routes/app/_auth/recipe-books.index'
+import { Route as AppAuthRecipeBooksRecipeBookIdRouteImport } from './routes/app/_auth/recipe-books.$recipeBookId'
+import { Route as AppAuthRecipeBooksNewRouteImport } from './routes/app/_auth/recipe-books.new'
+import { Route as AppAuthRecipesIndexRouteImport } from './routes/app/_auth/recipes.index'
+import { Route as AppAuthRecipesRecipeIdRouteImport } from './routes/app/_auth/recipes.$recipeId'
+import { Route as AppAuthRecipesNewRouteImport } from './routes/app/_auth/recipes.new'
 import { Route as AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport } from './routes/app/_auth/canonical-ingredients_.$canonicalIngredientId.edit'
+import { Route as AppAuthRecipeBooksRecipeBookIdEditRouteImport } from './routes/app/_auth/recipe-books_.$recipeBookId.edit'
+import { Route as AppAuthRecipesRecipeIdEditRouteImport } from './routes/app/_auth/recipes_.$recipeId.edit'
 
 const IndexLazyRouteImport = createFileRoute('/')()
 
-const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
-  id: '/terms-of-service',
-  path: '/terms-of-service',
+const IndexLazyRoute = IndexLazyRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SignUpRoute = SignUpRouteImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SignInRoute = SignInRouteImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
-  id: '/privacy-policy',
-  path: '/privacy-policy',
+const LogOutRoute = LogOutRouteImport.update({
+  id: '/log-out',
+  path: '/log-out',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OpenapiDocsRoute = OpenapiDocsRouteImport.update({
@@ -69,21 +59,31 @@ const OpenapiDocsRoute = OpenapiDocsRouteImport.update({
   path: '/openapi-docs',
   getParentRoute: () => rootRouteImport,
 } as any).lazy(() => import('./routes/openapi-docs.lazy').then((d) => d.Route))
-const LogOutRoute = LogOutRouteImport.update({
-  id: '/log-out',
-  path: '/log-out',
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
-  id: '/forgot-password',
-  path: '/forgot-password',
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexLazyRoute = IndexLazyRouteImport.update({
-  id: '/',
-  path: '/',
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => rootRouteImport,
-} as any).lazy(() => import('./routes/index.lazy').then((d) => d.Route))
+} as any)
+const SignUpRoute = SignUpRouteImport.update({
+  id: '/sign-up',
+  path: '/sign-up',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AppIndexRoute = AppIndexRouteImport.update({
   id: '/app/',
   path: '/app/',
@@ -94,15 +94,9 @@ const AppAuthRouteRoute = AppAuthRouteRouteImport.update({
   path: '/app',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AppSharedRecipesRecipeIdRoute =
-  AppSharedRecipesRecipeIdRouteImport.update({
-    id: '/app/shared-recipes/$recipeId',
-    path: '/app/shared-recipes/$recipeId',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const AppAuthTryLaterRoute = AppAuthTryLaterRouteImport.update({
-  id: '/try-later',
-  path: '/try-later',
+const AppAuthFavoritesRoute = AppAuthFavoritesRouteImport.update({
+  id: '/favorites',
+  path: '/favorites',
   getParentRoute: () => AppAuthRouteRoute,
 } as any)
 const AppAuthSettingsRoute = AppAuthSettingsRouteImport.update({
@@ -110,46 +104,21 @@ const AppAuthSettingsRoute = AppAuthSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AppAuthRouteRoute,
 } as any)
-const AppAuthFavoritesRoute = AppAuthFavoritesRouteImport.update({
-  id: '/favorites',
-  path: '/favorites',
+const AppAuthTryLaterRoute = AppAuthTryLaterRouteImport.update({
+  id: '/try-later',
+  path: '/try-later',
   getParentRoute: () => AppAuthRouteRoute,
 } as any)
-const AppAuthRecipesIndexRoute = AppAuthRecipesIndexRouteImport.update({
-  id: '/recipes/',
-  path: '/recipes/',
-  getParentRoute: () => AppAuthRouteRoute,
-} as any)
-const AppAuthRecipeBooksIndexRoute = AppAuthRecipeBooksIndexRouteImport.update({
-  id: '/recipe-books/',
-  path: '/recipe-books/',
-  getParentRoute: () => AppAuthRouteRoute,
-} as any)
+const AppSharedRecipesRecipeIdRoute =
+  AppSharedRecipesRecipeIdRouteImport.update({
+    id: '/app/shared-recipes/$recipeId',
+    path: '/app/shared-recipes/$recipeId',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AppAuthCanonicalIngredientsIndexRoute =
   AppAuthCanonicalIngredientsIndexRouteImport.update({
     id: '/canonical-ingredients/',
     path: '/canonical-ingredients/',
-    getParentRoute: () => AppAuthRouteRoute,
-  } as any)
-const AppAuthRecipesNewRoute = AppAuthRecipesNewRouteImport.update({
-  id: '/recipes/new',
-  path: '/recipes/new',
-  getParentRoute: () => AppAuthRouteRoute,
-} as any)
-const AppAuthRecipesRecipeIdRoute = AppAuthRecipesRecipeIdRouteImport.update({
-  id: '/recipes/$recipeId',
-  path: '/recipes/$recipeId',
-  getParentRoute: () => AppAuthRouteRoute,
-} as any)
-const AppAuthRecipeBooksNewRoute = AppAuthRecipeBooksNewRouteImport.update({
-  id: '/recipe-books/new',
-  path: '/recipe-books/new',
-  getParentRoute: () => AppAuthRouteRoute,
-} as any)
-const AppAuthRecipeBooksRecipeBookIdRoute =
-  AppAuthRecipeBooksRecipeBookIdRouteImport.update({
-    id: '/recipe-books/$recipeBookId',
-    path: '/recipe-books/$recipeBookId',
     getParentRoute: () => AppAuthRouteRoute,
   } as any)
 const AppAuthCanonicalIngredientsNewRoute =
@@ -158,10 +127,41 @@ const AppAuthCanonicalIngredientsNewRoute =
     path: '/canonical-ingredients/new',
     getParentRoute: () => AppAuthRouteRoute,
   } as any)
-const AppAuthRecipesRecipeIdEditRoute =
-  AppAuthRecipesRecipeIdEditRouteImport.update({
-    id: '/recipes_/$recipeId/edit',
-    path: '/recipes/$recipeId/edit',
+const AppAuthRecipeBooksIndexRoute = AppAuthRecipeBooksIndexRouteImport.update({
+  id: '/recipe-books/',
+  path: '/recipe-books/',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
+const AppAuthRecipeBooksRecipeBookIdRoute =
+  AppAuthRecipeBooksRecipeBookIdRouteImport.update({
+    id: '/recipe-books/$recipeBookId',
+    path: '/recipe-books/$recipeBookId',
+    getParentRoute: () => AppAuthRouteRoute,
+  } as any)
+const AppAuthRecipeBooksNewRoute = AppAuthRecipeBooksNewRouteImport.update({
+  id: '/recipe-books/new',
+  path: '/recipe-books/new',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
+const AppAuthRecipesIndexRoute = AppAuthRecipesIndexRouteImport.update({
+  id: '/recipes/',
+  path: '/recipes/',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
+const AppAuthRecipesRecipeIdRoute = AppAuthRecipesRecipeIdRouteImport.update({
+  id: '/recipes/$recipeId',
+  path: '/recipes/$recipeId',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
+const AppAuthRecipesNewRoute = AppAuthRecipesNewRouteImport.update({
+  id: '/recipes/new',
+  path: '/recipes/new',
+  getParentRoute: () => AppAuthRouteRoute,
+} as any)
+const AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute =
+  AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport.update({
+    id: '/canonical-ingredients_/$canonicalIngredientId/edit',
+    path: '/canonical-ingredients/$canonicalIngredientId/edit',
     getParentRoute: () => AppAuthRouteRoute,
   } as any)
 const AppAuthRecipeBooksRecipeBookIdEditRoute =
@@ -170,10 +170,10 @@ const AppAuthRecipeBooksRecipeBookIdEditRoute =
     path: '/recipe-books/$recipeBookId/edit',
     getParentRoute: () => AppAuthRouteRoute,
   } as any)
-const AppAuthCanonicalIngredientsCanonicalIngredientIdEditRoute =
-  AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport.update({
-    id: '/canonical-ingredients_/$canonicalIngredientId/edit',
-    path: '/canonical-ingredients/$canonicalIngredientId/edit',
+const AppAuthRecipesRecipeIdEditRoute =
+  AppAuthRecipesRecipeIdEditRouteImport.update({
+    id: '/recipes_/$recipeId/edit',
+    path: '/recipes/$recipeId/edit',
     getParentRoute: () => AppAuthRouteRoute,
   } as any)
 
@@ -364,53 +364,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/terms-of-service': {
-      id: '/terms-of-service'
-      path: '/terms-of-service'
-      fullPath: '/terms-of-service'
-      preLoaderRoute: typeof TermsOfServiceRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sign-up': {
-      id: '/sign-up'
-      path: '/sign-up'
-      fullPath: '/sign-up'
-      preLoaderRoute: typeof SignUpRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sign-in': {
-      id: '/sign-in'
-      path: '/sign-in'
-      fullPath: '/sign-in'
-      preLoaderRoute: typeof SignInRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/privacy-policy': {
-      id: '/privacy-policy'
-      path: '/privacy-policy'
-      fullPath: '/privacy-policy'
-      preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/openapi-docs': {
-      id: '/openapi-docs'
-      path: '/openapi-docs'
-      fullPath: '/openapi-docs'
-      preLoaderRoute: typeof OpenapiDocsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/log-out': {
-      id: '/log-out'
-      path: '/log-out'
-      fullPath: '/log-out'
-      preLoaderRoute: typeof LogOutRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexLazyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/forgot-password': {
@@ -420,11 +378,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexLazyRouteImport
+    '/log-out': {
+      id: '/log-out'
+      path: '/log-out'
+      fullPath: '/log-out'
+      preLoaderRoute: typeof LogOutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/openapi-docs': {
+      id: '/openapi-docs'
+      path: '/openapi-docs'
+      fullPath: '/openapi-docs'
+      preLoaderRoute: typeof OpenapiDocsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-up': {
+      id: '/sign-up'
+      path: '/sign-up'
+      fullPath: '/sign-up'
+      preLoaderRoute: typeof SignUpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/app/': {
@@ -441,18 +441,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/app/shared-recipes/$recipeId': {
-      id: '/app/shared-recipes/$recipeId'
-      path: '/app/shared-recipes/$recipeId'
-      fullPath: '/app/shared-recipes/$recipeId'
-      preLoaderRoute: typeof AppSharedRecipesRecipeIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/app/_auth/try-later': {
-      id: '/app/_auth/try-later'
-      path: '/try-later'
-      fullPath: '/app/try-later'
-      preLoaderRoute: typeof AppAuthTryLaterRouteImport
+    '/app/_auth/favorites': {
+      id: '/app/_auth/favorites'
+      path: '/favorites'
+      fullPath: '/app/favorites'
+      preLoaderRoute: typeof AppAuthFavoritesRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
     '/app/_auth/settings': {
@@ -462,60 +455,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthSettingsRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
-    '/app/_auth/favorites': {
-      id: '/app/_auth/favorites'
-      path: '/favorites'
-      fullPath: '/app/favorites'
-      preLoaderRoute: typeof AppAuthFavoritesRouteImport
+    '/app/_auth/try-later': {
+      id: '/app/_auth/try-later'
+      path: '/try-later'
+      fullPath: '/app/try-later'
+      preLoaderRoute: typeof AppAuthTryLaterRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
-    '/app/_auth/recipes/': {
-      id: '/app/_auth/recipes/'
-      path: '/recipes'
-      fullPath: '/app/recipes/'
-      preLoaderRoute: typeof AppAuthRecipesIndexRouteImport
-      parentRoute: typeof AppAuthRouteRoute
-    }
-    '/app/_auth/recipe-books/': {
-      id: '/app/_auth/recipe-books/'
-      path: '/recipe-books'
-      fullPath: '/app/recipe-books/'
-      preLoaderRoute: typeof AppAuthRecipeBooksIndexRouteImport
-      parentRoute: typeof AppAuthRouteRoute
+    '/app/shared-recipes/$recipeId': {
+      id: '/app/shared-recipes/$recipeId'
+      path: '/app/shared-recipes/$recipeId'
+      fullPath: '/app/shared-recipes/$recipeId'
+      preLoaderRoute: typeof AppSharedRecipesRecipeIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/app/_auth/canonical-ingredients/': {
       id: '/app/_auth/canonical-ingredients/'
       path: '/canonical-ingredients'
       fullPath: '/app/canonical-ingredients/'
       preLoaderRoute: typeof AppAuthCanonicalIngredientsIndexRouteImport
-      parentRoute: typeof AppAuthRouteRoute
-    }
-    '/app/_auth/recipes/new': {
-      id: '/app/_auth/recipes/new'
-      path: '/recipes/new'
-      fullPath: '/app/recipes/new'
-      preLoaderRoute: typeof AppAuthRecipesNewRouteImport
-      parentRoute: typeof AppAuthRouteRoute
-    }
-    '/app/_auth/recipes/$recipeId': {
-      id: '/app/_auth/recipes/$recipeId'
-      path: '/recipes/$recipeId'
-      fullPath: '/app/recipes/$recipeId'
-      preLoaderRoute: typeof AppAuthRecipesRecipeIdRouteImport
-      parentRoute: typeof AppAuthRouteRoute
-    }
-    '/app/_auth/recipe-books/new': {
-      id: '/app/_auth/recipe-books/new'
-      path: '/recipe-books/new'
-      fullPath: '/app/recipe-books/new'
-      preLoaderRoute: typeof AppAuthRecipeBooksNewRouteImport
-      parentRoute: typeof AppAuthRouteRoute
-    }
-    '/app/_auth/recipe-books/$recipeBookId': {
-      id: '/app/_auth/recipe-books/$recipeBookId'
-      path: '/recipe-books/$recipeBookId'
-      fullPath: '/app/recipe-books/$recipeBookId'
-      preLoaderRoute: typeof AppAuthRecipeBooksRecipeBookIdRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
     '/app/_auth/canonical-ingredients/new': {
@@ -525,11 +483,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthCanonicalIngredientsNewRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
-    '/app/_auth/recipes_/$recipeId/edit': {
-      id: '/app/_auth/recipes_/$recipeId/edit'
-      path: '/recipes/$recipeId/edit'
-      fullPath: '/app/recipes/$recipeId/edit'
-      preLoaderRoute: typeof AppAuthRecipesRecipeIdEditRouteImport
+    '/app/_auth/recipe-books/': {
+      id: '/app/_auth/recipe-books/'
+      path: '/recipe-books'
+      fullPath: '/app/recipe-books/'
+      preLoaderRoute: typeof AppAuthRecipeBooksIndexRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/recipe-books/$recipeBookId': {
+      id: '/app/_auth/recipe-books/$recipeBookId'
+      path: '/recipe-books/$recipeBookId'
+      fullPath: '/app/recipe-books/$recipeBookId'
+      preLoaderRoute: typeof AppAuthRecipeBooksRecipeBookIdRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/recipe-books/new': {
+      id: '/app/_auth/recipe-books/new'
+      path: '/recipe-books/new'
+      fullPath: '/app/recipe-books/new'
+      preLoaderRoute: typeof AppAuthRecipeBooksNewRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/recipes/': {
+      id: '/app/_auth/recipes/'
+      path: '/recipes'
+      fullPath: '/app/recipes/'
+      preLoaderRoute: typeof AppAuthRecipesIndexRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/recipes/$recipeId': {
+      id: '/app/_auth/recipes/$recipeId'
+      path: '/recipes/$recipeId'
+      fullPath: '/app/recipes/$recipeId'
+      preLoaderRoute: typeof AppAuthRecipesRecipeIdRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/recipes/new': {
+      id: '/app/_auth/recipes/new'
+      path: '/recipes/new'
+      fullPath: '/app/recipes/new'
+      preLoaderRoute: typeof AppAuthRecipesNewRouteImport
+      parentRoute: typeof AppAuthRouteRoute
+    }
+    '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit': {
+      id: '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit'
+      path: '/canonical-ingredients/$canonicalIngredientId/edit'
+      fullPath: '/app/canonical-ingredients/$canonicalIngredientId/edit'
+      preLoaderRoute: typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
     '/app/_auth/recipe-books_/$recipeBookId/edit': {
@@ -539,11 +539,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAuthRecipeBooksRecipeBookIdEditRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
-    '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit': {
-      id: '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit'
-      path: '/canonical-ingredients/$canonicalIngredientId/edit'
-      fullPath: '/app/canonical-ingredients/$canonicalIngredientId/edit'
-      preLoaderRoute: typeof AppAuthCanonicalIngredientsCanonicalIngredientIdEditRouteImport
+    '/app/_auth/recipes_/$recipeId/edit': {
+      id: '/app/_auth/recipes_/$recipeId/edit'
+      path: '/recipes/$recipeId/edit'
+      fullPath: '/app/recipes/$recipeId/edit'
+      preLoaderRoute: typeof AppAuthRecipesRecipeIdEditRouteImport
       parentRoute: typeof AppAuthRouteRoute
     }
   }
