@@ -43,7 +43,7 @@ export function UploadImageDialog({ open, onClose }: Props) {
           toast.error('Error uploading image');
         }
 
-        // oxlint-disable-next-line react-hooks-js/immutability
+        // oxlint-disable-next-line react/react-compiler
         uppy.clear();
       }),
   );

@@ -4,7 +4,7 @@ export function useIsMounted(): boolean {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
-    // oxlint-disable-next-line react-hooks-js/set-state-in-effect
+    // oxlint-disable-next-line react/react-compiler
     setIsMounted(true);
     return () => {
       setIsMounted(false);

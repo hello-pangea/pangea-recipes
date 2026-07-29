@@ -101,13 +101,13 @@ export const useWakeLock = ({
     return undefined;
   }, [reacquireOnPageVisible, request, onError]);
 
-  // oxlint-disable-next-line react-hooks-js/refs
+  // oxlint-disable-next-line react/react-compiler
   return {
     isSupported,
     request,
     released,
     release,
-    // oxlint-disable-next-line react-hooks-js/refs
+    // oxlint-disable-next-line react/react-compiler
     type: wakeLock.current?.type || undefined,
   };
 };
