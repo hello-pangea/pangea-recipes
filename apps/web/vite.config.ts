@@ -21,7 +21,8 @@ export default defineConfig({
     }),
     tanstackStart(),
     nitro({
-      compatibilityDate: '2026-05-19',
+      compatibilityDate: '2026-07-28',
+      traceDeps: ['react', 'react-dom'],
     }),
     react(),
     babel({ presets: [reactCompilerPreset()] }),
