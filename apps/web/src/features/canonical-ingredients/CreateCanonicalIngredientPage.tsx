@@ -6,8 +6,8 @@ import {
   useCreateCanonicalIngredient,
   useUpdateCanonicalIngredient,
 } from '@repo/features/canonical-ingredients';
+import { useSelector } from '@tanstack/react-form';
 import { useNavigate } from '@tanstack/react-router';
-import { useSelector } from '@tanstack/react-store';
 import Uppy, { type Meta } from '@uppy/core';
 import Dashboard from '@uppy/react/dashboard';
 import XHR from '@uppy/xhr-upload';

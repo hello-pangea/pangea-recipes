@@ -13,7 +13,7 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import DragIndicatorRoundedIcon from '@mui/icons-material/DragIndicatorRounded';
 import { Box, FormLabel, IconButton } from '@mui/material';
-import { useSelector } from '@tanstack/react-store';
+import { useSelector } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { DragPreview } from '#src/components/DragPreview';

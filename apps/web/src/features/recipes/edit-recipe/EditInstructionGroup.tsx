@@ -7,7 +7,7 @@ import {
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { alpha, Box, Button, Card, IconButton, Stack, Typography } from '@mui/material';
-import { useSelector } from '@tanstack/react-store';
+import { useSelector } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
 import { withForm } from '#src/hooks/form';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';

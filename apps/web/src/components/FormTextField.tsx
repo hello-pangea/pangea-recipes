@@ -1,5 +1,5 @@
 import { TextField, type TextFieldProps } from '@mui/material';
-import { useSelector } from '@tanstack/react-store';
+import { useSelector } from '@tanstack/react-form';
 import { useFieldContext } from '#src/hooks/formContext';
 
 type Props = Omit<

@@ -1,6 +1,6 @@
 import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import { Box, Button, type SxProps, type Theme } from '@mui/material';
-import { useSelector } from '@tanstack/react-store';
+import { useSelector } from '@tanstack/react-form';
 import { useState } from 'react';
 import { withForm } from '#src/hooks/form';
 import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
