@@ -20,13 +20,13 @@
   "dependencies": {
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
-    "react-email": "^6.9.1"
+    "react-email": "^6.9.2"
   },
   "devDependencies": {
-    "@react-email/ui": "^6.9.1",
+    "@react-email/ui": "^6.9.2",
     "@repo/typescript-config": "workspace:*",
     "@types/node": "^24.13.3",
-    "@types/react": "^19.2.17",
+    "@types/react": "^19.2.18",
     "typescript": "~7.0.2"
   }
 }

@@ -25,14 +25,14 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "eslint-plugin-turbo": "^2.10.7",
-    "oxfmt": "^0.61.0",
-    "oxlint": "^1.76.0",
+    "eslint-plugin-turbo": "^2.10.9",
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.78.0",
     "oxlint-tsgolint": "7.0.2001",
-    "turbo": "^2.10.7"
+    "turbo": "^2.10.9"
   },
   "engines": {
     "node": "^24.14.0"
   },
-  "packageManager": "pnpm@11.17.0"
+  "packageManager": "pnpm@11.21.0"
 }

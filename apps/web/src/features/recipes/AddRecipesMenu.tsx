@@ -48,6 +48,7 @@ export function AddRecipesMenu({
       // oxlint-disable-next-line react/react-compiler
       setInitialAddedIds(addedRecipeIds);
     }
+    // oxlint-disable-next-line react/react-compiler
     // oxlint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
