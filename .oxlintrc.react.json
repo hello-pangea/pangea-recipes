@@ -204,10 +204,7 @@
     "typescript/prefer-includes": "error",
     "typescript/prefer-optional-chain": "error",
     "typescript/prefer-regexp-exec": "error",
-    "typescript/prefer-string-starts-ends-with": "error",
-
-    // React compiler
-    "react/react-compiler": "error"
+    "typescript/prefer-string-starts-ends-with": "error"
   },
   "overrides": [
     {

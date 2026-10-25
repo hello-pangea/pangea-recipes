@@ -1,8 +1,8 @@
 import {
   attachClosestEdge,
   extractClosestEdge,
-  type Edge,
 } from '@atlaskit/pragmatic-drag-and-drop-hitbox/closest-edge';
+import type { Edge } from '@atlaskit/pragmatic-drag-and-drop-hitbox/types';
 import { combine } from '@atlaskit/pragmatic-drag-and-drop/combine';
 import {
   draggable,

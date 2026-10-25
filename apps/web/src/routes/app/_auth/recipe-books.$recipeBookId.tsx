@@ -6,7 +6,7 @@ import { RequestAccessToRecipeBookPage } from '#src/features/recipe-books/Reques
 
 export const Route = createFileRoute('/app/_auth/recipe-books/$recipeBookId')({
   loader: ({ context: { queryClient }, params: { recipeBookId } }) => {
-    return queryClient.ensureQueryData(getRecipeBookQueryOptions(recipeBookId));
+    return queryClient.query({ ...getRecipeBookQueryOptions(recipeBookId), staleTime: 'static' });
   },
   component: RecipeBookPage,
   errorComponent: ({ error }) => {

@@ -4,11 +4,12 @@ import { RecipeBooksPage } from '#src/features/recipe-books/RecipeBooksPage';
 
 export const Route = createFileRoute('/app/_auth/recipe-books/')({
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(
-      listRecipeBooksQueryOptions({
+    await context.queryClient.query({
+      ...listRecipeBooksQueryOptions({
         userId: context.userId,
       }),
-    );
+      staleTime: 'static',
+    });
   },
   component: RecipeBooksPage,
   head: () => ({

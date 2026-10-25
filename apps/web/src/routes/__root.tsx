@@ -3,7 +3,6 @@ import { CacheProvider } from '@emotion/react';
 import interFontCss from '@fontsource-variable/inter?url';
 import loraFontCss from '@fontsource-variable/lora?url';
 import { CssBaseline, InitColorSchemeScript, ThemeProvider } from '@mui/material';
-import type {} from '@mui/material/themeCssVarsAugmentation';
 import { getSignedInUserQueryOptions, useSignedInUser } from '@repo/features/users';
 import { TanStackDevtools } from '@tanstack/react-devtools';
 import { formDevtoolsPlugin } from '@tanstack/react-form-devtools';
@@ -42,7 +41,10 @@ export const Route = createRootRouteWithContext<RouterContext>()({
       }
     }
 
-    const user = await context.queryClient.ensureQueryData(getSignedInUserQueryOptions());
+    const user = await context.queryClient.query({
+      ...getSignedInUserQueryOptions(),
+      staleTime: 'static',
+    });
 
     return {
       userId: user?.id ?? null,

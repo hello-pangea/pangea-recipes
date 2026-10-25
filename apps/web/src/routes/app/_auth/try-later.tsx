@@ -4,11 +4,12 @@ import { TryLaterPage } from '#src/features/recipes/TryLaterPage';
 
 export const Route = createFileRoute('/app/_auth/try-later')({
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(
-      listRecipesQueryOptions({
+    await context.queryClient.query({
+      ...listRecipesQueryOptions({
         userId: context.userId,
       }),
-    );
+      staleTime: 'static',
+    });
   },
   component: TryLaterPage,
   head: () => ({

@@ -18,15 +18,15 @@
     "preview": "email dev --port 3002 --dir src/emails"
   },
   "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-email": "^6.9.2"
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-email": "^6.11.3"
   },
   "devDependencies": {
-    "@react-email/ui": "^6.9.2",
+    "@react-email/ui": "^6.11.3",
     "@repo/typescript-config": "workspace:*",
-    "@types/node": "^24.13.3",
-    "@types/react": "^19.2.18",
+    "@types/node": "^24.19.2",
+    "@types/react": "^19.3.0",
     "typescript": "~7.0.2"
   }
 }

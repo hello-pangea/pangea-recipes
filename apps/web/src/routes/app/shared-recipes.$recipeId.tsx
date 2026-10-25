@@ -5,7 +5,10 @@ import { seo } from '#src/utils/seo';
 
 export const Route = createFileRoute('/app/shared-recipes/$recipeId')({
   loader: async ({ context: { queryClient }, params: { recipeId } }) => {
-    const recipe = await queryClient.ensureQueryData(getRecipeQueryOptions(recipeId));
+    const recipe = await queryClient.query({
+      ...getRecipeQueryOptions(recipeId),
+      staleTime: 'static',
+    });
 
     return {
       recipe,

@@ -6,7 +6,10 @@ export const Route = createFileRoute(
   '/app/_auth/canonical-ingredients_/$canonicalIngredientId/edit',
 )({
   loader: ({ context: { queryClient }, params: { canonicalIngredientId } }) => {
-    return queryClient.ensureQueryData(getCanonicalIngredientQueryOptions(canonicalIngredientId));
+    return queryClient.query({
+      ...getCanonicalIngredientQueryOptions(canonicalIngredientId),
+      staleTime: 'static',
+    });
   },
   component: EditCanonicalIngredientPage,
 });

@@ -4,7 +4,7 @@ import { EditRecipePage } from '#src/features/recipes/edit-recipe/EditRecipePage
 
 export const Route = createFileRoute('/app/_auth/recipes_/$recipeId/edit')({
   loader: ({ context: { queryClient }, params: { recipeId } }) => {
-    return queryClient.ensureQueryData(getRecipeQueryOptions(recipeId));
+    return queryClient.query({ ...getRecipeQueryOptions(recipeId), staleTime: 'static' });
   },
   component: EditRecipePage,
   head: ({ loaderData }) => ({

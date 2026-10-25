@@ -4,11 +4,12 @@ import { RecipesPage } from '#src/features/recipes/RecipesPage';
 
 export const Route = createFileRoute('/app/_auth/recipes/')({
   loader: async ({ context }) => {
-    await context.queryClient.ensureQueryData(
-      listRecipesQueryOptions({
+    await context.queryClient.query({
+      ...listRecipesQueryOptions({
         userId: context.userId,
       }),
-    );
+      staleTime: 'static',
+    });
   },
   component: RecipesPage,
   head: () => ({
