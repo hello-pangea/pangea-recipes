@@ -150,7 +150,7 @@ export async function getLlmImportRecipe(urlString: string) {
     instructions:
       'Parse the given recipe into a structured recipe object. Estimate nutrition info if not provided.',
     input: recipeMarkdown,
-    model: 'gpt-5.4',
+    model: 'gpt-6.1-sol',
     text: {
       format: zodTextFormat(llmRecipeSchema, 'recipe'),
     },
