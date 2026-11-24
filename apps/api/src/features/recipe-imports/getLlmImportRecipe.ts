@@ -3,7 +3,7 @@ import { zodTextFormat } from 'openai/helpers/zod';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 import { z } from 'zod';
-import { browser, browserContext, initializeBrowser } from '#src/lib/browser.ts';
+import { getBrowserContext } from '#src/lib/browser.ts';
 import { openAi } from '#src/lib/openAi.ts';
 
 const turndownService = new TurndownService();
@@ -101,13 +101,7 @@ async function getRecipeMarkdown(page: Page) {
 }
 
 export async function getLlmImportRecipe(urlString: string) {
-  if (!browser || !browserContext) {
-    await initializeBrowser();
-
-    if (!browser || !browserContext) {
-      throw new Error('Failed to initialize browser');
-    }
-  }
+  const browserContext = await getBrowserContext();
 
   const website = await processWebsite({ urlString, browserContext });
 
@@ -132,19 +126,16 @@ export async function getLlmImportRecipe(urlString: string) {
   });
 
   const recipePage = await browserContext.newPage();
-  await recipePage.goto(urlString);
 
-  const recipeMarkdown = await getRecipeMarkdown(recipePage)
-    .then(async (res) => {
-      await recipePage.close();
+  let recipeMarkdown: string;
 
-      return res;
-    })
-    .catch(async (error: unknown) => {
-      await recipePage.close();
+  try {
+    await recipePage.goto(urlString);
 
-      throw error;
-    });
+    recipeMarkdown = await getRecipeMarkdown(recipePage);
+  } finally {
+    await recipePage.close();
+  }
 
   const openAiRes = await openAi.responses.parse({
     instructions:

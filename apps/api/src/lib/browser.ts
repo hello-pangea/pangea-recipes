@@ -17,12 +17,20 @@ const AD_SERVING_DOMAINS = [
   'amazon-adsystem.com',
 ];
 
-export let browser: Browser | undefined = undefined;
-export let browserContext: BrowserContext | undefined = undefined;
+const BLOCKED_RESOURCE_TYPES = new Set(['image', 'media']);
 
-export const initializeBrowser = async () => {
-  browser = await chromium.launch({
+let browser: Browser | undefined = undefined;
+let browserContext: BrowserContext | undefined = undefined;
+let browserContextPromise: Promise<BrowserContext> | undefined = undefined;
+
+const launchBrowserContext = async () => {
+  const newBrowser = await chromium.launch({
     headless: true,
+    // Shutdown is owned by close-with-grace (see index.ts). If Playwright also handled these
+    // signals it would kill Chromium immediately, breaking in-flight imports and shutdownBrowser.
+    handleSIGINT: false,
+    handleSIGTERM: false,
+    handleSIGHUP: false,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',
@@ -35,40 +43,69 @@ export const initializeBrowser = async () => {
     ],
   });
 
-  const userAgent = new UserAgent().toString();
-  const viewport = { width: 1280, height: 800 };
-
-  browserContext = await browser.newContext({
-    userAgent,
-    viewport,
-  });
-
-  // Don't load media files
-  await browserContext.route(
-    '**/*.{png,jpg,jpeg,gif,svg,mp3,mp4,avi,flac,ogg,wav,webm}',
-    async (route) => {
-      await route.abort();
-    },
-  );
-
-  // Don't load ads
-  await browserContext.route('**/*', (route, request) => {
-    const requestUrl = new URL(request.url());
-    const hostname = requestUrl.hostname;
-
-    if (AD_SERVING_DOMAINS.some((domain) => hostname.includes(domain))) {
-      return route.abort();
+  // If Chromium crashes or is closed, drop the stale references so the next import relaunches it
+  newBrowser.on('disconnected', () => {
+    if (browser === newBrowser) {
+      browser = undefined;
+      browserContext = undefined;
     }
-
-    return route.continue();
   });
+
+  try {
+    const newBrowserContext = await newBrowser.newContext({
+      userAgent: new UserAgent().toString(),
+      viewport: { width: 1280, height: 800 },
+    });
+
+    // Don't load media files or ads
+    await newBrowserContext.route('**/*', (route, request) => {
+      if (BLOCKED_RESOURCE_TYPES.has(request.resourceType())) {
+        return route.abort();
+      }
+
+      const hostname = new URL(request.url()).hostname;
+
+      if (AD_SERVING_DOMAINS.some((domain) => hostname.includes(domain))) {
+        return route.abort();
+      }
+
+      return route.continue();
+    });
+
+    browser = newBrowser;
+    browserContext = newBrowserContext;
+
+    return newBrowserContext;
+  } catch (error) {
+    await newBrowser.close().catch(() => undefined);
+
+    throw error;
+  }
+};
+
+/**
+ * Returns a shared browser context, (re)launching Chromium if it isn't running.
+ */
+export const getBrowserContext = async () => {
+  if (browser?.isConnected() && browserContext) {
+    return browserContext;
+  }
+
+  browserContextPromise ??= launchBrowserContext().finally(() => {
+    browserContextPromise = undefined;
+  });
+
+  return await browserContextPromise;
 };
 
 export const shutdownBrowser = async () => {
-  if (browserContext) {
-    await browserContext.close();
-  }
-  if (browser) {
-    await browser.close();
+  const currentBrowser = browser;
+
+  browser = undefined;
+  browserContext = undefined;
+
+  // Closing the browser also closes its contexts
+  if (currentBrowser?.isConnected()) {
+    await currentBrowser.close();
   }
 };
