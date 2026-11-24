@@ -1,7 +1,7 @@
 # Adapted from the Turborepo example at
 # https://github.com/vercel/turbo/blob/main/examples/with-docker/apps/api/Dockerfile
 
-FROM node:24-trixie-slim AS base
+FROM node:26-trixie-slim AS base
 
 # Playwright vars
 ENV PLAYWRIGHT_BROWSERS_PATH=/app/.playwright
@@ -16,7 +16,7 @@ RUN npm install -g corepack@latest
 RUN mkdir -p "$PNPM_HOME" && pnpm add -g turbo@2.11
 
 # Playwright setup (basically downloads chromium)
-RUN pnpm dlx playwright-chromium@1.64.1 install chromium --with-deps
+RUN pnpm dlx playwright-chromium@1.65.1 install chromium --with-deps
 
 # ---
 # - We download packages asap to avoid re-downloads on code changes
