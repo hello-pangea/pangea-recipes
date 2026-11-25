@@ -3,8 +3,8 @@ import { Box, Button, Grid, Typography } from '@mui/material';
 import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Page } from '#src/components/Page';
-import { SearchTextField } from '#src/components/SearchTextField';
+import { Page } from '#/components/Page';
+import { SearchTextField } from '#/components/SearchTextField';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { DisplayMenu } from '../display-preferences/DisplayMenu';
 import { useSort } from '../display-preferences/sort';
@@ -98,7 +98,7 @@ export function RecipesPage() {
       ) : (
         <RecipeList recipes={filteredRecipes} compact={view === 'compact'} />
       )}
-      {!isError && !recipes.length && <EmptyRecipesIntro sx={{ my: 8 }} />}
+      {!isError && recipes.length === 0 && <EmptyRecipesIntro sx={{ my: 8 }} />}
       <DisplayMenu
         anchorEl={displayMenuAnchorEl}
         onClose={() => {

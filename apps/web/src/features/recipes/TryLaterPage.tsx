@@ -5,8 +5,8 @@ import { listRecipesQueryOptions, useUpdateRecipe } from '@repo/features/recipes
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Page } from '#src/components/Page';
-import { SearchTextField } from '#src/components/SearchTextField';
+import { Page } from '#/components/Page';
+import { SearchTextField } from '#/components/SearchTextField';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { DisplayMenu } from '../display-preferences/DisplayMenu';
 import { useSort } from '../display-preferences/sort';
@@ -98,7 +98,7 @@ export function TryLaterPage() {
       ) : (
         <RecipeList recipes={filteredRecipes} compact={view === 'compact'} />
       )}
-      {!isError && !tryLaterRecipes.length && <EmptyRecipes sx={{ mt: 8 }} />}
+      {!isError && tryLaterRecipes.length === 0 && <EmptyRecipes sx={{ mt: 8 }} />}
       <AddRecipesMenu
         addedRecipeIds={tryLaterRecipeIds}
         onClose={() => {

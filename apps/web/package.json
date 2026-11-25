@@ -5,7 +5,7 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "imports": {
-    "#src/*": [
+    "#/*": [
       "./src/*.tsx",
       "./src/*.ts"
     ]
@@ -42,7 +42,7 @@
     "@uppy/dashboard": "^6.0.3",
     "@uppy/react": "^6.1.1",
     "@uppy/xhr-upload": "^6.0.1",
-    "better-auth": "^1.7.27",
+    "better-auth": "^1.7.28",
     "ky": "^2.2.0",
     "motion": "^14.14.0",
     "nitro": "3.0.261103-rc",

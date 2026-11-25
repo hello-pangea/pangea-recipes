@@ -4,8 +4,8 @@ import { setCustomNativeDragPreview } from '@atlaskit/pragmatic-drag-and-drop/el
 import { type RecipeProjected } from '@repo/features/recipes';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { DragPreview } from '#src/components/DragPreview';
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
+import { DragPreview } from '#/components/DragPreview';
+import { useSignedInUserId } from '#/features/auth/useSignedInUserId';
 
 interface Props {
   recipe: RecipeProjected;

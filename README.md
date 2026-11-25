@@ -49,8 +49,8 @@ Pangea Recipes is in active development! It's ready for use if you're ok with a 
 
 ### Prerequisites
 
-- Node.js >= 22.18.0
-- Docker (recommended) OR Postgres >= 17.x
+- Node.js 26
+- Docker (recommended) OR Postgres >= 18.x
 
 ### Quick Start
 

@@ -20,9 +20,9 @@ import { useQuery } from '@tanstack/react-query';
 import { useNavigate, useSearch } from '@tanstack/react-router';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
-import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/utils/focusNextInput';
+import { useSignedInUserId } from '#/features/auth/useSignedInUserId';
+import { useAppForm } from '#/hooks/form';
+import { focusNextInput } from '#/utils/focusNextInput';
 import { RequiredRecipeCard } from '../RequiredRecipeCard';
 import { EditIngredientGroup } from './EditIngredientGroup';
 import { EditInstructionGroup } from './EditInstructionGroup';
@@ -110,7 +110,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             description: emptyStringToNull(parsed.description),
             prepTime: parsed.prepTime,
             cookTime: parsed.cookTime,
-            servings: parsed.servings ? parseInt(parsed.servings) : null,
+            servings: parsed.servings ? Number.parseInt(parsed.servings) : null,
             tryLater: parsed.tryLater,
             favorite: parsed.favorite,
             ingredientGroups: parsed.ingredientGroups,
@@ -131,7 +131,7 @@ export function CreateRecipePage({ defaultValues, updateRecipeId }: Props) {
             websitePageId: parsed.websitePageId,
             prepTime: parsed.prepTime,
             cookTime: parsed.cookTime,
-            servings: parsed.servings ? parseInt(parsed.servings) : undefined,
+            servings: parsed.servings ? Number.parseInt(parsed.servings) : undefined,
             imageIds: parsed.image ? [parsed.image.id] : undefined,
             tryLater: parsed.tryLater,
             favorite: parsed.favorite,

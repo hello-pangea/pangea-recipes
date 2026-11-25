@@ -5,6 +5,8 @@ interface Props {
   sx?: SxProps<Theme>;
 }
 
+const currentYear = new Date().getFullYear();
+
 export function Footer({ sx = [] }: Props) {
   return (
     <Box component={'footer'} sx={sx}>
@@ -17,7 +19,7 @@ export function Footer({ sx = [] }: Props) {
         }}
       >
         {'Copyright © Reece Carolan '}
-        {new Date().getFullYear()}
+        {currentYear}
       </Typography>
       <Stack
         direction="row"

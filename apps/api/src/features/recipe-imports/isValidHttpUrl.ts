@@ -3,7 +3,6 @@ export function isValidHttpUrl(urlString: string) {
 
   try {
     url = new URL(urlString);
-    // oxlint-disable-next-line no-unused-vars
   } catch (_error) {
     return false;
   }

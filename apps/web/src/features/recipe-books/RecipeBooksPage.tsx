@@ -3,8 +3,8 @@ import { Box, Grid, Typography } from '@mui/material';
 import { listRecipeBooksQueryOptions } from '@repo/features/recipe-books';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { useMemo, useState } from 'react';
-import { Page } from '#src/components/Page';
-import { SearchTextField } from '#src/components/SearchTextField';
+import { Page } from '#/components/Page';
+import { SearchTextField } from '#/components/SearchTextField';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { EmptyRecipeBooks } from './EmptyRecipeBooks';
 import { RecipeBookCard } from './RecipeBookCard';
@@ -58,7 +58,7 @@ export function RecipeBooksPage() {
             </Grid>
           ))}
       </Grid>
-      {!isError && !recipeBooks.length && <EmptyRecipeBooks sx={{ mt: 8 }} />}
+      {!isError && recipeBooks.length === 0 && <EmptyRecipeBooks sx={{ mt: 8 }} />}
     </Page>
   );
 }

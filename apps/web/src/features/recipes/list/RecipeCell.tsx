@@ -3,15 +3,15 @@ import TimerRoundedIcon from '@mui/icons-material/TimerRounded';
 import { Box, IconButton, Stack, Typography } from '@mui/material';
 import { type RecipeProjected } from '@repo/features/recipes';
 import { useState } from 'react';
-import { RouterCardActionArea } from '#src/components/RouterCardActionArea';
-import { secondsToTimeString } from '#src/utils/timeFormatting';
+import { RouterCardActionArea } from '#/components/RouterCardActionArea';
+import { secondsToTimeString } from '#/utils/timeFormatting';
 import { RecipeMoreMenu } from '../RecipeMoreMenu';
 import { RecipeDraggable } from './RecipeDraggable';
 
 interface Props {
   recipe: RecipeProjected;
   onRemoveFromRecipeBook?: () => void;
-  compact?: boolean;
+  compact?: boolean | undefined;
 }
 
 export function RecipeCell({ recipe, onRemoveFromRecipeBook, compact }: Props) {

@@ -5,7 +5,7 @@ import { getRecipeBookQueryOptions } from '@repo/features/recipe-books';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { RouterLink } from '#src/components/RouterLink';
+import { RouterLink } from '#/components/RouterLink';
 import { RecipeBookMoreMenu } from './RecipeBookMoreMenu';
 
 interface Props {

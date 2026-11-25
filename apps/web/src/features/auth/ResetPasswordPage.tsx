@@ -15,7 +15,7 @@ import { useMutation } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
 import { z } from 'zod';
-import { useAppForm } from '#src/hooks/form';
+import { useAppForm } from '#/hooks/form';
 import { authClient } from './authClient';
 
 const formSchema = z.object({

@@ -3,8 +3,8 @@ import { zodTextFormat } from 'openai/helpers/zod';
 import { type BrowserContext, type Page } from 'playwright-chromium';
 import TurndownService from 'turndown';
 import { z } from 'zod';
-import { getBrowserContext } from '#src/lib/browser.ts';
-import { openAi } from '#src/lib/openAi.ts';
+import { getBrowserContext } from '#/lib/browser.ts';
+import { openAi } from '#/lib/openAi.ts';
 
 const turndownService = new TurndownService();
 turndownService.remove('script');

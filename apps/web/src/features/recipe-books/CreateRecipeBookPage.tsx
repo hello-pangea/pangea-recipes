@@ -21,9 +21,9 @@ import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { Page } from '#src/components/Page';
-import { useAppForm } from '#src/hooks/form';
-import { focusNextInput } from '#src/utils/focusNextInput';
+import { Page } from '#/components/Page';
+import { useAppForm } from '#/hooks/form';
+import { focusNextInput } from '#/utils/focusNextInput';
 
 const formSchema = z.object({
   recipeBookName: z.string().min(1, { message: 'Name is required' }),

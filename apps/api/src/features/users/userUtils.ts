@@ -9,8 +9,8 @@ export async function claimRecipeBookInvites(user: { email: string; id: string }
     },
   });
 
-  await prisma.$transaction(async (prisma) => {
-    await prisma.recipeBookInvite.updateMany({
+  await prisma.$transaction(async (tx) => {
+    await tx.recipeBookInvite.updateMany({
       where: {
         inviteeEmail: user.email,
       },
@@ -19,7 +19,7 @@ export async function claimRecipeBookInvites(user: { email: string; id: string }
       },
     });
 
-    await prisma.recipeBookMember.createMany({
+    await tx.recipeBookMember.createMany({
       data: recipeBookInvites.map((invite) => ({
         recipeBookId: invite.recipeBookId,
         userId: user.id,

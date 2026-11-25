@@ -22,12 +22,12 @@ import {
 } from '@repo/features/recipes';
 import { useQuery } from '@tanstack/react-query';
 import { useMemo, useRef, useState } from 'react';
-import { isSxArray } from '#src/utils/isSxArray';
+import { isSxArray } from '#/utils/isSxArray';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
 interface Props {
   recipeId: string;
-  readOnly?: boolean;
+  readOnly?: boolean | undefined;
   sx?: SxProps<Theme>;
 }
 
@@ -101,7 +101,7 @@ export function RecipeTags({ recipeId, readOnly, sx = [] }: Props) {
     });
   }
 
-  if (readOnly && !tags.length) {
+  if (readOnly && tags.length === 0) {
     return null;
   }
 

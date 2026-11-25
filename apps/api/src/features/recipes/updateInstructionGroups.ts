@@ -20,19 +20,20 @@ export async function updateInstructionGroups(data: {
     return;
   }
 
-  const existingInstructionGroupIds = oldInstructionGroups.map((group) => group.id);
+  const existingInstructionGroupIds = new Set(oldInstructionGroups.map((group) => group.id));
 
   const instructionGroupsToDelete = oldInstructionGroups.filter(
     (group) => !newInstructionGroups.some((g) => g.id === group.id),
   );
 
   const instructionGroupsToUpdate = newInstructionGroups.filter(
-    (group) => group.id && existingInstructionGroupIds.includes(group.id),
+    (group): group is typeof group & { id: string } =>
+      group.id !== undefined && existingInstructionGroupIds.has(group.id),
   );
 
   const instructionGroupsToCreate = newInstructionGroups.filter((group) => !group.id);
 
-  if (instructionGroupsToDelete.length) {
+  if (instructionGroupsToDelete.length > 0) {
     await tx.instructionGroup.deleteMany({
       where: {
         id: {
@@ -42,7 +43,7 @@ export async function updateInstructionGroups(data: {
     });
   }
 
-  if (instructionGroupsToCreate.length) {
+  if (instructionGroupsToCreate.length > 0) {
     await Promise.all(
       instructionGroupsToCreate.map(async (instructionGroup) => {
         const index = newInstructionGroups.indexOf(instructionGroup);
@@ -53,8 +54,8 @@ export async function updateInstructionGroups(data: {
             name: instructionGroup.name ?? null,
             order: index,
             instructions: {
-              create: instructionGroup.instructions.map((instruction, index) => ({
-                order: index,
+              create: instructionGroup.instructions.map((instruction, instructionIndex) => ({
+                order: instructionIndex,
                 text: instruction.text,
               })),
             },
@@ -64,7 +65,7 @@ export async function updateInstructionGroups(data: {
     );
   }
 
-  if (instructionGroupsToUpdate.length) {
+  if (instructionGroupsToUpdate.length > 0) {
     await Promise.all(
       instructionGroupsToUpdate.map(async (group) => {
         const index = newInstructionGroups.indexOf(group);
@@ -78,8 +79,8 @@ export async function updateInstructionGroups(data: {
             order: index,
             instructions: {
               deleteMany: {},
-              create: group.instructions.map((instruction, index) => ({
-                order: index,
+              create: group.instructions.map((instruction, instructionIndex) => ({
+                order: instructionIndex,
                 text: instruction.text,
               })),
             },

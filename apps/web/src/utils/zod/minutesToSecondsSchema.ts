@@ -17,7 +17,7 @@ export const minutesToSecondsSchema = z
       const num = Number(trimmed);
       if (Number.isNaN(num)) {
         // Throwing inside a transform surfaces as a ZodError
-        throw new Error('Must be a number');
+        throw new TypeError('Must be a number');
       }
       return num;
     }

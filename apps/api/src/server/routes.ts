@@ -1,11 +1,11 @@
 import type { FastifyPluginAsyncZod } from '@fastify/type-provider-zod';
-import { authRoutes } from '#src/features/auth/authRoutes.ts';
-import { canonicalIngredientRoutes } from '#src/features/canonical-ingredients/canonicalIngredientRoutes.ts';
-import { imageRoutes } from '#src/features/images/imageRoutes.ts';
-import { profileRoutes } from '#src/features/profiles/profileRoutes.ts';
-import { recipeBookRequestRoutes } from '#src/features/recipe-book-requests/recipeBookRequestRoutes.ts';
-import { recipeBookRoutes } from '#src/features/recipe-books/recipeBookRoutes.ts';
-import { userRoutes } from '#src/features/users/userRoutes.ts';
+import { authRoutes } from '#/features/auth/authRoutes.ts';
+import { canonicalIngredientRoutes } from '#/features/canonical-ingredients/canonicalIngredientRoutes.ts';
+import { imageRoutes } from '#/features/images/imageRoutes.ts';
+import { profileRoutes } from '#/features/profiles/profileRoutes.ts';
+import { recipeBookRequestRoutes } from '#/features/recipe-book-requests/recipeBookRequestRoutes.ts';
+import { recipeBookRoutes } from '#/features/recipe-books/recipeBookRoutes.ts';
+import { userRoutes } from '#/features/users/userRoutes.ts';
 import { recipeImportRoutes } from '../features/recipe-imports/recipeImportRoutes.ts';
 import { recipeRoutes } from '../features/recipes/recipeRoutes.ts';
 

@@ -89,10 +89,10 @@ export const userRoutes: FastifyPluginAsyncZod = async function (fastify) {
           id: id,
         },
         data: {
-          themePreference: themePreference,
-          unitsPreference: unitsPreference,
-          name: name,
-          accentColor: accentColor,
+          ...(themePreference !== undefined && { themePreference: themePreference }),
+          ...(unitsPreference !== undefined && { unitsPreference: unitsPreference }),
+          ...(name !== undefined && { name: name }),
+          ...(accentColor !== undefined && { accentColor: accentColor }),
         },
       });
 

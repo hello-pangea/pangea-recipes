@@ -7,7 +7,7 @@ import { useSignedInUser } from '@repo/features/users';
 import { useQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { useState } from 'react';
-import { AddNameDialog } from '#src/components/AddNameDialog';
+import { AddNameDialog } from '#/components/AddNameDialog';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 
 const routeApi = getRouteApi('/app/_auth/recipe-books/$recipeBookId');

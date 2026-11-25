@@ -3,8 +3,8 @@ import SpeakerNotesRoundedIcon from '@mui/icons-material/SpeakerNotesRounded';
 import { Box, IconButton, Popover, Tooltip, type SxProps, type Theme } from '@mui/material';
 import { useSelector } from '@tanstack/react-form';
 import { useState } from 'react';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { withForm } from '#/hooks/form';
+import type { FormPropsWrapper } from '#/types/FormPropsWrapper';
 import { recipeFormOptions } from './recipeForm';
 
 interface Props {

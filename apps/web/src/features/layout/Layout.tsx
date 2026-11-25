@@ -11,8 +11,8 @@ import {
 import { useSignedInUser } from '@repo/features/users';
 import { Outlet } from '@tanstack/react-router';
 import { useEffect, useState } from 'react';
-import { RouterLink } from '#src/components/RouterLink';
-import { Sidebar } from '#src/features/layout/Sidebar';
+import { RouterLink } from '#/components/RouterLink';
+import { Sidebar } from '#/features/layout/Sidebar';
 import { NewButton } from './NewButton';
 
 export function Layout() {

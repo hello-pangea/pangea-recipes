@@ -79,17 +79,15 @@ export const useWakeLock = ({
 
   React.useEffect(() => {
     if (reacquireOnPageVisible) {
-      const handleVisibilityChange = async () => {
+      const handleVisibilityChange = () => {
         if (
           wakeLock.current === null &&
           document.visibilityState === 'visible' &&
           wasWakeLockRequested.current
         ) {
-          try {
-            await request();
-          } catch (error: unknown) {
+          request().catch((error: unknown) => {
             onError?.(error as Error);
-          }
+          });
         }
       };
 
@@ -101,13 +99,13 @@ export const useWakeLock = ({
     return undefined;
   }, [reacquireOnPageVisible, request, onError]);
 
-  // oxlint-disable-next-line react/react-compiler
+  // oxlint-disable-next-line react/refs
   return {
     isSupported,
     request,
     released,
     release,
-    // oxlint-disable-next-line react/react-compiler
+    // oxlint-disable-next-line react/refs
     type: wakeLock.current?.type || undefined,
   };
 };

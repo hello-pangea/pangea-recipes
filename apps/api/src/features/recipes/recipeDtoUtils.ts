@@ -1,6 +1,6 @@
 import type { prisma, Prisma } from '@repo/database';
 import type { Recipe } from '@repo/features/recipes';
-import { getFileUrl } from '#src/lib/s3.ts';
+import { getFileUrl } from '#/lib/s3.ts';
 
 export const recipeInclude = {
   ingredientGroups: {

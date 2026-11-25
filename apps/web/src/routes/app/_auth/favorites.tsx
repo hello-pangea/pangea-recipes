@@ -1,6 +1,6 @@
 import { listRecipesQueryOptions } from '@repo/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
-import { FavoritesPage } from '#src/features/recipes/FavoritesPage';
+import { FavoritesPage } from '#/features/recipes/FavoritesPage';
 
 export const Route = createFileRoute('/app/_auth/favorites')({
   loader: async ({ context }) => {

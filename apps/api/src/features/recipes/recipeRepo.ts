@@ -1,6 +1,7 @@
 import { Prisma, prisma } from '@repo/database';
 import type { createRecipeContract } from '@repo/features/recipes';
 import type z from 'zod';
+import { omitUndefined } from '../../lib/omitUndefined.ts';
 import { recipeInclude } from './recipeDtoUtils.ts';
 
 export async function createRecipe(
@@ -28,7 +29,7 @@ export async function createRecipe(
     group.ingredients.map((ingredient) => ingredient.name.toLocaleLowerCase()),
   );
 
-  ingredientTerms.push(...ingredientTerms.map((term) => term.split(' ')).flat());
+  ingredientTerms.push(...ingredientTerms.flatMap((term) => term.split(' ')));
 
   ingredientTerms = [...new Set(ingredientTerms.filter(Boolean))];
 
@@ -63,16 +64,16 @@ export async function createRecipe(
       },
       name: name,
       description: description ?? null,
-      prepTime: prepTime,
-      cookTime: cookTime,
-      servings: servings,
-      images: imageIds
-        ? {
-            create: imageIds.map((id) => ({
-              imageId: id,
-            })),
-          }
-        : undefined,
+      ...(prepTime !== undefined && { prepTime: prepTime }),
+      ...(cookTime !== undefined && { cookTime: cookTime }),
+      ...(servings !== undefined && { servings: servings }),
+      ...(imageIds && {
+        images: {
+          create: imageIds.map((id) => ({
+            imageId: id,
+          })),
+        },
+      }),
       tryLaterAt: tryLater ? new Date() : null,
       favoritedAt: favorite ? new Date() : null,
       ingredientGroups: {
@@ -80,21 +81,21 @@ export async function createRecipe(
           name: ingredientGroup.name ?? null,
           order: index,
           ingredients: {
-            create: ingredientGroup.ingredients.map((ingredient, index) => {
-              const terms = ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean);
+            create: ingredientGroup.ingredients.map((ingredient, ingredientIndex) => {
+              const terms = new Set(ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean));
               const matchingCanonicalIngredient =
                 canonicalIngredients.find((canonicalIngredient) =>
                   ingredient.name.toLocaleLowerCase().includes(canonicalIngredient.name),
                 ) ??
                 canonicalIngredients.find(
                   (canonicalIngredient) =>
-                    terms.includes(canonicalIngredient.name) ||
-                    canonicalIngredient.aliases.some((alias) => terms.includes(alias.name)),
+                    terms.has(canonicalIngredient.name) ||
+                    canonicalIngredient.aliases.some((alias) => terms.has(alias.name)),
                 );
 
               return {
-                ...ingredient,
-                order: index,
+                ...omitUndefined(ingredient),
+                order: ingredientIndex,
                 canonicalIngredientId:
                   canonicalIngredients.find(
                     (canonicalIngredient) =>
@@ -112,51 +113,55 @@ export async function createRecipe(
           name: instructionGroup.name ?? null,
           order: index,
           instructions: {
-            create: instructionGroup.instructions.map((instruction, index) => ({
-              order: index,
+            create: instructionGroup.instructions.map((instruction, instructionIndex) => ({
+              order: instructionIndex,
               text: instruction.text,
             })),
           },
         })),
       },
-      usesRecipes: {
-        connect: usesRecipes?.map((id) => ({
-          id: id,
-        })),
-      },
-      tags: {
-        create: tags?.map((tag) => {
-          if ('id' in tag) {
-            return {
-              tag: {
-                connect: {
-                  id: tag.id,
+      ...(usesRecipes && {
+        usesRecipes: {
+          connect: usesRecipes.map((id) => ({
+            id: id,
+          })),
+        },
+      }),
+      ...(tags && {
+        tags: {
+          create: tags.map((tag) => {
+            if ('id' in tag) {
+              return {
+                tag: {
+                  connect: {
+                    id: tag.id,
+                  },
                 },
-              },
-            };
-          } else {
-            return {
-              tag: {
-                create: {
-                  name: tag.name,
+              };
+            } else {
+              return {
+                tag: {
+                  create: {
+                    name: tag.name,
+                  },
                 },
-              },
-            };
-          }
-        }),
-      },
-      sourceWebsitePage: websitePageId
-        ? {
-            connect: {
-              id: websitePageId,
-            },
-          }
-        : undefined,
-      nutrition: nutrition
-        ? {
-            create: nutrition,
-          }
-        : undefined,
+              };
+            }
+          }),
+        },
+      }),
+      ...(websitePageId && {
+        sourceWebsitePage: {
+          connect: {
+            id: websitePageId,
+          },
+        },
+      }),
+      ...(nutrition && {
+        nutrition: {
+          create: omitUndefined(nutrition),
+        },
+      }),
     },
     include: recipeInclude,
   });

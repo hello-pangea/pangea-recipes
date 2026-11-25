@@ -8,5 +8,4 @@ export type ApiFnReturnType<FnType extends (...args: any) => Promise<any>> = Awa
 export type MutationConfig<
   // oxlint-disable-next-line typescript/no-explicit-any
   MutationFnType extends (...args: any) => Promise<any>,
-  // oxlint-disable-next-line typescript/no-unnecessary-type-arguments
 > = UseMutationOptions<ApiFnReturnType<MutationFnType>, Error, Parameters<MutationFnType>[0]>;

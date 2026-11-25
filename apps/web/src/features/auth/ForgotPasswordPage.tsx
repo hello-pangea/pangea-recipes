@@ -1,8 +1,8 @@
 import { Alert, Box, Button, Card, Container, Stack, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { z } from 'zod';
-import { RouterLink } from '#src/components/RouterLink';
-import { useAppForm } from '#src/hooks/form';
+import { RouterLink } from '#/components/RouterLink';
+import { useAppForm } from '#/hooks/form';
 import { authClient } from './authClient';
 
 const formSchema = z.object({

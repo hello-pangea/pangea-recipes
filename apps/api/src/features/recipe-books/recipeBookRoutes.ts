@@ -90,7 +90,7 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (fastify) 
       });
 
       return {
-        recipeBooks: recipeBooks.map(mapToRecipeBookDto),
+        recipeBooks: recipeBooks.map((recipeBook) => mapToRecipeBookDto(recipeBook)),
       };
     },
   );
@@ -151,9 +151,9 @@ export const recipeBookRoutes: FastifyPluginAsyncZod = async function (fastify) 
           id: id,
         },
         data: {
-          name: name,
-          description: description,
-          access: access,
+          ...(name !== undefined && { name: name }),
+          ...(description !== undefined && { description: description }),
+          ...(access !== undefined && { access: access }),
         },
         include: recipeBookInclude,
       });

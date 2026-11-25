@@ -1,7 +1,7 @@
 import { Box, Container, Typography, useMediaQuery, type SxProps, type Theme } from '@mui/material';
-import { RouterButton } from '#src/components/RouterButton';
-import { RouterLink } from '#src/components/RouterLink';
-import { isSxArray } from '#src/utils/isSxArray';
+import { RouterButton } from '#/components/RouterButton';
+import { RouterLink } from '#/components/RouterLink';
+import { isSxArray } from '#/utils/isSxArray';
 import { useMaybeSignedInUserId } from '../auth/useMaybeSignedInUserId';
 
 interface Props {

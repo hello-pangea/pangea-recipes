@@ -25,11 +25,21 @@
     "test": "turbo run test"
   },
   "devDependencies": {
+    "@tanstack/eslint-plugin-query": "^5.108.4",
+    "@tanstack/eslint-plugin-router": "^1.162.0",
     "eslint-plugin-turbo": "^2.11.13",
+    "oxc-transform-react": "^0.158.0",
     "oxfmt": "^0.80.0",
     "oxlint": "^1.95.0",
     "oxlint-tsgolint": "^7.0.2008",
     "turbo": "^2.11.13"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^26.13.1",
+      "onFail": "download"
+    }
   },
   "engines": {
     "node": "^26.13.1"

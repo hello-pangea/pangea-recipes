@@ -1,7 +1,7 @@
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { InputAdornment, InputBase, type InputProps } from '@mui/material';
 import { useState } from 'react';
-import { isSxArray } from '#src/utils/isSxArray';
+import { isSxArray } from '#/utils/isSxArray';
 
 type Props = Omit<InputProps, 'value' | 'onChange'> & {
   value: string;
@@ -32,8 +32,9 @@ export function SearchTextField({ value, onChange, sx = [], ...inputProps }: Pro
         (theme) => ({
           maxWidth: 800,
           borderRadius: 99,
-          backgroundColor: (theme) =>
-            focused ? theme.vars.palette.background.paper : theme.vars.palette.grey[200],
+          backgroundColor: focused
+            ? theme.vars.palette.background.paper
+            : theme.vars.palette.grey[200],
           width: '100%',
           px: 2,
           py: 1,

@@ -2,7 +2,6 @@ import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { getRouteApi } from '@tanstack/react-router';
 import { CreateRecipePage } from './CreateRecipePage';
-import type { RecipeFormInputs } from './recipeForm';
 
 const route = getRouteApi('/app/_auth/recipes_/$recipeId/edit');
 
@@ -18,8 +17,8 @@ export function EditRecipePage() {
         recipeName: recipe.name,
         description: recipe.description,
         usesRecipes:
-          recipe.usesRecipes?.map((recipeId) => ({
-            recipeId: recipeId,
+          recipe.usesRecipes?.map((usedRecipeId) => ({
+            recipeId: usedRecipeId,
           })) ?? [],
         cookTime: recipe.cookTime === null ? '' : String(Math.round(recipe.cookTime / 60)),
         prepTime: recipe.prepTime === null ? '' : String(Math.round(recipe.prepTime / 60)),
@@ -49,7 +48,7 @@ export function EditRecipePage() {
           name: instructionGroup.name,
           instructions: instructionGroup.instructions,
         })),
-        nutrition: recipe.nutrition as RecipeFormInputs['nutrition'],
+        nutrition: recipe.nutrition,
       }}
     />
   );

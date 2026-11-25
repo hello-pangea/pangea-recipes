@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import type { Recipe } from '@repo/features/recipes';
 import { Fragment } from 'react/jsx-runtime';
-import { isSxArray } from '#src/utils/isSxArray';
+import { isSxArray } from '#/utils/isSxArray';
 
 interface Props {
   nutrition: Exclude<Recipe['nutrition'], undefined>;
@@ -27,7 +27,7 @@ export function Nutrition({ nutrition, showApproximateWarning, sx = [] }: Props)
     .filter((key) => nutrition[key] !== null)
     .sort((a, b) => preferredNutritionOrder.indexOf(a) - preferredNutritionOrder.indexOf(b));
 
-  if (!nutritionKeysToDisplay.length) {
+  if (nutritionKeysToDisplay.length === 0) {
     return null;
   }
 

@@ -36,7 +36,7 @@ interface Props extends Pick<MenuProps, 'anchorEl' | 'anchorReference' | 'anchor
   recipe: RecipeProjected;
   onClose: () => void;
   onDelete?: () => void;
-  onRemoveFromRecipeBook?: () => void;
+  onRemoveFromRecipeBook?: (() => void) | undefined;
 }
 
 export function RecipeMoreMenu({

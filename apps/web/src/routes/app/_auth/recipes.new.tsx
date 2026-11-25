@@ -1,6 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { z } from 'zod';
-import { CreateRecipePage } from '#src/features/recipes/edit-recipe/CreateRecipePage';
+import { CreateRecipePage } from '#/features/recipes/edit-recipe/CreateRecipePage';
 
 const searchSchema = z.object({
   importFromUrl: z.boolean().optional(),

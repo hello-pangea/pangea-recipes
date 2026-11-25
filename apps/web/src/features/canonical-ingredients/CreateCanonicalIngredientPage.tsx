@@ -16,9 +16,9 @@ import '@uppy/dashboard/css/style.min.css';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { Page } from '#src/components/Page';
-import { config } from '#src/config/config';
-import { useAppForm } from '#src/hooks/form';
+import { Page } from '#/components/Page';
+import { config } from '#/config/config';
+import { useAppForm } from '#/hooks/form';
 
 const formSchema = z.object({
   name: z.string(),

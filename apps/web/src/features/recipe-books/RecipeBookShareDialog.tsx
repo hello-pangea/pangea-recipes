@@ -83,23 +83,19 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
 
   const invitedEmails = [
     ...new Set(
-      (
-        recipeBooks?.map((recipeBook) => recipeBook.invites.map((invite) => invite.inviteeEmail)) ??
-        []
-      ).flat(),
+      (recipeBooks?.map((book) => book.invites.map((invite) => invite.inviteeEmail)) ?? []).flat(),
     ),
   ].filter((email) => recipeBook?.invites.every((invite) => invite.inviteeEmail !== email));
   const knownMembers =
     recipeBooks
-      ?.map((recipeBook) =>
-        recipeBook.members
+      ?.flatMap((book) =>
+        book.members
           .filter((member) => member.name)
           .map((member) => ({
             userId: member.userId,
             name: member.name,
           })),
       )
-      .flat()
       .filter(
         (member, index, arr) =>
           arr.findIndex((m) => m.userId === member.userId) === index &&
@@ -121,7 +117,6 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
     resetInviteForm();
   }, [open]);
 
-  // oxlint-disable-next-line react/react-compiler
   function resetInviteForm() {
     setInvites([]);
     setInviteRole('viewer');
@@ -401,7 +396,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
             </Box>
           </Box>
         </DialogContent>
-        {!invites.length ? (
+        {invites.length === 0 ? (
           <DialogActions
             sx={{
               justifyContent: 'space-between',
@@ -458,7 +453,7 @@ export function RecipeBookShareDialog({ recipeBookId, open, onClose }: Props) {
                         .filter((email) => email !== undefined),
                       userIds: invites
                         .map((invite) => invite.userId)
-                        .filter((userId) => userId !== undefined),
+                        .filter((uid) => uid !== undefined),
                       role: inviteRole,
                     },
                   },

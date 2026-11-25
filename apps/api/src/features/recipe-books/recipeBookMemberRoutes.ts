@@ -6,8 +6,8 @@ import {
   deleteRecipeBookMemberContract,
   inviteMembersToRecipeBookContract,
 } from '@repo/features/recipe-books';
-import { config } from '#src/config/config.ts';
-import { resend } from '#src/lib/resend.ts';
+import { config } from '#/config/config.ts';
+import { resend } from '#/lib/resend.ts';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe books';
@@ -45,16 +45,8 @@ export const recipeBookMemberRoutes: FastifyPluginAsyncZod = async function (fas
       const existingUsers = await prisma.user.findMany({
         where: {
           OR: [
-            {
-              id: {
-                in: userIds,
-              },
-            },
-            {
-              email: {
-                in: emails,
-              },
-            },
+            ...(userIds ? [{ id: { in: userIds } }] : []),
+            ...(emails ? [{ email: { in: emails } }] : []),
           ],
         },
       });

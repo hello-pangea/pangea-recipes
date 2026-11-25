@@ -10,6 +10,7 @@ import {
   updateRecipeContract,
 } from '@repo/features/recipes';
 import { ApiError } from '../../lib/ApiError.ts';
+import { omitUndefined } from '../../lib/omitUndefined.ts';
 import { getFileUrl } from '../../lib/s3.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { mapToRecipeDto, recipeInclude } from './recipeDtoUtils.ts';
@@ -74,8 +75,8 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
 
       const recipes = await prisma.recipe.findMany({
         where: {
-          userId: userId,
-          recipeBooks: recipeBookId ? { some: { recipeBookId: recipeBookId } } : undefined,
+          ...(userId !== undefined && { userId: userId }),
+          ...(recipeBookId && { recipeBooks: { some: { recipeBookId: recipeBookId } } }),
         },
         include: {
           images: {
@@ -182,8 +183,8 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
       } = request.body;
       const { id } = request.params;
 
-      const recipeDto = await prisma.$transaction(async (prisma) => {
-        const oldRecipe = await prisma.recipe.findUniqueOrThrow({
+      const recipeDto = await prisma.$transaction(async (tx) => {
+        const oldRecipe = await tx.recipe.findUniqueOrThrow({
           where: {
             id: id,
           },
@@ -223,7 +224,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         const tagsToAdd = tagsWithIds.filter((tag) => !existingTagIds.includes(tag.id));
 
         const tagIdsToRemove = existingTagIds.filter(
-          (id) => !tagsWithIds.some((tag) => tag.id === id),
+          (tagId) => !tagsWithIds.some((tag) => tag.id === tagId),
         );
 
         const tagsToCreateOrAdd = [...tagsToCreate, ...tagsToAdd];
@@ -231,42 +232,42 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         const tagsUpdate: Prisma.RecipeTagUpdateManyWithoutRecipeNestedInput | undefined =
           tags !== undefined
             ? {
-                create: !tagsToCreateOrAdd.length
-                  ? undefined
-                  : tagsToCreateOrAdd.map((tag) => {
-                      if ('id' in tag) {
-                        return {
-                          tag: {
-                            connect: tag,
-                          },
-                        };
-                      } else {
-                        return {
-                          tag: {
-                            create: tag,
-                          },
-                        };
-                      }
-                    }),
-                deleteMany: tagIdsToRemove.length
-                  ? {
-                      tagId: {
-                        in: tagIdsToRemove,
-                      },
+                ...(tagsToCreateOrAdd.length > 0 && {
+                  create: tagsToCreateOrAdd.map((tag) => {
+                    if ('id' in tag) {
+                      return {
+                        tag: {
+                          connect: tag,
+                        },
+                      };
+                    } else {
+                      return {
+                        tag: {
+                          create: tag,
+                        },
+                      };
                     }
-                  : undefined,
+                  }),
+                }),
+                ...(tagIdsToRemove.length > 0 && {
+                  deleteMany: {
+                    tagId: {
+                      in: tagIdsToRemove,
+                    },
+                  },
+                }),
               }
             : undefined;
 
         await updateInstructionGroups({
-          tx: prisma,
+          tx: tx,
           newInstructionGroups: instructionGroups,
           oldInstructionGroups: oldRecipe.instructionGroups,
           recipeId: id,
         });
 
         await updateIngredientGroups({
-          tx: prisma,
+          tx: tx,
           newIngredientGroups: ingredientGroups,
           oldIngredientGroups: oldRecipe.ingredientGroups,
           recipeId: id,
@@ -277,53 +278,53 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
         // -
 
         const recipeUpdate: Prisma.RecipeUpdateInput = {
-          name: name,
-          description: description,
-          prepTime: prepTime,
-          cookTime: cookTime,
-          servings: servings,
+          ...(name !== undefined && { name: name }),
+          ...(description !== undefined && { description: description }),
+          ...(prepTime !== undefined && { prepTime: prepTime }),
+          ...(cookTime !== undefined && { cookTime: cookTime }),
+          ...(servings !== undefined && { servings: servings }),
           tryLaterAt: tryLater === true && !oldRecipe.tryLaterAt ? new Date() : null,
           favoritedAt: favorite === true && !oldRecipe.favoritedAt ? new Date() : null,
-          usesRecipes: !usesRecipes
-            ? undefined
-            : {
-                connect: usesRecipes.map((id) => ({
-                  id: id,
-                })),
-              },
-          tags: tagsUpdate,
-          images:
-            imageIds === undefined
-              ? undefined
-              : imageIds === null
+          ...(usesRecipes && {
+            usesRecipes: {
+              connect: usesRecipes.map((usedRecipeId) => ({
+                id: usedRecipeId,
+              })),
+            },
+          }),
+          ...(tagsUpdate && { tags: tagsUpdate }),
+          ...(imageIds !== undefined && {
+            images:
+              imageIds === null
                 ? {
                     deleteMany: {},
                   }
                 : {
                     deleteMany: {},
-                    connectOrCreate: imageIds.map((id) => ({
+                    connectOrCreate: imageIds.map((imageId) => ({
                       where: {
                         recipeId_imageId: {
                           recipeId: id,
-                          imageId: id,
+                          imageId: imageId,
                         },
                       },
                       create: {
-                        imageId: id,
+                        imageId: imageId,
                       },
                     })),
                   },
-          nutrition: nutrition
-            ? {
-                upsert: {
-                  create: nutrition,
-                  update: nutrition,
-                },
-              }
-            : undefined,
+          }),
+          ...(nutrition && {
+            nutrition: {
+              upsert: {
+                create: omitUndefined(nutrition),
+                update: omitUndefined(nutrition),
+              },
+            },
+          }),
         };
 
-        const recipe = await prisma.recipe.update({
+        const recipe = await tx.recipe.update({
           where: {
             id: id,
           },
@@ -331,9 +332,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
           include: recipeInclude,
         });
 
-        const recipeDto = await mapToRecipeDto(recipe);
-
-        return recipeDto;
+        return mapToRecipeDto(recipe);
       });
 
       return {
@@ -405,7 +404,7 @@ export const recipeRoutes: FastifyPluginAsyncZod = async function (fastify) {
       const tags = await prisma.recipeTag.findMany({
         where: {
           recipe: {
-            userId: userId,
+            ...(userId !== undefined && { userId: userId }),
           },
         },
         select: {

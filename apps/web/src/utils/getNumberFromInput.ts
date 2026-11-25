@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { positiveNumberOrNullSchema } from '#src/utils/zod/positiveNumberOrNullSchema';
+import { positiveNumberOrNullSchema } from '#/utils/zod/positiveNumberOrNullSchema';
 
 /**
  * Input can be a string representing a number or a fraction in the form of '1/2'.

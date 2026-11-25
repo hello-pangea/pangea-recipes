@@ -1,5 +1,5 @@
 import closeWithGrace from 'close-with-grace';
-import { createServer } from '#src/server/server.ts';
+import { createServer } from '#/server/server.ts';
 import { config } from './config/config.ts';
 import { shutdownBrowser } from './lib/browser.ts';
 

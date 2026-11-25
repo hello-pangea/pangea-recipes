@@ -11,13 +11,13 @@ import { ReactQueryDevtoolsPanel } from '@tanstack/react-query-devtools';
 import { createRootRouteWithContext, HeadContent, Outlet, Scripts } from '@tanstack/react-router';
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools';
 import { Toaster } from 'sonner';
-import { NotFoundPage } from '#src/components/NotFoundPage';
-import { config } from '#src/config/config';
-import { color } from '#src/theme/colors';
-import { getTheme } from '#src/theme/theme';
-import { getHasAuthCookie } from '#src/utils/getServerWebRequest';
-import { seo } from '#src/utils/seo';
-import appCss from '#src/theme/theme.css?url';
+import { NotFoundPage } from '#/components/NotFoundPage';
+import { config } from '#/config/config';
+import { color } from '#/theme/colors';
+import { getTheme } from '#/theme/theme';
+import { getHasAuthCookie } from '#/utils/getServerWebRequest';
+import { seo } from '#/utils/seo';
+import appCss from '#/theme/theme.css?url';
 
 interface RouterContext {
   queryClient: QueryClient;
@@ -111,25 +111,23 @@ export const Route = createRootRouteWithContext<RouterContext>()({
         href: 'https://api.pangearecipes.com',
       },
     ],
-    scripts: [
-      ...(config.VITE_GOOGLE_TAG_ID
-        ? [
-            {
-              src: `https://www.googletagmanager.com/gtag/js?id=${config.VITE_GOOGLE_TAG_ID}`,
-              async: true,
-            },
-            {
-              children: `
+    scripts: config.VITE_GOOGLE_TAG_ID
+      ? [
+          {
+            src: `https://www.googletagmanager.com/gtag/js?id=${config.VITE_GOOGLE_TAG_ID}`,
+            async: true,
+          },
+          {
+            children: `
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);};
                 gtag('js', new Date());
 
                 gtag('config', '${config.VITE_GOOGLE_TAG_ID}', { send_page_view: false });
               `,
-            },
-          ]
-        : []),
-    ],
+          },
+        ]
+      : [],
   }),
 });
 

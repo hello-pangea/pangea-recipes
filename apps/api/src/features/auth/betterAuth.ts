@@ -3,8 +3,8 @@ import { ResetPassword, VerifyEmail } from '@repo/email';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { openAPI } from 'better-auth/plugins';
-import { config } from '#src/config/config.ts';
-import { resend } from '#src/lib/resend.ts';
+import { config } from '#/config/config.ts';
+import { resend } from '#/lib/resend.ts';
 import { claimRecipeBookInvites } from '../users/userUtils.ts';
 
 export const auth = betterAuth({

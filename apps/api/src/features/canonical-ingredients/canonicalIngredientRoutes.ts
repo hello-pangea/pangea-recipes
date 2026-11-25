@@ -32,23 +32,23 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
       const canonicalIngredient = await prisma.canonicalIngredient.create({
         data: {
           name: name,
-          icon: iconId
-            ? {
-                connect: {
-                  id: iconId,
+          ...(iconId && {
+            icon: {
+              connect: {
+                id: iconId,
+              },
+            },
+          }),
+          ...(aliases &&
+            aliases.length > 0 && {
+              aliases: {
+                createMany: {
+                  data: aliases.map((alias) => ({
+                    name: alias,
+                  })),
                 },
-              }
-            : undefined,
-          aliases:
-            aliases && aliases.length > 0
-              ? {
-                  createMany: {
-                    data: aliases.map((alias) => ({
-                      name: alias,
-                    })),
-                  },
-                }
-              : undefined,
+              },
+            }),
         },
         include: {
           aliases: {
@@ -181,24 +181,24 @@ export const canonicalIngredientRoutes: FastifyPluginAsyncZod = async function (
           id: id,
         },
         data: {
-          name: name,
-          icon: iconId
-            ? {
-                connect: {
-                  id: iconId,
-                },
-              }
-            : undefined,
-          aliases: aliases
-            ? {
-                deleteMany: {},
-                createMany: {
-                  data: aliases.map((alias) => ({
-                    name: alias,
-                  })),
-                },
-              }
-            : undefined,
+          ...(name !== undefined && { name: name }),
+          ...(iconId && {
+            icon: {
+              connect: {
+                id: iconId,
+              },
+            },
+          }),
+          ...(aliases && {
+            aliases: {
+              deleteMany: {},
+              createMany: {
+                data: aliases.map((alias) => ({
+                  name: alias,
+                })),
+              },
+            },
+          }),
         },
         include: {
           aliases: {

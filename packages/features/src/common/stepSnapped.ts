@@ -1,7 +1,7 @@
 export function stepUpSnapped(data: { value: number; steps: number[]; stepUpBy?: number }): number {
   const { value, steps, stepUpBy } = data;
 
-  if (!steps.length) {
+  if (steps.length === 0) {
     return value;
   }
 
@@ -59,7 +59,7 @@ export function stepDownSnapped(data: {
         snappedValue = Math.floor(value / stepDownBy) * stepDownBy;
       }
     } else {
-      snappedValue = steps[steps.length - 1];
+      snappedValue = steps.at(-1);
     }
   }
 

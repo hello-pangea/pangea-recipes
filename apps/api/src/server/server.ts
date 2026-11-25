@@ -7,7 +7,7 @@ import { serializerCompiler, validatorCompiler } from '@fastify/type-provider-zo
 import type { User } from '@repo/features/users';
 import { fromNodeHeaders } from 'better-auth/node';
 import Fastify from 'fastify';
-import { auth } from '#src/features/auth/betterAuth.ts';
+import { auth } from '#/features/auth/betterAuth.ts';
 import { enablePrettyLogs } from '../config/config.ts';
 import { customOpenApi } from './customOpenApi.ts';
 import { routes } from './routes.ts';

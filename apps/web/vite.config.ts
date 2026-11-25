@@ -1,4 +1,3 @@
-import path from 'node:path';
 import { devtools } from '@tanstack/devtools-vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import react from '@vitejs/plugin-react';
@@ -30,7 +29,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '#src': path.resolve(__dirname, '/src'),
+      '#/': '/src/',
     },
   },
   ssr: {

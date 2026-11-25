@@ -6,7 +6,7 @@ import '@uppy/dashboard/css/style.min.css';
 import XHR from '@uppy/xhr-upload';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { config } from '#src/config/config';
+import { config } from '#/config/config';
 
 interface Props {
   open: boolean;
@@ -43,7 +43,7 @@ export function UploadImageDialog({ open, onClose }: Props) {
           toast.error('Error uploading image');
         }
 
-        // oxlint-disable-next-line react/react-compiler
+        // oxlint-disable-next-line react/immutability
         uppy.clear();
       }),
   );

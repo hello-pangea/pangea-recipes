@@ -132,7 +132,7 @@ function validateParams(
 ): Record<string, string> | undefined {
   const required = extractParamNames(contract.path);
   if (required.length === 0) {
-    if ('params' in contract && contract.params) {
+    if ('params' in contract) {
       // if a schema was given (should be empty), still parse to enforce .strict()
       (contract.params as z.ZodType).parse(incoming ?? {});
     }
@@ -156,7 +156,7 @@ function validateParams(
 /** Replace :params in path with values */
 function insertParamsIntoPath(path: string, params?: Record<string, string>): string {
   if (!params) return path;
-  return path.replace(/:([A-Za-z0-9_]+)/g, (_, key: string) => {
+  return path.replaceAll(/:([A-Za-z0-9_]+)/g, (_, key: string) => {
     const v = params[key];
     if (v == null) throw new Error(`Missing value for path param "${key}"`);
     return encodeURIComponent(v);

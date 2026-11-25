@@ -1,6 +1,6 @@
 import { Container } from '@mui/material';
 import { getRouteApi } from '@tanstack/react-router';
-import { Footer } from '#src/components/Footer';
+import { Footer } from '#/components/Footer';
 import { Header } from '../marketing/Header';
 import { Recipe } from './Recipe';
 

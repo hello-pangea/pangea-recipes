@@ -1,7 +1,7 @@
 import { ApiReferenceReact } from '@scalar/api-reference-react';
 import { createLazyFileRoute } from '@tanstack/react-router';
 import '@scalar/api-reference-react/style.css';
-import { config } from '#src/config/config';
+import { config } from '#/config/config';
 
 export const Route = createLazyFileRoute('/openapi-docs')({
   component: () => (

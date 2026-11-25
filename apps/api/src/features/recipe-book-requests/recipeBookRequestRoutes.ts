@@ -7,7 +7,7 @@ import {
   listRecipeBookRequestsContract,
   requestAccessToRecipeBookContract,
 } from '@repo/features/recipe-book-requests';
-import { resend } from '#src/lib/resend.ts';
+import { resend } from '#/lib/resend.ts';
 import { verifySession } from '../auth/verifySession.ts';
 
 const routeTag = 'Recipe book requests';
@@ -56,7 +56,9 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (fa
         },
       });
 
-      const alreadyRequested = recipeBook.requests.some((request) => request.userId === userId);
+      const alreadyRequested = recipeBook.requests.some(
+        (bookRequest) => bookRequest.userId === userId,
+      );
 
       if (alreadyRequested) {
         throw fastify.httpErrors.conflict();
@@ -80,7 +82,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (fa
 
       const recipeBookOwners = recipeBook.members.filter((member) => member.role === 'owner');
 
-      if (recipeBookOwners.length) {
+      if (recipeBookOwners.length > 0) {
         for (const owner of recipeBookOwners) {
           await resend.emails.send({
             from: 'Pangea Recipes <invites@notify.pangearecipes.com>',
@@ -88,7 +90,7 @@ export const recipeBookRequestRoutes: FastifyPluginAsyncZod = async function (fa
             subject: `Share request for recipe book`,
             replyTo: 'hello@pangearecipes.com',
             react: RequestToJoinRecipeBookEmail({
-              ownerName: owner.user.name || undefined,
+              ...(owner.user.name && { ownerName: owner.user.name }),
               requesterName: requestingUser.name || 'Guest',
               managerLink: `https://pangearecipes.com/recipe-books/${recipeBookId}`,
               recipeBookName: recipeBook.name,

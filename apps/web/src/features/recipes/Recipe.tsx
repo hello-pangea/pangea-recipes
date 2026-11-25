@@ -29,10 +29,10 @@ import { useQuery, useSuspenseQuery } from '@tanstack/react-query';
 import { useNavigate } from '@tanstack/react-router';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { useIsMounted } from '#src/hooks/useIsMounted';
-import { useWakeLock } from '#src/hooks/useWakeLock';
-import { getNumberFromInput } from '#src/utils/getNumberFromInput';
-import { secondsToTimeString } from '#src/utils/timeFormatting';
+import { useIsMounted } from '#/hooks/useIsMounted';
+import { useWakeLock } from '#/hooks/useWakeLock';
+import { getNumberFromInput } from '#/utils/getNumberFromInput';
+import { secondsToTimeString } from '#/utils/timeFormatting';
 import { Ingredient } from './Ingredient';
 import { Nutrition } from './Nutrition';
 import { RecipeMoreMenu } from './RecipeMoreMenu';
@@ -240,7 +240,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
                       onClick={() => {
                         const value = getNumberFromInput(servingsModifier);
 
-                        if (value !== null && !isNaN(value)) {
+                        if (value !== null && !Number.isNaN(value)) {
                           setServingsModifier(
                             stepDownSnapped({
                               value: value,
@@ -257,7 +257,7 @@ export function Recipe({ readOnly, recipeId }: Props) {
                       onClick={() => {
                         const value = getNumberFromInput(servingsModifier);
 
-                        if (value !== null && !isNaN(value)) {
+                        if (value !== null && !Number.isNaN(value)) {
                           setServingsModifier(
                             stepUpSnapped({
                               value: value,

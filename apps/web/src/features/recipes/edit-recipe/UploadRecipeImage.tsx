@@ -2,8 +2,8 @@ import UploadRoundedIcon from '@mui/icons-material/UploadRounded';
 import { Box, Button, type SxProps, type Theme } from '@mui/material';
 import { useSelector } from '@tanstack/react-form';
 import { useState } from 'react';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { withForm } from '#/hooks/form';
+import type { FormPropsWrapper } from '#/types/FormPropsWrapper';
 import { recipeFormOptions } from './recipeForm';
 import { UploadImageDialog } from './UploadImageDialog';
 
@@ -47,11 +47,11 @@ export const UploadRecipeImage = withForm({
           </Box>
           <UploadImageDialog
             open={uploadImageDialogOpen}
-            onClose={(image) => {
+            onClose={(uploadedImage) => {
               setUploadImageDialogOpen(false);
 
-              if (image) {
-                form.setFieldValue('image', image);
+              if (uploadedImage) {
+                form.setFieldValue('image', uploadedImage);
               }
             }}
           />

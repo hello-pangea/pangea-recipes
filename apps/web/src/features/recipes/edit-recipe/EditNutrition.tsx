@@ -13,9 +13,9 @@ import {
   type Theme,
 } from '@mui/material';
 import { Fragment } from 'react/jsx-runtime';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
-import { isSxArray } from '#src/utils/isSxArray';
+import { withForm } from '#/hooks/form';
+import type { FormPropsWrapper } from '#/types/FormPropsWrapper';
+import { isSxArray } from '#/utils/isSxArray';
 import { recipeFormOptions, type RecipeFormInputs } from './recipeForm';
 
 interface Props {

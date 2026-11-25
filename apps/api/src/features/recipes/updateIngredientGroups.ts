@@ -1,6 +1,7 @@
 import { type Prisma } from '@repo/database';
 import { updateRecipeContract } from '@repo/features/recipes';
 import type z from 'zod';
+import { omitUndefined } from '../../lib/omitUndefined.ts';
 
 export async function updateIngredientGroups(data: {
   tx: Prisma.TransactionClient;
@@ -24,7 +25,7 @@ export async function updateIngredientGroups(data: {
     group.ingredients.map((ingredient) => ingredient.name.toLocaleLowerCase()),
   );
 
-  ingredientTerms.push(...ingredientTerms.map((term) => term.split(' ')).flat());
+  ingredientTerms.push(...ingredientTerms.flatMap((term) => term.split(' ')));
 
   ingredientTerms = [...new Set(ingredientTerms.filter(Boolean))];
 
@@ -46,19 +47,20 @@ export async function updateIngredientGroups(data: {
     },
   });
 
-  const existingIngredientGroupIds = oldIngredientGroups.map((group) => group.id);
+  const existingIngredientGroupIds = new Set(oldIngredientGroups.map((group) => group.id));
 
   const ingredientGroupsToDelete = oldIngredientGroups.filter(
     (group) => !newIngredientGroups.some((g) => g.id === group.id),
   );
 
   const ingredientGroupsToUpdate = newIngredientGroups.filter(
-    (group) => group.id && existingIngredientGroupIds.includes(group.id),
+    (group): group is typeof group & { id: string } =>
+      group.id !== undefined && existingIngredientGroupIds.has(group.id),
   );
 
   const ingredientGroupsToCreate = newIngredientGroups.filter((group) => !group.id);
 
-  if (ingredientGroupsToDelete.length) {
+  if (ingredientGroupsToDelete.length > 0) {
     await tx.ingredientGroup.deleteMany({
       where: {
         id: {
@@ -68,7 +70,7 @@ export async function updateIngredientGroups(data: {
     });
   }
 
-  if (ingredientGroupsToCreate.length) {
+  if (ingredientGroupsToCreate.length > 0) {
     await Promise.all(
       ingredientGroupsToCreate.map(async (ingredientGroup) => {
         const index = newIngredientGroups.indexOf(ingredientGroup);
@@ -79,21 +81,23 @@ export async function updateIngredientGroups(data: {
             name: ingredientGroup.name ?? null,
             order: index,
             ingredients: {
-              create: ingredientGroup.ingredients.map((ingredient, index) => {
-                const terms = ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean);
+              create: ingredientGroup.ingredients.map((ingredient, ingredientIndex) => {
+                const terms = new Set(
+                  ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean),
+                );
                 const matchingCanonicalIngredient =
                   canonicalIngredients.find((canonicalIngredient) =>
                     ingredient.name.toLocaleLowerCase().includes(canonicalIngredient.name),
                   ) ??
                   canonicalIngredients.find(
                     (canonicalIngredient) =>
-                      terms.includes(canonicalIngredient.name) ||
-                      canonicalIngredient.aliases.some((alias) => terms.includes(alias.name)),
+                      terms.has(canonicalIngredient.name) ||
+                      canonicalIngredient.aliases.some((alias) => terms.has(alias.name)),
                   );
 
                 return {
-                  ...ingredient,
-                  order: index,
+                  ...omitUndefined(ingredient),
+                  order: ingredientIndex,
                   canonicalIngredientId: matchingCanonicalIngredient?.id ?? null,
                 };
               }),
@@ -104,7 +108,7 @@ export async function updateIngredientGroups(data: {
     );
   }
 
-  if (ingredientGroupsToUpdate.length) {
+  if (ingredientGroupsToUpdate.length > 0) {
     await Promise.all(
       ingredientGroupsToUpdate.map(async (group) => {
         const index = newIngredientGroups.indexOf(group);
@@ -118,21 +122,23 @@ export async function updateIngredientGroups(data: {
             order: index,
             ingredients: {
               deleteMany: {},
-              create: group.ingredients.map((ingredient, index) => {
-                const terms = ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean);
+              create: group.ingredients.map((ingredient, ingredientIndex) => {
+                const terms = new Set(
+                  ingredient.name.toLocaleLowerCase().split(' ').filter(Boolean),
+                );
                 const matchingCanonicalIngredient =
                   canonicalIngredients.find((canonicalIngredient) =>
                     ingredient.name.toLocaleLowerCase().includes(canonicalIngredient.name),
                   ) ??
                   canonicalIngredients.find(
                     (canonicalIngredient) =>
-                      terms.includes(canonicalIngredient.name) ||
-                      canonicalIngredient.aliases.some((alias) => terms.includes(alias.name)),
+                      terms.has(canonicalIngredient.name) ||
+                      canonicalIngredient.aliases.some((alias) => terms.has(alias.name)),
                   );
 
                 return {
-                  ...ingredient,
-                  order: index,
+                  ...omitUndefined(ingredient),
+                  order: ingredientIndex,
                   canonicalIngredientId: matchingCanonicalIngredient?.id ?? null,
                 };
               }),

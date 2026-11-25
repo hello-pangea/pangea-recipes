@@ -16,10 +16,10 @@ import { Box, FormLabel, IconButton } from '@mui/material';
 import { useSelector } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { DragPreview } from '#src/components/DragPreview';
-import { DropIndicator } from '#src/components/DropIndicator';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { DragPreview } from '#/components/DragPreview';
+import { DropIndicator } from '#/components/DropIndicator';
+import { withForm } from '#/hooks/form';
+import type { FormPropsWrapper } from '#/types/FormPropsWrapper';
 import { recipeFormOptions } from './recipeForm';
 
 interface Props {
@@ -105,7 +105,7 @@ export const EditInstruction = withForm({
               return;
             }
 
-            const closestEdge = extractClosestEdge(self.data);
+            const edge = extractClosestEdge(self.data);
 
             const sourceIndex = source.data['index'];
             if (typeof sourceIndex !== 'number') {
@@ -120,15 +120,14 @@ export const EditInstruction = withForm({
               index === sourceIndex + 1 && instructionGroupIndex === sourceGroupIndex;
 
             const isDropIndicatorHidden =
-              (isItemBeforeSource && closestEdge === 'bottom') ||
-              (isItemAfterSource && closestEdge === 'top');
+              (isItemBeforeSource && edge === 'bottom') || (isItemAfterSource && edge === 'top');
 
             if (isDropIndicatorHidden) {
               setClosestEdge(null);
               return;
             }
 
-            setClosestEdge(closestEdge);
+            setClosestEdge(edge);
           },
           onDragEnter({ self, source }) {
             const isSource = source.element === element || source.element === dragHandle;
@@ -137,7 +136,7 @@ export const EditInstruction = withForm({
               return;
             }
 
-            const closestEdge = extractClosestEdge(self.data);
+            const edge = extractClosestEdge(self.data);
 
             const sourceIndex = source.data['index'];
             if (typeof sourceIndex !== 'number') {
@@ -152,15 +151,14 @@ export const EditInstruction = withForm({
               index === sourceIndex + 1 && instructionGroupIndex === sourceGroupIndex;
 
             const isDropIndicatorHidden =
-              (isItemBeforeSource && closestEdge === 'bottom') ||
-              (isItemAfterSource && closestEdge === 'top');
+              (isItemBeforeSource && edge === 'bottom') || (isItemAfterSource && edge === 'top');
 
             if (isDropIndicatorHidden) {
               setClosestEdge(null);
               return;
             }
 
-            setClosestEdge(closestEdge);
+            setClosestEdge(edge);
           },
           onDragLeave() {
             setClosestEdge(null);

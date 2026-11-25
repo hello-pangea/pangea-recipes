@@ -14,8 +14,8 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { z } from 'zod';
-import { RouterLink } from '#src/components/RouterLink';
-import { useAppForm } from '#src/hooks/form';
+import { RouterLink } from '#/components/RouterLink';
+import { useAppForm } from '#/hooks/form';
 import { authClient } from './authClient';
 import { useSignIn } from './useSignIn';
 

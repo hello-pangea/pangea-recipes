@@ -17,10 +17,10 @@ import {
 import { useSignedInUser, useUpdateUser, type User } from '@repo/features/users';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { Page } from '#src/components/Page';
-import { RouterButton } from '#src/components/RouterButton';
-import { color } from '#src/theme/colors';
-import { capitalizeFirstLetter } from '#src/utils/misc';
+import { Page } from '#/components/Page';
+import { RouterButton } from '#/components/RouterButton';
+import { color } from '#/theme/colors';
+import { capitalizeFirstLetter } from '#/utils/misc';
 import { authClient } from '../auth/authClient';
 
 const accentColors = [

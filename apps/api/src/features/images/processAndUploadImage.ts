@@ -1,7 +1,7 @@
 import type { MultipartFile } from '@fastify/multipart';
 import { prisma } from '@repo/database';
 import sharp from 'sharp';
-import { getFileUrl, uploadFile } from '#src/lib/s3.ts';
+import { getFileUrl, uploadFile } from '#/lib/s3.ts';
 
 export async function processAndUploadImage(multipartFile: MultipartFile) {
   const imageBuffer = await multipartFile.toBuffer();

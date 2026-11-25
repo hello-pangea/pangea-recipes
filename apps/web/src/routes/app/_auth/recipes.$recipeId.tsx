@@ -1,6 +1,6 @@
 import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
-import { RecipePage } from '#src/features/recipes/RecipePage';
+import { RecipePage } from '#/features/recipes/RecipePage';
 
 export const Route = createFileRoute('/app/_auth/recipes/$recipeId')({
   loader: ({ context: { queryClient }, params: { recipeId } }) => {

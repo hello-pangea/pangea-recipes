@@ -31,9 +31,9 @@ import { useSignedInUser } from '@repo/features/users';
 import { useQuery } from '@tanstack/react-query';
 import { useRouterState, type LinkProps } from '@tanstack/react-router';
 import { useEffect, useRef, useState } from 'react';
-import { CarrotIcon } from '#src/components/CarrotIcon';
-import { RouterLink } from '#src/components/RouterLink';
-import { RouterListItemButton } from '#src/components/RouterListItemButton';
+import { CarrotIcon } from '#/components/CarrotIcon';
+import { RouterLink } from '#/components/RouterLink';
+import { RouterListItemButton } from '#/components/RouterListItemButton';
 import { useSignedInUserId } from '../auth/useSignedInUserId';
 import { NewButton } from './NewButton';
 
@@ -304,7 +304,7 @@ interface ListItemProps {
   label: string;
   icon?: React.ReactNode;
   onClick?: () => void;
-  linkProps: LinkProps;
+  linkProps: Pick<LinkProps, 'to' | 'params'>;
   small?: boolean;
   isNested?: boolean;
   plainPath: string;
@@ -370,8 +370,7 @@ function ListItem({
             transitionTimingFunction: 'cubic-bezier(0.15, 1.0, 0.3, 1.0)',
             transitionDuration: '350ms',
           }}
-          to={linkProps.to}
-          params={linkProps.params}
+          {...linkProps}
         >
           {icon && (
             <ListItemIcon
@@ -474,7 +473,7 @@ function DroppableListItem({ data, canDrop, ...rest }: DroppableListItemProps) {
       onDrop: () => {
         setIsDraggedOver(false);
       },
-      canDrop: canDrop,
+      ...(canDrop && { canDrop: canDrop }),
     });
   }, [data, canDrop]);
 

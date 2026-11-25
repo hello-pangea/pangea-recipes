@@ -6,7 +6,7 @@ import {
   listRecipeImportsContract,
 } from '@repo/features/recipe-imports';
 import * as Sentry from '@sentry/node';
-import { ApiError } from '#src/lib/ApiError.ts';
+import { ApiError } from '#/lib/ApiError.ts';
 import { verifySession } from '../auth/verifySession.ts';
 import { createRecipe } from '../recipes/recipeRepo.ts';
 import { getLlmImportRecipe } from './getLlmImportRecipe.ts';
@@ -157,7 +157,7 @@ export const recipeImportRoutes: FastifyPluginAsyncZod = async function (fastify
 
       const recipeImports = await prisma.recipeImport.findMany({
         where: {
-          status: status ?? undefined,
+          ...(status && { status: status }),
         },
       });
 

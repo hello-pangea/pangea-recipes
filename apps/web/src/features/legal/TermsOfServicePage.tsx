@@ -1,6 +1,6 @@
 import { Container, Link, Typography } from '@mui/material';
-import { Footer } from '#src/components/Footer';
-import { Page } from '#src/components/Page';
+import { Footer } from '#/components/Footer';
+import { Page } from '#/components/Page';
 import { Header } from '../marketing/Header';
 
 export function TermsOfServicePage() {

@@ -1,7 +1,7 @@
 import { getRecipeQueryOptions } from '@repo/features/recipes';
 import { createFileRoute } from '@tanstack/react-router';
-import { SharedRecipePage } from '#src/features/recipes/SharedRecipePage';
-import { seo } from '#src/utils/seo';
+import { SharedRecipePage } from '#/features/recipes/SharedRecipePage';
+import { seo } from '#/utils/seo';
 
 export const Route = createFileRoute('/app/shared-recipes/$recipeId')({
   loader: async ({ context: { queryClient }, params: { recipeId } }) => {

@@ -19,10 +19,13 @@ z.globalRegistry.add = (
   if (!meta.id) {
     return originalAdd.call(z.globalRegistry, schema, meta);
   }
-  const existingSchema = z.globalRegistry._idmap.get(meta.id);
+  // Zod doesn't expose a public API for looking up schemas by ID
+  // oxlint-disable-next-line eslint/no-underscore-dangle
+  const idMap = z.globalRegistry._idmap;
+  const existingSchema = idMap.get(meta.id);
   if (existingSchema) {
     z.globalRegistry.remove(existingSchema);
-    z.globalRegistry._idmap.delete(meta.id);
+    idMap.delete(meta.id);
   }
   return originalAdd.call(z.globalRegistry, schema, meta);
 };

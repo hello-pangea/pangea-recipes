@@ -9,8 +9,8 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import { alpha, Box, Button, Card, IconButton, Stack, Typography } from '@mui/material';
 import { useSelector } from '@tanstack/react-form';
 import { useEffect, useRef, useState } from 'react';
-import { withForm } from '#src/hooks/form';
-import type { FormPropsWrapper } from '#src/types/FormPropsWrapper';
+import { withForm } from '#/hooks/form';
+import type { FormPropsWrapper } from '#/types/FormPropsWrapper';
 import { EditIngredient } from './EditIngredient';
 import { recipeFormOptions, type RecipeFormInputs } from './recipeForm';
 

@@ -9,8 +9,8 @@ import {
 } from '@mui/material';
 import { useUpdateUser } from '@repo/features/users';
 import { z } from 'zod';
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
-import { useAppForm } from '#src/hooks/form';
+import { useSignedInUserId } from '#/features/auth/useSignedInUserId';
+import { useAppForm } from '#/hooks/form';
 
 const formSchema = z.object({
   name: z.string().min(1),

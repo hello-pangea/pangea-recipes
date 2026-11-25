@@ -5,7 +5,7 @@
   "license": "AGPL-3.0-or-later",
   "type": "module",
   "imports": {
-    "#src/*.ts": "./src/*.ts"
+    "#/*.ts": "./src/*.ts"
   },
   "exports": "./src/index.ts",
   "scripts": {
@@ -29,7 +29,7 @@
     "@repo/features": "workspace:*",
     "@sentry/node": "^11.17.0",
     "@sentry/profiling-node": "^11.17.0",
-    "better-auth": "^1.7.27",
+    "better-auth": "^1.7.28",
     "close-with-grace": "^2.5.0",
     "date-fns": "^4.4.0",
     "fastify": "^5.12.8",

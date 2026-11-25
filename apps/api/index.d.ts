@@ -23,5 +23,3 @@ declare module 'fastify' {
     } | null;
   }
 }
-
-export {};

@@ -2,7 +2,9 @@
   "$schema": "./node_modules/oxlint/configuration_schema.json",
   "options": {
     "typeAware": true,
-    "typeCheck": true
+    "typeCheck": true,
+    "respectEslintDisableDirectives": false,
+    "reportUnusedDisableDirectives": "error"
   },
   "ignorePatterns": ["*"]
 }

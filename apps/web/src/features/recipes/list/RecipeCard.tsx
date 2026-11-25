@@ -3,8 +3,8 @@ import { Box, Card, IconButton, Link as MuiLink, Typography, useMediaQuery } fro
 import { type RecipeProjected } from '@repo/features/recipes';
 import { Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { RouterLink } from '#src/components/RouterLink';
-import { useSignedInUserId } from '#src/features/auth/useSignedInUserId';
+import { RouterLink } from '#/components/RouterLink';
+import { useSignedInUserId } from '#/features/auth/useSignedInUserId';
 import { RecipeMoreMenu } from '../RecipeMoreMenu';
 import { RecipeDraggable } from './RecipeDraggable';
 
